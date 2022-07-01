@@ -8,9 +8,9 @@
  *********************************************************************/
 
 #include "sclpch.h"
-#include "gl_mesh.h"
+#include "gl_vertex_array.h"
 
-constexpr GLenum scl::gl_mesh::GetGLShaderVariableType(shader_variable_type Type)
+constexpr GLenum scl::gl_vertex_array::GetGLShaderVariableType(shader_variable_type Type)
 {
     switch (Type)
     {
@@ -35,8 +35,8 @@ constexpr GLenum scl::gl_mesh::GetGLShaderVariableType(shader_variable_type Type
     return GLenum();
 }
 
-scl::gl_mesh::gl_mesh(mesh_type Type, shared<vertex_buffer> VertexBuffer, shared<index_buffer> IndexBuffer) :
-    mesh(Type, VertexBuffer, IndexBuffer)
+scl::gl_vertex_array::gl_vertex_array(mesh_type Type, shared<vertex_buffer> VertexBuffer, shared<index_buffer> IndexBuffer) :
+    vertex_array(Type, VertexBuffer, IndexBuffer)
 {
     SCL_CORE_ASSERT(VertexBuffer->GetVertexLayout().GetCount() != 0,
                     "Vertex Buffer has no layout!");
@@ -102,17 +102,17 @@ scl::gl_mesh::gl_mesh(mesh_type Type, shared<vertex_buffer> VertexBuffer, shared
     this->Unbind();
 }
 
-scl::gl_mesh::~gl_mesh()
+scl::gl_vertex_array::~gl_vertex_array()
 {
     glDeleteVertexArrays(1, &Id);
 }
 
-void scl::gl_mesh::Bind() const
+void scl::gl_vertex_array::Bind() const
 {
     glBindVertexArray(Id);
 }
 
-void scl::gl_mesh::Unbind() const
+void scl::gl_vertex_array::Unbind() const
 {
     glBindVertexArray(0);
 }

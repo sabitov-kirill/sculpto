@@ -8,12 +8,10 @@
 
 #pragma once
 
-#include "base.h"
 #include "timer.h"
 #include "window.h"
 #include "layers_stack.h"
 #include "../events/events.h"
-#include "../render/render_adapter.h"
 #include "../gui/gui_layer.h"
 
 /**

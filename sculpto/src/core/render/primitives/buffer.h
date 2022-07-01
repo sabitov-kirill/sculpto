@@ -37,7 +37,7 @@ namespace scl
     };
 
     /* Constant buffer (uniform buffer) interface. */
-    class buffer abstract
+    class constant_buffer abstract
     {
     protected: /* Buffer data. */
         u32 BindingPoint {};
@@ -50,7 +50,7 @@ namespace scl
 
     public:
         /* Constant buffer default destructor. */
-        virtual ~buffer() = default;
+        virtual ~constant_buffer() = default;
 
         /**
          * Bind buffer to current render stage function.
@@ -92,7 +92,7 @@ namespace scl
          * \param Size - buffer data size.
          * \return constant buffer pointer.
          */
-        static shared<buffer> Create(u32 BindingPoint, u32 Size);
+        static shared<constant_buffer> Create(u32 BindingPoint, u32 Size);
 
         /**
          * Create API specific constant buffer filled with data.
@@ -102,7 +102,7 @@ namespace scl
          * \param Size - buffer data size.
          * \return constant buffer pointer.
          */
-        static shared<buffer> Create(u32 BindingPoint, const void *Data, u32 Size);
+        static shared<constant_buffer> Create(u32 BindingPoint, const void *Data, u32 Size);
     };
 
     /* Vertex bufer interface. */

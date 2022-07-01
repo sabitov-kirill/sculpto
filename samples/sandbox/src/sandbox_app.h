@@ -10,10 +10,9 @@
 
 class test_gui_layer: public scl::layer
 {
-    scl::shared<scl::mesh> VAO;
-    scl::shared<scl::texture_2d> Texture;
-    scl::shared<scl::shader_program> ShaderProgram;
     scl::shared<scl::frame_buffer> FrameBuffer;
+    scl::shared<scl::mesh> Cube;
+    scl::camera Camera;
 
     float ObjectSize { 1 };
     float ObjectRotationX { 0 }, ObjectRotationY { 0 }, ObjectRotationZ { 0 };
@@ -23,8 +22,7 @@ class test_gui_layer: public scl::layer
     bool IsDockspace { true };
 
     void OnInit() override;
-    void OnResponse() override;
-    void OnRender() override;
+    void OnUpdate() override;
     void OnGuiRender() override;
 };
 

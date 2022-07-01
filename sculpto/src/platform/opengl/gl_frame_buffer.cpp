@@ -77,3 +77,10 @@ void scl::gl_frame_buffer::Free()
     if (ColorAttachmentId != 0) glDeleteTextures(1, &ColorAttachmentId);
     if (DepthAttachmentId != 0)glDeleteTextures(1, &DepthAttachmentId);
 }
+
+void scl::gl_frame_buffer::Clear()
+{
+    this->Bind();
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    this->Unbind();
+}

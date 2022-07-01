@@ -63,6 +63,14 @@ namespace scl
         virtual void Free() = 0;
 
         /**
+         * Clear frame buffer funcrion.
+         * 
+         * \param None.
+         * \return None.
+         */
+        virtual void Clear() = 0;
+
+        /**
          * Create frame buffer function.
          * 
          * \props Props - propsrties (specification) of creating frame buffer.

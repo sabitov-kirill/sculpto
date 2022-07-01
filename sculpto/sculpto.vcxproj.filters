@@ -129,11 +129,8 @@
     <ClInclude Include="src\core\render\primitives\texture.h">
       <Filter>src\core\render\primitives</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\render\primitives\mesh.h">
+    <ClInclude Include="src\core\render\primitives\vertex_array.h">
       <Filter>src\core\render\primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="src\core\render\render_adapter.h">
-      <Filter>src\core\render</Filter>
     </ClInclude>
     <ClInclude Include="src\core\render\render_context.h">
       <Filter>src\core\render</Filter>
@@ -156,7 +153,7 @@
     <ClInclude Include="src\platform\opengl\gl_texture.h">
       <Filter>src\platform\opengl</Filter>
     </ClInclude>
-    <ClInclude Include="src\platform\opengl\gl_mesh.h">
+    <ClInclude Include="src\platform\opengl\gl_vertex_array.h">
       <Filter>src\platform\opengl</Filter>
     </ClInclude>
     <ClInclude Include="src\platform\windows\windows_input.h">
@@ -238,8 +235,11 @@
     <ClInclude Include="src\core\render\topology\grid.h" />
     <ClInclude Include="src\core\render\topology\cube.h" />
     <ClInclude Include="src\core\render\topology\sphere.h" />
-    <ClInclude Include="src\core\render\primitive.h" />
     <ClInclude Include="src\platform\opengl\gl_frame_buffer.h" />
+    <ClInclude Include="src\core\render\render_bridge.h" />
+    <ClInclude Include="src\core\render\renderer.h" />
+    <ClInclude Include="src\core\render\mesh.h" />
+    <ClInclude Include="src\core\render\material.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="external\stb_image\stb_image.cpp">
@@ -278,11 +278,8 @@
     <ClCompile Include="src\core\render\primitives\texture.cpp">
       <Filter>src\core\render\primitives</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\render\primitives\mesh.cpp">
+    <ClCompile Include="src\core\render\primitives\vertex_array.cpp">
       <Filter>src\core\render\primitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\core\render\render_adapter.cpp">
-      <Filter>src\core\render</Filter>
     </ClCompile>
     <ClCompile Include="src\core\render\render_context.cpp">
       <Filter>src\core\render</Filter>
@@ -299,7 +296,7 @@
     <ClCompile Include="src\platform\opengl\gl_texture.cpp">
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
-    <ClCompile Include="src\platform\opengl\gl_mesh.cpp">
+    <ClCompile Include="src\platform\opengl\gl_vertex_array.cpp">
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
     <ClCompile Include="src\platform\windows\windows_input.cpp">
@@ -320,7 +317,9 @@
     <ClCompile Include="src\core\render\topology\grid.cpp" />
     <ClCompile Include="src\core\render\topology\cube.cpp" />
     <ClCompile Include="src\core\render\topology\sphere.cpp" />
-    <ClCompile Include="src\core\render\primitive.cpp" />
     <ClCompile Include="src\platform\opengl\gl_frame_buffer.cpp" />
+    <ClCompile Include="src\core\render\render_bridge.cpp" />
+    <ClCompile Include="src\core\render\renderer.cpp" />
+    <ClCompile Include="src\core\render\material.cpp" />
   </ItemGroup>
 </Project>

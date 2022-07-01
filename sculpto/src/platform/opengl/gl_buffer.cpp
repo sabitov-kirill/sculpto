@@ -9,7 +9,7 @@
 #include "sclpch.h"
 #include "gl_buffer.h"
 
-scl::gl_buffer::gl_buffer(u32 BindingPoint, u32 Size)
+scl::gl_constant_buffer::gl_constant_buffer(u32 BindingPoint, u32 Size)
 {
     this->Free();
     BindingPoint = BindingPoint;
@@ -21,7 +21,7 @@ scl::gl_buffer::gl_buffer(u32 BindingPoint, u32 Size)
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
-scl::gl_buffer::gl_buffer(u32 BindingPoint, const void *Data, u32 Size)
+scl::gl_constant_buffer::gl_constant_buffer(u32 BindingPoint, const void *Data, u32 Size)
 {
     Free();
     BindingPoint = BindingPoint;
@@ -33,22 +33,22 @@ scl::gl_buffer::gl_buffer(u32 BindingPoint, const void *Data, u32 Size)
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
-scl::gl_buffer::~gl_buffer()
+scl::gl_constant_buffer::~gl_constant_buffer()
 {
     Free();
 }
 
-void scl::gl_buffer::Bind() const
+void scl::gl_constant_buffer::Bind() const
 {
     if (Id != 0) glBindBuffer(GL_UNIFORM_BUFFER, Id);
 }
 
-void scl::gl_buffer::Unbind() const
+void scl::gl_constant_buffer::Unbind() const
 {
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
-void scl::gl_buffer::Update(void *Data, u32 Size)
+void scl::gl_constant_buffer::Update(void *Data, u32 Size)
 {
     if (Id != 0)
     {
@@ -57,7 +57,7 @@ void scl::gl_buffer::Update(void *Data, u32 Size)
     }
 }
 
-void scl::gl_buffer::Free()
+void scl::gl_constant_buffer::Free()
 {
     if (Id != 0)
     {

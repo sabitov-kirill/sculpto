@@ -8,7 +8,7 @@
 
 #include "sclpch.h"
 #include "core/application/application.h"
-#include "core/render/primitives/mesh.h"
+#include "core/render/primitives/vertex_array.h"
 #include "gl.h"
 
 /* Debug output function. */
@@ -193,27 +193,22 @@ void scl::gl::SetClearColor(const vec4 &Color)
     glClearColor(SCL_VEC_XYZW(Color));
 }
 
-void scl::gl::SetWireframe(bool IsWireframe)
+void scl::gl::SetWireframeMode(bool IsWireframe)
 {
     glPolygonMode(GL_FRONT_AND_BACK, IsWireframe ? GL_LINE : GL_FILL);
 }
 
-void scl::gl::BeginPipeline()
+void scl::gl::Clear()
 {
-    // Clear frame
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-
-void scl::gl::EndPipeline()
-{
-    glFlush();
-    // glFinish();
 }
 
 void scl::gl::SwapBuffers()
 {
+    /* Another way (not sure):
+     * wglSwapLayerBuffers(hDC, WGL_SWAP_MAIN_PLANE);
+     */
     ::SwapBuffers(hDC);
-    // wglSwapLayerBuffers(hDC, WGL_SWAP_MAIN_PLANE);
 }
 
 void scl::gl::Resize(int Width, int Height)
@@ -221,26 +216,26 @@ void scl::gl::Resize(int Width, int Height)
     glViewport(0, 0, Width, Height);
 }
 
-void scl::gl::DrawVerices(const shared<mesh> &Mesh)
+void scl::gl::DrawIndices(const shared<vertex_array> &VertexArray)
 {
-    const shared<index_buffer> &Indices = Mesh->GetIndexBuffer();
-    const shared<vertex_buffer> &Vertices = Mesh->GetVertexBuffer();
+    const shared<index_buffer> &Indices = VertexArray->GetIndexBuffer();
+    const shared<vertex_buffer> &Vertices = VertexArray->GetVertexBuffer();
 
     glDrawElements(
-        GetGLPrimitiveType(Mesh->GetType()),
+        GetGLPrimitiveType(VertexArray->GetType()),
         Indices->GetCount(),
         GL_UNSIGNED_INT,
         nullptr
     );
 }
 
-void scl::gl::DrawVericesInstanced(const shared<mesh> &Mesh, int InstanceCount)
+void scl::gl::DrawIndicesInstanced(const shared<vertex_array> &VertexArray, int InstanceCount)
 {
-    const shared<index_buffer> &Indices = Mesh->GetIndexBuffer();
-    const shared<vertex_buffer> &Vertices = Mesh->GetVertexBuffer();
+    const shared<index_buffer> &Indices = VertexArray->GetIndexBuffer();
+    const shared<vertex_buffer> &Vertices = VertexArray->GetVertexBuffer();
 
     glDrawElementsInstanced(
-        GetGLPrimitiveType(Mesh->GetType()),
+        GetGLPrimitiveType(VertexArray->GetType()),
         Indices->GetCount(),
         GL_UNSIGNED_INT,
         nullptr,

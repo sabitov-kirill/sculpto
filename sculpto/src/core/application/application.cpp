@@ -9,6 +9,9 @@
 #include "sclpch.h"
 #include "application.h"
 
+#include "../render/render_bridge.h"
+#include "../render/renderer.h"
+
 scl::application *scl::application::Instance = nullptr;
 
 scl::application::application(const std::string &Name)
@@ -26,7 +29,7 @@ scl::application::application(const std::string &Name)
     SCL_CORE_SUCCES("Application window created.");
 
     // Render initialisation
-    render_adapter::Get().Init();
+    render_bridge::InitContext();
 
     // Gui layer initialisation
     GUILayer = new gui_layer();
@@ -43,7 +46,7 @@ scl::application::~application()
 
 bool scl::application::OnWindowResize(window_resize_event &Event)
 {
-    render_adapter::Get().RenderResize(Event.GetWidth(), Event.GetHeight()); // Call resize to render context
+    render_bridge::ResizeContext(Event.GetWidth(), Event.GetHeight());       // Call resize to render context
     this->LoopIterationActions();                                            // Forece loop iteration to render frame
     return false;                                                            // Let event be handled by other handlers
 }
@@ -54,7 +57,7 @@ bool scl::application::OnWindowClose(window_close_event &Event)
     this->OnClose();                                           // Client application deinitialisation
     for (layer *layer : Layers) layer->OnClose();              // All layers in stack deinitilisation
 
-    render_adapter::Get().Close();                             // Render deintialisation
+    render_bridge::CloseContext();                             // Render deintialisation
     return false;                                              // Let event be handled by other handlers
 }
 
@@ -82,30 +85,25 @@ void scl::application::LoopIterationActions()
     // Do nothing if application is already closed.
     if (!IsRunning) return;
 
-    // Response application subsystems, layers
-    Timer.Response();
-    for (auto &layer : Layers) layer->OnResponse();
+    // Update application subsystems
+    Timer.Update();
 
-    // Rendering all layers
-    render_adapter &adapter = render_adapter::Get();
-    adapter.RenderFrame();
+    // Update all layers
+    for (auto &layer : Layers)
+        layer->OnUpdate();
+
+    // Rendering GUI
+    if (GuiEnabled)
     {
-        // Render all layers grapchics stuff
-        for (auto &layer : Layers)
-            layer->OnRender();
-
-        // Rendering GUI
-        if (GuiEnabled)
+        GUILayer->RenderGui();
         {
-            GUILayer->RenderGui();
-            {
-                for (auto &layer : Layers)
-                    layer->OnGuiRender();
-            }
-            GUILayer->SubmitRenderedGui();
+            for (auto &layer : Layers)
+                layer->OnGuiRender();
         }
+        GUILayer->SubmitRenderedGui();
     }
-    adapter.SubmitRenderedFrame();
+
+    render_bridge::SwapBuffers();
 }
 
 void scl::application::Run()

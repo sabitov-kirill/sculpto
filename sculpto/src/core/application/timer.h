@@ -22,7 +22,7 @@ namespace scl
         bool           IsPause {};
         float          Time {};
         float          DeltaTime {};
-        float          Fps { 500 };
+        float          Fps { -1 };
 
         time_point     StartTime {};                    /* Time since program start */
         time_point     OldTime {};                      /* Previous response call time */
@@ -56,6 +56,6 @@ namespace scl
          * \param None.
          * \return None.
          */
-        void Response();
+        void Update();
     };
 }

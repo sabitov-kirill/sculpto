@@ -72,6 +72,14 @@ namespace scl
          * \param None.
          * \return None.
          */
-        void Free();
+        void Free() override;
+
+        /**
+         * Clear frame buffer funcrion.
+         *
+         * \param None.
+         * \return None.
+         */
+        void Clear() override;
     };
 }

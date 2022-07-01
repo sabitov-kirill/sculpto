@@ -42,19 +42,11 @@ namespace scl
 
         /**
          * Layer update virtual callback function.
-         *
+         * 
          * \param None.
          * \return None.
          */
-        virtual void OnResponse() {}
-
-        /**
-         * Layer rendering virtual callback function.
-         *
-         * \param None.
-         * \return None.
-         */
-        virtual void OnRender() {}
+        virtual void OnUpdate() {}
 
         /**
          * Layer GUI rendering virtual callback function.

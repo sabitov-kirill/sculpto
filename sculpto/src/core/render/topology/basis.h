@@ -9,7 +9,7 @@
 #pragma once
 
 #include "base.h"
-#include "../primitives/mesh.h"
+#include "../primitives/vertex_array.h"
 
 namespace scl::topology
 {

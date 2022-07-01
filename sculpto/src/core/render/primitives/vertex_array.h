@@ -25,7 +25,7 @@ namespace scl
     };
 
     /* Mesh interface. */
-    class mesh abstract
+    class vertex_array abstract
     {
     private: /* Vertex array data. */
         mesh_type Type;
@@ -48,7 +48,7 @@ namespace scl
          * \param VertexBuffer - vertex buffer to be linked to vertex array.
          * \param IndexBuffer - index array to be linked to vertex array.
          */
-        mesh(mesh_type Type, shared<vertex_buffer> VertexBuffer, shared<index_buffer> IndexBuffer);
+        vertex_array(mesh_type Type, shared<vertex_buffer> VertexBuffer, shared<index_buffer> IndexBuffer);
 
         /**
          * Bind vertex array to current render stage function.
@@ -74,6 +74,6 @@ namespace scl
          * \param IndexBuffer - vartex indicies buffer to be linked to vertex array.
          * \return pointer to created vertex array.
          */
-        static shared<mesh> Create(mesh_type Type, shared<vertex_buffer> VertexBuffer, shared<index_buffer> IndexBuffer);
+        static shared<vertex_array> Create(mesh_type Type, shared<vertex_buffer> VertexBuffer, shared<index_buffer> IndexBuffer);
     };
 }

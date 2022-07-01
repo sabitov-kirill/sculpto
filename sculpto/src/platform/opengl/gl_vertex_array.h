@@ -10,12 +10,12 @@
 #pragma once
 
 #include "gl.h"
-#include "core/render/primitives/mesh.h"
+#include "core/render/primitives/vertex_array.h"
 
 namespace scl
 {
     /* OpenGL vertex array class. */
-    class gl_mesh: public mesh
+    class gl_vertex_array: public vertex_array
     {
     private: /* Vertex array data. */
         GLuint Id {};
@@ -36,10 +36,10 @@ namespace scl
          * \param VertexBuffer - vertex buffer to be linked to vertex array.
          * \param IndexBuffer - index array to be linked to vertex array.
          */
-        gl_mesh(mesh_type Type, shared<vertex_buffer> VertexBuffer, shared<index_buffer> IndexBuffer);
+        gl_vertex_array(mesh_type Type, shared<vertex_buffer> VertexBuffer, shared<index_buffer> IndexBuffer);
 
         /* Default destructor. */
-        ~gl_mesh();
+        ~gl_vertex_array();
 
         /**
          * Bind vertex array to current render stage function.

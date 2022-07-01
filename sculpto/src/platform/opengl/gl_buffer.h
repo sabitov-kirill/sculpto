@@ -14,7 +14,7 @@
 namespace scl
 {
     /* Constant (uniform) buffer class. */
-    class gl_buffer : public buffer
+    class gl_constant_buffer : public constant_buffer
     {
     private: /*  Constant (uniform) buffer data. */
         GLuint Id {};
@@ -28,7 +28,7 @@ namespace scl
          * \param Size - buffer data size.
          * \return constant buffer pointer.
          */
-        gl_buffer(u32 BindingPoint, u32 Size);
+        gl_constant_buffer(u32 BindingPoint, u32 Size);
 
         /**
          *  Constant (uniform) buffer filled with data constructor.
@@ -38,10 +38,10 @@ namespace scl
          * \param Size - buffer data size.
          * \return constant buffer pointer.
          */
-        gl_buffer(u32 BindingPoint, const void *Data, u32 Size);
+        gl_constant_buffer(u32 BindingPoint, const void *Data, u32 Size);
 
         /* Constant buffer default destructor. */
-        ~gl_buffer() override;
+        ~gl_constant_buffer() override;
 
         /**
          * Bind buffer to current render stage function.

@@ -7,6 +7,7 @@ layout (location = 2) in vec2 aTexCoords;
 layout (location = 3) in vec4 aColor;
 
 uniform mat4 MatrWVP;
+uniform mat4 MatrW;
 
 /* Shader output data. */
 out vec3 DrawNormal;

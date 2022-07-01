@@ -140,8 +140,11 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\core\render\material.h" />
+    <ClInclude Include="src\core\render\mesh.h" />
+    <ClInclude Include="src\core\render\renderer.h" />
+    <ClInclude Include="src\core\render\render_bridge.h" />
     <ClInclude Include="src\platform\opengl\gl_frame_buffer.h" />
-    <ClInclude Include="src\core\render\primitive.h" />
     <ClInclude Include="src\core\render\topology\sphere.h" />
     <ClInclude Include="src\core\render\topology\cube.h" />
     <ClInclude Include="external\stb_image\stb_image.h" />
@@ -166,8 +169,7 @@
     <ClInclude Include="src\core\render\primitives\frame_buffer.h" />
     <ClInclude Include="src\core\render\primitives\shader.h" />
     <ClInclude Include="src\core\render\primitives\texture.h" />
-    <ClInclude Include="src\core\render\primitives\mesh.h" />
-    <ClInclude Include="src\core\render\render_adapter.h" />
+    <ClInclude Include="src\core\render\primitives\vertex_array.h" />
     <ClInclude Include="src\core\render\render_context.h" />
     <ClInclude Include="src\core\render\topology\basis.h" />
     <ClInclude Include="src\core\render\vertex.h" />
@@ -176,7 +178,7 @@
     <ClInclude Include="src\platform\opengl\gl_buffer.h" />
     <ClInclude Include="src\platform\opengl\gl_shader.h" />
     <ClInclude Include="src\platform\opengl\gl_texture.h" />
-    <ClInclude Include="src\platform\opengl\gl_mesh.h" />
+    <ClInclude Include="src\platform\opengl\gl_vertex_array.h" />
     <ClInclude Include="src\platform\windows\windows_input.h" />
     <ClInclude Include="src\platform\windows\windows_window.h" />
     <ClInclude Include="src\sclpch.h" />
@@ -204,8 +206,10 @@
     <ClInclude Include="src\utilities\string\string_id.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\render\material.cpp" />
+    <ClCompile Include="src\core\render\renderer.cpp" />
+    <ClCompile Include="src\core\render\render_bridge.cpp" />
     <ClCompile Include="src\platform\opengl\gl_frame_buffer.cpp" />
-    <ClCompile Include="src\core\render\primitive.cpp" />
     <ClCompile Include="src\core\render\topology\sphere.cpp" />
     <ClCompile Include="src\core\render\topology\cube.cpp" />
     <ClCompile Include="external\stb_image\stb_image.cpp" />
@@ -228,14 +232,13 @@
     <ClCompile Include="src\core\render\primitives\frame_buffer.cpp" />
     <ClCompile Include="src\core\render\primitives\shader.cpp" />
     <ClCompile Include="src\core\render\primitives\texture.cpp" />
-    <ClCompile Include="src\core\render\primitives\mesh.cpp" />
-    <ClCompile Include="src\core\render\render_adapter.cpp" />
+    <ClCompile Include="src\core\render\primitives\vertex_array.cpp" />
     <ClCompile Include="src\core\render\render_context.cpp" />
     <ClCompile Include="src\platform\opengl\gl.cpp" />
     <ClCompile Include="src\platform\opengl\gl_buffer.cpp" />
     <ClCompile Include="src\platform\opengl\gl_shader.cpp" />
     <ClCompile Include="src\platform\opengl\gl_texture.cpp" />
-    <ClCompile Include="src\platform\opengl\gl_mesh.cpp" />
+    <ClCompile Include="src\platform\opengl\gl_vertex_array.cpp" />
     <ClCompile Include="src\platform\windows\windows_input.cpp" />
     <ClCompile Include="src\platform\windows\windows_msg_crackers.cpp" />
     <ClCompile Include="src\platform\windows\windows_window.cpp" />

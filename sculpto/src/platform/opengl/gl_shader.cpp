@@ -288,6 +288,7 @@ bool scl::gl_shader_program::SetMatr4(const std::string &Name, const matr4 &Valu
     SCL_CORE_ASSERT(Id == gl_shader_program::CurrentlyBoundShaderId,
                     "Trying set shader variable to not binded shader.");
     int location = GetOrCacheLocation(Name);
+    if (location == -1) return false;
 
     glUniformMatrix4fv(location, 1, FALSE, (float *)&Value);
     return true;

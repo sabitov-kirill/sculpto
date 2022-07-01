@@ -16,19 +16,19 @@ namespace scl::math
     class camera
     {
     public:
-        T        ProjDist { 0.1f };           // Near project plane distance
-        T        FarClip { 1000.0f };         // Far project plane distance
-        T        Size { 0.1f };               // Inner project plane rectangle size
-        int      FrameW { 30 };               // Camera frame size
-        int      FrameH { 30 };
-        vec3<T>  Loc { 0.0f, 0.0f, 10.0f };  // Camera location
-        vec3<T>  Dir { 0.0f, 0.0f, -1.0f };  // Basis camera directions
-        vec3<T>  Up { 0.0f, 1.0f, 0.0f };
-        vec3<T>  Right { 1.0f, 0.0f, 0.0f };
-        vec3<T>  At {};                      // Camera pivot point
-        matr4<T> View {};                    // View matrix
-        matr4<T> Proj {};                    // Projection matrix
-        matr4<T> VP {};                      // View and Proj madtrix production
+        T          ProjDist { 0.1f };           // Near project plane distance
+        T          FarClip { 1000.0f };         // Far project plane distance
+        T          Size { 0.1f };               // Inner project plane rectangle size
+        int        FrameW { 30 };               // Camera frame size
+        int        FrameH { 30 };
+        vec3<T>    Loc { 0.0f, 0.0f, 10.0f };  // Camera location
+        vec3<T>    Dir { 0.0f, 0.0f, -1.0f };  // Basis camera directions
+        vec3<T>    Up { 0.0f, 1.0f, 0.0f };
+        vec3<T>    Right { 1.0f, 0.0f, 0.0f };
+        vec3<T>    At {};                      // Camera pivot point
+        matr4<T>   View {};                    // View matrix
+        matr4<T>   Proj {};                    // Projection matrix
+        matr4<T>   VP {};                      // View and Proj madtrix production
 
     private: /* Matrices update methods. */
         /**

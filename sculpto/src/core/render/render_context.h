@@ -14,7 +14,7 @@
 namespace scl
 {
     /* Vertex array class declaration. */
-    class mesh;
+    class vertex_array;
     enum class mesh_type;
 
     /* Shader variable type enum. */
@@ -61,6 +61,13 @@ namespace scl
         /* Rendering context backend API getter function. */
         static api GetApi() { return Api; }
 
+        /* Rendering context shader global binding points. */
+        static const int MESH_DATA_BINDING_POINT = 0;
+        static const int MATERIAL_DATA_BINDING_POINT = 1;
+        static const int MATERIAL_SURFACE_TEXTURE_SLOT = 0;
+        static const int MATERIAL_NORMAL_MAP_TEXTURE_SLOT = 1;
+        static const int MATERIAL_ALBEDO_MAP_TEXTURE_SLOT = 2;
+
     private: /* render context data. */
         static api Api; /* Render system backend api. */
 
@@ -101,23 +108,15 @@ namespace scl
          * \param IsWireframe - wireframe rendering flag.
          * \return None.
          */
-        virtual void SetWireframe(bool IsWireframe) = 0;
+        virtual void SetWireframeMode(bool IsWireframe) = 0;
 
         /**
-         * Start frame rendering function.
-         *
+         * Clear current render target function.
+         * 
          * \param None.
          * \return None.
          */
-        virtual void BeginPipeline() = 0;
-
-        /**
-         * Submit frame rendering function.
-         *
-         * \param None.
-         * \return None.
-         */
-        virtual void EndPipeline() = 0;
+        virtual void Clear() = 0;
 
         /**
          * Swap frame buffers function.
@@ -141,7 +140,7 @@ namespace scl
          * \param Mesh - mesh, containing vertices and vertex indices to draw.
          * \return None.
          */
-        virtual void DrawVerices(const shared<mesh> &Mesh) = 0;
+        virtual void DrawIndices(const shared<vertex_array> &Mesh) = 0;
 
         /**
          * Draw vertices instanced function.
@@ -149,7 +148,7 @@ namespace scl
          * \param Mesh - mesh, containing vertices and vertex indices to draw.
          * \return None.
          */
-        virtual void DrawVericesInstanced(const shared<mesh> &Mesh, int InstanceCount) = 0;
+        virtual void DrawIndicesInstanced(const shared<vertex_array> &Mesh, int InstanceCount) = 0;
 
         /**
          * Rendering context creation function.

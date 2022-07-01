@@ -12,28 +12,27 @@ using namespace scl;
 
 void test_gui_layer::OnInit()
 {
-    topology::sphere sphere(vec3(0), 1.5, 20);
-    topology::grid quad(3, 3);
-    topology::cube cube(vec3(0), vec3(1));
-    shared<vertex_buffer> VBO = vertex_buffer::Create(cube.GetVertices().data(), cube.GetVertices().size(), vertex::GetVertexLayout());
-    shared<index_buffer> IBO = index_buffer::Create((u32 *)cube.GetIndices().data(), cube.GetIndices().size());
-    VAO = mesh::Create(quad.GetType(), VBO, IBO);
-    Texture = texture_2d::Create("assets/images/02.jpg");
-    ShaderProgram = shader_program::Create({
+    topology::cube cube_topo(vec3(0), vec3(1));
+    shared<shader_program> cube_shader = shader_program::Create({
         { shader_type::VERTEX, "assets/shaders/Test.vert.glsl", false },
         { shader_type::PIXEL,  "assets/shaders/Test.frag.glsl", false },
     }, "Test rendering shader");
+    shared<material> cube_material = material::Create(cube_shader, nullptr, 0, "assets/images/02.jpg");
+    Cube = mesh::Create(cube_topo, cube_material);
 
     frame_buffer_props FbProps {};
     FbProps.Width = 500;
     FbProps.Height = 280;
     FrameBuffer = frame_buffer::Create(FbProps);
 
-    // application::Get().SetGuiEnabled(false);
+    render_bridge::SetClearColor(ClearColor);
+    render_bridge::SetWireframeMode(IsWireframe);
+ /* application::Get().SetGuiEnabled(false); */
 }
 
-void test_gui_layer::OnResponse()
+void test_gui_layer::OnUpdate()
 {
+#if 0
     static float delta = 0;
     const timer &app_timer = application::Get().GetTimer();
     if (delta > 1)
@@ -42,33 +41,21 @@ void test_gui_layer::OnResponse()
         delta = 0;
     }
     delta += app_timer.GetDeltaTime();
-}
+#endif
 
-void test_gui_layer::OnRender()
-{
-    FrameBuffer->Bind();
-
-    render_adapter &adapter = render_adapter::Get();
-    adapter.RenderFrame();
-    float time = scl::application::Get().GetTimer().GetTime();
-    ShaderProgram->Bind();
-    ShaderProgram->SetFloat("Time", time);
-    ShaderProgram->SetMatr4("MatrWVP", matr4::RotateX(ObjectRotationX) *
-                                       matr4::RotateY(ObjectRotationY) *
-                                       matr4::RotateZ(ObjectRotationZ) *
-                                       matr4::Translate(ObjectPosition) *
-                                       matr4::Scale(vec3(ObjectSize)) *
-                                       render_adapter::Get().GetCamera().VP);
-
-    Texture->Bind(0);
-    VAO->Bind();
-    render_adapter::Get().GetRenderer().DrawVerices(VAO);
-    VAO->Unbind();
-
-    FrameBuffer->Unbind();
-
-    render_adapter::Get().GetRenderer().SetClearColor(ClearColor);
-    render_adapter::Get().GetRenderer().SetWireframe(IsWireframe);
+    // render_bridge::Clear();
+    FrameBuffer->Clear();
+    renderer::BeginScene(Camera);
+    {
+        Cube->SetTransform(matr4::RotateX(ObjectRotationX) *
+                           matr4::RotateY(ObjectRotationY) *
+                           matr4::RotateZ(ObjectRotationZ) *
+                           matr4::Translate(ObjectPosition) *
+                           matr4::Scale(vec3(ObjectSize)));
+        renderer::Submit(Cube);
+    }
+    renderer::EndScene(false);
+    renderer::Flush(FrameBuffer);
 }
 
 void test_gui_layer::OnGuiRender()
@@ -122,11 +109,11 @@ void test_gui_layer::OnGuiRender()
         ImGui::SliderFloat("ObjectRotationZ", &ObjectRotationZ, -360, 360);
 
         ImGui::Separator();
-        ImGui::Text("Renderer configuration.");
+        ImGui::Text("renderer configuration.");
         if (ImGui::ColorEdit4("Clear Color", (float *)&ClearColor))
-            render_adapter::Get().GetRenderer().SetClearColor(ClearColor);
+            render_bridge::SetClearColor(ClearColor);
         if (ImGui::Checkbox("Wireframe Mode", &IsWireframe))
-            render_adapter::Get().GetRenderer().SetWireframe(IsWireframe);
+            render_bridge::SetWireframeMode(IsWireframe);
         ImGui::Checkbox("Use Dock space", &IsDockspace);
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)",
                     1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
@@ -146,7 +133,8 @@ void test_gui_layer::OnGuiRender()
         new_view_props.Height = window_size.y;
         FrameBuffer->SetFrameBufferProps(new_view_props);
 
-        render_adapter::Get().RenderResize(window_size.x, window_size.y);
+        Camera.Resize(window_size.x, window_size.y);
+        render_bridge::ResizeContext(window_size.x, window_size.y);
     }
 
     // Render framebuffer

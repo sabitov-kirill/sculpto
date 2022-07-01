@@ -15,7 +15,7 @@ scl::timer::timer()
     LastFpsCalcutionTime = OldTime = StartTime = high_resolution_clock::now();
 }
 
-void scl::timer::Response()
+void scl::timer::Update()
 {
     time_point current_time = high_resolution_clock::now();
     Time = duration<float>(current_time - StartTime).count();

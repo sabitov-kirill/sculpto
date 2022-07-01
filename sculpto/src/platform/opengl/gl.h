@@ -75,23 +75,15 @@ namespace scl
          * \param IsWireframe - wireframe rendering flag.
          * \return None.
          */
-        void SetWireframe(bool IsWireframe) override;
+        void SetWireframeMode(bool IsWireframe) override;
 
         /**
-         * Start frame rendering function.
+         * Clear current render target function.
          *
          * \param None.
          * \return None.
          */
-        void BeginPipeline() override;
-
-        /**
-         * Submit frame rendering function.
-         *
-         * \param None.
-         * \return None.
-         */
-        void EndPipeline() override;
+        void Clear() override;
 
         /**
          * Swap frame buffers function.
@@ -112,18 +104,18 @@ namespace scl
         /**
          * Draw vertices function.
          *
-         * \param Mesh - mesh, containing vertices and vertex indices to draw.
+         * \param VertexArray - mesh, containing vertices and vertex indices to draw.
          * \return None.
          */
-        void DrawVerices(const shared<mesh> &Mesh) override;
+        void DrawIndices(const shared<vertex_array> &VertexArray) override;
 
         /**
          * Draw vertices instanced function.
          *
-         * \param Mesh - mesh, containing vertices and vertex indices to draw.
+         * \param VertexArray - mesh, containing vertices and vertex indices to draw.
          * \return None.
          */
-        void DrawVericesInstanced(const shared<mesh> &Mesh, int InstanceCount) override;
+        void DrawIndicesInstanced(const shared<vertex_array> &VertexArray, int InstanceCount) override;
 
         /**
          * Set rendering context to main window.
