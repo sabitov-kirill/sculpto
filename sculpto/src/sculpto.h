@@ -9,5 +9,19 @@
 
 #pragma once
 
-#include "core/application.h"
-#include "core/entry_point.h"
+/* Core module. */
+#include "core/application/application.h"
+#include "core/application/entry_point.h"
+
+/* Render primitives, objects, context. */
+#include "core/render/primitives/mesh.h"
+#include "core/render/primitives/buffer.h"
+#include "core/render/primitives/shader.h"
+#include "core/render/primitives/texture.h"
+#include "core/render/primitives/frame_buffer.h"
+
+#include "core/render/topology/grid.h"
+#include "core/render/topology/cube.h"
+#include "core/render/topology/sphere.h"
+
+#include "core/render/render_adapter.h"

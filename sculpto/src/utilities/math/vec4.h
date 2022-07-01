@@ -10,6 +10,14 @@
 
 #include "math_common.h"
 
+/**
+ * 4D vector to 4 numbers convertion function.
+ * 
+ * \param v - vector to convert.
+ * \return 4 numbers.
+ */
+#define SCL_VEC_XYZW(v) SCL_VEC_XYZ(v), (v).GetW()
+
 namespace scl::math
 {
     // Euclidean 4D vector class.
@@ -31,13 +39,13 @@ namespace scl::math
         /* W vector component setter function. */
         T SetW(T W) { this->W = W; }
         /* X vector component getter function. */
-        T GetX() { return X; }
+        T GetX() const { return X; }
         /* Y vector component getter function. */
-        T GetY() { return Y; }
+        T GetY() const { return Y; }
         /* Z vector component getter function. */
-        T GetZ() { return Z; }
+        T GetZ() const { return Z; }
         /* W vector component getter function. */
-        T GetW() { return W; }
+        T GetW() const { return W; }
 
     public: /* Vector construcotrs. */
         /* Default construcotr. All coodinates would ve set to zero. */
@@ -49,7 +57,7 @@ namespace scl::math
          *
          * \param A - scalar value of all cordinates.
          */
-        vec4(T A) : X(A), Y(A), Z(A), W(A) {}
+        explicit vec4(T A) : X(A), Y(A), Z(A), W(A) {}
 
         /**
          * Vector constructor by three coordinates.
@@ -64,9 +72,7 @@ namespace scl::math
          * \param V - vector to get X, Y and Z coordinates
          * \param W - addition vector component
          */
-        vec4(const vec3<T> &V, T W) : X(V.GetX()), Y(V.GetY()), Z(V.GetZ()), W(W)
-        {
-        } /* End of 'vec4' function */
+        explicit vec4(const vec3<T> &V, T W) : X(V.GetX()), Y(V.GetY()), Z(V.GetZ()), W(W) {}
 
         /**
          * Vector constructor by 3D vector and additional component.
@@ -74,9 +80,7 @@ namespace scl::math
          * \param X - addition vector component
          * \param V - vector to get X, Y and Z coordinates
          */
-        vec4(T X, const vec3<T> &V) : X(X), Y(V.GetX()), Z(V.GetY()), W(V.GetZ())
-        {
-        } /* End of 'vec4' function */
+        explicit vec4(T X, const vec3<T> &V) : X(X), Y(V.GetX()), Z(V.GetY()), W(V.GetZ()) {}
 
         /**
          * Vector copy constructor.
@@ -92,7 +96,6 @@ namespace scl::math
                 Z = Other.Z;
                 W = Other.W;
             }
-            return *this;
         }
 
         /**
@@ -129,7 +132,7 @@ namespace scl::math
          * \param Max - upper bound of random number.
          * \return random number in range [Min; Max].
          */
-        static vec4 Rnd(T Min = 0, T Max = 1) { return vec4(Rnd(Min, Max)); }
+        static vec4 Rnd(T Min = 0, T Max = 1) { return vec4(::scl::math::Rnd(Min, Max)); }
 
     public: /* Operators overloading. */
         /**
@@ -181,6 +184,32 @@ namespace scl::math
         }
 
         /**
+         * Vectors addition operator overloading.
+         *
+         * \param Scalar - scalar value to add to all vetcors components
+         * \return vector with added coordinates.
+         */
+        const vec4 operator+(float Scalar) const
+        {
+            return vec4(X + Scalar, Y + Scalar, Z + Scalar, W + Scalar);
+        }
+
+        /**
+         * Vectors addition with assigments operator overlaoding.
+         *
+         * \param Other - vector to add.
+         * \return self reference
+         */
+        const vec4 &operator+=(float Scalar)
+        {
+            X += Scalar;
+            Y += Scalar;
+            Z += Scalar;
+            W += Scalar;
+            return *this;
+        }
+
+        /**
          * Vectors subtraction operator overloading.
          *
          * \param Other - vector to subtract.
@@ -203,6 +232,35 @@ namespace scl::math
             Y -= Other.Y;
             Z -= Other.Z;
             W -= Other.W;
+            return *this;
+        }
+
+        /**
+         * Vectors subtraction operator overloading.
+         *
+         * \param Scalar - scalar value to add to all vetcors components
+         * \return vector with added coordinates.
+         */
+        const vec4 operator-(float Scalar) const
+        {
+            return vec4(X - Scalar,
+                        Y - Scalar,
+                        Z - Scalar,
+                        W - Scalar);
+        }
+
+        /**
+         * Vectors subtraction with assigments operator overlaoding.
+         *
+         * \param Other - vector to add.
+         * \return self reference
+         */
+        const vec4 &operator-=(float Scalar)
+        {
+            X -= Scalar;
+            Y -= Scalar;
+            Z -= Scalar;
+            W -= Scalar;
             return *this;
         }
 
@@ -233,6 +291,35 @@ namespace scl::math
         }
 
         /**
+         * Vectors multiplying operator overloading.
+         *
+         * \param Scalar - scalar value to add to all vetcors components
+         * \return vector with added coordinates.
+         */
+        const vec4 operator*(float Scalar) const
+        {
+            return vec4(X * Scalar,
+                        Y * Scalar,
+                        Z * Scalar,
+                        W * Scalar);
+        }
+
+        /**
+         * Vectors multiplying with assigments operator overlaoding.
+         *
+         * \param Other - vector to add.
+         * \return self reference
+         */
+        const vec4 &operator*=(float Scalar)
+        {
+            X *= Scalar;
+            Y *= Scalar;
+            Z *= Scalar;
+            W *= Scalar;
+            return *this;
+        }
+
+        /**
          * Vectors dividing operator overloading.
          *
          * \param Other - vector to devide.
@@ -255,6 +342,35 @@ namespace scl::math
             Y /= Other.Y;
             Z /= Other.Z;
             W /= Other.W;
+            return *this;
+        }
+
+        /**
+         * Vectors dividing operator overloading.
+         *
+         * \param Scalar - scalar value to add to all vetcors components
+         * \return vector with added coordinates.
+         */
+        const vec4 operator/(float Scalar) const
+        {
+            return vec4(X / Scalar,
+                        Y / Scalar,
+                        Z / Scalar,
+                        W / Scalar);
+        }
+
+        /**
+         * Vectors dividing with assigments operator overlaoding.
+         *
+         * \param Other - vector to add.
+         * \return self reference
+         */
+        const vec4 &operator/=(float Scalar)
+        {
+            X /= Scalar;
+            Y /= Scalar;
+            Z /= Scalar;
+            W /= Scalar;
             return *this;
         }
 

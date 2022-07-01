@@ -1,0 +1,76 @@
+/*****************************************************************//**
+ * \file   windows_input.cpp
+ * \brief  Input window_handle realisation module.
+ * 
+ * \author Sabitov Kirill
+ * \date   18 June 2022
+ *********************************************************************/
+
+#include "sclpch.h"
+ #include "windows_input.h"
+
+void scl::windows_input_system::MouseInit()
+{
+    // Obtain position
+    POINT pt;
+    GetCursorPos(&pt);
+    ScreenToClient(*WindowHandle, &pt);
+
+    // Absolute values
+    Mouse.PosY = pt.x;
+    Mouse.PosX = pt.y;
+}
+
+void scl::windows_input_system::MouseRead()
+{
+    // Obtain position
+    POINT pt;
+    GetCursorPos(&pt);
+    ScreenToClient(*WindowHandle, &pt);
+
+    // Delta (relative to previus readed) values
+    Mouse.PosDeltaX = pt.x - Mouse.PosX;
+    Mouse.PosDeltaY = pt.y - Mouse.PosY;
+
+    // Absolute values
+    Mouse.PosY = pt.x;
+    Mouse.PosX = pt.y;
+
+    // Wheel (z) value
+    Mouse.PosDeltaZ = *Wheel;
+    Mouse.PosZ += Mouse.PosDeltaZ;
+    Wheel = 0;
+}
+
+void scl::windows_input_system::KeyboardInit()
+{
+    if (GetKeyboardState((PBYTE)Keyboard.Keys))
+        memcpy(Keyboard.KeysOld, Keyboard.Keys, 256);
+}
+
+void scl::windows_input_system::KeyboardRead()
+{
+    if (GetKeyboardState((PBYTE)Keyboard.Keys))
+    {
+        for (INT i = 0; i < 256; i++)
+            Keyboard.KeysClick[i] = Keyboard.Keys[i] && !Keyboard.KeysOld[i];
+        memcpy(Keyboard.KeysOld, Keyboard.Keys, 256);
+    }
+}
+
+void scl::windows_input_system::Init(window_handle *WindowHandle, int *MouseWheel)
+{
+    this->WindowHandle = WindowHandle;
+    this->Wheel = MouseWheel;
+
+    MouseInit();
+    KeyboardRead();
+}
+
+void scl::windows_input_system::Response()
+{
+    if (WindowHandle == nullptr || Wheel == nullptr) return;
+
+    MouseRead();
+    KeyboardRead();
+}

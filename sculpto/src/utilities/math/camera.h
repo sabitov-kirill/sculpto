@@ -16,19 +16,19 @@ namespace scl::math
     class camera
     {
     public:
-        T        ProjDist { 0.1 };  // Near project plane distance
-        T        FarClip { 1000 };  // Far project plane distance
-        T        Size { 0.1 };      // Inner project plane rectangle size
-        int      FrameW { 30 };     // Camera frame size
+        T        ProjDist { 0.1f };           // Near project plane distance
+        T        FarClip { 1000.0f };         // Far project plane distance
+        T        Size { 0.1f };               // Inner project plane rectangle size
+        int      FrameW { 30 };               // Camera frame size
         int      FrameH { 30 };
-        vec3<T>  Loc { 0, 0, 100 }; // Camera location
-        vec3<T>  Dir { 0, 0, -1 };  // Basis camera directions
-        vec3<T>  Up { 0, 1, 0 };
-        vec3<T>  Right { 1, 0, 0 }; 
-        vec3<T>  At { 0 };          // Camera pivot point
-        matr4<T> View {};           // View matrix
-        matr4<T> Proj {};           // Projection matrix
-        matr4<T> VP {};             // View and Proj madtrix production
+        vec3<T>  Loc { 0.0f, 0.0f, 10.0f };  // Camera location
+        vec3<T>  Dir { 0.0f, 0.0f, -1.0f };  // Basis camera directions
+        vec3<T>  Up { 0.0f, 1.0f, 0.0f };
+        vec3<T>  Right { 1.0f, 0.0f, 0.0f };
+        vec3<T>  At {};                      // Camera pivot point
+        matr4<T> View {};                    // View matrix
+        matr4<T> Proj {};                    // Projection matrix
+        matr4<T> VP {};                      // View and Proj madtrix production
 
     private: /* Matrices update methods. */
         /**
@@ -61,7 +61,11 @@ namespace scl::math
 
     public: /* Camera configuration. */
         /* Camera default construcotr. */
-        camera() = default;
+        camera()
+        {
+            UpdateProj();
+            UpdateView();
+        }
 
         /**
          * Set project camera parameters function.
@@ -93,6 +97,10 @@ namespace scl::math
          */
         camera &SetLocAtUp(const vec3<T> &Loc, const vec3<T> &At, const vec3<T> &Up = vec3<T>(0, 1, 0))
         {
+            this->Loc = Loc;
+            this->At = At;
+            this->Up = Up;
+
             Dir = (At - Loc).Normalized();
             Right = Dir.Cross(Up).Normalized();
 
@@ -107,7 +115,7 @@ namespace scl::math
          * \param NewFrameW, NewFrameH - new frame size in pixels.
          * \return - self reference.
          */
-        camera &Resize(T NewFrameW, T NewFrameH)
+        camera &Resize(int NewFrameW, int NewFrameH)
         {
             FrameW = NewFrameW;
             FrameH = NewFrameH;

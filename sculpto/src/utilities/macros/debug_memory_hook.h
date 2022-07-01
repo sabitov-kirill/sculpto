@@ -9,7 +9,10 @@
 
 #pragma once
 
-#if SCL_DEBUG_MEMORY_ENABLED
+/* Detect SCL platform. */
+#include "core/application/platform_detection.h"
+
+#if SCL_DEBUG_MEMORY_ENABLED && defined(SCL_PLATFORM_WINDOWS)
 #   ifndef NDEBUG 
 #       define _CRTDBG_MAP_ALLOC
 #       include  <crtdbg.h>

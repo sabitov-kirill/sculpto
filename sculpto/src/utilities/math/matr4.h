@@ -40,10 +40,10 @@ namespace scl::math
 
         /* Default matrix data constructor. */
         matr4_data() :
-            A({ {0, 0, 0, 0},
+            A { {0, 0, 0, 0},
                 {0, 0, 0, 0},
                 {0, 0, 0, 0},
-                {0, 0, 0, 0} }) {}
+                {0, 0, 0, 0} } {}
 
         /**
          * Matrix data constructor by 16 values.
@@ -54,10 +54,10 @@ namespace scl::math
                    T A10, T A11, T A12, T A13,
                    T A20, T A21, T A22, T A23,
                    T A30, T A31, T A32, T A33) :
-            A({ {A00, A01, A02, A03},
+            A { {A00, A01, A02, A03},
                 {A10, A11, A12, A13},
                 {A20, A21, A22, A23},
-                {A30, A31, A32, A33} }) {}
+                {A30, A31, A32, A33} } {}
 
         /**
          * Getting pointer to first component of natrix operator.
@@ -65,7 +65,7 @@ namespace scl::math
          *
          * \return pointer to first component of matrix.
          */
-        operator T *(VOID)
+        operator T *()
         {
             return A[0];
         }
@@ -89,7 +89,7 @@ namespace scl::math
         {
             if (IsInverseEvaluated)
                 return;
-            IsInverseEvaluated = TRUE;
+            IsInverseEvaluated = true;
 
             T det { 0 }; /* = Det(); */
 
@@ -178,10 +178,10 @@ namespace scl::math
          */
         matr4() :
             matr4_data<T>(),
-            InvA({ {0, 0, 0, 0},
+            InvA { {0, 0, 0, 0},
                    {0, 0, 0, 0},
                    {0, 0, 0, 0},
-                   {0, 0, 0, 0} }),
+                   {0, 0, 0, 0} },
             IsInverseEvaluated(false) {}
 
         /**
@@ -197,10 +197,10 @@ namespace scl::math
                           A10, A11, A12, A13,
                           A20, A21, A22, A23,
                           A30, A31, A32, A33),
-            InvA({ {0, 0, 0, 0},
+            InvA { {0, 0, 0, 0},
                    {0, 0, 0, 0},
                    {0, 0, 0, 0},
-                   {0, 0, 0, 0} }),
+                   {0, 0, 0, 0} },
             IsInverseEvaluated(false) {}
 
     public: /* Common matrices creation functinos. */
@@ -361,8 +361,8 @@ namespace scl::math
          */
         static matr4 View(vec3<T> Location, vec3<T> At, vec3<T> Up)
         {
-            vec3<T> d = (At - Location).normalized();
-            vec3<T> r = d.Cross(Up).normalized();
+            vec3<T> d = (At - Location).Normalized();
+            vec3<T> r = d.Cross(Up).Normalized();
             vec3<T> u = r.Cross(d);
 
             return matr4(r.X, u.X, -d.X, 0,
@@ -385,7 +385,9 @@ namespace scl::math
 
             for (int i = 0; i < 4; i++)
                 for (int j = 0; j < 4; j++)
-                    M.A[i][j] = ::scl::math::Lerp(Start.A[i][j], End.A[i][j], Current);
+                    M.A[i][j] = ::scl::math::Lerp(Start.A[i][j],
+                                                  End.A[i][j],
+                                                  Current);
 
             return M;
         }

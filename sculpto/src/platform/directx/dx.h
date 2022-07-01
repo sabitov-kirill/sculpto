@@ -19,7 +19,4 @@
 #pragma comment(lib, "d3dcompiler.lib")
 #pragma comment(lib, "dxguid.lib")
 
-#include <wrl/client.h>
-using Microsoft::WRL::ComPtr;
-
-#include "sclpch.h"
+#include "base.h"

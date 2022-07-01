@@ -10,6 +10,14 @@
 
 #include "math_common.h"
 
+/**
+ * 2D vector to 2 numbers convertion function.
+ *
+ * \param v - vector to convert.
+ * \return 2 numbers.
+ */
+#define SCL_VEC_XY(v) (v).GetX(), (v).GetY()
+
 namespace scl::math
 {
     // Euclidean 2D vector class.
@@ -20,22 +28,16 @@ namespace scl::math
         /* Cartesian coordinates. */
         T X { 0 }, Y { 0 };
 
-        mutable T length { 0 };  /* Vector length. */
-        mutable T length2 { 0 }; /* Vector length squared. */
-        /* Vector length calculation state.
-           Need to memoization and prevention of new calculations. */
-        mutable bool IsLength2Calculated { false }, IsLengthCalculated { false };
-
     public: /* Public coordinates setters and getters.
                On coordinate change vector's length calculation state set to false. */
         /* X vector component setter function. */
-        T SetX(T X) { IsLengthCalculated = false; this->X = X; }
+        T SetX(T X) { this->X = X; }
         /* Y vector component setter function. */
-        T SetY(T Y) { IsLengthCalculated = false; this->Y = Y; }
+        T SetY(T Y) { this->Y = Y; }
         /* X vector component getter function. */
-        T GetX() { return X; }
+        T GetX() const { return X; }
         /* Y vector component getter function. */
-        T GetY() { return Y; }
+        T GetY() const { return Y; }
 
     public: /* Vector construcotrs. */
         /* Default construcotr. All coodinates would ve set to zero. */
@@ -47,7 +49,7 @@ namespace scl::math
          * 
          * \param A - scalar value of all cordinates.
          */
-        vec2(T A) : X(A), Y(A) {}
+        explicit vec2(T A) : X(A), Y(A) {}
 
         /**
          * Vector constructor by three coordinates.
@@ -67,13 +69,7 @@ namespace scl::math
             {
                 X = Other.X;
                 Y = Other.Y;
-
-                IsLength2Calculated = Other.IsLength2Calculated;
-                if (IsLength2Calculated) length2 = Other.length2;
-                IsLengthCalculated = Other.IsLengthCalculated;
-                if (IsLengthCalculated) length = Other.length;
             }
-            return *this;
         }
 
         /**
@@ -88,11 +84,6 @@ namespace scl::math
             {
                 X = Other.X;
                 Y = Other.Y;
-
-                IsLength2Calculated = Other.IsLength2Calculated;
-                if (IsLength2Calculated) length2 = Other.length2;
-                IsLengthCalculated = Other.IsLengthCalculated;
-                if (IsLengthCalculated) length = Other.length;
             }
             return *this;
         }
@@ -124,9 +115,7 @@ namespace scl::math
          */
         T Length2() const
         {
-            if (!IsLength2Calculated)
-                length2 = X * X + Y * Y, IsLength2Calculated = true;
-            return Length2;
+            return X * X + Y * Y;
         }
 
         /**
@@ -137,9 +126,7 @@ namespace scl::math
          */
         T Length() const
         {
-            if (!IsLengthCalculated)
-                length = sqrt(Length2()), IsLengthCalculated = true;
-            return length;
+            return sqrt(Length2());
         }
 
         /**
@@ -172,7 +159,7 @@ namespace scl::math
          */
         T Dot(const vec2 &Other)
         {
-            return sqrt(X * Other.X + Y * Other.Y);
+            return X * Other.X + Y * Other.Y;
         }
 
     public: /* Operators overloading. */
@@ -219,8 +206,30 @@ namespace scl::math
         {
             X += Other.X;
             Y += Other.Y;
-            IsLengthCalculated = Other.IsLengthCalculated;
-            IsLength2Calculated = Other.IsLength2Calculated;
+            return *this;
+        }
+
+        /**
+         * Vectors addition operator overloading.
+         *
+         * \param Scalar - scalar value to add to all vetcors components
+         * \return vector with added coordinates.
+         */
+        const vec2 operator+(float Scalar) const
+        {
+            return vec2(X + Scalar, Y + Scalar);
+        }
+
+        /**
+         * Vectors addition with assigments operator overlaoding.
+         *
+         * \param Other - vector to add.
+         * \return self reference
+         */
+        const vec2 &operator+=(float Scalar)
+        {
+            X += Scalar;
+            Y += Scalar;
             return *this;
         }
 
@@ -245,8 +254,31 @@ namespace scl::math
         {
             X -= Other.X;
             Y -= Other.Y;
-            IsLengthCalculated = Other.IsLengthCalculated;
-            IsLength2Calculated = Other.IsLength2Calculated;
+            return *this;
+        }
+
+        /**
+         * Vectors subtraction operator overloading.
+         *
+         * \param Scalar - scalar value to add to all vetcors components
+         * \return vector with added coordinates.
+         */
+        const vec2 operator-(float Scalar) const
+        {
+            return vec2(X - Scalar,
+                        Y - Scalar);
+        }
+
+        /**
+         * Vectors subtraction with assigments operator overlaoding.
+         *
+         * \param Other - vector to add.
+         * \return self reference
+         */
+        const vec2 &operator-=(float Scalar)
+        {
+            X -= Scalar;
+            Y -= Scalar;
             return *this;
         }
 
@@ -271,8 +303,31 @@ namespace scl::math
         {
             X *= Other.X;
             Y *= Other.Y;
-            IsLengthCalculated = Other.IsLengthCalculated;
-            IsLength2Calculated = Other.IsLength2Calculated;
+            return *this;
+        }
+
+        /**
+         * Vectors multiplying operator overloading.
+         *
+         * \param Scalar - scalar value to add to all vetcors components
+         * \return vector with added coordinates.
+         */
+        const vec2 operator*(float Scalar) const
+        {
+            return vec2(X * Scalar,
+                        Y * Scalar);
+        }
+
+        /**
+         * Vectors multiplying with assigments operator overlaoding.
+         *
+         * \param Other - vector to add.
+         * \return self reference
+         */
+        const vec2 &operator*=(float Scalar)
+        {
+            X *= Scalar;
+            Y *= Scalar;
             return *this;
         }
 
@@ -297,8 +352,31 @@ namespace scl::math
         {
             X /= Other.X;
             Y /= Other.Y;
-            IsLengthCalculated = Other.IsLengthCalculated;
-            IsLength2Calculated = Other.IsLength2Calculated;
+            return *this;
+        }
+
+        /**
+         * Vectors dividing operator overloading.
+         *
+         * \param Scalar - scalar value to add to all vetcors components
+         * \return vector with added coordinates.
+         */
+        const vec2 operator/(float Scalar) const
+        {
+            return vec2(X / Scalar,
+                        Y / Scalar);
+        }
+
+        /**
+         * Vectors dividing with assigments operator overlaoding.
+         *
+         * \param Other - vector to add.
+         * \return self reference
+         */
+        const vec2 &operator/=(float Scalar)
+        {
+            X /= Scalar;
+            Y /= Scalar;
             return *this;
         }
 
