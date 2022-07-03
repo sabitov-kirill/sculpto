@@ -20,10 +20,23 @@ namespace scl
     /* Frame buffer specification structure. */
     struct frame_buffer_props
     {
-        // frame_buffer_format Format;     /* Frame buffer texture format. */
-        int Width, Height;              /* Frame buffer texture size */
-        int Samples = 1;                /* Frame buffer samples count. */
-        bool SwapChainTarget = false;   /* Frame buffer creating in purpose of rendering to screen. */
+     // frame_buffer_format Format;      /* Frame buffer texture format. */
+        int Width { 16 }, Height { 16 }; /* Frame buffer texture size */
+        int Samples = 1;                 /* Frame buffer samples count. */
+        bool SwapChainTarget = false;    /* Frame buffer creating in purpose of rendering to screen. */
+
+        /* Frame buffer default constructor. */
+        frame_buffer_props() = default;
+
+        /**
+         * Frame buffer filling constructor.
+         * 
+         * \param Width, Height - frame buffer texture size.
+         * \param Samples - frame buffer samples count.
+         * \param SwapChainTarget - frame buffer creating in purpose of rendering to screen.
+         */
+        frame_buffer_props(int Width, int Height, int Samples, bool SwapChainTarget) :
+            Width(Width), Height(Height), Samples(Samples), SwapChainTarget(SwapChainTarget) {}
     };
 
     /* Frame buffer interface. */

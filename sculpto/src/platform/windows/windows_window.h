@@ -39,14 +39,17 @@ namespace scl
         void OnDestroy(window_handle WindowHandle);
         void OnActivate(window_handle WindowHandle, u32 Reason, HWND hWndActDeact, bool IsMinimized);
         void OnTimer(window_handle WindowHandle, UINT id);
+
         // Window draw messages
         bool OnEraseBackground(window_handle WindowHandle, HDC hDC);
         void OnPaint(window_handle WindowHandle);
+
         // Mouse messages
         void OnMMove(HWND hwnd, int x, int y, u32 keyFlags);
         void OnMWheel(window_handle WindowHandle, int X, int Y, int Z, u32 Keys);
         void OnMButDown(window_handle WindowHandle, bool IsDblClick, int X, int Y, u32 Keys);
         void OnMButUp(window_handle WindowHandle, int X, int Y, u32 Keys);
+
         // Keyboard messages
         void OnKey(HWND hwnd, u32 vk, bool fDown, int cRepeat, u32 flags);
 

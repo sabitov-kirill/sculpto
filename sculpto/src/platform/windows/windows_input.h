@@ -35,12 +35,13 @@ namespace scl
          */
         void Init(window_handle *WindowHandle, int *MouseWheel);
 
+    protected:
         /**
          * Read all available human devies function.
          *
          * \param None.
          * \return None.
          */
-        void Response() override;
+        void SelfResponse() override;
     };
 }

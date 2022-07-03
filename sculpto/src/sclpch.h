@@ -41,8 +41,8 @@
 #   include <wrl/client.h>
 #endif /* !SCL_PLATFORM_WINDOWS */
 
-/* Math module. */
-#include "utilities/math/math.h"
-
 /* Logging system. */
 #include "core/application/log.h"
+
+/* Math module. */
+#include "utilities/math/math.h"

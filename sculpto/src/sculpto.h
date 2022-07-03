@@ -11,7 +11,6 @@
 
 /* Core module. */
 #include "core/application/application.h"
-#include "core/application/entry_point.h"
 
 /* Render primitives, objects, context. */
 #include "core/render/primitives/vertex_array.h"
@@ -29,3 +28,9 @@
 
 #include "core/render/render_bridge.h"
 #include "core/render/renderer.h"
+
+/* Runtime module */
+#include "core/scene/scene.h"
+#include "core/scene/scene_object.h"
+#include "core/scene/scene_object_behaviour.h"
+#include "core/components/components.h"

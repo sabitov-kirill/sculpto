@@ -15,7 +15,6 @@
 scl::window::window(int Width, int Height, const std::string &Title, bool VSync) :
     Data(Width, Height, Title, false)
 {
-    Input = input_system::Create();
 }
 
 scl::unique<scl::window> scl::window::Create(int Width, int Height, const std::string &Title, bool VSync)

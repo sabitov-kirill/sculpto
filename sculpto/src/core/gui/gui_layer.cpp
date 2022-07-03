@@ -85,8 +85,9 @@ void scl::gui_layer::OnClose()
 void scl::gui_layer::OnEvent(event &Event)
 {
     ImGuiIO &io = ImGui::GetIO();
-    Event.Handled |= (Event.GetType() == mouse_button_event::StaticType) & io.WantCaptureMouse;
     Event.Handled |= (Event.GetType() == keyboard_event::StaticType) & io.WantCaptureKeyboard;
+    Event.Handled |= (Event.GetType() == mouse_button_event::StaticType ||
+                      Event.GetType() == mouse_move_event::StaticType) & io.WantCaptureMouse;
 }
 
 void scl::gui_layer::RenderGui()

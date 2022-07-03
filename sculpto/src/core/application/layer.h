@@ -46,7 +46,7 @@ namespace scl
          * \param None.
          * \return None.
          */
-        virtual void OnUpdate() {}
+        virtual void OnUpdate(float DeltaTime) {}
 
         /**
          * Layer GUI rendering virtual callback function.

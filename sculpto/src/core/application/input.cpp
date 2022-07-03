@@ -9,6 +9,8 @@
 #include "sclpch.h"
 #include "platform/windows/windows_input.h"
 
+scl::shared<scl::input_system> scl::input_system::Instance = scl::input_system::Create();
+
 scl::unique<scl::input_system> scl::input_system::Create()
 {
 #ifdef SCL_PLATFORM_WINDOWS

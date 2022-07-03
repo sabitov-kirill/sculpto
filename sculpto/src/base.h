@@ -31,6 +31,8 @@
 namespace scl
 {
     /* Math module generic types. */
+    using degrees = math::degrees<float>;
+    using radians = math::radians<float>;
     using vec2 = math::vec2<float>;
     using vec3 = math::vec3<float>;
     using vec4 = math::vec4<float>;
@@ -41,7 +43,6 @@ namespace scl
     using uvec3 = math::vec3<u32>;
     using uvec4 = math::vec4<u32>;
     using matr4 = math::matr4<float>;
-    using camera = math::camera<float>;
 
     /* Windows platform specific types */
 #ifdef SCL_PLATFORM_WINDOWS

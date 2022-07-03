@@ -12,4 +12,3 @@
 #include "vec3.h"
 #include "vec4.h"
 #include "matr4.h"
-#include "camera.h"

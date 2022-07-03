@@ -66,7 +66,9 @@ void glInitialiseExtentions(HDC hDC)
 
     // Load functions pointers
     wglCreateContextAttribsARB = (wglCreateContextAttribsARB_type *)wglGetProcAddress("wglCreateContextAttribsARB");
+    SCL_CORE_INFO("{}", (int)wglCreateContextAttribsARB);
     wglChoosePixelFormatARB = (wglChoosePixelFormatARB_type *)wglGetProcAddress("wglChoosePixelFormatARB");
+    SCL_CORE_INFO("{}", (int)wglChoosePixelFormatARB);
 
     wglMakeCurrent(nullptr, nullptr);
     wglDeleteContext(hTmpGLRC);
@@ -94,6 +96,10 @@ HGLRC glInitialiseContext(HDC hDC)
 
     PIXELFORMATDESCRIPTOR pfd {};
     DescribePixelFormat(hDC, pixel_format, sizeof(pfd), &pfd);
+    SCL_CORE_INFO("{}, {}, {}, {}, {}, {}, {}, {}, {}",
+                  pfd.nSize, pfd.bReserved, pfd.cAccumAlphaBits,
+                  pfd.cAccumBits, pfd.cAccumBlueBits, pfd.cAccumGreenBits,
+                  pfd.cAccumRedBits, pfd.cAlphaBits, pfd.nVersion);
     SCL_CORE_ASSERT(SetPixelFormat(hDC, pixel_format, &pfd), "Failed to set the OpenGL pixel format.");
 
     // Setup rendering context

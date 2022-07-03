@@ -16,6 +16,9 @@
     <Filter Include="src\core\application">
       <UniqueIdentifier>{28132BC9-14A2-B492-BDC0-C88DA92EC538}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\core\components">
+      <UniqueIdentifier>{DAE3DA0F-4645-B81D-CFB2-FECF3B13EFDC}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\core\events">
       <UniqueIdentifier>{29103182-959B-9E46-9EAC-213B0AB7FA46}</UniqueIdentifier>
     </Filter>
@@ -27,6 +30,12 @@
     </Filter>
     <Filter Include="src\core\render\primitives">
       <UniqueIdentifier>{2F4C5D34-1B5C-0905-8415-6E237044F89D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\render\topology">
+      <UniqueIdentifier>{409F521E-2CC4-A19E-550F-872E4193A0BC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\scene">
+      <UniqueIdentifier>{C2DCC588-AEAA-B98E-973E-2AB583AB95F3}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\platform">
       <UniqueIdentifier>{41663D6D-2DC9-CC11-D64E-05C8C2909894}</UniqueIdentifier>
@@ -99,6 +108,18 @@
     <ClInclude Include="src\core\application\window.h">
       <Filter>src\core\application</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\components\components.h">
+      <Filter>src\core\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\components\mesh_component.h">
+      <Filter>src\core\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\components\mesh_renderer_component.h">
+      <Filter>src\core\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\components\transform_component.h">
+      <Filter>src\core\components</Filter>
+    </ClInclude>
     <ClInclude Include="src\core\events\application_event.h">
       <Filter>src\core\events</Filter>
     </ClInclude>
@@ -117,6 +138,12 @@
     <ClInclude Include="src\core\gui\gui_layer.h">
       <Filter>src\core\gui</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\render\material.h">
+      <Filter>src\core\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\render\mesh.h">
+      <Filter>src\core\render</Filter>
+    </ClInclude>
     <ClInclude Include="src\core\render\primitives\buffer.h">
       <Filter>src\core\render\primitives</Filter>
     </ClInclude>
@@ -132,11 +159,32 @@
     <ClInclude Include="src\core\render\primitives\vertex_array.h">
       <Filter>src\core\render\primitives</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\render\render_bridge.h">
+      <Filter>src\core\render</Filter>
+    </ClInclude>
     <ClInclude Include="src\core\render\render_context.h">
       <Filter>src\core\render</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\render\renderer.h">
+      <Filter>src\core\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\render\topology\basis.h">
+      <Filter>src\core\render\topology</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\render\topology\cube.h">
+      <Filter>src\core\render\topology</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\render\topology\grid.h">
+      <Filter>src\core\render\topology</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\render\topology\sphere.h">
+      <Filter>src\core\render\topology</Filter>
+    </ClInclude>
     <ClInclude Include="src\core\render\vertex.h">
       <Filter>src\core\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\scene\scene.h">
+      <Filter>src\core\scene</Filter>
     </ClInclude>
     <ClInclude Include="src\platform\directx\dx.h">
       <Filter>src\platform\directx</Filter>
@@ -145,6 +193,9 @@
       <Filter>src\platform\opengl</Filter>
     </ClInclude>
     <ClInclude Include="src\platform\opengl\gl_buffer.h">
+      <Filter>src\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\opengl\gl_frame_buffer.h">
       <Filter>src\platform\opengl</Filter>
     </ClInclude>
     <ClInclude Include="src\platform\opengl\gl_shader.h">
@@ -198,9 +249,6 @@
     <ClInclude Include="src\utilities\math\angle_measure.h">
       <Filter>src\utilities\math</Filter>
     </ClInclude>
-    <ClInclude Include="src\utilities\math\camera.h">
-      <Filter>src\utilities\math</Filter>
-    </ClInclude>
     <ClInclude Include="src\utilities\math\math.h">
       <Filter>src\utilities\math</Filter>
     </ClInclude>
@@ -231,15 +279,13 @@
     <ClInclude Include="src\utilities\string\string_id.h">
       <Filter>src\utilities\string</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\render\topology\basis.h" />
-    <ClInclude Include="src\core\render\topology\grid.h" />
-    <ClInclude Include="src\core\render\topology\cube.h" />
-    <ClInclude Include="src\core\render\topology\sphere.h" />
-    <ClInclude Include="src\platform\opengl\gl_frame_buffer.h" />
-    <ClInclude Include="src\core\render\render_bridge.h" />
-    <ClInclude Include="src\core\render\renderer.h" />
-    <ClInclude Include="src\core\render\mesh.h" />
-    <ClInclude Include="src\core\render\material.h" />
+    <ClInclude Include="src\core\scene\scene_object.h" />
+    <ClInclude Include="src\core\components\object_name_component.h" />
+    <ClInclude Include="src\core\components\camera_controller_component.h" />
+    <ClInclude Include="src\core\render\renderer_camera.h" />
+    <ClInclude Include="src\core\application\input_keycodes.h" />
+    <ClInclude Include="src\core\scene\scene_object_behaviour.h" />
+    <ClInclude Include="src\core\components\native_script_component.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="external\stb_image\stb_image.cpp">
@@ -266,6 +312,9 @@
     <ClCompile Include="src\core\gui\gui_layer.cpp">
       <Filter>src\core\gui</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\render\material.cpp">
+      <Filter>src\core\render</Filter>
+    </ClCompile>
     <ClCompile Include="src\core\render\primitives\buffer.cpp">
       <Filter>src\core\render\primitives</Filter>
     </ClCompile>
@@ -281,13 +330,34 @@
     <ClCompile Include="src\core\render\primitives\vertex_array.cpp">
       <Filter>src\core\render\primitives</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\render\render_bridge.cpp">
+      <Filter>src\core\render</Filter>
+    </ClCompile>
     <ClCompile Include="src\core\render\render_context.cpp">
       <Filter>src\core\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\render\renderer.cpp">
+      <Filter>src\core\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\render\topology\cube.cpp">
+      <Filter>src\core\render\topology</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\render\topology\grid.cpp">
+      <Filter>src\core\render\topology</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\render\topology\sphere.cpp">
+      <Filter>src\core\render\topology</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\scene\scene.cpp">
+      <Filter>src\core\scene</Filter>
     </ClCompile>
     <ClCompile Include="src\platform\opengl\gl.cpp">
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
     <ClCompile Include="src\platform\opengl\gl_buffer.cpp">
+      <Filter>src\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\opengl\gl_frame_buffer.cpp">
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
     <ClCompile Include="src\platform\opengl\gl_shader.cpp">
@@ -314,12 +384,6 @@
     <ClCompile Include="src\utilities\logger\logger.cpp">
       <Filter>src\utilities\logger</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\render\topology\grid.cpp" />
-    <ClCompile Include="src\core\render\topology\cube.cpp" />
-    <ClCompile Include="src\core\render\topology\sphere.cpp" />
-    <ClCompile Include="src\platform\opengl\gl_frame_buffer.cpp" />
-    <ClCompile Include="src\core\render\render_bridge.cpp" />
-    <ClCompile Include="src\core\render\renderer.cpp" />
-    <ClCompile Include="src\core\render\material.cpp" />
+    <ClCompile Include="src\core\render\renderer_camera.cpp" />
   </ItemGroup>
 </Project>

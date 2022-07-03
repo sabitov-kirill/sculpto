@@ -73,10 +73,11 @@ void scl::application::EventHandler(event &Event)
     if (!IsRunning) return;
 
     // Call all layers event handlers in reversed order.
-    for (auto it = Layers.rbegin(); it != Layers.rend(); ++it)
+    for (auto &layer : Layers)
     {
-        (*it)->OnEvent(Event);
-        if (Event.Handled) break;
+        layer->OnEvent(Event);
+        if (Event.Handled == true)
+            break;
     }
 }
 
@@ -86,19 +87,20 @@ void scl::application::LoopIterationActions()
     if (!IsRunning) return;
 
     // Update application subsystems
-    Timer.Update();
+    timer::Get()->Response();
+    input_system::Response();
 
     // Update all layers
-    for (auto &layer : Layers)
-        layer->OnUpdate();
+    for (auto it = Layers.rbegin(); it != Layers.rend(); ++it)
+        (*it)->OnUpdate(timer::GetDeltaTime());
 
     // Rendering GUI
     if (GuiEnabled)
     {
         GUILayer->RenderGui();
         {
-            for (auto &layer : Layers)
-                layer->OnGuiRender();
+            for (auto it = Layers.rbegin(); it != Layers.rend(); ++it)
+                (*it)->OnGuiRender();
         }
         GUILayer->SubmitRenderedGui();
     }

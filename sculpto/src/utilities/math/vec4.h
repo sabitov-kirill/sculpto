@@ -24,7 +24,7 @@ namespace scl::math
     template <typename T>
     class vec4
     {
-    private: /* Vector data. */
+    public: /* Vector data. */
         /* Cartesian coordinates. */
         T X { 0 }, Y { 0 }, Z { 0 }, W { 0 };
 

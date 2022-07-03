@@ -24,7 +24,7 @@ namespace scl::math
     template <typename T>
     class vec2
     {
-    private: /* Vector data. */
+    public: /* Vector data. */
         /* Cartesian coordinates. */
         T X { 0 }, Y { 0 };
 
@@ -157,7 +157,7 @@ namespace scl::math
          * \param Other - vector to multiply
          * \return value of vectors dot product.
          */
-        T Dot(const vec2 &Other)
+        T Dot(const vec2 &Other) const
         {
             return X * Other.X + Y * Other.Y;
         }

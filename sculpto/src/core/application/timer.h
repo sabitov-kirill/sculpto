@@ -29,20 +29,22 @@ namespace scl
         time_point     LastFpsCalcutionTime {};         /* Time passed since previous FPS calculation*/
         u32            LastFpsCalcutionFramesCount {};  /* Rendered frames since previous FPS calculation counter. */
 
+        static shared<timer> GlobalTimerInstance;
+
     public: /* Timer getter/setter functions. */
         /* Is timer paused flag getter function. */
-        bool GetIsPause() const { return IsPause;  }
+        static bool GetIsPause() { return GlobalTimerInstance->IsPause; }
         /* Current time since 1970 1st Jan getter function. */
-        float GetTime() const { return Time; }
+        static float GetTime() { return GlobalTimerInstance->Time; }
         /* Inter-frame delta time getter function. */
-        float GetDeltaTime() const { return DeltaTime; }
+        static float GetDeltaTime() { return GlobalTimerInstance->DeltaTime; }
         /* Frames per second count getter function. */
-        float GetFps() const { return Fps; }
+        static float GetFps() { return GlobalTimerInstance->Fps; }
 
         /* Is timer paused flag setter function. */
-        void SetIsPause(bool IsPause) { this->IsPause = IsPause; }
+        static void SetIsPause(bool IsPause) { GlobalTimerInstance->IsPause = IsPause; }
         /* Is timer paused flag toffle function. */
-        void SwitchIsPause() { IsPause = !IsPause; }
+        static void SwitchIsPause() { GlobalTimerInstance->IsPause = !GlobalTimerInstance->IsPause; }
 
     public:
         /* Timer default constructor. */
@@ -56,6 +58,14 @@ namespace scl
          * \param None.
          * \return None.
          */
-        void Update();
+        void Response();
+
+        /**
+         * Global timer getter function.
+         * 
+         * \param None.
+         * \return None.
+         */
+        static shared<timer> &Get() { return GlobalTimerInstance; }
     };
 }

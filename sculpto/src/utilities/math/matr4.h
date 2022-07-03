@@ -40,10 +40,10 @@ namespace scl::math
 
         /* Default matrix data constructor. */
         matr4_data() :
-            A { {0, 0, 0, 0},
-                {0, 0, 0, 0},
-                {0, 0, 0, 0},
-                {0, 0, 0, 0} } {}
+            A { {1, 0, 0, 0},
+                {0, 1, 0, 0},
+                {0, 0, 1, 0},
+                {0, 0, 0, 1} } {}
 
         /**
          * Matrix data constructor by 16 values.
@@ -58,6 +58,17 @@ namespace scl::math
                 {A10, A11, A12, A13},
                 {A20, A21, A22, A23},
                 {A30, A31, A32, A33} } {}
+
+        /**
+         * Matrix data constructor by 1 value.
+         *
+         * \param A00 - calue to set to all matrix cells.
+         */
+        matr4_data(T A00 ) :
+            A { {A00, A00, A00, A00},
+                {A00, A00, A00, A00},
+                {A00, A00, A00, A00},
+                {A00, A00, A00, A00} } {}
 
         /**
          * Getting pointer to first component of natrix operator.
@@ -87,11 +98,8 @@ namespace scl::math
          */
         void EvaluateInverseMatrix() const
         {
-            if (IsInverseEvaluated)
-                return;
+            if (IsInverseEvaluated) return;
             IsInverseEvaluated = true;
-
-            T det { 0 }; /* = Det(); */
 
             /* build adjoint matrix */
             InvA[0][0] =
@@ -163,6 +171,7 @@ namespace scl::math
                            this->A[2][0], this->A[2][1], this->A[2][2]);
 
             /* divide by determinant */
+            T det = Det();
             InvA[0][0] /= det; InvA[1][0] /= det; InvA[2][0] /= det; InvA[3][0] /= det;
             InvA[0][1] /= det; InvA[1][1] /= det; InvA[2][1] /= det; InvA[3][1] /= det;
             InvA[0][2] /= det; InvA[1][2] /= det; InvA[2][2] /= det; InvA[3][2] /= det;
@@ -197,6 +206,29 @@ namespace scl::math
                           A10, A11, A12, A13,
                           A20, A21, A22, A23,
                           A30, A31, A32, A33),
+            InvA { {0, 0, 0, 0},
+                   {0, 0, 0, 0},
+                   {0, 0, 0, 0},
+                   {0, 0, 0, 0} },
+            IsInverseEvaluated(false) {}
+
+        matr4(T A[4][4]) :
+            InvA { {0, 0, 0, 0},
+                   {0, 0, 0, 0},
+                   {0, 0, 0, 0},
+                   {0, 0, 0, 0} },
+            IsInverseEvaluated(false)
+        {
+            memcpy(this->A, A, 4 * 4 * sizeof(T));
+        }
+
+        /**
+         * Matrix data constructor by 1 value.
+         *
+         * \param A00 - calue to set to all matrix cells.
+         */
+        matr4(T A00) :
+            matr4_data<T>(A00),
             InvA { {0, 0, 0, 0},
                    {0, 0, 0, 0},
                    {0, 0, 0, 0},
@@ -258,11 +290,11 @@ namespace scl::math
         {
             T c = cos((radians<T>)Angle);
             T s = sin((radians<T>)Angle);
-            vec3<T> v = Axis.normalized();
+            vec3<T> v = Axis.Normalized();
 
-            return matr4(c + v.x * v.x * (1 - c), v.x * v.y * (1 - c) + v.z * s, v.x * v.z * (1 - c) - v.y * s, 0,
-                         v.y * v.x * (1 - c) - v.z * s, c + v.y * v.y * (1 - c), v.y * v.z * (1 - c) + v.x * s, 0,
-                         v.z * v.x * (1 - c) + v.y * s, v.z * v.y * (1 - c) - v.x * s, c + v.z * v.z * (1 - c), 0,
+            return matr4(c + v.X * v.X * (1 - c), v.X * v.Y * (1 - c) + v.Z * s, v.X * v.Z * (1 - c) - v.Y * s, 0,
+                         v.Y * v.X * (1 - c) - v.Z * s, c + v.Y * v.Y * (1 - c), v.Y * v.Z * (1 - c) + v.X * s, 0,
+                         v.Z * v.X * (1 - c) + v.Y * s, v.Z * v.Y * (1 - c) - v.X * s, c + v.Z * v.Z * (1 - c), 0,
                          0, 0, 0, 1);
         }
 
@@ -320,11 +352,10 @@ namespace scl::math
         /**
          * Frusum projection matrix creation function.
          *
-         * \param Screen factors:
-         * \param Left, Right
-         * \param Bottom, Top
-         * \param Near, Far
-         * \return frustum matrix.
+         * \param Left, Right - frustrum view cone left and right sides position
+         * \param Bottom, Top - frustrum view cone bottom and top sides position
+         * \param Near, Far - frustrum view cone near and far planes distance.
+         * \return None.
          */
         static matr4 Frustum(T Left, T Right, T Bottom, T Top, T Near, T Far)
         {
@@ -337,10 +368,9 @@ namespace scl::math
         /**
          * Ortho projection matrix creation function.
          *
-         * \param Screen factors:
-         * \param Left, Right
-         * \param Bottom, Top
-         * \param Near, Far
+         * \param Left, Right - view cube left and right sides position
+         * \param Bottom, Top - view cube bottom and top sides position
+         * \param Near, Far - view cube near and far planes distance.
          * \return ortho matrix.
          */
         static matr4 Ortho(T Left, T Right, T Bottom, T Top, T Near, T Far)
@@ -452,9 +482,10 @@ namespace scl::math
          * \param None.
          * \return None.
          */
-        void Inverse() const
+        matr4 Inverse() const
         {
             EvaluateInverseMatrix();
+            return matr4(InvA);
         }
 
         /**

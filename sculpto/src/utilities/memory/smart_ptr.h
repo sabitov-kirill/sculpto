@@ -29,4 +29,8 @@ namespace scl
     {
         return std::make_unique<T>(std::forward<Args>(args)...);
     }
+
+    /* Weak smart pointer (do not increases counter). */
+    template<typename T>
+    using weak = std::weak_ptr<T>;
 }

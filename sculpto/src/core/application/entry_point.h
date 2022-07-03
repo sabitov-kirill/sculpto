@@ -6,10 +6,10 @@
  * \date   18 June 2022
  *********************************************************************/
 
-#pragma once
+#ifndef __ENTRY_POINT_H
+#define __ENTRY_POINT_H
 
-#ifdef SCL_PLATFORM_WINDOWS
-
+#include "application.h"
 extern scl::application *scl::CreateApplication();
 
 /**
@@ -26,5 +26,4 @@ int main(int argc, char *argv[])
     delete app, app = nullptr;
 }
 
-#endif /* !SCL_PLATFORM_WINDOWS */
-
+#endif /* !__ENTRY_POINT_H */

@@ -7,7 +7,8 @@
  *********************************************************************/
 
 #include "sclpch.h"
- #include "windows_input.h"
+#include "windows_input.h"
+#include "core/application/application.h"
 
 void scl::windows_input_system::MouseInit()
 {
@@ -33,13 +34,17 @@ void scl::windows_input_system::MouseRead()
     Mouse.PosDeltaY = pt.y - Mouse.PosY;
 
     // Absolute values
-    Mouse.PosY = pt.x;
-    Mouse.PosX = pt.y;
+    Mouse.PosX = pt.x;
+    Mouse.PosY = pt.y;
 
     // Wheel (z) value
-    Mouse.PosDeltaZ = *Wheel;
-    Mouse.PosZ += Mouse.PosDeltaZ;
-    Wheel = 0;
+    if (*Wheel != 0)
+    {
+        Mouse.PosDeltaZ = *Wheel;
+        Mouse.PosZ += *Wheel;
+        *Wheel = 0;
+    }
+    else Mouse.PosDeltaZ = 0;
 }
 
 void scl::windows_input_system::KeyboardInit()
@@ -50,12 +55,13 @@ void scl::windows_input_system::KeyboardInit()
 
 void scl::windows_input_system::KeyboardRead()
 {
-    if (GetKeyboardState((PBYTE)Keyboard.Keys))
+    bool _ = GetKeyboardState((PBYTE)Keyboard.Keys);
+    for (INT i = 0; i < 256; i++)
     {
-        for (INT i = 0; i < 256; i++)
-            Keyboard.KeysClick[i] = Keyboard.Keys[i] && !Keyboard.KeysOld[i];
-        memcpy(Keyboard.KeysOld, Keyboard.Keys, 256);
+        Keyboard.Keys[i] >>= 7;
+        Keyboard.KeysClick[i] = Keyboard.Keys[i] & !Keyboard.KeysOld[i];
     }
+    memcpy(Keyboard.KeysOld, Keyboard.Keys, 256);
 }
 
 void scl::windows_input_system::Init(window_handle *WindowHandle, int *MouseWheel)
@@ -67,7 +73,7 @@ void scl::windows_input_system::Init(window_handle *WindowHandle, int *MouseWhee
     KeyboardRead();
 }
 
-void scl::windows_input_system::Response()
+void scl::windows_input_system::SelfResponse()
 {
     if (WindowHandle == nullptr || Wheel == nullptr) return;
 

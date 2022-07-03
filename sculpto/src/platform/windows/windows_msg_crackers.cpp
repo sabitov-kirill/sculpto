@@ -13,7 +13,7 @@ bool scl::windows_window::OnCreate(window_handle WindowHandle, CREATESTRUCT *CS)
 {
     // Set window window_handle to newly created one
     Handle = WindowHandle;
-    reinterpret_cast<windows_input_system *>(Input.get())->Init(&Handle, &MouseWheel);
+    reinterpret_cast<windows_input_system *>(input_system::Get().get())->Init(&Handle, &MouseWheel);
 
     SetTimer(Handle, InitialisationTimer, 0, nullptr);
     return 1;
@@ -94,6 +94,9 @@ void scl::windows_window::OnMMove(HWND hwnd, int x, int y, u32 keyFlags)
 void scl::windows_window::OnMWheel(window_handle WindowHandle, int X, int Y, int Z, u32 Keys)
 {
     if (!IsInitialised) return;
+
+    this->MouseWheel += Z;
+    input_system::Response();
 
     mouse_wheel_event e { Z };
     EventHandler(e);

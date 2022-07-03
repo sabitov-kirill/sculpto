@@ -21,6 +21,14 @@ void scl::gl_frame_buffer::Invalidate()
 {
     this->Free();
 
+    if (Props.SwapChainTarget)
+    {
+        Id = 0;
+        ColorAttachmentId = 0;
+        DepthAttachmentId = 0;
+        return;
+    }
+
     // Create and bind frame buffer
     glCreateFramebuffers(1, &Id);
     glBindFramebuffer(GL_FRAMEBUFFER, Id);
@@ -49,8 +57,8 @@ void scl::gl_frame_buffer::Invalidate()
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-scl::gl_frame_buffer::gl_frame_buffer(const frame_buffer_props &Props)
-    : Props(Props)
+scl::gl_frame_buffer::gl_frame_buffer(const frame_buffer_props &Props) :
+    Props(Props)
 {
     this->Invalidate();
 }

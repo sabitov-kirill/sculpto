@@ -42,7 +42,6 @@ namespace scl
         bool                 IsInitialised { false };
         bool                 IsFullscreen { false };
         data                 Data {};
-        unique<input_system> Input {};
 
         events_handler EventHandler = [](event &) {};
 

@@ -10,12 +10,14 @@
 #include "sclpch.h"
 #include "timer.h"
 
+scl::shared<scl::timer> scl::timer::GlobalTimerInstance = scl::CreateShared<timer>();
+
 scl::timer::timer()
 {
     LastFpsCalcutionTime = OldTime = StartTime = high_resolution_clock::now();
 }
 
-void scl::timer::Update()
+void scl::timer::Response()
 {
     time_point current_time = high_resolution_clock::now();
     Time = duration<float>(current_time - StartTime).count();

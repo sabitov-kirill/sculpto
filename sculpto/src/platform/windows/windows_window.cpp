@@ -67,7 +67,6 @@ void scl::windows_window::Update()
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
-    Input->Response();
 }
 
 void scl::windows_window::FlipFullscreen()

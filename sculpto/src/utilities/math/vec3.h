@@ -27,7 +27,7 @@ namespace scl::math
         /* 4x4 Matrix friend class forward declaration. */
         template<typename T> friend class matr4;
 
-    private: /* Vector data. */
+    public: /* Vector data. */
         /* Cartesian coordinates. */
         T X { 0 }, Y { 0 }, Z { 0 };
 
@@ -182,7 +182,7 @@ namespace scl::math
          * \param Other - vector to multiply
          * \return value of vectors dot product.
          */
-        T Dot(const vec3 &Other)
+        T Dot(const vec3 &Other) const
         {
             return X * Other.X + Y * Other.Y + Z * Other.Z;
         }
@@ -193,7 +193,7 @@ namespace scl::math
          * \param Other - vector to multiply
          * \return cross product resulting rector.
          */
-        vec3 Cross(const vec3 &Other)
+        vec3 Cross(const vec3 &Other) const
         {
             return vec3(Y * Other.Z - Other.Y * Z,
                         Z * Other.X - Other.Z * X,
@@ -207,7 +207,7 @@ namespace scl::math
          * \param Other - vector to compare with.
          * \return is vectors equal flag.
          */
-        bool operator==(const vec3 &Other)
+        bool operator==(const vec3 &Other) const
         {
             return X == Other.X && Y == Other.Y && Z == Other.Z;
         }

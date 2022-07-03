@@ -9,12 +9,13 @@
 
 #pragma once
 
-#include "base.h"
+#include "renderer_camera.h"
 
 namespace scl
 {
     /* Renderer classes declaration. */
     class mesh;
+    class material;
     class frame_buffer;
     class constant_buffer;
 
@@ -27,13 +28,15 @@ namespace scl
     /* Render submission structure. Contains current scene camera, enviroment etc. */
     struct submission
     {
-        const shared<mesh> &Mesh;                  /* Submitted to render mesh. */
-        const camera &Camera;              /* Scene camera, active during submission call. */
-     /* cosnt enviroment &Enviroment; */   /* Scene enviroment, active during submission call. */
+        const shared<mesh>       &Mesh;             /* Submitted to render mesh. */
+        const shared<material>   &Material;         /* Submitted to render mesh material. */
+        const matr4              &Transform;        /* Submitted to render mesh tranformation matrix. */
+        const renderer_camera    &Camera;           /* Scene camera, active during submission call. */
+     /* cosnt enviroment         &Enviroment; */    /* Scene enviroment, active during submission call. */
 
         /* Submission default constructor. */
-        submission(const shared<mesh> &Mesh, const camera &Camera) :
-            Mesh(Mesh), Camera(Camera) {}
+        submission(const shared<mesh> &Mesh, const shared<material> &Material, const matr4 &Transform, const renderer_camera &Camera) :
+            Mesh(Mesh), Camera(Camera), Material(Material), Transform(Transform) {}
     };
 
     /* Renderer class. */
@@ -45,27 +48,44 @@ namespace scl
                                                           * Submission queue could be rendered and cleared via flush function.
                                                           */
 
-        const static camera *SceneCamera;                /* Current scene camera. Added to subbmision object while Submit call. */
+        const static renderer_camera *SceneCamera;       /* Current scene camera. Added to subbmision object while Submit call. */
      /* static cosnt enviroment &SceneEnviroment; */     /* Current scene enviroment. Added to subbmision object while Submit call. */
-     
 
     private:
         /**
          * Draw mesh function.
          * 
          * \param Mesh - mesh to draw.
+         * \param Material - mesh material.
+         * \param Transform - mesh tranformations matrix.
+         * \param Camera - camera to take view and projection matrix from.
          * \return None.
          */
-        static void Draw(const shared<mesh> &Mesh, const camera &Camera);
+        static void Draw(const shared<mesh> &Mesh, const shared<material> &Material, const matr4 &Transform, const renderer_camera &Camera);
 
     public:
         /**
-         * Submit mesh to submission queue (rendered while flush call) function.
+         * Calculate mesh transorm matrix and submit to queue (rendered while flush call) function.
          *
          * \param Mesh - mesh to submit to queue.
+         * \param Material - mesh material.
+         * \param Scale - mesh scale factor along 3 axies.
+         * \param Angles - mesh rotation angles factor along 3 axies.
+         * \param Position - mesh world position.
          * \return None.
          */
-        static void Submit(const shared<mesh> &Mesh);
+        static void Submit(const shared<mesh> &Mesh, const shared<material> &Material, 
+                           const vec3 &Scale, const vec3 &Angles, const vec3 &Position);
+
+        /**
+         * Submit mesh to submission queue (rendered while flush call) function.
+         * 
+         * \param Mesh - mesh to submit to queue.
+         * \param Material - mesh material.
+         * \param Transform - mesh tranformations matrix.
+         * \return None.
+         */
+        static void Submit(const shared<mesh> &Mesh, const shared<material> &Material, const matr4 &Transform);
 
         /**
          * Flush submission quque and draw all meshes to specified frame buffer function.
@@ -90,14 +110,6 @@ namespace scl
          * 
          * \param Camera - scene camera to use while rendering scene.
          */
-        static void BeginScene(const camera &Camera);
-
-        /**
-         * End scene function. By default flushes submission queue to default frame buffer.
-         * 
-         * \param ShouldFlush - flag, specifing should submission queue be automaticly flushed.
-         * \return None.
-         */
-        static void EndScene(bool ShouldFlush = true);
+        static void SubmitCamera(const renderer_camera &Camera);
     };
 }

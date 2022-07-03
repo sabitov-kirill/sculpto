@@ -77,10 +77,10 @@
       <PrecompiledHeaderFile>sclpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SCL_DEBUG;SCL_DEBUG_MEMORY_ENABLED;SCL_ASSERTION_ENABLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;external\glad\include;external\stb_image;external\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;external\glad\include;external\stb_image;external\entt;external\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
@@ -97,13 +97,13 @@
       <PrecompiledHeaderFile>sclpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SCL_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;external\glad\include;external\stb_image;external\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;external\glad\include;external\stb_image;external\entt;external\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
@@ -121,13 +121,13 @@
       <PrecompiledHeaderFile>sclpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SCL_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;external\glad\include;external\stb_image;external\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;external\glad\include;external\stb_image;external\entt;external\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
@@ -140,15 +140,14 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\core\render\material.h" />
-    <ClInclude Include="src\core\render\mesh.h" />
-    <ClInclude Include="src\core\render\renderer.h" />
-    <ClInclude Include="src\core\render\render_bridge.h" />
-    <ClInclude Include="src\platform\opengl\gl_frame_buffer.h" />
-    <ClInclude Include="src\core\render\topology\sphere.h" />
-    <ClInclude Include="src\core\render\topology\cube.h" />
     <ClInclude Include="external\stb_image\stb_image.h" />
-    <ClInclude Include="src\core\render\topology\grid.h" />
+    <ClInclude Include="src\core\components\native_script_component.h" />
+    <ClInclude Include="src\core\scene\scene_object_behaviour.h" />
+    <ClInclude Include="src\core\application\input_keycodes.h" />
+    <ClInclude Include="src\core\components\camera_controller_component.h" />
+    <ClInclude Include="src\core\components\object_name_component.h" />
+    <ClInclude Include="src\core\render\renderer_camera.h" />
+    <ClInclude Include="src\core\scene\scene_object.h" />
     <ClInclude Include="src\base.h" />
     <ClInclude Include="src\core\application\application.h" />
     <ClInclude Include="src\core\application\entry_point.h" />
@@ -159,23 +158,36 @@
     <ClInclude Include="src\core\application\platform_detection.h" />
     <ClInclude Include="src\core\application\timer.h" />
     <ClInclude Include="src\core\application\window.h" />
+    <ClInclude Include="src\core\components\components.h" />
+    <ClInclude Include="src\core\components\mesh_component.h" />
+    <ClInclude Include="src\core\components\mesh_renderer_component.h" />
+    <ClInclude Include="src\core\components\transform_component.h" />
     <ClInclude Include="src\core\events\application_event.h" />
     <ClInclude Include="src\core\events\events.h" />
     <ClInclude Include="src\core\events\keyboard_event.h" />
     <ClInclude Include="src\core\events\mouse_event.h" />
     <ClInclude Include="src\core\events\window_event.h" />
     <ClInclude Include="src\core\gui\gui_layer.h" />
+    <ClInclude Include="src\core\render\material.h" />
+    <ClInclude Include="src\core\render\mesh.h" />
     <ClInclude Include="src\core\render\primitives\buffer.h" />
     <ClInclude Include="src\core\render\primitives\frame_buffer.h" />
     <ClInclude Include="src\core\render\primitives\shader.h" />
     <ClInclude Include="src\core\render\primitives\texture.h" />
     <ClInclude Include="src\core\render\primitives\vertex_array.h" />
+    <ClInclude Include="src\core\render\render_bridge.h" />
     <ClInclude Include="src\core\render\render_context.h" />
+    <ClInclude Include="src\core\render\renderer.h" />
     <ClInclude Include="src\core\render\topology\basis.h" />
+    <ClInclude Include="src\core\render\topology\cube.h" />
+    <ClInclude Include="src\core\render\topology\grid.h" />
+    <ClInclude Include="src\core\render\topology\sphere.h" />
     <ClInclude Include="src\core\render\vertex.h" />
+    <ClInclude Include="src\core\scene\scene.h" />
     <ClInclude Include="src\platform\directx\dx.h" />
     <ClInclude Include="src\platform\opengl\gl.h" />
     <ClInclude Include="src\platform\opengl\gl_buffer.h" />
+    <ClInclude Include="src\platform\opengl\gl_frame_buffer.h" />
     <ClInclude Include="src\platform\opengl\gl_shader.h" />
     <ClInclude Include="src\platform\opengl\gl_texture.h" />
     <ClInclude Include="src\platform\opengl\gl_vertex_array.h" />
@@ -193,7 +205,6 @@
     <ClInclude Include="src\utilities\macros\debug_memory_hook.h" />
     <ClInclude Include="src\utilities\macros\throw_if_failed.h" />
     <ClInclude Include="src\utilities\math\angle_measure.h" />
-    <ClInclude Include="src\utilities\math\camera.h" />
     <ClInclude Include="src\utilities\math\math.h" />
     <ClInclude Include="src\utilities\math\math_common.h" />
     <ClInclude Include="src\utilities\math\matr4.h" />
@@ -206,36 +217,31 @@
     <ClInclude Include="src\utilities\string\string_id.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\core\render\material.cpp" />
-    <ClCompile Include="src\core\render\renderer.cpp" />
-    <ClCompile Include="src\core\render\render_bridge.cpp" />
-    <ClCompile Include="src\platform\opengl\gl_frame_buffer.cpp" />
-    <ClCompile Include="src\core\render\topology\sphere.cpp" />
-    <ClCompile Include="src\core\render\topology\cube.cpp" />
     <ClCompile Include="external\stb_image\stb_image.cpp" />
-    <ClCompile Include="src\core\render\topology\grid.cpp" />
     <ClCompile Include="src\core\application\application.cpp" />
     <ClCompile Include="src\core\application\input.cpp" />
     <ClCompile Include="src\core\application\layers_stack.cpp" />
     <ClCompile Include="src\core\application\log.cpp" />
     <ClCompile Include="src\core\application\timer.cpp" />
     <ClCompile Include="src\core\application\window.cpp" />
-    <ClCompile Include="src\core\gui\gui_layer.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      </ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
-      </ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      </ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="src\core\gui\gui_layer.cpp" />
+    <ClCompile Include="src\core\render\material.cpp" />
     <ClCompile Include="src\core\render\primitives\buffer.cpp" />
     <ClCompile Include="src\core\render\primitives\frame_buffer.cpp" />
     <ClCompile Include="src\core\render\primitives\shader.cpp" />
     <ClCompile Include="src\core\render\primitives\texture.cpp" />
     <ClCompile Include="src\core\render\primitives\vertex_array.cpp" />
+    <ClCompile Include="src\core\render\renderer_camera.cpp" />
+    <ClCompile Include="src\core\render\render_bridge.cpp" />
     <ClCompile Include="src\core\render\render_context.cpp" />
+    <ClCompile Include="src\core\render\renderer.cpp" />
+    <ClCompile Include="src\core\render\topology\cube.cpp" />
+    <ClCompile Include="src\core\render\topology\grid.cpp" />
+    <ClCompile Include="src\core\render\topology\sphere.cpp" />
+    <ClCompile Include="src\core\scene\scene.cpp" />
     <ClCompile Include="src\platform\opengl\gl.cpp" />
     <ClCompile Include="src\platform\opengl\gl_buffer.cpp" />
+    <ClCompile Include="src\platform\opengl\gl_frame_buffer.cpp" />
     <ClCompile Include="src\platform\opengl\gl_shader.cpp" />
     <ClCompile Include="src\platform\opengl\gl_texture.cpp" />
     <ClCompile Include="src\platform\opengl\gl_vertex_array.cpp" />

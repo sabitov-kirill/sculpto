@@ -11,19 +11,21 @@
 /* Detect SCL platform. */
 #include "core/application/platform_detection.h"
 
+
+
 /* Debug break macro. */
 #ifdef _DEBUG
 #   if defined(SCL_PLATFORM_WINDOWS)
 #       define SCL_DEBUGBREAK() __debugbreak()
 #   elif defined(SCL_PLATFORM_LINUX)
 #       include <signal.h>
-#       define HZ_DEBUGBREAK() raise(SIGTRAP)
+#       define SCL_DEBUGBREAK() raise(SIGTRAP)
 #   else
 #       error "Platform doesn't support debugbreak yet!"
 #endif
-#   define HZ_ENABLE_ASSERTS
+#   define SCL_ENABLE_ASSERTS
 #else
-#   define HZ_DEBUGBREAK()
+#   define SCL_DEBUGBREAK()
 #endif
 
 #ifdef SCL_ASSERTION_ENABLED
@@ -74,6 +76,6 @@
         }                                                                 \
     }
 #else /* !SCL_ASSERTION_ENABLED */
-#   define SCL_CORE_ASSERT(expr, msg)
-#   define SCL_ASSERT(expr, msg)
+#   define SCL_CORE_ASSERT(expr, msg) (expr)
+#   define SCL_ASSERT(expr, msg) (expr)
 #endif

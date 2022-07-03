@@ -34,7 +34,6 @@ namespace scl
 
         bool                IsRunning { true };  /* Application main loop running flag. */
         unique<window>      Window;              /* Main app window. */
-        timer               Timer {};            /* Application timer, calculating delta time, FPS. */
         layers_stack        Layers {};           /* Application layers stack. */
 
         bool                GuiEnabled { true }; /* Application graphic user interface enabled flag. If false do not rendering gui. */
@@ -45,8 +44,6 @@ namespace scl
         static application &Get() { return *Instance; }
         /* Window getter function. */
         const window &GetWindow() const { return *Window; }
-        /* Application timer getter function. */
-        const timer &GetTimer() const { return Timer; }
         /* Graphic user interface enabled flag getter function. */
         const bool GetGuiEnabled() const { return GuiEnabled; }
         /* Graphic user interface enabled flag setter function. */

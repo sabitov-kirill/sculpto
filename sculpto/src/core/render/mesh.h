@@ -11,7 +11,6 @@
 
 #pragma once
 
-#include "material.h"
 #include "topology/basis.h"
 #include "primitives/vertex_array.h"
 #include "primitives/buffer.h"
@@ -23,40 +22,19 @@ namespace scl
     {
     private: /* Mesh data. */
         shared<vertex_array> VertexArray;
-        shared<material> Material;
-        matr4 Transform { matr4::Identity() };
 
     public: /* Mesh getter/setter functions. */
         /* Vertex array getter function. */
         const shared<vertex_array> &GetVertexArray() const { return VertexArray; }
-        /* Mesh material getter function. */
-        const shared<material> &GetMaterial() const { return Material; }
-        /* Mesh material setter function. */
-        void SetMaterial(shared<material> Material) { this->Material = Material; }
-        /* Mesh transformation (world) matrix getter function. */
-        const matr4 &GetTransform() const { return Transform; }
-        /* Mesh transformation (world) matrix setter function. */
-        void SetTransform(const matr4 &Transform) { this->Transform = Transform; }
 
     public:
-        /**
-         * Mesh constructor by vertex array and material.
-         * 
-         * \param VertexArray - mesh vertex array.
-         * \param Material - mesh material.
-         */
-        mesh(shared<vertex_array> VertexArray, shared<material> Material) :
-            VertexArray(VertexArray), Material(Material) {}
-
         /**
          * Mesh constructor by topology object and material.
          *
          * \param TopologyObject - topology object to create vertex array from.
-         * \param Material - mesh material.
          */
         template <typename Tvertex>
-        mesh(const topology::basis<Tvertex> &TopologyObject, shared<material> Material) :
-            Material(Material)
+        mesh(const topology::basis<Tvertex> &TopologyObject)
         {
             VertexArray = vertex_array::Create(
                 TopologyObject.GetType(),
@@ -67,26 +45,15 @@ namespace scl
 
     public:
         /**
-         * Mesh constructor by vertex array and material.
-         *
-         * \param VertexArray - mesh vertex array.
-         * \param Material - mesh material.
-         */
-        static shared<mesh> Create(shared<vertex_array> VertexArray, shared<material> Material)
-        {
-            return CreateShared<mesh>(VertexArray, Material);
-        }
-
-        /**
          * Mesh constructor by topology object and material.
          *
          * \param TopologyObject - topology object to create vertex array from.
-         * \param Material - mesh material.
+         * \return created mesh pointer.
          */
         template <typename Tvertex>
-        static shared<mesh> Create(const topology::basis<Tvertex> &TopologyObject, shared<material> Material)
+        static shared<mesh> Create(const topology::basis<Tvertex> &TopologyObject)
         {
-            return CreateShared<mesh>(TopologyObject, Material);
+            return CreateShared<mesh>(TopologyObject);
         }
     };
 }
