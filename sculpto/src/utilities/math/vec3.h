@@ -56,7 +56,7 @@ namespace scl::math
          *
          * \param A - scalar value of all cordinates.
          */
-        vec3(T A) : X(A), Y(A), Z(A) {}
+        explicit vec3(T A) : X(A), Y(A), Z(A) {}
 
         /**
          * Vector constructor by three coordinates.
@@ -71,7 +71,7 @@ namespace scl::math
          * \param V - vector to get X and Y coordinates
          * \param Z - addition vector component
          */
-        vec3(vec2<T> V, T Z) : X(V.X), Y(V.Y), Z(Z) {}
+        explicit vec3(vec2<T> V, T Z) : X(V.X), Y(V.Y), Z(Z) {}
 
         /**
          * Vector constructor by 2D vector and additional component.
@@ -79,7 +79,7 @@ namespace scl::math
          * \param X - addition vector component
          * \param V - vector to get Y and Z coordinates
          */
-        vec3(T X, vec2<T> V) : X(X), Y(V.X), Z(V.Z) {}
+        explicit vec3(T X, vec2<T> V) : X(X), Y(V.X), Z(V.Z) {}
 
         /**
          * Vector copy constructor.

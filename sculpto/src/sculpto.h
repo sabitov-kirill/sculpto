@@ -24,6 +24,7 @@
 #include "core/render/topology/grid.h"
 #include "core/render/topology/cube.h"
 #include "core/render/topology/sphere.h"
+#include "core/render/topology/cone.h"
 
 #include "core/render/material/material.h"
 #include "core/render/material/material_phong.h"

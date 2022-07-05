@@ -18,53 +18,66 @@ namespace scl
     class material_phong : public material
     {
     private: /* Material for blin-phong lighing model data. */
-        vec3 Diffuse {};    /* Material diffuse lighting coefficient. */
-        vec3 Specular {};   /* Material specular lighting coefficient. */
-        float Shininess {}; /* Material shiness exponent lighting coefficient. */
+        /* Structure to use ass shader buffer data. */
+        struct buffer_data
+        {
+            vec3   Specular {};       /* Material specular lighting coefficient. */
+            float  Shininess {};      /* Material shiness exponent lighting coefficient. */
+            vec3   Diffuse {};        /* Material diffuse lighting coefficient. */
+            u32    IsSpecularMap {};  /* Flag, showing whether specular map passing to shader. */
+            u32    IsDiffuseMap {};   /* Flag, showing whether diffuse map passing to shader. */
+            u32    IsNormalMap {};    /* Flag, showing whether normal map passing to shader. */
+        } Data {};
+
+        /* Constant shader buffer for passing material data to shader. */
+        shared<constant_buffer> DataBuffer {};
 
         /* Material textures cpefficients maps. */
-        bool IsDiffuseMap {};
-        bool IsSpecularMap {};
-        bool IsNormalMap {};
-        shared<texture_2d> DiffuseMapTexture {};
         shared<texture_2d> SpecularMapTexture {};
+        shared<texture_2d> DiffuseMapTexture {};
         shared<texture_2d> NormalMapTexture {};
 
     public: /* Material for blin-phong lighing model data getter setter functions. */
-        /* Shiness exponent setter function. */
-        void SetShininess(float Shininess) {
-            this->Shininess = Shininess;
-        }
         /* Diffuse coeffisient setter function.*/
         void SetDiffuse(const vec3 &Diffuse) {
             if (DiffuseMapTexture) DiffuseMapTexture->Free();
-            IsDiffuseMap = false;
-            this->Diffuse = Diffuse;
+            Data.IsDiffuseMap = false;
+            Data.Diffuse = Diffuse;
+            DataBuffer->Update(&Data, sizeof(Data));
         }
         /* Specular coefficient setter function. */
         void SetSpecular(const vec3 &Specular) {
             if (SpecularMapTexture) SpecularMapTexture->Free();
-            IsSpecularMap = false;
-            this->Specular = Specular;
+            Data.IsSpecularMap = false;
+            Data.Specular = Specular;
+            DataBuffer->Update(&Data, sizeof(Data));
+        }
+        /* Shiness exponent setter function. */
+        void SetShininess(float Shininess) {
+            Data.Shininess = Shininess;
+            DataBuffer->Update(&Data, sizeof(Data));
         }
 
         /* Diffuse map setter function. */
         void SetDiffuseMapTexture(shared<texture_2d> DiffuseMapTexture) {
             if (this->DiffuseMapTexture) this->DiffuseMapTexture->Free();
             this->DiffuseMapTexture = DiffuseMapTexture;
-            IsDiffuseMap = true;
+            Data.IsDiffuseMap = true;
+            DataBuffer->Update(&Data, sizeof(Data));
         }
         /* Specular map setter function. */
         void SetSpecularMapTexture(shared<texture_2d> SpecularMapTexture) {
             if (this->SpecularMapTexture) this->SpecularMapTexture->Free();
             this->SpecularMapTexture = SpecularMapTexture;
-            IsSpecularMap = true;
+            Data.IsSpecularMap = true;
+            DataBuffer->Update(&Data, sizeof(Data));
         }
         /* Normal map setter function. */
         void SetNormalMapTexture(shared<texture_2d> NormalMapTexture) {
             if (this->NormalMapTexture) this->NormalMapTexture->Free();
             this->NormalMapTexture = NormalMapTexture;
-            IsNormalMap = true;
+            Data.IsNormalMap = true;
+            DataBuffer->Update(&Data, sizeof(Data));
         }
 
         /* Default material for blin-phong lighting model constructor. */
@@ -90,7 +103,14 @@ namespace scl
          * \param Shininess  - Material shiness exponent lighting coefficient.
          */
         material_phong(shared<shader_program> Shader, const vec3 &Diffuse, const vec3 &Specular, float Shininess) :
-            material(Shader), Diffuse(Diffuse), Specular(Specular), Shininess(Shininess) {}
+            material(Shader)
+        {
+            Data.Diffuse = Diffuse;
+            Data.Specular = Specular;
+            Data.Shininess = Shininess;
+
+            DataBuffer = constant_buffer::Create(render_context::BINDING_POINT_MATERIAL_DATA, &Data, sizeof(buffer_data));
+        }
 
         /**
          * Bind material to current render stage function.
@@ -101,23 +121,11 @@ namespace scl
         void Bind() const override
         {
             if (Shader != nullptr) Shader->Bind();
+            if (DataBuffer != nullptr) DataBuffer->Bind();
 
-            // Set specular/specular map
-            if (!IsSpecularMap) Shader->SetFloat3(render_context::BINDING_POINT_MATERIAL_DATA + 0, Specular);
-            else                SpecularMapTexture->Bind(render_context::TEXTURE_SLOT_MATERIAL_SPECULAR);
-            Shader->SetBool(render_context::BINDING_POINT_MATERIAL_DATA + 1, IsSpecularMap);
-
-            // Set diffuse/diffuse map
-            if (!IsDiffuseMap) Shader->SetFloat3(render_context::BINDING_POINT_MATERIAL_DATA + 2, Diffuse);
-            else               DiffuseMapTexture->Bind(render_context::TEXTURE_SLOT_MATERIAL_DIFFUSE);
-            Shader->SetBool(render_context::BINDING_POINT_MATERIAL_DATA + 3, IsDiffuseMap);
-
-            // Set shininess exponent
-            Shader->SetFloat(render_context::BINDING_POINT_MATERIAL_DATA + 4, Shininess);
-
-            // Set normal map
-            if (IsNormalMap) NormalMapTexture->Bind(render_context::TEXTURE_SLOT_MATERIAL_NORMAL_MAP);
-            Shader->SetFloat(render_context::BINDING_POINT_MATERIAL_DATA + 5, IsNormalMap);
+            if (Data.IsSpecularMap) SpecularMapTexture->Bind(render_context::TEXTURE_SLOT_MATERIAL_SPECULAR);
+            if (Data.IsDiffuseMap) DiffuseMapTexture->Bind(render_context::TEXTURE_SLOT_MATERIAL_DIFFUSE);
+            if (Data.IsNormalMap) NormalMapTexture->Bind(render_context::TEXTURE_SLOT_MATERIAL_NORMAL_MAP);
         }
 
         /**
@@ -129,9 +137,10 @@ namespace scl
         void Unbind() const override
         {
             if (Shader != nullptr) Shader->Unbind();
-            if (IsSpecularMap) SpecularMapTexture->Unbind();
-            if (IsDiffuseMap) DiffuseMapTexture->Unbind();
-            if (IsNormalMap) NormalMapTexture->Unbind();
+            if (DataBuffer != nullptr) DataBuffer->Unbind();
+            if (Data.IsSpecularMap) SpecularMapTexture->Unbind();
+            if (Data.IsDiffuseMap) DiffuseMapTexture->Unbind();
+            if (Data.IsNormalMap) NormalMapTexture->Unbind();
         }
 
         /**

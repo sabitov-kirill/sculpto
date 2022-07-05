@@ -49,7 +49,7 @@ namespace scl::math
          * 
          * \param A - scalar value of all cordinates.
          */
-        vec2(T A) : X(A), Y(A) {}
+        explicit vec2(T A) : X(A), Y(A) {}
 
         /**
          * Vector constructor by three coordinates.

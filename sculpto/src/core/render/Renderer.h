@@ -13,16 +13,26 @@
 
 namespace scl
 {
-    /* Renderer classes declaration. */
+    /**
+     * Renderer classes declaration.
+     */
     class mesh;
     class material;
     class frame_buffer;
     class constant_buffer;
 
-    struct scene_meses_data
+    struct point_light_component;
+    struct directional_light_component;
+    struct spot_light_component;
+
+    struct submission_data
     {
-        matr4 ViewProjection; // Scene view projection matrix ? Probably better just use uniform
-        matr4 World;          // Mesh transorm matrix         ? Probably better just use uniform
+        matr4  ViewProjection {};  /* Submission camer view projection matrix. */
+        vec3   CameraDirection {}; /* Submission camera direction vector. */
+        vec3   CameraLocation {};  /* Submission camer location vector. */
+        float Time;                /* Currently rendering frame time since porgram time. */
+        int ViewportWidth {};      /* Currently rendering frame viewport width. */
+        int ViewportHeight {};     /* Currently rendering frame viewport height. */
     };
 
     /* Render submission structure. Contains current scene camera, enviroment etc. */
@@ -32,11 +42,52 @@ namespace scl
         shared<material>          Material;         /* Submitted to render mesh material. */
         matr4                     Transform;        /* Submitted to render mesh tranformation matrix. */
         const renderer_camera    &Camera;           /* Scene camera, active during submission call. */
-     /* cosnt enviroment         &Enviroment; */    /* Scene enviroment, active during submission call. */
 
         /* Submission default constructor. */
         submission(shared<mesh> Mesh, shared<material> Material, matr4 Transform, const renderer_camera &Camera) :
             Mesh(Mesh), Camera(Camera), Material(Material), Transform(Transform) {}
+    };
+
+    /* Point light structure. */
+    struct point_light
+    {
+        vec3 Position;
+        float Constant;
+        vec3 Color;
+        float Linear;
+        float Quadratic;
+        float __dummy[3];
+    };
+
+    /* Directional light structure. */
+    struct directional_light
+    {
+        vec3 Direction;
+        float __dummy1;
+        vec3 Color;
+        float __dummy2;
+    };
+
+    /* Spot light structure. */
+    struct spot_light
+    {
+        vec3 Position;
+        float InnerCutoffCos;
+        vec3 Direction;
+        float OuterCutoffCos;
+        vec3 Color;
+        float Epsilon;
+    };
+
+    /* Lights storage structure. */
+    struct lights_storage
+    {
+        point_light PointLights[50] {};
+        directional_light DirectionalLight {};
+        spot_light SpotLights[50] {};
+        u32 PointLightsCount {};
+        u32 IsDirectionalLight {};
+        u32 SpotLightsCount {};
     };
 
     /* Renderer class. */
@@ -49,7 +100,9 @@ namespace scl
                                                           */
 
         const static renderer_camera *SceneCamera;       /* Current scene camera. Added to subbmision object while Submit call. */
-     /* static cosnt enviroment &SceneEnviroment; */     /* Current scene enviroment. Added to subbmision object while Submit call. */
+
+        static shared<constant_buffer> SceneLightsStorageBuffer; /* Constant buffer for current scene lights. */
+        static lights_storage SceneLightsStorage;                /* Current scene lights storage. */
 
     private:
         /**
@@ -64,6 +117,49 @@ namespace scl
         static void Draw(const shared<mesh> &Mesh, const shared<material> &Material, const matr4 &Transform, const renderer_camera &Camera);
 
     public:
+        /**
+         * Begin scene function.
+         * Runs computations for concrete scene,
+         * memoize camera & enviroment data for rendering
+         *
+         * \param Camera - scene camera to use while rendering scene.
+         * \return None.
+         */
+        static void SubmitCamera(const renderer_camera &Camera);
+
+        /**
+         * Submit point light function.
+         * 
+         * \param Position - light possition.
+         * \param Color - light color.
+         * \param Constant - light attenutation constant coefficient.
+         * \param Linear - light attenuation liear coefficient.
+         * \param Quadratic - light attenuation quadratic coefficient.
+         * \return None.
+         */
+        static void SubmitPointLight(const vec3 &Position, const vec3 &Color, float Constant, float Linear, float Quadratic);
+
+        /**
+         * Submit point light function.
+         *
+         * \param Direction - light direction.
+         * \param Color - light color.
+         * \return None.
+         */
+        static void SubmitDirectionalLight(const vec3 &Direction, const vec3 &Color);
+
+        /**
+         * Submit point light function.
+         *
+         * \param Position - light possition.
+         * \param Direction - light direction
+         * \param Color - light color.
+         * \param InnerCutoffCos - cosine of inner spot light cone angle.
+         * \param OuterCutoffCos - cosine of outer spot light cone angle.
+         * \param Epsilon - (OuterCutoffCos - InnerCutoffCos), for optimization.
+         */
+        static void SubmitSpotLight(const vec3 &Position, const vec3 &Direction, const vec3 &Color, float InnerCutoffCos, float OuterCutoffCos, float Epsilon);
+
         /**
          * Calculate mesh transorm matrix and submit to queue (rendered while flush call) function.
          *
@@ -102,14 +198,5 @@ namespace scl
          * \return None.
          */
         static void FlushToDefaultFrameBuffer();
-
-        /**
-         * Begin scene function.
-         * Runs computations for concrete scene,
-         * memoize camera & enviroment data for rendering
-         * 
-         * \param Camera - scene camera to use while rendering scene.
-         */
-        static void SubmitCamera(const renderer_camera &Camera);
     };
 }

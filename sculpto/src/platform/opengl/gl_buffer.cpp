@@ -11,8 +11,7 @@
 
 scl::gl_constant_buffer::gl_constant_buffer(u32 BindingPoint, u32 Size)
 {
-    this->Free();
-    BindingPoint = BindingPoint;
+    this->BindingPoint = BindingPoint;
     this->Size = Size;
 
     glGenBuffers(1, &Id);
@@ -23,8 +22,7 @@ scl::gl_constant_buffer::gl_constant_buffer(u32 BindingPoint, u32 Size)
 
 scl::gl_constant_buffer::gl_constant_buffer(u32 BindingPoint, const void *Data, u32 Size)
 {
-    Free();
-    BindingPoint = BindingPoint;
+    this->BindingPoint = BindingPoint;
     this->Size = Size;
 
     glGenBuffers(1, &Id);
@@ -40,12 +38,12 @@ scl::gl_constant_buffer::~gl_constant_buffer()
 
 void scl::gl_constant_buffer::Bind() const
 {
-    if (Id != 0) glBindBuffer(GL_UNIFORM_BUFFER, Id);
+    if (Id != 0) glBindBufferBase(GL_UNIFORM_BUFFER, BindingPoint, Id);
 }
 
 void scl::gl_constant_buffer::Unbind() const
 {
-    glBindBuffer(GL_UNIFORM_BUFFER, 0);
+    glBindBufferBase(GL_UNIFORM_BUFFER, BindingPoint, 0);
 }
 
 void scl::gl_constant_buffer::Update(void *Data, u32 Size)
@@ -54,6 +52,7 @@ void scl::gl_constant_buffer::Update(void *Data, u32 Size)
     {
         glBindBuffer(GL_UNIFORM_BUFFER, Id);
         glBufferSubData(GL_UNIFORM_BUFFER, 0, Size, Data);
+        glBindBuffer(GL_UNIFORM_BUFFER, 0);
     }
 }
 

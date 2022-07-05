@@ -14,3 +14,6 @@
 #include "mesh_renderer_component.h"
 #include "camera_controller_component.h"
 #include "native_script_component.h"
+#include "lights/point_light_component.h"
+#include "lights/directional_light_component.h"
+#include "lights/spot_light_component.h"

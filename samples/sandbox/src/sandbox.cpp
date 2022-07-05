@@ -54,7 +54,7 @@ public:
         SphereMesh = mesh::Create<topology::sphere>(vec3(0), 1, 20);
 
         topology::sphere sphere_topo = topology::sphere(vec3 { 0 }, 1, 20);
-        sphere_topo.SetColor({ 1 });
+        sphere_topo.SetColor(vec4 { 1 });
         WhiteSphereMesh = mesh::Create(sphere_topo);
 
         RenderCamera.SetPosition({ 7, 6, -5 });

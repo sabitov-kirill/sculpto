@@ -141,6 +141,10 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\core\components\lights\directional_light_component.h" />
+    <ClInclude Include="src\core\components\lights\point_light_component.h" />
+    <ClInclude Include="src\core\components\lights\spot_light_component.h" />
+    <ClInclude Include="src\core\render\topology\cone.h" />
     <ClInclude Include="external\stb_image\stb_image.h" />
     <ClInclude Include="src\base.h" />
     <ClInclude Include="src\core\application\application.h" />
@@ -221,6 +225,7 @@
     <ClInclude Include="src\utilities\string\string_id.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\render\topology\cone.cpp" />
     <ClCompile Include="external\stb_image\stb_image.cpp" />
     <ClCompile Include="src\core\application\application.cpp" />
     <ClCompile Include="src\core\application\input.cpp" />

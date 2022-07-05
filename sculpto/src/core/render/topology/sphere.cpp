@@ -28,7 +28,6 @@ scl::topology::sphere::sphere(const vec3 &Center, float Radius, int Slices) :
 
             vert.Position = vert.Normal * Radius + Center;
 
-            // vert.TexCoords = { (float)j / Slices * 2, (float)i / Slices * 2 };
             vert.TexCoords = { (float)i / Slices, (float)j / Slices };
 
             Vertices[i * (Slices + 1) + j] = vert;

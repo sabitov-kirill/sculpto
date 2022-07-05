@@ -22,23 +22,23 @@ namespace scl
         friend class scene_object;
 
     private: /* Application scene data. */
-        entt::registry Registry;                    /* Container for all components.
+        entt::registry Registry {};                 /* Container for all components.
                                                      * Contains both enitty datas and Ids.
                                                      */
         
         float UpdateDelay {};                       /* Scripts update call delay timer. */
 
-        camera_controller_component *MainCamera {};        /* Scene main camera controller. */
-        float ViewportWidth { 16 }, ViewportHeight { 16 }; /* Scene window viewport size. */
-        bool RenderToSwapChainBuffer;                      /* Flag, indicating whether render to swap chain buffer or not. */
+        camera_controller_component *MainCamera {};      /* Scene main camera controller. */
+        int ViewportWidth { 16 }, ViewportHeight { 16 }; /* Scene window viewport size. */
+        bool RenderToSwapChainBuffer {};                 /* Flag, indicating whether render to swap chain buffer or not. */
 
     public: /* Application scene getter/setter functions. */
         /* Scene main camera getter function */
         const camera_controller_component &GetMainCamera() const { return *MainCamera; }
         /* Scene window viewport width getter function. */
-        float GetViewportWidth() const { return ViewportWidth; }
+        int GetViewportWidth() const { return ViewportWidth; }
         /* Scene window viewport height getter function. */
-        float GetViewportHeight() const { return ViewportHeight; }
+        int GetViewportHeight() const { return ViewportHeight; }
 
         /**
          * Set scene main camera by name function.

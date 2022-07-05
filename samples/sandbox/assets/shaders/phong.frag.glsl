@@ -28,7 +28,6 @@ struct light
 layout(location = BINDING_POINT_MATERIAL_DATA)      uniform material u_Material;
 layout(binding  = TEXTURE_SLOT_MATERIAL_DIFFUSE)    uniform sampler2D u_DiffuseMap;
 layout(binding  = TEXTURE_SLOT_MATERIAL_SPECULAR)   uniform sampler2D u_SpecularMap;
-layout(binding  = TEXTURE_SLOT_MATERIAL_EMISSION)   uniform sampler2D u_EmissionMap;
 layout(binding  = TEXTURE_SLOT_MATERIAL_NORMAL_MAP) uniform sampler2D u_NormalMap;
 
          vec3   u_EnviromentAmbient = vec3(0.03, 0.028, 0.005);

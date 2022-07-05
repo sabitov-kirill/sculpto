@@ -303,6 +303,10 @@
     <ClInclude Include="src\utilities\math\matr3.h" />
     <ClInclude Include="src\core\render\lights\light.h" />
     <ClInclude Include="src\core\render\material\material_phong.h" />
+    <ClInclude Include="src\core\render\topology\cone.h" />
+    <ClInclude Include="src\core\components\lights\point_light_component.h" />
+    <ClInclude Include="src\core\components\lights\directional_light_component.h" />
+    <ClInclude Include="src\core\components\lights\spot_light_component.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="external\stb_image\stb_image.cpp">
@@ -401,5 +405,6 @@
     <ClCompile Include="src\utilities\logger\logger.cpp">
       <Filter>src\utilities\logger</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\render\topology\cone.cpp" />
   </ItemGroup>
 </Project>

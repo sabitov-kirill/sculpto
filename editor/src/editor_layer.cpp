@@ -12,8 +12,8 @@
 
 // AIMS FOR TODAY:
 //   - diffrent types of light casters                             (+)
-//   - api for easy passing structures to shader (glsl SSBOs)      ( )
-//   - multiple lights in scene via components                     ( )
+//   - api for easy passing structures to shader (glsl SSBOs)      (+)
+//   - multiple lights in scene via components                     (+)
 
 class camera_behaviour: public scene_object_behaviour
 {
@@ -89,9 +89,10 @@ void editor::editor_layer::OnInit()
     auto cube_mesh = mesh::Create<topology::cube>(vec3(0), vec3(1));
     auto plane_mesh = mesh::Create<topology::grid>(10, 10);
     auto sphere_mesh = mesh::Create<topology::sphere>(vec3 { 0 }, 1, 20);
+    auto cone_mesh = mesh::Create<topology::cone>(vec3(0, 1, 0), 0, vec3(0.5, 0, 0.5), 0.4, 20);
 
     topology::sphere sphere_topo = topology::sphere(vec3 { 0 }, 1, 20);
-    sphere_topo.SetColor({ 1 });
+    sphere_topo.SetColor(vec4 { 1 });
     auto light_bulb_mesh = mesh::Create(sphere_topo);
 
     renderer_camera rend_camera { camera_projection_type::PERSPECTIVE };
@@ -121,11 +122,17 @@ void editor::editor_layer::OnInit()
     sphere.AddComponent<mesh_renderer_component>(sphere_material);
     sphere.AddComponent<transform_component>(vec3 { 0.5 }, vec3 { 0 }, vec3 { -2, 2, -2 });
 
+    auto cone = EditorScene->CreateObject();
+    cone.AddComponent<mesh_component>(cone_mesh);
+    cone.AddComponent<mesh_renderer_component>(sphere_material);
+    cone.AddComponent<transform_component>(vec3 { 1 }, vec3 {}, vec3 { -5, 5, -5 });
+    cone.AddComponent<spot_light_component>(vec3 { 0.2, 0.95, 0.38 }, vec3 { 0.5, -1, 0.5 }, 15.0f, 30.0f);
+
     auto light_bulb = EditorScene->CreateObject();
     light_bulb.AddComponent<mesh_component>(light_bulb_mesh);
     light_bulb.AddComponent<mesh_renderer_component>(single_color_material);
     light_bulb.AddComponent<transform_component>(vec3 { 0.1 }, vec3 { 0 }, vec3 { 2, 4, 2 });
- // light_bulb.AddComponent<point_light_coponent(pos, att, ...);
+    light_bulb.AddComponent<point_light_component>(vec3 { 0.7, 0.65, 0.68 }, 1.0f, 0.14f, 0.07f);
 
     auto camera = EditorScene->CreateObject("MainCamera");
     camera.AddComponent<camera_controller_component>(rend_camera);

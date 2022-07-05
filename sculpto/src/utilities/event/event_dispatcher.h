@@ -17,9 +17,9 @@ namespace scl
        to it and dispatched on event invoke. */
     class static_event_dispatcher
     {
-        template <typename T>
-        using event_callback = std::function<void (const T &)>;
-        using base_event_callback = std::function<void (const event &)>;
+        template <typename Tevent>
+        using event_callback = bool (*)(Tevent &);
+        using base_event_callback = bool (*)(event &);
         using callback_list = std::vector<base_event_callback>;
 
     private:
@@ -29,11 +29,12 @@ namespace scl
         /**
          * Add event listner to specific event function.
          *
+         * \tparam Tevent - event to set listner to.
          * \param Event - callback to be called on event dispatch.
          * \return None.
          */
-        template <typename T >
-        void AddEventListner(const event_callback<T> &EventCallback)
+        template <typename T>
+        void AddEventListner(event_callback<T> EventCallback)
         {
             if (EventHandlers.find(T::StaticType) == EventHandlers.end())
                 EventHandlers.emplace(T::StaticType, std::vector { EventCallback });
@@ -48,7 +49,7 @@ namespace scl
          * \return None.
          */
         template <typename T>
-        void operator+=(const event_callback<T> &EventCallback)
+        void operator+=(event_callback<T> EventCallback)
         {
             if (EventHandlers.find(T::StaticType) == EventHandlers.end())
                 EventHandlers.emplace(T::StaticType, std::vector { EventCallback });
@@ -63,7 +64,7 @@ namespace scl
          * \param Event - event to handle.
          * \return None.
          */
-        void Invoke(const event &Event)
+        void Invoke(event &Event)
         {
             if (EventHandlers.find(Event.GetType()) == EventHandlers.end())
                 return;
