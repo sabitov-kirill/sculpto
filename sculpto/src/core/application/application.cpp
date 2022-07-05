@@ -34,6 +34,8 @@ scl::application::application(const std::string &Name)
     // Gui layer initialisation
     GUILayer = new gui_layer();
     PushOverlay(GUILayer);
+
+    SCL_CORE_INFO("Current directory: {}", std::filesystem::current_path().root_directory().string());
 }
 
 scl::application::~application()

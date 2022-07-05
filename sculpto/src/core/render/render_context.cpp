@@ -25,6 +25,7 @@ scl::u32 scl::GetShaderVariableTypeSize(shader_variable_type Type)
     case scl::shader_variable_type::FLOAT2: return 8;
     case scl::shader_variable_type::FLOAT3: return 12;
     case scl::shader_variable_type::FLOAT4: return 16;
+    case scl::shader_variable_type::MATR3:  return 48;
     case scl::shader_variable_type::MATR4:  return 64;
     }
 
@@ -45,6 +46,7 @@ scl::u32 scl::GetShaderVariableComponentsCount(shader_variable_type Type)
     case scl::shader_variable_type::FLOAT2: return 2;
     case scl::shader_variable_type::FLOAT3: return 3;
     case scl::shader_variable_type::FLOAT4: return 4;
+    case scl::shader_variable_type::MATR3:  return 3;
     case scl::shader_variable_type::MATR4:  return 4;
     }
 

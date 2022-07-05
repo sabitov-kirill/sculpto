@@ -81,9 +81,9 @@ void scl::gl_frame_buffer::Unbind()
 
 void scl::gl_frame_buffer::Free()
 {
-    if (Id != 0) glDeleteFramebuffers(1, &Id);
-    if (ColorAttachmentId != 0) glDeleteTextures(1, &ColorAttachmentId);
-    if (DepthAttachmentId != 0)glDeleteTextures(1, &DepthAttachmentId);
+    if (Id != 0) glDeleteFramebuffers(1, &Id), Id = 0;
+    if (ColorAttachmentId != 0) glDeleteTextures(1, &ColorAttachmentId), ColorAttachmentId = 0;
+    if (DepthAttachmentId != 0)glDeleteTextures(1, &DepthAttachmentId), DepthAttachmentId = 0;
 }
 
 void scl::gl_frame_buffer::Clear()

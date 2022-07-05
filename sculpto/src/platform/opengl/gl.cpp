@@ -25,6 +25,7 @@ wglCreateContextAttribsARB_type *wglCreateContextAttribsARB;
 #define WGL_CONTEXT_MINOR_VERSION_ARB             0x2092
 #define WGL_CONTEXT_PROFILE_MASK_ARB              0x9126
 #define WGL_CONTEXT_CORE_PROFILE_BIT_ARB          0x00000001
+#define WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB 0x00000002
 
 /* OpenGL WGL pixel format configuration definitions. */
 typedef BOOL WINAPI wglChoosePixelFormatARB_type(HDC hdc, const int *piAttribIList, const FLOAT *pfAttribFList, UINT nMaxFormats, int *piFormats, UINT *nNumFormats);
@@ -66,9 +67,7 @@ void glInitialiseExtentions(HDC hDC)
 
     // Load functions pointers
     wglCreateContextAttribsARB = (wglCreateContextAttribsARB_type *)wglGetProcAddress("wglCreateContextAttribsARB");
-    SCL_CORE_INFO("{}", (int)wglCreateContextAttribsARB);
     wglChoosePixelFormatARB = (wglChoosePixelFormatARB_type *)wglGetProcAddress("wglChoosePixelFormatARB");
-    SCL_CORE_INFO("{}", (int)wglChoosePixelFormatARB);
 
     wglMakeCurrent(nullptr, nullptr);
     wglDeleteContext(hTmpGLRC);
@@ -96,17 +95,13 @@ HGLRC glInitialiseContext(HDC hDC)
 
     PIXELFORMATDESCRIPTOR pfd {};
     DescribePixelFormat(hDC, pixel_format, sizeof(pfd), &pfd);
-    SCL_CORE_INFO("{}, {}, {}, {}, {}, {}, {}, {}, {}",
-                  pfd.nSize, pfd.bReserved, pfd.cAccumAlphaBits,
-                  pfd.cAccumBits, pfd.cAccumBlueBits, pfd.cAccumGreenBits,
-                  pfd.cAccumRedBits, pfd.cAlphaBits, pfd.nVersion);
     SCL_CORE_ASSERT(SetPixelFormat(hDC, pixel_format, &pfd), "Failed to set the OpenGL pixel format.");
 
     // Setup rendering context
     int context_attribs[] = {
         WGL_CONTEXT_MAJOR_VERSION_ARB, 4,
-        WGL_CONTEXT_MINOR_VERSION_ARB, 5,
-        WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
+        WGL_CONTEXT_MINOR_VERSION_ARB, 6,
+        WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB,
         0
     };
 

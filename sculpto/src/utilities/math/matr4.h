@@ -8,28 +8,10 @@
 
 #pragma once
 
-#include "angle_measure.h"
+#include "matr3.h"
 
 namespace scl::math
 {
-    namespace matr3
-    {
-        /**
-         * Calculate determinant of 3x3 Matrix.
-         *
-         * \param A11-A33 - matrix components.
-         * \return matrix determinant.
-         */
-        template <typename T>
-        T Det(T A11, T A12, T A13,
-              T A21, T A22, T A23,
-              T A31, T A32, T A33)
-        {
-            return (A11 * A22 * A33 - A11 * A23 * A32 - A12 * A21 * A33 +
-                    A12 * A23 * A31 + A13 * A21 * A32 - A13 * A22 * A31);
-        }
-    };
-
     /* 4x4 matrix data type class. Used to pass onlt neccecery data to shaders. */
     template<class T>
     class matr4_data
@@ -103,79 +85,80 @@ namespace scl::math
 
             /* build adjoint matrix */
             InvA[0][0] =
-                matr3::Det(this->A[1][1], this->A[1][2], this->A[1][3],
-                           this->A[2][1], this->A[2][2], this->A[2][3],
-                           this->A[3][1], this->A[3][2], this->A[3][3]);
+                matr3<T>::Det(this->A[1][1], this->A[1][2], this->A[1][3],
+                              this->A[2][1], this->A[2][2], this->A[2][3],
+                              this->A[3][1], this->A[3][2], this->A[3][3]);
             InvA[1][0] =
-                -matr3::Det(this->A[1][0], this->A[1][2], this->A[1][3],
-                            this->A[2][0], this->A[2][2], this->A[2][3],
-                            this->A[3][0], this->A[3][2], this->A[3][3]);
+               -matr3<T>::Det(this->A[1][0], this->A[1][2], this->A[1][3],
+                              this->A[2][0], this->A[2][2], this->A[2][3],
+                              this->A[3][0], this->A[3][2], this->A[3][3]);
             InvA[2][0] =
-                matr3::Det(this->A[1][0], this->A[1][1], this->A[1][3],
-                           this->A[2][0], this->A[2][1], this->A[2][3],
-                           this->A[3][0], this->A[3][1], this->A[3][3]);
+                matr3<T>::Det(this->A[1][0], this->A[1][1], this->A[1][3],
+                              this->A[2][0], this->A[2][1], this->A[2][3],
+                              this->A[3][0], this->A[3][1], this->A[3][3]);
             InvA[3][0] =
-                -matr3::Det(this->A[1][0], this->A[1][1], this->A[1][2],
-                            this->A[2][0], this->A[2][1], this->A[2][2],
-                            this->A[3][0], this->A[3][1], this->A[3][2]);
+               -matr3<T>::Det(this->A[1][0], this->A[1][1], this->A[1][2],
+                              this->A[2][0], this->A[2][1], this->A[2][2],
+                              this->A[3][0], this->A[3][1], this->A[3][2]);
 
             InvA[0][1] =
-                -matr3::Det(this->A[0][1], this->A[0][2], this->A[0][3],
-                            this->A[2][1], this->A[2][2], this->A[2][3],
-                            this->A[3][1], this->A[3][2], this->A[3][3]);
+               -matr3<T>::Det(this->A[0][1], this->A[0][2], this->A[0][3],
+                              this->A[2][1], this->A[2][2], this->A[2][3],
+                              this->A[3][1], this->A[3][2], this->A[3][3]);
             InvA[1][1] =
-                matr3::Det(this->A[0][0], this->A[0][2], this->A[0][3],
-                           this->A[2][0], this->A[2][2], this->A[2][3],
-                           this->A[3][0], this->A[3][2], this->A[3][3]);
+                matr3<T>::Det(this->A[0][0], this->A[0][2], this->A[0][3],
+                              this->A[2][0], this->A[2][2], this->A[2][3],
+                              this->A[3][0], this->A[3][2], this->A[3][3]);
             InvA[2][1] =
-                -matr3::Det(this->A[0][0], this->A[0][1], this->A[0][3],
-                            this->A[2][0], this->A[2][1], this->A[2][3],
-                            this->A[3][0], this->A[3][1], this->A[3][3]);
+               -matr3<T>::Det(this->A[0][0], this->A[0][1], this->A[0][3],
+                              this->A[2][0], this->A[2][1], this->A[2][3],
+                              this->A[3][0], this->A[3][1], this->A[3][3]);
             InvA[3][1] =
-                matr3::Det(this->A[0][0], this->A[0][1], this->A[0][2],
-                           this->A[2][0], this->A[2][1], this->A[2][2],
-                           this->A[3][0], this->A[3][1], this->A[3][2]);
+                matr3<T>::Det(this->A[0][0], this->A[0][1], this->A[0][2],
+                              this->A[2][0], this->A[2][1], this->A[2][2],
+                              this->A[3][0], this->A[3][1], this->A[3][2]);
 
             InvA[0][2] =
-                matr3::Det(this->A[0][1], this->A[0][2], this->A[0][3],
-                           this->A[1][1], this->A[1][2], this->A[1][3],
-                           this->A[3][1], this->A[3][2], this->A[3][3]);
+                matr3<T>::Det(this->A[0][1], this->A[0][2], this->A[0][3],
+                              this->A[1][1], this->A[1][2], this->A[1][3],
+                              this->A[3][1], this->A[3][2], this->A[3][3]);
             InvA[1][2] =
-                -matr3::Det(this->A[0][0], this->A[0][2], this->A[0][3],
-                            this->A[1][0], this->A[1][2], this->A[1][3],
-                            this->A[3][0], this->A[3][2], this->A[3][3]);
+               -matr3<T>::Det(this->A[0][0], this->A[0][2], this->A[0][3],
+                              this->A[1][0], this->A[1][2], this->A[1][3],
+                              this->A[3][0], this->A[3][2], this->A[3][3]);
             InvA[2][2] =
-                matr3::Det(this->A[0][0], this->A[0][1], this->A[0][3],
-                           this->A[1][0], this->A[1][1], this->A[1][3],
-                           this->A[3][0], this->A[3][1], this->A[3][3]);
+                matr3<T>::Det(this->A[0][0], this->A[0][1], this->A[0][3],
+                              this->A[1][0], this->A[1][1], this->A[1][3],
+                              this->A[3][0], this->A[3][1], this->A[3][3]);
             InvA[3][2] =
-                -matr3::Det(this->A[0][0], this->A[0][1], this->A[0][2],
-                            this->A[1][0], this->A[1][1], this->A[1][2],
-                            this->A[3][0], this->A[3][1], this->A[3][2]);
+               -matr3<T>::Det(this->A[0][0], this->A[0][1], this->A[0][2],
+                              this->A[1][0], this->A[1][1], this->A[1][2],
+                              this->A[3][0], this->A[3][1], this->A[3][2]);
 
             InvA[0][3] =
-                -matr3::Det(this->A[0][1], this->A[0][2], this->A[0][3],
-                            this->A[1][1], this->A[1][2], this->A[1][3],
-                            this->A[2][1], this->A[2][2], this->A[2][3]);
+               -matr3<T>::Det(this->A[0][1], this->A[0][2], this->A[0][3],
+                              this->A[1][1], this->A[1][2], this->A[1][3],
+                              this->A[2][1], this->A[2][2], this->A[2][3]);
             InvA[1][3] =
-                matr3::Det(this->A[0][0], this->A[0][2], this->A[0][3],
-                           this->A[1][0], this->A[1][2], this->A[1][3],
-                           this->A[2][0], this->A[2][2], this->A[2][3]);
+                matr3<T>::Det(this->A[0][0], this->A[0][2], this->A[0][3],
+                              this->A[1][0], this->A[1][2], this->A[1][3],
+                              this->A[2][0], this->A[2][2], this->A[2][3]);
             InvA[2][3] =
-                -matr3::Det(this->A[0][0], this->A[0][1], this->A[0][3],
-                            this->A[1][0], this->A[1][1], this->A[1][3],
-                            this->A[2][0], this->A[2][1], this->A[2][3]);
+               -matr3<T>::Det(this->A[0][0], this->A[0][1], this->A[0][3],
+                              this->A[1][0], this->A[1][1], this->A[1][3],
+                              this->A[2][0], this->A[2][1], this->A[2][3]);
             InvA[3][3] =
-                matr3::Det(this->A[0][0], this->A[0][1], this->A[0][2],
-                           this->A[1][0], this->A[1][1], this->A[1][2],
-                           this->A[2][0], this->A[2][1], this->A[2][2]);
+                matr3<T>::Det(this->A[0][0], this->A[0][1], this->A[0][2],
+                              this->A[1][0], this->A[1][1], this->A[1][2],
+                              this->A[2][0], this->A[2][1], this->A[2][2]);
 
             /* divide by determinant */
             T det = Det();
-            InvA[0][0] /= det; InvA[1][0] /= det; InvA[2][0] /= det; InvA[3][0] /= det;
-            InvA[0][1] /= det; InvA[1][1] /= det; InvA[2][1] /= det; InvA[3][1] /= det;
-            InvA[0][2] /= det; InvA[1][2] /= det; InvA[2][2] /= det; InvA[3][2] /= det;
-            InvA[0][3] /= det; InvA[1][3] /= det; InvA[2][3] /= det; InvA[3][3] /= det;
+            det = 1 / det;
+            InvA[0][0] *= det; InvA[1][0] *= det; InvA[2][0] *= det; InvA[3][0] *= det;
+            InvA[0][1] *= det; InvA[1][1] *= det; InvA[2][1] *= det; InvA[3][1] *= det;
+            InvA[0][2] *= det; InvA[1][2] *= det; InvA[2][2] *= det; InvA[3][2] *= det;
+            InvA[0][3] *= det; InvA[1][3] *= det; InvA[2][3] *= det; InvA[3][3] *= det;
         } /* End of 'EvaluateInverseMatrix' function */
 
     public:
@@ -212,6 +195,11 @@ namespace scl::math
                    {0, 0, 0, 0} },
             IsInverseEvaluated(false) {}
 
+        /**
+         * Matrix contructor by array of values.
+         *
+         * \param A - array of values to set in matrix
+         */
         matr4(T A[4][4]) :
             InvA { {0, 0, 0, 0},
                    {0, 0, 0, 0},
@@ -344,7 +332,7 @@ namespace scl::math
             T s = sin((radians<T>)Angle);
 
             return matr4(c, s, 0, 0,
-                         -s, c, 0, 0,
+                        -s, c, 0, 0,
                          0, 0, 1, 0,
                          0, 0, 0, 1);
         }
@@ -398,7 +386,7 @@ namespace scl::math
             return matr4(r.X, u.X, -d.X, 0,
                          r.Y, u.Y, -d.Y, 0,
                          r.Z, u.Z, -d.Z, 0,
-                         -Location.Dot(r), -Location.Dot(u), Location.Dot(d), 1);
+                        -Location.Dot(r), -Location.Dot(u), Location.Dot(d), 1);
         }
 
     public: /* Matrices operations. */
@@ -462,22 +450,22 @@ namespace scl::math
         T Det() const
         {
             return
-                this->A[0][0] * matr3::Det(this->A[1][1], this->A[1][2], this->A[1][3],
-                                     this->A[2][1], this->A[2][2], this->A[2][3],
-                                     this->A[3][1], this->A[3][2], this->A[3][3]) +
-                -this->A[0][1] * matr3::Det(this->A[1][0], this->A[1][2], this->A[1][3],
-                                      this->A[2][0], this->A[2][2], this->A[2][3],
-                                      this->A[3][0], this->A[3][2], this->A[3][3]) +
-                this->A[0][2] * matr3::Det(this->A[1][0], this->A[1][1], this->A[1][3],
-                                     this->A[2][0], this->A[2][1], this->A[2][3],
-                                     this->A[3][0], this->A[3][1], this->A[3][3]) +
-                -this->A[0][3] * matr3::Det(this->A[1][0], this->A[1][1], this->A[1][2],
-                                      this->A[2][0], this->A[2][1], this->A[2][2],
-                                      this->A[3][0], this->A[3][1], this->A[3][2]);
+                this->A[0][0] * matr3<T>::Det(this->A[1][1], this->A[1][2], this->A[1][3],
+                                              this->A[2][1], this->A[2][2], this->A[2][3],
+                                              this->A[3][1], this->A[3][2], this->A[3][3]) +
+               -this->A[0][1] * matr3<T>::Det(this->A[1][0], this->A[1][2], this->A[1][3],
+                                              this->A[2][0], this->A[2][2], this->A[2][3],
+                                              this->A[3][0], this->A[3][2], this->A[3][3]) +
+                this->A[0][2] * matr3<T>::Det(this->A[1][0], this->A[1][1], this->A[1][3],
+                                              this->A[2][0], this->A[2][1], this->A[2][3],
+                                              this->A[3][0], this->A[3][1], this->A[3][3]) +
+               -this->A[0][3] * matr3<T>::Det(this->A[1][0], this->A[1][1], this->A[1][2],
+                                              this->A[2][0], this->A[2][1], this->A[2][2],
+                                              this->A[3][0], this->A[3][1], this->A[3][2]);
         }
 
         /**
-         * Evaluate inverse matrix.
+         * Get inversed matrix.
          *
          * \param None.
          * \return None.
@@ -510,8 +498,8 @@ namespace scl::math
         vec3<T> TransformVector(const vec3<T> &V) const
         {
             return vec3<T>(V.X * this->A[0][0] + V.Y * this->A[1][0] + V.Z * this->A[2][0],
-                              V.X * this->A[0][1] + V.Y * this->A[1][1] + V.Z * this->A[2][1],
-                              V.X * this->A[0][2] + V.Y * this->A[1][2] + V.Z * this->A[2][2]);
+                           V.X * this->A[0][1] + V.Y * this->A[1][1] + V.Z * this->A[2][1],
+                           V.X * this->A[0][2] + V.Y * this->A[1][2] + V.Z * this->A[2][2]);
         }
 
         /**

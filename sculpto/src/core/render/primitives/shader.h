@@ -94,6 +94,7 @@ namespace scl
          * \return success flag.
          */
 
+        virtual bool SetBool(const std::string &Name, bool Value) const = 0;
         virtual bool SetFloat(const std::string &Name, float Value) const = 0;
         virtual bool SetFloat2(const std::string &Name, const vec2 &Value) const = 0;
         virtual bool SetFloat3(const std::string &Name, const vec3 &Value) const = 0;
@@ -106,7 +107,32 @@ namespace scl
         virtual bool SetUInt2(const std::string &Name, const uvec2 &Value) const = 0;
         virtual bool SetUInt3(const std::string &Name, const uvec3 &Value) const = 0;
         virtual bool SetUInt4(const std::string &Name, const uvec4 &Value) const = 0;
+        virtual bool SetMatr3(const std::string &Name, const matr3 &Value) const = 0;
         virtual bool SetMatr4(const std::string &Name, const matr4 &Value) const = 0;
+
+        /**
+         * Set uniform variable to shader_props function.
+         *
+         * \param Location - platform specific shader variable location identifier.
+         * \param Value - unifrom variable value.
+         * \return success flag.
+         */
+
+        virtual bool SetBool(int Location, bool Value) const = 0;
+        virtual bool SetFloat (int Location, float Value) const = 0;
+        virtual bool SetFloat2(int Location, const vec2 &Value) const = 0;
+        virtual bool SetFloat3(int Location, const vec3 &Value) const = 0;
+        virtual bool SetFloat4(int Location, const vec4 &Value) const = 0;
+        virtual bool SetInt(int Location, int Value) const = 0;
+        virtual bool SetInt2(int Location, const ivec2 &Value) const = 0;
+        virtual bool SetInt3(int Location, const ivec3 &Value) const = 0;
+        virtual bool SetInt4(int Location, const ivec4 &Value) const = 0;
+        virtual bool SetUInt(int Location, u32 Value) const = 0;
+        virtual bool SetUInt2(int Location, const uvec2 &Value) const = 0;
+        virtual bool SetUInt3(int Location, const uvec3 &Value) const = 0;
+        virtual bool SetUInt4(int Location, const uvec4 &Value) const = 0;
+        virtual bool SetMatr3(int Location, const matr3 &Value) const = 0;
+        virtual bool SetMatr4(int Location, const matr4 &Value) const = 0;
 
     public:
         /**

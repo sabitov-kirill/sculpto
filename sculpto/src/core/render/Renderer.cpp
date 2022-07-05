@@ -11,11 +11,10 @@
 
 #include "renderer.h"
 #include "render_bridge.h"
-
 #include "mesh.h"
-#include "material.h"
 #include "primitives/frame_buffer.h"
 #include "primitives/buffer.h"
+#include "material/material.h"
 
 std::vector<scl::submission> scl::renderer::SubmissionQueue {};
 const scl::renderer_camera *scl::renderer::SceneCamera {};
@@ -23,8 +22,10 @@ const scl::renderer_camera *scl::renderer::SceneCamera {};
 void scl::renderer::Draw(const shared<mesh> &Mesh, const shared<material> &Material, const matr4 &Transform, const renderer_camera &Camera)
 {
     Material->Bind();
-    Material->GetShader()->SetMatr4("MatrW", Transform);
-    Material->GetShader()->SetMatr4("MatrWVP", Transform * Camera.GetViewProjection());
+    Material->Shader->SetMatr3("u_MatrN", matr3(Transform.Inverse().Transpose()));
+    Material->Shader->SetMatr4("u_MatrW", Transform);
+    Material->Shader->SetMatr4("u_MatrWVP", Transform * Camera.GetViewProjection());
+    Material->Shader->SetFloat3("u_CameraPosition", Camera.GetPosition());
     Mesh->GetVertexArray()->Bind();
     render_bridge::DrawIndices(Mesh->GetVertexArray());
 }
@@ -47,14 +48,15 @@ void scl::renderer::Submit(const shared<mesh> &Mesh, const shared<material> &Mat
 {
     if (SceneCamera == nullptr) return;
 
+    //Draw(Mesh, Material, Transform, *SceneCamera);
     SubmissionQueue.emplace_back<submission>({ Mesh, Material, Transform, *SceneCamera });
 }
 
 void scl::renderer::Flush(const shared<frame_buffer> &FrameBuffer)
 {
     FrameBuffer->Bind();
-    for (const auto &submission : SubmissionQueue)
-        renderer::Draw(submission.Mesh, submission.Material, submission.Transform, submission.Camera);
+    for (const submission &subm: SubmissionQueue)
+        renderer::Draw(subm.Mesh, subm.Material, subm.Transform, subm.Camera);
     FrameBuffer->Unbind();
 
     SubmissionQueue.clear();
@@ -62,8 +64,10 @@ void scl::renderer::Flush(const shared<frame_buffer> &FrameBuffer)
 
 void scl::renderer::FlushToDefaultFrameBuffer()
 {
-    for (const auto &submission : SubmissionQueue)
-        renderer::Draw(submission.Mesh, submission.Material, submission.Transform, submission.Camera);
+    for (const submission &subm : SubmissionQueue)
+        renderer::Draw(subm.Mesh, subm.Material, subm.Transform, subm.Camera);
+
+    SubmissionQueue.clear();
 }
 
 void scl::renderer::SubmitCamera(const renderer_camera &Camera)

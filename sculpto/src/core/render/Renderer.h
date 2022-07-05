@@ -28,14 +28,14 @@ namespace scl
     /* Render submission structure. Contains current scene camera, enviroment etc. */
     struct submission
     {
-        const shared<mesh>       &Mesh;             /* Submitted to render mesh. */
-        const shared<material>   &Material;         /* Submitted to render mesh material. */
-        const matr4              &Transform;        /* Submitted to render mesh tranformation matrix. */
+        shared<mesh>              Mesh;             /* Submitted to render mesh. */
+        shared<material>          Material;         /* Submitted to render mesh material. */
+        matr4                     Transform;        /* Submitted to render mesh tranformation matrix. */
         const renderer_camera    &Camera;           /* Scene camera, active during submission call. */
      /* cosnt enviroment         &Enviroment; */    /* Scene enviroment, active during submission call. */
 
         /* Submission default constructor. */
-        submission(const shared<mesh> &Mesh, const shared<material> &Material, const matr4 &Transform, const renderer_camera &Camera) :
+        submission(shared<mesh> Mesh, shared<material> Material, matr4 Transform, const renderer_camera &Camera) :
             Mesh(Mesh), Camera(Camera), Material(Material), Transform(Transform) {}
     };
 

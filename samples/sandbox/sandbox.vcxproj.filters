@@ -15,22 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\sandbox\external\entt\entt.hpp">
-      <Filter>sandbox\external\entt</Filter>
-    </ClInclude>
-    <ClInclude Include="src\editor_layer.h">
-      <Filter>src</Filter>
-    </ClInclude>
+    <ClInclude Include="src\sandbox.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\editor.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\editor_layer.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\editor_layer_windows.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
+    <ClCompile Include="src\sandbox.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\shaders\phong.vert.glsl" />
+    <None Include="assets\shaders\phong.frag.glsl" />
+    <None Include="assets\shaders\single_color.vert.glsl" />
+    <None Include="assets\shaders\single_color.frag.glsl" />
   </ItemGroup>
 </Project>

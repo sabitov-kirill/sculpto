@@ -95,7 +95,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>SCL_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SCL_RELEASE;SCL_ASSERTION_ENABLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\sculpto\src;..\..\sculpto\external;..\..\sculpto\external\entt;..\..\sculpto\external\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -134,17 +134,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\editor_layer.h" />
+    <ClInclude Include="src\sandbox.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\editor.cpp" />
-    <ClCompile Include="src\editor_layer.cpp" />
-    <ClCompile Include="src\editor_layer_windows.cpp" />
+    <ClCompile Include="src\sandbox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\sculpto\sculpto.vcxproj">
       <Project>{0FF69987-7BD5-1823-84ED-A3F9F04B7F84}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\shaders\phong.frag.glsl" />
+    <None Include="assets\shaders\phong.vert.glsl" />
+    <None Include="assets\shaders\single_color.frag.glsl" />
+    <None Include="assets\shaders\single_color.vert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

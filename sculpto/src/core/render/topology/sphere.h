@@ -15,6 +15,14 @@ namespace scl::topology
     /* Topology sphere object class. */
     class sphere : public grid
     {
+    public: /* Sphere data getter/setter functions. */
+        /* Topology vertices color setter function. */
+        void SetColor(const vec4 &Color)
+        {
+            for (size_t i = 0; i < Vertices.size(); i++)
+                Vertices[i].Color = Color;
+        }
+
     public:
         /**
          * Sphere topolgy obejct constructor by center point and radius.

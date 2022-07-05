@@ -163,6 +163,16 @@ void scl::gl_shader_program::Free()
     glDeleteProgram(Id), Id = 0;
 }
 
+bool scl::gl_shader_program::SetBool(const std::string &Name, bool Value) const
+{
+    SCL_CORE_ASSERT(Id == gl_shader_program::CurrentlyBoundShaderId,
+                    "Trying set shader variable to not binded shader.");
+    int location = GetOrCacheLocation(Name);
+
+    glUniform1i(location, Value);
+    return true;
+}
+
 bool scl::gl_shader_program::SetFloat(const std::string &Name, float Value) const
 {
     SCL_CORE_ASSERT(Id == gl_shader_program::CurrentlyBoundShaderId,
@@ -283,6 +293,17 @@ bool scl::gl_shader_program::SetUInt4(const std::string &Name, const uvec4 &Valu
     return true;
 }
 
+bool scl::gl_shader_program::SetMatr3(const std::string &Name, const matr3 &Value) const
+{
+    SCL_CORE_ASSERT(Id == gl_shader_program::CurrentlyBoundShaderId,
+                    "Trying set shader variable to not binded shader.");
+    int location = GetOrCacheLocation(Name);
+    if (location == -1) return false;
+
+    glUniformMatrix3fv(location, 1, FALSE, (float *)&Value);
+    return true;
+}
+
 bool scl::gl_shader_program::SetMatr4(const std::string &Name, const matr4 &Value) const
 {
     SCL_CORE_ASSERT(Id == gl_shader_program::CurrentlyBoundShaderId,
@@ -291,5 +312,95 @@ bool scl::gl_shader_program::SetMatr4(const std::string &Name, const matr4 &Valu
     if (location == -1) return false;
 
     glUniformMatrix4fv(location, 1, FALSE, (float *)&Value);
+    return true;
+}
+
+bool scl::gl_shader_program::SetBool(int Location, bool Value) const
+{
+    glUniform1i(Location, Value);
+    return true;
+}
+
+bool scl::gl_shader_program::SetFloat(int Location, float Value) const
+{
+    glUniform1f(Location, Value);
+    return true;
+}
+
+bool scl::gl_shader_program::SetFloat2(int Location, const vec2 &Value) const
+{
+    glUniform2fv(Location, 1, (float *)&Value);
+    return true;
+}
+
+bool scl::gl_shader_program::SetFloat3(int Location, const vec3 &Value) const
+{
+    glUniform3fv(Location, 1, (float *)&Value);
+    return true;
+}
+
+bool scl::gl_shader_program::SetFloat4(int Location, const vec4 &Value) const
+{
+    glUniform4fv(Location, 1, (float *)&Value);
+    return true;
+}
+
+bool scl::gl_shader_program::SetInt(int Location, int Value) const
+{
+    glUniform1i(Location, Value);
+    return true;
+}
+
+bool scl::gl_shader_program::SetInt2(int Location, const ivec2 &Value) const
+{
+    glUniform2iv(Location, 1, (int *)&Value);
+    return true;
+}
+
+bool scl::gl_shader_program::SetInt3(int Location, const ivec3 &Value) const
+{
+    glUniform3iv(Location, 1, (int *)&Value);
+    return true;
+}
+
+bool scl::gl_shader_program::SetInt4(int Location, const ivec4 &Value) const
+{
+    glUniform4iv(Location, 1, (int *)&Value);
+    return true;
+}
+
+bool scl::gl_shader_program::SetUInt(int Location, u32 Value) const
+{
+    glUniform1ui(Location, Value);
+    return true;
+}
+
+bool scl::gl_shader_program::SetUInt2(int Location, const uvec2 &Value) const
+{
+    glUniform2uiv(Location, 1, (u32 *)&Value);
+    return true;
+}
+
+bool scl::gl_shader_program::SetUInt3(int Location, const uvec3 &Value) const
+{
+    glUniform3uiv(Location, 1, (u32 *)&Value);
+    return true;
+}
+
+bool scl::gl_shader_program::SetUInt4(int Location, const uvec4 &Value) const
+{
+    glUniform4uiv(Location, 1, (u32 *)&Value);
+    return true;
+}
+
+bool scl::gl_shader_program::SetMatr3(int Location, const matr3 &Value) const
+{
+    glUniformMatrix3fv(Location, 1, FALSE, (float *)&Value);
+    return true;
+}
+
+bool scl::gl_shader_program::SetMatr4(int Location, const matr4 &Value) const
+{
+    glUniformMatrix4fv(Location, 1, FALSE, (float *)&Value);
     return true;
 }

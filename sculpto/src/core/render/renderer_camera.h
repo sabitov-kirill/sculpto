@@ -120,14 +120,14 @@ namespace scl
         /* Camer position setter function. */
         void SetPosition(const vec3 &Position) {
             this->Position = Position;
-            LookDirection = (Position - Focus).Normalized();
+            LookDirection = (Focus - Position).Normalized();
             RightDirection = LookDirection.Cross(UpDirection).Normalized();
             InvalidateView();
         }
         /* Camer focus point setter function. */
         void SetFocus(const vec3 &Focus) {
             this->Focus = Focus;
-            LookDirection = (Position - Focus).Normalized();
+            LookDirection = (Focus - Position).Normalized();
             RightDirection = LookDirection.Cross(UpDirection).Normalized();
             InvalidateView();
         }
@@ -145,7 +145,7 @@ namespace scl
             this->UpDirection = UpDirection;
             this->Focus = Focus;
             LookDirection = (Focus - Position).Normalized();
-            RightDirection = UpDirection.Cross(LookDirection).Normalized();
+            RightDirection = LookDirection.Cross(UpDirection).Normalized();
             InvalidateView();
         }
 

@@ -19,7 +19,7 @@ namespace scl
     private: /* Shader program data. */
         GLuint Id {};
         static int CurrentlyBoundShaderId;
-        mutable std::map<std::string, int> VariablesLocations {};
+        mutable std::unordered_map<std::string, int> VariablesLocations {};
 
     private:
         /**
@@ -83,6 +83,7 @@ namespace scl
          * \return success flag.
          */
 
+        bool SetBool(const std::string &Name, bool Value) const override;
         bool SetFloat(const std::string &Name, float Value) const override;
         bool SetFloat2(const std::string &Name, const vec2 &Value) const override;
         bool SetFloat3(const std::string &Name, const vec3 &Value) const override;
@@ -95,7 +96,24 @@ namespace scl
         bool SetUInt2(const std::string &Name, const uvec2 &Value) const override;
         bool SetUInt3(const std::string &Name, const uvec3 &Value) const override;
         bool SetUInt4(const std::string &Name, const uvec4 &Value) const override;
+        bool SetMatr3(const std::string &Name, const matr3 &Value) const override;
         bool SetMatr4(const std::string &Name, const matr4 &Value) const override;
+
+        bool SetBool(int Location, bool Value) const override;
+        bool SetFloat(int Location, float Value) const;
+        bool SetFloat2(int Location, const vec2 &Value) const;
+        bool SetFloat3(int Location, const vec3 &Value) const;
+        bool SetFloat4(int Location, const vec4 &Value) const;
+        bool SetInt(int Location, int Value) const;
+        bool SetInt2(int Location, const ivec2 &Value) const;
+        bool SetInt3(int Location, const ivec3 &Value) const;
+        bool SetInt4(int Location, const ivec4 &Value) const;
+        bool SetUInt(int Location, u32 Value) const;
+        bool SetUInt2(int Location, const uvec2 &Value) const;
+        bool SetUInt3(int Location, const uvec3 &Value) const;
+        bool SetUInt4(int Location, const uvec4 &Value) const;
+        bool SetMatr3(int Location, const matr3 &Value) const;
+        bool SetMatr4(int Location, const matr4 &Value) const;
 
         /**
          * Bind buffer to current render stage function.

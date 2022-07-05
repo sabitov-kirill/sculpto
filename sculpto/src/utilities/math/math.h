@@ -11,4 +11,5 @@
 #include "vec2.h"
 #include "vec3.h"
 #include "vec4.h"
+#include "matr3.h"
 #include "matr4.h"

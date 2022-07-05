@@ -57,7 +57,7 @@ namespace scl::math
          *
          * \param A - scalar value of all cordinates.
          */
-        explicit vec4(T A) : X(A), Y(A), Z(A), W(A) {}
+        vec4(T A) : X(A), Y(A), Z(A), W(A) {}
 
         /**
          * Vector constructor by three coordinates.
@@ -72,7 +72,7 @@ namespace scl::math
          * \param V - vector to get X, Y and Z coordinates
          * \param W - addition vector component
          */
-        explicit vec4(const vec3<T> &V, T W) : X(V.GetX()), Y(V.GetY()), Z(V.GetZ()), W(W) {}
+        vec4(const vec3<T> &V, T W) : X(V.GetX()), Y(V.GetY()), Z(V.GetZ()), W(W) {}
 
         /**
          * Vector constructor by 3D vector and additional component.
@@ -80,7 +80,7 @@ namespace scl::math
          * \param X - addition vector component
          * \param V - vector to get X, Y and Z coordinates
          */
-        explicit vec4(T X, const vec3<T> &V) : X(X), Y(V.GetX()), Z(V.GetY()), W(V.GetZ()) {}
+        vec4(T X, const vec3<T> &V) : X(X), Y(V.GetX()), Z(V.GetY()), W(V.GetZ()) {}
 
         /**
          * Vector copy constructor.

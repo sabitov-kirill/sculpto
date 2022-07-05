@@ -29,6 +29,7 @@ namespace scl
         FLOAT2,
         FLOAT3,
         FLOAT4,
+        MATR3,
         MATR4,
     };
 
@@ -62,11 +63,12 @@ namespace scl
         static api GetApi() { return Api; }
 
         /* Rendering context shader global binding points. */
-        static const int MESH_DATA_BINDING_POINT = 0;
-        static const int MATERIAL_DATA_BINDING_POINT = 1;
-        static const int MATERIAL_SURFACE_TEXTURE_SLOT = 0;
-        static const int MATERIAL_NORMAL_MAP_TEXTURE_SLOT = 1;
-        static const int MATERIAL_ALBEDO_MAP_TEXTURE_SLOT = 2;
+        static const int BINDING_POINT_MESH_DATA          = 0;
+        static const int BINDING_POINT_MATERIAL_DATA      = 5;
+        static const int BINDING_POINT_FREE               = 20;
+        static const int TEXTURE_SLOT_MATERIAL_DIFFUSE    = 0;
+        static const int TEXTURE_SLOT_MATERIAL_SPECULAR   = 1;
+        static const int TEXTURE_SLOT_MATERIAL_NORMAL_MAP = 2;
 
     private: /* render context data. */
         static api Api; /* Render system backend api. */

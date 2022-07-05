@@ -90,6 +90,9 @@
     <ClInclude Include="src\core\application\input.h">
       <Filter>src\core\application</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\application\input_keycodes.h">
+      <Filter>src\core\application</Filter>
+    </ClInclude>
     <ClInclude Include="src\core\application\layer.h">
       <Filter>src\core\application</Filter>
     </ClInclude>
@@ -108,6 +111,9 @@
     <ClInclude Include="src\core\application\window.h">
       <Filter>src\core\application</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\components\camera_controller_component.h">
+      <Filter>src\core\components</Filter>
+    </ClInclude>
     <ClInclude Include="src\core\components\components.h">
       <Filter>src\core\components</Filter>
     </ClInclude>
@@ -115,6 +121,12 @@
       <Filter>src\core\components</Filter>
     </ClInclude>
     <ClInclude Include="src\core\components\mesh_renderer_component.h">
+      <Filter>src\core\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\components\native_script_component.h">
+      <Filter>src\core\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\components\object_name_component.h">
       <Filter>src\core\components</Filter>
     </ClInclude>
     <ClInclude Include="src\core\components\transform_component.h">
@@ -138,7 +150,7 @@
     <ClInclude Include="src\core\gui\gui_layer.h">
       <Filter>src\core\gui</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\render\material.h">
+    <ClInclude Include="src\core\render\material\material.h">
       <Filter>src\core\render</Filter>
     </ClInclude>
     <ClInclude Include="src\core\render\mesh.h">
@@ -168,6 +180,9 @@
     <ClInclude Include="src\core\render\renderer.h">
       <Filter>src\core\render</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\render\renderer_camera.h">
+      <Filter>src\core\render</Filter>
+    </ClInclude>
     <ClInclude Include="src\core\render\topology\basis.h">
       <Filter>src\core\render\topology</Filter>
     </ClInclude>
@@ -184,6 +199,12 @@
       <Filter>src\core\render</Filter>
     </ClInclude>
     <ClInclude Include="src\core\scene\scene.h">
+      <Filter>src\core\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\scene\scene_object.h">
+      <Filter>src\core\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\scene\scene_object_behaviour.h">
       <Filter>src\core\scene</Filter>
     </ClInclude>
     <ClInclude Include="src\platform\directx\dx.h">
@@ -279,13 +300,9 @@
     <ClInclude Include="src\utilities\string\string_id.h">
       <Filter>src\utilities\string</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\scene\scene_object.h" />
-    <ClInclude Include="src\core\components\object_name_component.h" />
-    <ClInclude Include="src\core\components\camera_controller_component.h" />
-    <ClInclude Include="src\core\render\renderer_camera.h" />
-    <ClInclude Include="src\core\application\input_keycodes.h" />
-    <ClInclude Include="src\core\scene\scene_object_behaviour.h" />
-    <ClInclude Include="src\core\components\native_script_component.h" />
+    <ClInclude Include="src\utilities\math\matr3.h" />
+    <ClInclude Include="src\core\render\lights\light.h" />
+    <ClInclude Include="src\core\render\material\material_phong.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="external\stb_image\stb_image.cpp">
@@ -312,9 +329,6 @@
     <ClCompile Include="src\core\gui\gui_layer.cpp">
       <Filter>src\core\gui</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\render\material.cpp">
-      <Filter>src\core\render</Filter>
-    </ClCompile>
     <ClCompile Include="src\core\render\primitives\buffer.cpp">
       <Filter>src\core\render\primitives</Filter>
     </ClCompile>
@@ -337,6 +351,9 @@
       <Filter>src\core\render</Filter>
     </ClCompile>
     <ClCompile Include="src\core\render\renderer.cpp">
+      <Filter>src\core\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\render\renderer_camera.cpp">
       <Filter>src\core\render</Filter>
     </ClCompile>
     <ClCompile Include="src\core\render\topology\cube.cpp">
@@ -384,6 +401,5 @@
     <ClCompile Include="src\utilities\logger\logger.cpp">
       <Filter>src\utilities\logger</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\render\renderer_camera.cpp" />
   </ItemGroup>
 </Project>

@@ -55,5 +55,18 @@ namespace scl
         {
             return CreateShared<mesh>(TopologyObject);
         }
+
+        /**
+         * Mesh constructor by topology object and material.
+         *
+         * \param TopologyObject - topology object to create vertex array from.
+         * \return created mesh pointer.
+         */
+        template <typename Ttopo, typename ...Targs>
+        static shared<mesh> Create(Targs&&... Args)
+        {
+            Ttopo mesh_topo(Args...);
+            return CreateShared<mesh>(mesh_topo);
+        }
     };
 }

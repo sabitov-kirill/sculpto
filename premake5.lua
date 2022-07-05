@@ -17,9 +17,10 @@ IncludeDir["imgui"]     = "%{wks.location}/sculpto/external/imgui"
 IncludeDir["entt"]      = "%{wks.location}/sculpto/external/entt"
 
 group "Dependencies"
-	include "sculpto/external/glad"
-	include "sculpto/external/imgui"
+    include "sculpto/external/glad"
+    include "sculpto/external/imgui"
 group ""
 
 include "sculpto"
 include "samples/sandbox"
+include "editor"

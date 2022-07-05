@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "../render/material.h"
+#include "../render/material/material.h"
 
 namespace scl
 {

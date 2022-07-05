@@ -42,6 +42,7 @@ namespace scl
     using uvec2 = math::vec2<u32>;
     using uvec3 = math::vec3<u32>;
     using uvec4 = math::vec4<u32>;
+    using matr3 = math::matr3<float>;
     using matr4 = math::matr4<float>;
 
     /* Windows platform specific types */
