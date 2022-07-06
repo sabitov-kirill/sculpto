@@ -24,6 +24,11 @@ public:
     shared<mesh> PlaneMesh {};
     shared<mesh> SphereMesh {};
     shared<mesh> WhiteSphereMesh {};
+    shared<mesh> ConeMesh {};
+
+    point_light PointLight {};
+    directional_light DireLight {};
+    spot_light SpotLight {};
     renderer_camera RenderCamera { camera_projection_type::PERSPECTIVE };
 
     void OnInit() override
@@ -57,6 +62,10 @@ public:
         sphere_topo.SetColor(vec4 { 1 });
         WhiteSphereMesh = mesh::Create(sphere_topo);
 
+        topology::cone cone_topo(vec3(0, 1, 0), 0, vec3(0.5, 0, 0.5), 0.4, 20);
+        cone_topo.SetColor(vec4 { 0.2, 0.65, 0.38, 1 });
+        ConeMesh = mesh::Create<>(cone_topo);
+
         RenderCamera.SetPosition({ 7, 6, -5 });
         render_bridge::SetClearColor(vec4{ 0.11, 0.09, 0.10, 1 });
     }
@@ -72,11 +81,19 @@ public:
         delta += timer::GetDeltaTime();
 
         render_bridge::Clear();
+
         renderer::SubmitCamera(RenderCamera);
+
         renderer::Submit(CubeMesh, CrateMaterial,              matr4::Translate(vec3 { -0.5 }) * matr4::RotateX(timer::GetTime() * 30) * matr4::RotateY(timer::GetTime() * 30) * matr4::Translate(vec3 { 1 }));
         renderer::Submit(PlaneMesh, ForestLeavesMaterial,      matr4::Scale(vec3 { 5 }) * matr4::Translate(vec3 { -25, 0, -25 }));
         renderer::Submit(SphereMesh, SphereMaterial,           matr4::Scale(vec3 { 0.5 }) * matr4::Translate(vec3 { -2, 2, -2 }));
         renderer::Submit(WhiteSphereMesh, SingleColorMaterial, matr4::Scale(vec3 { 0.1 }) * matr4::Translate(vec3 { 2 }));
+        // renderer::Submit(ConeMesh, SingleColorMaterial,        vec3 { 1 }, vec3 {}, vec3 { -5, 5, -5 });
+
+        renderer::SubmitPointLight(vec3 { 2 }, vec3 { 1 }, 1.0f, 0.001f, 0.017f);
+        renderer::SubmitDirectionalLight(vec3 { 0.1, -1, 0.5 }, vec3 { 0.3 });
+        // renderer::SubmitSpotLight(vec3 { -5, 5, -5 }, vec3 { 0.5, -1, 0.5 }, vec3 { 0.2, 0.65, 0.38 }, cos(radians(degrees(15.0f))), cos(radians(degrees(30.0f))), cos(radians(degrees(15.0f))) - cos(radians(degrees(30.0f))));
+
         renderer::FlushToDefaultFrameBuffer();
     }
 

@@ -13,6 +13,13 @@
 
 namespace scl
 {
+    /* Texture types enum class. */
+    enum class texture_2d_type
+    {
+        COLOR,
+        DEPTH
+    };
+
     /* Texture interface. */
     class texture_2d
     {

@@ -16,7 +16,7 @@ scl::gl_constant_buffer::gl_constant_buffer(u32 BindingPoint, u32 Size)
 
     glGenBuffers(1, &Id);
     glBindBuffer(GL_UNIFORM_BUFFER, Id);
-    glBufferData(GL_UNIFORM_BUFFER, Size, nullptr, GL_DYNAMIC_DRAW);
+    glBufferData(GL_UNIFORM_BUFFER, Size, nullptr, GL_STATIC_DRAW);
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
@@ -52,6 +52,10 @@ void scl::gl_constant_buffer::Update(void *Data, u32 Size)
     {
         glBindBuffer(GL_UNIFORM_BUFFER, Id);
         glBufferSubData(GL_UNIFORM_BUFFER, 0, Size, Data);
+        GLint size = 0;
+        glGetBufferParameteriv(GL_UNIFORM_BUFFER, GL_BUFFER_SIZE, &size);
+        SCL_CORE_ASSERT(Size == size, "Error in updating buffer. Size of current data is diffrent then while creation.");
+
         glBindBuffer(GL_UNIFORM_BUFFER, 0);
     }
 }

@@ -33,7 +33,17 @@ void scl::gl_frame_buffer::Invalidate()
     glCreateFramebuffers(1, &Id);
     glBindFramebuffer(GL_FRAMEBUFFER, Id);
 
-    // Frame buffer color attachment creation
+    // Frame buffer color and depth attachments creation
+    if (Props.ColorAttachments) CreateColorAttachment();
+    if (Props.DepthAttachments) CreateDepthAttachment();
+
+    // Check frame buffer status, unbinding
+    SCL_CORE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Frame buffer creation error!");
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void scl::gl_frame_buffer::CreateColorAttachment()
+{
     glCreateTextures(GL_TEXTURE_2D, 1, &ColorAttachmentId);
     glBindTexture(GL_TEXTURE_2D, ColorAttachmentId);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, Props.Width, Props.Height,
@@ -43,18 +53,16 @@ void scl::gl_frame_buffer::Invalidate()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, ColorAttachmentId, 0);
+}
 
-    // Frame buffer depth attachment creation
+void scl::gl_frame_buffer::CreateDepthAttachment()
+{
     glCreateTextures(GL_TEXTURE_2D, 1, &DepthAttachmentId);
     glBindTexture(GL_TEXTURE_2D, DepthAttachmentId);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, Props.Width, Props.Height,
                  0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, nullptr);
 
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, DepthAttachmentId, 0);
-
-    // Check frame buffer status, unbinding
-    SCL_CORE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Frame buffer creation error!");
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 scl::gl_frame_buffer::gl_frame_buffer(const frame_buffer_props &Props) :
@@ -83,7 +91,7 @@ void scl::gl_frame_buffer::Free()
 {
     if (Id != 0) glDeleteFramebuffers(1, &Id), Id = 0;
     if (ColorAttachmentId != 0) glDeleteTextures(1, &ColorAttachmentId), ColorAttachmentId = 0;
-    if (DepthAttachmentId != 0)glDeleteTextures(1, &DepthAttachmentId), DepthAttachmentId = 0;
+    if (DepthAttachmentId != 0) glDeleteTextures(1, &DepthAttachmentId), DepthAttachmentId = 0;
 }
 
 void scl::gl_frame_buffer::Clear()

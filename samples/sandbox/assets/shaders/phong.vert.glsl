@@ -20,7 +20,6 @@ void main()
 {
     o_Color     = v_Color;
     o_TexCoords = v_TexCoords;
- // o_Normal    = mat3(transpose(inverse(u_MatrW))) * v_Normal;
     o_Normal    = u_MatrN * v_Normal;
     o_Pos       = vec3(u_MatrW * vec4(v_Pos, 1.0));
 

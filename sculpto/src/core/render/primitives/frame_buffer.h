@@ -24,6 +24,8 @@ namespace scl
         int Width { 16 }, Height { 16 }; /* Frame buffer texture size */
         int Samples = 1;                 /* Frame buffer samples count. */
         bool SwapChainTarget = false;    /* Frame buffer creating in purpose of rendering to screen. */
+        bool ColorAttachments = true;    /* Should create color attachment flag. */
+        bool DepthAttachments = true;    /* Should create depth attachment flag. */
 
         /* Frame buffer default constructor. */
         frame_buffer_props() = default;

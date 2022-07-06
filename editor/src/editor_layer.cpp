@@ -10,11 +10,6 @@
 
 #include "editor_layer.h"
 
-// AIMS FOR TODAY:
-//   - diffrent types of light casters                             (+)
-//   - api for easy passing structures to shader (glsl SSBOs)      (+)
-//   - multiple lights in scene via components                     (+)
-
 class camera_behaviour: public scene_object_behaviour
 {
     void OnUpdate() override
@@ -24,7 +19,7 @@ class camera_behaviour: public scene_object_behaviour
         if (input_system::GetKey(keycode::LBUTTON))
         {
             renderer_camera.Rotate(vec3(0, 1, 0),
-                                   -input_system::GetMousePosDeltaX() *
+                                  -input_system::GetMousePosDeltaX() *
                                    timer::GetDeltaTime() * 25);
             renderer_camera.Rotate(renderer_camera.GetRightDirection(),
                                    input_system::GetMousePosDeltaY() *
@@ -75,12 +70,13 @@ void editor::editor_layer::OnInit()
         { shader_type::PIXEL,  "assets/shaders/single_color.frag.glsl", false },
     }, "single_color_shader");
 
-    auto sphere_material = material_phong::Create(basic_lighting_shader, vec3 { 1, 0.5, 0.3 }, vec3 { 0.7, 0.2, 0.4 }, 128.0f);
+    auto sphere_material = material_phong::Create(basic_lighting_shader, vec3 { 1, 0.5, 0.3 }, vec3 { 0.7, 0.9, 0.9 }, 128.0f);
 
-    auto forest_leaves_material = material_phong::Create(basic_lighting_shader, vec3 { 1, 0.5, 0.3 }, vec3 {}, 64.0f);
-    forest_leaves_material->SetDiffuseMapTexture(texture_2d::Create("assets/images/forest_leaves/forest_leaves_02_diffuse_4k.jpg"));
+    auto floor_matrerial = material_phong::Create(basic_lighting_shader, vec3 { 1, 0.5, 0.3 }, vec3 { 0.6, 0.5, 0.55 }, 128.0f);
+ // floor_matrerial->SetDiffuseMapTexture(texture_2d::Create("assets/images/forest_leaves/forest_leaves_02_diffuse_4k.jpg"));
+    floor_matrerial->SetDiffuseMapTexture(texture_2d::Create("assets/images/wood.png"));
 
-    auto crate_material = material_phong::Create(basic_lighting_shader, vec3 { 1, 0.5, 0.3 }, vec3 {}, 64.0f);
+    auto crate_material = material_phong::Create(basic_lighting_shader, vec3 {}, vec3 {}, 8.0f);
     crate_material->SetDiffuseMapTexture(texture_2d::Create("assets/images/crate.png"));
     crate_material->SetSpecularMapTexture(texture_2d::Create("assets/images/crate_specular.png"));
 
@@ -89,7 +85,10 @@ void editor::editor_layer::OnInit()
     auto cube_mesh = mesh::Create<topology::cube>(vec3(0), vec3(1));
     auto plane_mesh = mesh::Create<topology::grid>(10, 10);
     auto sphere_mesh = mesh::Create<topology::sphere>(vec3 { 0 }, 1, 20);
-    auto cone_mesh = mesh::Create<topology::cone>(vec3(0, 1, 0), 0, vec3(0.5, 0, 0.5), 0.4, 20);
+
+    topology::cone cone_topo(vec3(0, 1, 0), 0, vec3(0.5, 0, 0.5), 0.4, 20);
+    cone_topo.SetColor(vec4 { 0.2, 0.65, 0.38, 1 });
+    auto cone_mesh = mesh::Create(cone_topo);
 
     topology::sphere sphere_topo = topology::sphere(vec3 { 0 }, 1, 20);
     sphere_topo.SetColor(vec4 { 1 });
@@ -114,7 +113,7 @@ void editor::editor_layer::OnInit()
 
     auto plane = EditorScene->CreateObject();
     plane.AddComponent<mesh_component>(plane_mesh);
-    plane.AddComponent<mesh_renderer_component>(forest_leaves_material);
+    plane.AddComponent<mesh_renderer_component>(floor_matrerial);
     plane.AddComponent<transform_component>(vec3 { 5 }, vec3 { 0 }, vec3 { -25, 0, -25 });
 
     auto sphere = EditorScene->CreateObject();
@@ -124,15 +123,19 @@ void editor::editor_layer::OnInit()
 
     auto cone = EditorScene->CreateObject();
     cone.AddComponent<mesh_component>(cone_mesh);
-    cone.AddComponent<mesh_renderer_component>(sphere_material);
+    cone.AddComponent<mesh_renderer_component>(single_color_material);
     cone.AddComponent<transform_component>(vec3 { 1 }, vec3 {}, vec3 { -5, 5, -5 });
-    cone.AddComponent<spot_light_component>(vec3 { 0.2, 0.95, 0.38 }, vec3 { 0.5, -1, 0.5 }, 15.0f, 30.0f);
+    cone.AddComponent<spot_light_component>(vec3 { 0.2, 0.65, 0.38 }, vec3 { 0.5, -1, 0.5 }, 15.0f, 30.0f);
 
     auto light_bulb = EditorScene->CreateObject();
     light_bulb.AddComponent<mesh_component>(light_bulb_mesh);
     light_bulb.AddComponent<mesh_renderer_component>(single_color_material);
-    light_bulb.AddComponent<transform_component>(vec3 { 0.1 }, vec3 { 0 }, vec3 { 2, 4, 2 });
-    light_bulb.AddComponent<point_light_component>(vec3 { 0.7, 0.65, 0.68 }, 1.0f, 0.14f, 0.07f);
+    light_bulb.AddComponent<transform_component>(vec3 { 0.1 }, vec3 { 0 }, vec3 { 2, 1, 2 });
+    light_bulb.AddComponent<point_light_component>(vec3 { 1 }, 1.0f, 0.001f, 0.017f);
+
+    auto projector = EditorScene->CreateObject();
+    projector.AddComponent<directional_light_component>(vec3 { 0.1, 0.07, 0.09 });
+    projector.AddComponent<transform_component>(vec3 {}, vec3 {}, vec3 { 0.7, -0.7, 0 });
 
     auto camera = EditorScene->CreateObject("MainCamera");
     camera.AddComponent<camera_controller_component>(rend_camera);

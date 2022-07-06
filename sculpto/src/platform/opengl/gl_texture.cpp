@@ -3,25 +3,19 @@
 
 void scl::gl_texture_2d::Create(const image &Image)
 {
-    if (Image.IsEmpty()) return;
+    SCL_CORE_ASSERT(!Image.IsEmpty(), "Trying to create texture from empty image!");
 
     // Generate texture primitive
     glGenTextures(1, &Id);
     SCL_CORE_ASSERT(Id != 0, "Error in creation OpenGL texture primitive.");
     glBindTexture(GL_TEXTURE_2D, Id);
 
-    // Calulate textire mips
-    float mips;
-    int w = Image.GetWidth(), h = Image.GetHeight();
-    mips = w > h ? h : w;
-    mips = ::log(mips) / math::LN2;
-    if (mips < 1) mips = 1;
-
     // Create texture pixels storage
+    int w = Image.GetWidth(), h = Image.GetHeight();
     int c = Image.GetComponentsCount();
     GLenum color_mode = c == 3 ? GL_RGB8 : c == 4 ? GL_RGBA8 : GL_R8;
     GLenum data_format = c == 3 ? GL_RGB : c == 4 ? GL_RGBA : GL_RED;
-    glTexStorage2D(GL_TEXTURE_2D, mips, color_mode, w, h);
+    glTexStorage2D(GL_TEXTURE_2D, 1, color_mode, w, h);
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, w, h, data_format, GL_UNSIGNED_BYTE, Image.GetRawData());
     glGenerateMipmap(GL_TEXTURE_2D);
 

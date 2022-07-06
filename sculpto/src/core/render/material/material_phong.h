@@ -92,7 +92,8 @@ namespace scl
          * \param Shader - material shader to use while mesh with this material rendering.
          */
         material_phong(shared<shader_program> Shader) :
-            material(Shader) {}
+            material(Shader),
+            DataBuffer(constant_buffer::Create(render_context::BINDING_POINT_MATERIAL_DATA, nullptr, sizeof(buffer_data))) {}
 
         /**
          * Material for blin-phong lighting model class contructor.

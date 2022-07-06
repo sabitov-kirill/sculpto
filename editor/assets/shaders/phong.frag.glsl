@@ -151,8 +151,8 @@ vec3 SpotLightShade(spot_light Light, vec3 Normal)
         vec3 reflect_dir = reflect(-light_dir, Normal);
         float spec_strength = pow(max(dot(view_dir, reflect_dir), 0.0),  Shininess);
         vec3 spec_coeff = vec3(0, 0, 0);
-        if ( IsSpecularMap) spec_coeff = texture(u_SpecularMap, o_TexCoords).rgb;
-        else                          spec_coeff =  Specular;
+        if (IsSpecularMap) spec_coeff = texture(u_SpecularMap, o_TexCoords).rgb;
+        else               spec_coeff =  Specular;
         vec3 specular = Light.Color * (spec_strength * spec_coeff);
 
         return ambient + (diffuse + specular) * intensity;
@@ -167,12 +167,9 @@ void main()
     vec3 norm = normalize(o_Normal);
     vec3 color = vec3(0, 0, 0);
 
-    for (uint i = 0; i < PointLightsCount; ++i)
-        color += PointLightShade(PointLights[i], norm);
-    for (uint i = 0; i < SpotLightsCount; ++i)
-        color += SpotLightShade(SpotLights[i], norm);
-    if (IsDirectionalLight)
-        color += DirectionalLightShade(DirectionalLight, norm);
+    for (uint i = 0; i < PointLightsCount; ++i) color += PointLightShade(PointLights[i], norm);
+    for (uint i = 0; i < SpotLightsCount; ++i)  color += SpotLightShade(SpotLights[i], norm);
+    if (IsDirectionalLight)                     color += DirectionalLightShade(DirectionalLight, norm);
 
     OutColor = vec4(color, 1);
 }

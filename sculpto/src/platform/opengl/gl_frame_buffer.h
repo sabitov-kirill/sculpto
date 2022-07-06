@@ -29,6 +29,8 @@ namespace scl
         const frame_buffer_props &GetFrameBufferProps() const;
         /* Api specific frame buffer collor atachment id getter function. */
         u32 GetColorAttachmentInnerId() const;
+        /* Api specific frame buffer collor atachment id getter function. */
+        u32 GetDepthAttachmentInnerId() const;
 
     private:
         /**
@@ -38,6 +40,22 @@ namespace scl
          * \return None.
          */
         void Invalidate();
+
+        /**
+         * Create color attachment for current frame buffer.
+         * 
+         * \param None.
+         * \return None.
+         */
+        void CreateColorAttachment();
+
+        /**
+         * Create depth attachment for current frame buffer.
+         * 
+         * \param None.
+         * \return None.
+         */
+        void CreateDepthAttachment();
 
     public:
         /**
