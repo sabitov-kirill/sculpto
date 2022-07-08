@@ -17,40 +17,39 @@ namespace scl
     class gl_texture_2d : public texture_2d
     {
     private: /* OpenGL texture data. */
+        mutable u32 Slot {};
         GLuint Id {};
-        int Slot {};
 
     public: /* OpenGL texture getter/setter functions. */
-        /* Texture slot getter function.
-         * Set during texture binding.
-         */
-        int GetSlot() { return Slot; }
+        /* Backend api render primitive hadnle getter function. */
+        render_primitive::handle GetHandle() const override { return Id; }
 
     private:
         /**
-         * Create OpenGL texture from image container function.
+         * Create OpenGL color texture from image container function.
          * 
          * \param Image - image container to create texture from.
          * \return None.
          */
-        void Create(const image &Image);
+        void CreateColor(const image &Image);
+
+        /**
+         * Create OpenGL depth texture function.
+         * 
+         * \param None.
+         * \return None.
+         */
+        void CreateDepth(const image &Image);
 
     public:
         /**
          * OpenGL texture constructor by image container.
          *
-         * \param Image - image container to get data from.
+         * \param Image - image container to get data from (pixels data can be null).
+         * \param Type - texture type.
          * \return created texture pointer.
          */
-        gl_texture_2d(const image &Image);
-
-        /**
-         * OpenGL texture constructor by image loaded from specified file.
-         *
-         * \param FileName - file name to load image from.
-         * \return pointer to created texture.
-         */
-        gl_texture_2d(const std::string &FileName);
+        gl_texture_2d(const image &Image, texture_2d_type Type);
 
         /**
          * Bind texture to current render stage function.
@@ -58,7 +57,7 @@ namespace scl
          * \param None.
          * \return None.
          */
-        void Bind(int Slot) override;
+        void Bind(u32 Slot) const override;
 
         /**
          * Unbind texture from current render stage function.
@@ -66,7 +65,7 @@ namespace scl
          * \param None.
          * \return None.
          */
-        void Unbind() override;
+        void Unbind() const override;
 
         /**
          * Unload texture from GPU memory function.

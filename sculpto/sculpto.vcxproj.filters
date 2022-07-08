@@ -307,6 +307,11 @@
     <ClInclude Include="src\core\components\lights\point_light_component.h" />
     <ClInclude Include="src\core\components\lights\directional_light_component.h" />
     <ClInclude Include="src\core\components\lights\spot_light_component.h" />
+    <ClInclude Include="src\core\render\primitives\render_primitive.h" />
+    <ClInclude Include="src\utilities\assets_manager\shaders_load.h" />
+    <ClInclude Include="src\utilities\assets_manager\shaders_preprocessor.h" />
+    <ClInclude Include="src\utilities\string\split_string.h" />
+    <ClInclude Include="src\utilities\assets_manager\files_load.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="external\stb_image\stb_image.cpp">
@@ -406,5 +411,8 @@
       <Filter>src\utilities\logger</Filter>
     </ClCompile>
     <ClCompile Include="src\core\render\topology\cone.cpp" />
+    <ClCompile Include="src\utilities\assets_manager\shaders_preprocessor.cpp" />
+    <ClCompile Include="src\utilities\assets_manager\shaders_load.cpp" />
+    <ClCompile Include="src\utilities\assets_manager\files_load.cpp" />
   </ItemGroup>
 </Project>

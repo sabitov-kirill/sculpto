@@ -87,8 +87,12 @@ void editor::editor_layer::DrawViewportWindow()
             EditorScene->OnEvent(e);
         }
 
-        ImGui::Image((void *)main_frame_buffer->GetColorAttachmentInnerId(),
+        ImGui::Image((ImTextureID)main_frame_buffer->GetColorAttachment()->GetHandle(),
                      ImVec2(window_size.x, window_size.y), {1, 1}, {0, 0});
+
+        // ImGui::Image((ImTextureID)EditorScene->ShadowCaster->ShadowMap->GetDepthAttachment()->GetHandle(),
+        //              ImVec2(window_size.x, window_size.y), {1, 1}, {0, 0});
+
         if (ImGui::IsItemHovered()) ImGui::CaptureMouseFromApp(false);
     }
     ImGui::End();

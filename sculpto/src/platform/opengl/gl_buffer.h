@@ -17,10 +17,14 @@ namespace scl
     class gl_constant_buffer : public constant_buffer
     {
     private: /*  Constant (uniform) buffer data. */
+        mutable u32 BindingPoint {};
         GLuint Id {};
         u32 Size {};
 
     public:
+        /* Backend api render primitive hadnle getter function. */
+        render_primitive::handle GetHandle() const override { return Id; }
+
         /**
          * Constant (uniform) empty buffer constructor.
          *
@@ -28,7 +32,7 @@ namespace scl
          * \param Size - buffer data size.
          * \return constant buffer pointer.
          */
-        gl_constant_buffer(u32 BindingPoint, u32 Size);
+        gl_constant_buffer(u32 Size);
 
         /**
          *  Constant (uniform) buffer filled with data constructor.
@@ -38,7 +42,7 @@ namespace scl
          * \param Size - buffer data size.
          * \return constant buffer pointer.
          */
-        gl_constant_buffer(u32 BindingPoint, const void *Data, u32 Size);
+        gl_constant_buffer(const void *Data, u32 Size);
 
         /* Constant buffer default destructor. */
         ~gl_constant_buffer() override;
@@ -49,7 +53,7 @@ namespace scl
          * \param None.
          * \return None.
          */
-        void Bind() const override;
+        void Bind(u32 BindingPoint) const override;
 
         /**
          * Unbind buffer from current render stage function.
@@ -84,11 +88,14 @@ namespace scl
         GLuint Id {};
         u32 VerticesCount {};
 
-    public:
+    public: /* Vertex buffer data getter/setter functions. */
         /* Vertex buffer vertices count getter function. */
         u32 GetCount() const override { return VerticesCount; }
 
     public:
+        /* Backend api render primitive hadnle getter function. */
+        render_primitive::handle GetHandle() const override { return Id; }
+
         /**
          * Empty vertex buffer constructor.
          *
@@ -153,7 +160,11 @@ namespace scl
         u32 IndicesCount {};
 
     public: /* Index buffer getter/setter functions. */
+        /* Index buffer indices count getter function. */
         u32 GetCount() const override { return IndicesCount; };
+
+        /* Backend api render primitive hadnle getter function. */
+        render_primitive::handle GetHandle() const override { return Id; }
 
     public:
         /**

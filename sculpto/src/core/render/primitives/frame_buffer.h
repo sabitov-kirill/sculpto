@@ -8,14 +8,12 @@
 
 #pragma once
 
-#include "base.h"
+#include "render_primitive.h"
 
 namespace scl
 {
-    /* Frame buffer enum. */
-    enum class frame_buffer_format
-    {
-    };
+    /* Texture class declaration. */
+    class texture_2d;
 
     /* Frame buffer specification structure. */
     struct frame_buffer_props
@@ -24,8 +22,9 @@ namespace scl
         int Width { 16 }, Height { 16 }; /* Frame buffer texture size */
         int Samples = 1;                 /* Frame buffer samples count. */
         bool SwapChainTarget = false;    /* Frame buffer creating in purpose of rendering to screen. */
-        bool ColorAttachments = true;    /* Should create color attachment flag. */
-        bool DepthAttachments = true;    /* Should create depth attachment flag. */
+        int ColorAttachmentsCount = 1;   /* Frame buffer color attachments count. */
+        int DepthAttachmentsCount = 1;   /* Frame buffer depth attachments count. */
+                                         /* Note: at least one of attachments count must be > 0. */
 
         /* Frame buffer default constructor. */
         frame_buffer_props() = default;
@@ -36,21 +35,26 @@ namespace scl
          * \param Width, Height - frame buffer texture size.
          * \param Samples - frame buffer samples count.
          * \param SwapChainTarget - frame buffer creating in purpose of rendering to screen.
+         * \param ColorAttachmentsCount - frame buffer color attachments count.
+         * \param DepthAttachmentsCount - frame buffer depth attachments count.
          */
-        frame_buffer_props(int Width, int Height, int Samples, bool SwapChainTarget) :
-            Width(Width), Height(Height), Samples(Samples), SwapChainTarget(SwapChainTarget) {}
+        frame_buffer_props(int Width, int Height, int Samples = 1, bool SwapChainTarget = false, int ColorAttachmentsCount = 1, int DepthAttachmentsCount = 1) :
+            Width(Width), Height(Height), Samples(Samples), SwapChainTarget(SwapChainTarget),
+            ColorAttachmentsCount(ColorAttachmentsCount), DepthAttachmentsCount(DepthAttachmentsCount) {}
     };
 
     /* Frame buffer interface. */
-    class frame_buffer
+    class frame_buffer: public render_primitive
     {
     public: /* Frame buffer getter/setter functions. */
         /* Frame buffer properties setter function. */
         virtual void SetFrameBufferProps(const frame_buffer_props &Props) = 0;
         /* Frame buffer properties getter function. */
         virtual const frame_buffer_props &GetFrameBufferProps() const = 0;
-        /* Api specific frame buffer collor atachment id getter function. */
-        virtual u32 GetColorAttachmentInnerId() const = 0;
+        /* Frame buffer color attachment getter function. */
+        virtual const shared<texture_2d> &GetColorAttachment(int Index = 0) const = 0;
+        /* Frame buffer depth attachment getter function. */
+        virtual const shared<texture_2d> &GetDepthAttachment(int Index = 0) const = 0;
 
     public:
         /**
@@ -59,7 +63,7 @@ namespace scl
          * \param None.
          * \return None.
          */
-        virtual void Bind() = 0;
+        virtual void Bind() const = 0;
 
         /**
          * Unbind frame buffer from current render stage function.
@@ -67,7 +71,7 @@ namespace scl
          * \param None.
          * \return None.
          */
-        virtual void Unbind() = 0;
+        virtual void Unbind() const = 0;
 
         /**
          * Unload frame buffer render target texture from GPU memory function.

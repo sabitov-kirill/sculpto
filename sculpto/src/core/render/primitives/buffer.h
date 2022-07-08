@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "base.h"
+#include "render_primitive.h"
 #include "../render_context.h"
 #include "../vertex.h"
 
@@ -37,17 +37,8 @@ namespace scl
     };
 
     /* Constant buffer (uniform buffer) interface. */
-    class constant_buffer abstract
+    class constant_buffer : public render_primitive
     {
-    protected: /* Buffer data. */
-        u32 BindingPoint {};
-
-    public: /* Constant (uniform) buffer getter/setter functions. */
-        /* Buffer binding point getter function. */
-        u32 GetBindingPoint() const { return BindingPoint; }
-        /* Buffer binding point setter function. */
-        void SetBindingPoint(u32 BindingPoint) { this->BindingPoint = BindingPoint; }
-
     public:
         /* Constant buffer default destructor. */
         virtual ~constant_buffer() = default;
@@ -58,7 +49,7 @@ namespace scl
          * \param None.
          * \return None.
          */
-        virtual void Bind() const = 0;
+        virtual void Bind(u32 BindingPoint) const = 0;
 
         /**
          * Unbind buffer from current render stage function.
@@ -92,7 +83,7 @@ namespace scl
          * \param Size - buffer data size.
          * \return constant buffer pointer.
          */
-        static shared<constant_buffer> Create(u32 BindingPoint, u32 Size);
+        static shared<constant_buffer> Create(u32 Size);
 
         /**
          * Create API specific constant buffer filled with data.
@@ -102,11 +93,11 @@ namespace scl
          * \param Size - buffer data size.
          * \return constant buffer pointer.
          */
-        static shared<constant_buffer> Create(u32 BindingPoint, const void *Data, u32 Size);
+        static shared<constant_buffer> Create(const void *Data, u32 Size);
     };
 
     /* Vertex bufer interface. */
-    class vertex_buffer abstract
+    class vertex_buffer : public render_primitive
     {
     protected: /* Vertex buffer data. */
         vertex_layout VertexLayout {};
@@ -188,7 +179,7 @@ namespace scl
     };
 
     /* Vertices indices buffer interface. */
-    class index_buffer abstract
+    class index_buffer : public render_primitive
     {
     public:
         /* Index buffer default destructor. */

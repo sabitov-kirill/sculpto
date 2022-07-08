@@ -14,7 +14,7 @@ namespace scl
 
     struct native_script_component
     {
-        scene_object_behaviour *ObjectBehaviour;
+        scene_object_behaviour *ObjectBehaviour {};
 
         scene_object_behaviour *(*Instanciate)();
         void (*Delete)(native_script_component *NativeScript);

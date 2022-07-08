@@ -11,11 +11,11 @@
 #include "buffer.h"
 #include "platform/opengl/gl_buffer.h"
 
-scl::shared<scl::constant_buffer> scl::constant_buffer::Create(u32 BindingPoint, u32 Size)
+scl::shared<scl::constant_buffer> scl::constant_buffer::Create(u32 Size)
 {
     switch (render_context::GetApi())
     {
-    case scl::render_context::api::OpenGL:  return CreateShared<scl::gl_constant_buffer>(BindingPoint, Size);
+    case scl::render_context::api::OpenGL:  return CreateShared<scl::gl_constant_buffer>(Size);
     case scl::render_context::api::DirectX: SCL_CORE_ASSERT(0, "This API is currently unsupported."); return nullptr;
     }
 
@@ -23,11 +23,11 @@ scl::shared<scl::constant_buffer> scl::constant_buffer::Create(u32 BindingPoint,
     return nullptr;
 }
 
-scl::shared<scl::constant_buffer> scl::constant_buffer::Create(u32 BindingPoint, const void *Data, u32 Size)
+scl::shared<scl::constant_buffer> scl::constant_buffer::Create(const void *Data, u32 Size)
 {
     switch (render_context::GetApi())
     {
-    case scl::render_context::api::OpenGL:  return CreateShared<scl::gl_constant_buffer>(BindingPoint, Data, Size);
+    case scl::render_context::api::OpenGL:  return CreateShared<scl::gl_constant_buffer>(Data, Size);
     case scl::render_context::api::DirectX: SCL_CORE_ASSERT(0, "This API is currently unsupported."); return nullptr;
     }
 

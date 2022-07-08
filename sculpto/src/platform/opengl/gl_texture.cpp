@@ -1,10 +1,8 @@
 #include "sclpch.h"
 #include "gl_texture.h"
 
-void scl::gl_texture_2d::Create(const image &Image)
+void scl::gl_texture_2d::CreateColor(const image &Image)
 {
-    SCL_CORE_ASSERT(!Image.IsEmpty(), "Trying to create texture from empty image!");
-
     // Generate texture primitive
     glGenTextures(1, &Id);
     SCL_CORE_ASSERT(Id != 0, "Error in creation OpenGL texture primitive.");
@@ -20,30 +18,41 @@ void scl::gl_texture_2d::Create(const image &Image)
     glGenerateMipmap(GL_TEXTURE_2D);
 
     // Configure texture sampling.
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-scl::gl_texture_2d::gl_texture_2d(const image &Image)
+void scl::gl_texture_2d::CreateDepth(const image &Image)
 {
-    this->Create(Image);
+    glCreateTextures(GL_TEXTURE_2D, 1, &Id);
+    glBindTexture(GL_TEXTURE_2D, Id);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, Image.GetWidth(), Image.GetHeight(),
+                 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+    float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+    glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 }
 
-scl::gl_texture_2d::gl_texture_2d(const std::string &FileName)
+scl::gl_texture_2d::gl_texture_2d(const image &Image, texture_2d_type Type)
 {
-    image texture_image(FileName);
-    if (!texture_image.IsEmpty())
+    switch (Type)
     {
-        texture_image.FlipHorizontaly();
-        this->Create(texture_image);
+    case scl::texture_2d_type::COLOR:   this->CreateColor(Image); return;
+    case scl::texture_2d_type::DEPTH:   this->CreateDepth(Image); return;
     }
+
+    SCL_CORE_ASSERT(0, "Unknown texture type.");
 }
 
-void scl::gl_texture_2d::Bind(int Slot)
+void scl::gl_texture_2d::Bind(u32 Slot) const
 {
     if (Id == 0) return;
 
@@ -52,7 +61,7 @@ void scl::gl_texture_2d::Bind(int Slot)
     glBindTexture(GL_TEXTURE_2D, Id);
 }
 
-void scl::gl_texture_2d::Unbind()
+void scl::gl_texture_2d::Unbind() const
 {
     glActiveTexture(GL_TEXTURE0 + this->Slot);
     glBindTexture(GL_TEXTURE_2D, 0);

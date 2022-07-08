@@ -9,6 +9,7 @@
 #pragma once
 
 #include "gl.h"
+#include "gl_texture.h"
 #include "core/render/primitives/frame_buffer.h"
 
 namespace scl
@@ -19,18 +20,19 @@ namespace scl
     private:
         frame_buffer_props Props;
         GLuint Id;
-        GLuint ColorAttachmentId;
-        GLuint DepthAttachmentId;
+        std::vector<shared<texture_2d>> ColorAttachments;
+        shared<texture_2d> DepthAttachment;
+        u32 ClearConfig;
 
     public: /* Frame buffer getter/setter functions. */
         /* Frame buffer properties setter function. */
         void SetFrameBufferProps(const frame_buffer_props &Props);
         /* Frame buffer properties getter function. */
         const frame_buffer_props &GetFrameBufferProps() const;
-        /* Api specific frame buffer collor atachment id getter function. */
-        u32 GetColorAttachmentInnerId() const;
-        /* Api specific frame buffer collor atachment id getter function. */
-        u32 GetDepthAttachmentInnerId() const;
+        /* Frame buffer color attachment getter function. */
+        const shared<texture_2d> &GetColorAttachment(int Index) const override;
+        /* Frame buffer depth attachment getter function. */
+        const shared<texture_2d> &GetDepthAttachment(int Index) const override;
 
     private:
         /**
@@ -58,6 +60,9 @@ namespace scl
         void CreateDepthAttachment();
 
     public:
+        /* Backend api render primitive hadnle getter function. */
+        render_primitive::handle GetHandle() const override { return Id; }
+
         /**
          * OpenGL frame buffer constructor.
          * 
@@ -74,7 +79,7 @@ namespace scl
          * \param None.
          * \return None.
          */
-        void Bind() override;
+        void Bind() const override;
 
         /**
          * Unbind frame buffer from current render stage function.
@@ -82,7 +87,7 @@ namespace scl
          * \param None.
          * \return None.
          */
-        void Unbind() override;
+        void Unbind() const override;
 
         /**
          * Unload frame buffer render target texture from GPU memory function.

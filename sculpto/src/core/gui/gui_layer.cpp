@@ -41,7 +41,6 @@ void scl::gui_layer::OnInit()
 #ifdef SCL_PLATFORM_WINDOWS
     const application &app = application::Get();
     ImGui_ImplWin32_Init(app.GetWindow().GetHandle());
-    SCL_CORE_INFO("ImGui Win32 context initialised.");
 #else
 #   error Other platforms currently dont support GUI
 #endif
@@ -51,10 +50,12 @@ void scl::gui_layer::OnInit()
     {
     case render_context::api::OpenGL:
         ImGui_ImplOpenGL3_Init("#version 450 core");
-        SCL_CORE_INFO("ImGui renderer initialised.");
         break;
-    case render_context::api::DirectX: SCL_CORE_ASSERT(0, "DirectX currently dont support GUI"); return;
-    default: SCL_CORE_ASSERT(0, "Other platforms currently dont support GUI"); return;
+    case render_context::api::DirectX:
+        SCL_CORE_ASSERT(0, "DirectX currently dont support GUI");
+        return;
+    default:
+        SCL_CORE_ASSERT(0, "Other platforms currently dont support GUI"); return;
     }
 }
 
@@ -65,16 +66,17 @@ void scl::gui_layer::OnClose()
     {
     case render_context::api::OpenGL:
         ImGui_ImplOpenGL3_Shutdown();
-        SCL_CORE_INFO("ImGui renderer deinitialised.");
         break;
-    case render_context::api::DirectX: SCL_CORE_ASSERT(0, "DirectX currently dont support GUI"); return;
-    default: SCL_CORE_ASSERT(0, "Other platforms currently dont support GUI"); return;
+    case render_context::api::DirectX:
+        SCL_CORE_ASSERT(0, "DirectX currently dont support GUI");
+        return;
+    default:
+        SCL_CORE_ASSERT(0, "Other render APIs currently dont support GUI"); return;
     }
 
     // Deinitialise ImGui render api dependent context
 #ifdef SCL_PLATFORM_WINDOWS
     ImGui_ImplWin32_Shutdown();
-    SCL_CORE_INFO("ImGui Win32 context deinitialised.");
 #else
 #   error Other platforms currently dont support GUI
 #endif

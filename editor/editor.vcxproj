@@ -147,10 +147,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="assets\shaders\phong.frag.glsl" />
-    <None Include="assets\shaders\phong.vert.glsl" />
-    <None Include="assets\shaders\single_color.frag.glsl" />
-    <None Include="assets\shaders\single_color.vert.glsl" />
+    <None Include="assets\shaders\binding_points.glsl" />
+    <None Include="assets\shaders\lights_data.glsl" />
+    <None Include="assets\shaders\material_data.glsl" />
+    <None Include="assets\shaders\phong.glsl" />
+    <None Include="assets\shaders\scene_data.glsl" />
+    <None Include="assets\shaders\single_color.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

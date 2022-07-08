@@ -29,6 +29,9 @@ namespace scl
         constexpr static GLenum GetGLShaderVariableType(shader_variable_type Type);
 
     public:
+        /* Backend api render primitive hadnle getter function. */
+        render_primitive::handle GetHandle() const override { return Id; }
+
         /**
          * Vertex buffer default constructor.
          *

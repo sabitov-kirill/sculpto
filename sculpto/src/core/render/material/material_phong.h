@@ -93,7 +93,7 @@ namespace scl
          */
         material_phong(shared<shader_program> Shader) :
             material(Shader),
-            DataBuffer(constant_buffer::Create(render_context::BINDING_POINT_MATERIAL_DATA, nullptr, sizeof(buffer_data))) {}
+            DataBuffer(constant_buffer::Create(sizeof(buffer_data))) {}
 
         /**
          * Material for blin-phong lighting model class contructor.
@@ -110,7 +110,7 @@ namespace scl
             Data.Specular = Specular;
             Data.Shininess = Shininess;
 
-            DataBuffer = constant_buffer::Create(render_context::BINDING_POINT_MATERIAL_DATA, &Data, sizeof(buffer_data));
+            DataBuffer = constant_buffer::Create(&Data, sizeof(buffer_data));
         }
 
         /**
@@ -122,7 +122,7 @@ namespace scl
         void Bind() const override
         {
             if (Shader != nullptr) Shader->Bind();
-            if (DataBuffer != nullptr) DataBuffer->Bind();
+            if (DataBuffer != nullptr) DataBuffer->Bind(render_context::BINDING_POINT_MATERIAL_DATA);
 
             if (Data.IsSpecularMap) SpecularMapTexture->Bind(render_context::TEXTURE_SLOT_MATERIAL_SPECULAR);
             if (Data.IsDiffuseMap) DiffuseMapTexture->Bind(render_context::TEXTURE_SLOT_MATERIAL_DIFFUSE);

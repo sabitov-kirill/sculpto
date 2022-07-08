@@ -17,9 +17,10 @@ namespace scl
     class gl_shader_program : public shader_program
     {
     private: /* Shader program data. */
+        std::string DebugName {};
         GLuint Id {};
-        static int CurrentlyBoundShaderId;
         mutable std::unordered_map<std::string, int> VariablesLocations {};
+        static int CurrentlyBoundShaderId;
 
     private:
         /**
@@ -50,10 +51,10 @@ namespace scl
         /**
          * Create shader_props program from shaders data arary, stored in base shader_props class.
          * 
-         * \param None.
+         * \param Shaders - shaders array.
          * \return success flag.
          */
-        bool Create();
+        bool Create(const std::vector<shader_props> &Shaders);
 
         /**
          * Get shader variable location from cache if ys exist or create it ande cache to memory function.
@@ -64,13 +65,16 @@ namespace scl
         int GetOrCacheLocation(const std::string &Name) const;
 
     public:
+        /* Backend api render primitive hadnle getter function. */
+        render_primitive::handle GetHandle() const override { return Id; }
+
         /**
          * Shader program default constructor.
          *
          * \param Shaders - shaders array.
          * \param DubugName - shader program debug name.
          */
-        gl_shader_program(const std::initializer_list<shader_props> &Shaders, const std::string &DebugName);
+        gl_shader_program(const std::vector<shader_props> &Shaders, const std::string &DebugName);
 
         /* Default destructor. */
         ~gl_shader_program();
@@ -135,7 +139,7 @@ namespace scl
          * Update (recompile from dource file).
          *
          */
-        void Update() override;
+        void Update(const std::vector<shader_props> &Shaders) override;
 
         /**
          * Unload shader_props program from GPU memory function.

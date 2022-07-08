@@ -27,6 +27,12 @@ namespace scl::math
                 {0, 0, 1, 0},
                 {0, 0, 0, 1} } {}
 
+        /* Default matrix data copy constructor. */
+        matr4_data(const matr4_data &Other)
+        {
+            memcpy(A, Other.A, sizeof(T) * 16);
+        }
+
         /**
          * Matrix data constructor by 16 values.
          * 
@@ -217,6 +223,19 @@ namespace scl::math
          */
         matr4(T A00) :
             matr4_data<T>(A00),
+            InvA { {0, 0, 0, 0},
+                   {0, 0, 0, 0},
+                   {0, 0, 0, 0},
+                   {0, 0, 0, 0} },
+            IsInverseEvaluated(false) {}
+
+        /**
+         * Matrix constructor by matrix data.
+         * 
+         * \param Other - matrix data.
+         */
+        matr4(const matr4_data<T> &Other) :
+            matr4_data<T>(Other),
             InvA { {0, 0, 0, 0},
                    {0, 0, 0, 0},
                    {0, 0, 0, 0},

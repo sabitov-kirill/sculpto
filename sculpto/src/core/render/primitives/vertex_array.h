@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "base.h"
 #include "buffer.h"
 
 namespace scl
@@ -25,7 +24,7 @@ namespace scl
     };
 
     /* Mesh interface. */
-    class vertex_array abstract
+    class vertex_array : public render_primitive
     {
     private: /* Vertex array data. */
         mesh_type Type;

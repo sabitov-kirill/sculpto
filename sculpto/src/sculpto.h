@@ -38,3 +38,7 @@
 #include "core/scene/scene_object.h"
 #include "core/scene/scene_object_behaviour.h"
 #include "core/components/components.h"
+
+/* Assets manager module. */
+#include "utilities/assets_manager/shaders_preprocessor.h"
+#include "utilities/assets_manager/shaders_load.h"

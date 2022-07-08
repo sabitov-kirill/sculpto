@@ -61,14 +61,8 @@ void editor::editor_layer::OnInit()
     /*
      * Creating render primitves
      */
-    auto basic_lighting_shader = shader_program::Create({
-            { shader_type::VERTEX, "assets/shaders/phong.vert.glsl", false },
-            { shader_type::PIXEL,  "assets/shaders/phong.frag.glsl", false },
-    }, "basic_lighting_shader");
-    auto single_color_shader = shader_program::Create({
-        { shader_type::VERTEX, "assets/shaders/single_color.vert.glsl", false },
-        { shader_type::PIXEL,  "assets/shaders/single_color.frag.glsl", false },
-    }, "single_color_shader");
+    auto basic_lighting_shader = assets_manager::LoadShader("assets/shaders/phong.glsl");
+    auto single_color_shader = assets_manager::LoadShader("assets/shaders/single_color.glsl");
 
     auto sphere_material = material_phong::Create(basic_lighting_shader, vec3 { 1, 0.5, 0.3 }, vec3 { 0.7, 0.9, 0.9 }, 128.0f);
 
@@ -126,7 +120,7 @@ void editor::editor_layer::OnInit()
     cone.AddComponent<mesh_renderer_component>(single_color_material);
     cone.AddComponent<transform_component>(vec3 { 1 }, vec3 {}, vec3 { -5, 5, -5 });
     cone.AddComponent<spot_light_component>(vec3 { 0.2, 0.65, 0.38 }, vec3 { 0.5, -1, 0.5 }, 15.0f, 30.0f);
-
+    
     auto light_bulb = EditorScene->CreateObject();
     light_bulb.AddComponent<mesh_component>(light_bulb_mesh);
     light_bulb.AddComponent<mesh_renderer_component>(single_color_material);
@@ -134,20 +128,19 @@ void editor::editor_layer::OnInit()
     light_bulb.AddComponent<point_light_component>(vec3 { 1 }, 1.0f, 0.001f, 0.017f);
 
     auto projector = EditorScene->CreateObject();
-    projector.AddComponent<directional_light_component>(vec3 { 0.1, 0.07, 0.09 });
-    projector.AddComponent<transform_component>(vec3 {}, vec3 {}, vec3 { 0.7, -0.7, 0 });
+    projector.AddComponent<directional_light_component>(vec3 { -1, -1, 0.5 }, vec3 { 0.5, 0.5, 0.5 }, true, 10.0f, 10.0f);
 
     auto camera = EditorScene->CreateObject("MainCamera");
     camera.AddComponent<camera_controller_component>(rend_camera);
     camera.AddComponent<native_script_component>().Bind<camera_behaviour>();
     EditorScene->SetMainCamera("MainCamera");
- // EditorScene->SetRenderToSwapChainBuffer(true);
- // application::Get().SetGuiEnabled(false);
+    // EditorScene->SetRenderToSwapChainBuffer(true);
+    // application::Get().SetGuiEnabled(false);
 }
 
 void editor::editor_layer::OnUpdate(float DeltaTime)
 {
-#if 0
+#if 1
     static float delta = 0;
     if (delta > 1)
     {

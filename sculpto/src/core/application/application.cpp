@@ -26,7 +26,6 @@ scl::application::application(const std::string &Name)
     // Window initilisation
     Window = window::Create(700, 400, Name + " (Sculpto application).", false);
     Window->SetEventHandler(std::bind_front(&application::EventHandler, this));
-    SCL_CORE_SUCCES("Application window created.");
 
     // Render initialisation
     render_bridge::InitContext();
@@ -34,8 +33,6 @@ scl::application::application(const std::string &Name)
     // Gui layer initialisation
     GUILayer = new gui_layer();
     PushOverlay(GUILayer);
-
-    SCL_CORE_INFO("Current directory: {}", std::filesystem::current_path().root_directory().string());
 }
 
 scl::application::~application()
@@ -55,7 +52,7 @@ bool scl::application::OnWindowResize(window_resize_event &Event)
 
 bool scl::application::OnWindowClose(window_close_event &Event)
 {
-    IsRunning = false, SCL_CORE_SUCCES("Application closed."); // End main app loop
+    IsRunning = false;                                         // End main app loop
     this->OnClose();                                           // Client application deinitialisation
     for (layer *layer : Layers) layer->OnClose();              // All layers in stack deinitilisation
 
@@ -120,7 +117,6 @@ void scl::application::Run()
     this->OnInit();
 
     // Starting main loop
-    SCL_CORE_SUCCES("Application main loop started.");
     while (IsRunning)
     {
         Window->Update();

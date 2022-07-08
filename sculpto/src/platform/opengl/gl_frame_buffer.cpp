@@ -1,5 +1,14 @@
+/*****************************************************************//**
+ * \file   gl_frame_buffer.cpp
+ * \brief  OpenGL frame buffer class implementation class.
+ * 
+ * \author Sabitov Kirill
+ * \date   06 July 2022
+ *********************************************************************/
+
 #include "sclpch.h"
 #include "gl_frame_buffer.h"
+#include "gl_texture.h"
 
 void scl::gl_frame_buffer::SetFrameBufferProps(const frame_buffer_props &Props)
 {
@@ -12,57 +21,52 @@ const scl::frame_buffer_props &scl::gl_frame_buffer::GetFrameBufferProps() const
     return Props;
 }
 
-scl::u32 scl::gl_frame_buffer::GetColorAttachmentInnerId() const
+const scl::shared<scl::texture_2d> &scl::gl_frame_buffer::GetColorAttachment(int Index) const
 {
-    return ColorAttachmentId;
+    return ColorAttachments[Index];
+}
+
+const scl::shared<scl::texture_2d> &scl::gl_frame_buffer::GetDepthAttachment(int Index) const
+{
+    return DepthAttachment;
 }
 
 void scl::gl_frame_buffer::Invalidate()
 {
     this->Free();
 
-    if (Props.SwapChainTarget)
-    {
-        Id = 0;
-        ColorAttachmentId = 0;
-        DepthAttachmentId = 0;
-        return;
-    }
+    if (Props.SwapChainTarget) { Id = 0; ClearConfig = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT; return; }
 
     // Create and bind frame buffer
-    glCreateFramebuffers(1, &Id);
+    glGenFramebuffers(1, &Id);
     glBindFramebuffer(GL_FRAMEBUFFER, Id);
 
+    // Props validation
+    SCL_CORE_ASSERT(Props.ColorAttachmentsCount > 0 || Props.DepthAttachmentsCount > 0, "At least one of attachments count must be > 0.");
+    SCL_CORE_ASSERT(Props.DepthAttachmentsCount <= 8, "OpenGL support max 8 collor attachments per frame buffer.");
+    SCL_CORE_ASSERT(Props.DepthAttachmentsCount <= 1, "OpenGL support max 1 depth attachment per frame buffer.");
+
     // Frame buffer color and depth attachments creation
-    if (Props.ColorAttachments) CreateColorAttachment();
-    if (Props.DepthAttachments) CreateDepthAttachment();
+    image viewport(Props.Width, Props.Height, 4);
+    ColorAttachments.resize(Props.ColorAttachmentsCount);
+    for (int i = 0; i < Props.ColorAttachmentsCount; i++) {
+        ColorAttachments[i] = texture_2d::Create(viewport, texture_2d_type::COLOR);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, ColorAttachments[i]->GetHandle(), 0);
+    } if (Props.ColorAttachmentsCount == 0) {
+        glDrawBuffer(GL_NONE);
+        glReadBuffer(GL_NONE);
+    } if (Props.DepthAttachmentsCount == 1) {
+        DepthAttachment = texture_2d::Create(viewport, texture_2d_type::DEPTH);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, DepthAttachment->GetHandle(), 0);
+    }
+
+    // Set frame buffer clear config depending on attachments count
+    ClearConfig = ((Props.ColorAttachmentsCount > 0) * GL_COLOR_BUFFER_BIT) |
+                  ((Props.DepthAttachmentsCount == 1) * GL_DEPTH_BUFFER_BIT);
 
     // Check frame buffer status, unbinding
     SCL_CORE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Frame buffer creation error!");
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-}
-
-void scl::gl_frame_buffer::CreateColorAttachment()
-{
-    glCreateTextures(GL_TEXTURE_2D, 1, &ColorAttachmentId);
-    glBindTexture(GL_TEXTURE_2D, ColorAttachmentId);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, Props.Width, Props.Height,
-                 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, ColorAttachmentId, 0);
-}
-
-void scl::gl_frame_buffer::CreateDepthAttachment()
-{
-    glCreateTextures(GL_TEXTURE_2D, 1, &DepthAttachmentId);
-    glBindTexture(GL_TEXTURE_2D, DepthAttachmentId);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, Props.Width, Props.Height,
-                 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, nullptr);
-
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, DepthAttachmentId, 0);
 }
 
 scl::gl_frame_buffer::gl_frame_buffer(const frame_buffer_props &Props) :
@@ -76,13 +80,13 @@ scl::gl_frame_buffer::~gl_frame_buffer()
     this->Free();
 }
 
-void scl::gl_frame_buffer::Bind()
+void scl::gl_frame_buffer::Bind() const
 {
     glBindFramebuffer(GL_FRAMEBUFFER, Id);
     glViewport(0, 0, Props.Width, Props.Height);
 }
 
-void scl::gl_frame_buffer::Unbind()
+void scl::gl_frame_buffer::Unbind() const
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
@@ -90,13 +94,16 @@ void scl::gl_frame_buffer::Unbind()
 void scl::gl_frame_buffer::Free()
 {
     if (Id != 0) glDeleteFramebuffers(1, &Id), Id = 0;
-    if (ColorAttachmentId != 0) glDeleteTextures(1, &ColorAttachmentId), ColorAttachmentId = 0;
-    if (DepthAttachmentId != 0) glDeleteTextures(1, &DepthAttachmentId), DepthAttachmentId = 0;
+
+    for (auto &color_attachment : ColorAttachments) color_attachment->Free();
+    ColorAttachments.clear();
+
+    if (DepthAttachment) DepthAttachment->Free();
 }
 
 void scl::gl_frame_buffer::Clear()
 {
     this->Bind();
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(ClearConfig);
     this->Unbind();
 }

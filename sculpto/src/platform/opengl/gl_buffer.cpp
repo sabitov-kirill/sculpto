@@ -9,9 +9,8 @@
 #include "sclpch.h"
 #include "gl_buffer.h"
 
-scl::gl_constant_buffer::gl_constant_buffer(u32 BindingPoint, u32 Size)
+scl::gl_constant_buffer::gl_constant_buffer(u32 Size)
 {
-    this->BindingPoint = BindingPoint;
     this->Size = Size;
 
     glGenBuffers(1, &Id);
@@ -20,9 +19,8 @@ scl::gl_constant_buffer::gl_constant_buffer(u32 BindingPoint, u32 Size)
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
-scl::gl_constant_buffer::gl_constant_buffer(u32 BindingPoint, const void *Data, u32 Size)
+scl::gl_constant_buffer::gl_constant_buffer(const void *Data, u32 Size)
 {
-    this->BindingPoint = BindingPoint;
     this->Size = Size;
 
     glGenBuffers(1, &Id);
@@ -36,14 +34,16 @@ scl::gl_constant_buffer::~gl_constant_buffer()
     Free();
 }
 
-void scl::gl_constant_buffer::Bind() const
+void scl::gl_constant_buffer::Bind(u32 BindingPoint) const
 {
+    this->BindingPoint = BindingPoint;
     if (Id != 0) glBindBufferBase(GL_UNIFORM_BUFFER, BindingPoint, Id);
 }
 
 void scl::gl_constant_buffer::Unbind() const
 {
     glBindBufferBase(GL_UNIFORM_BUFFER, BindingPoint, 0);
+    this->BindingPoint = 0;
 }
 
 void scl::gl_constant_buffer::Update(void *Data, u32 Size)

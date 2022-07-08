@@ -40,19 +40,15 @@
      * \param Msg - message to be displayed in case of assertion faield.
      * \return None.
      */
-#   define SCL_CORE_ASSERT(Expr, Msg)                                     \
+#   define SCL_CORE_ASSERT(Expr, ...)                                     \
     {                                                                     \
         if (!(Expr))                                                      \
         {                                                                 \
-            SCL_CORE_ERROR("Assertion Failed!\n"                          \
-                           "Expr: {}\n"                                   \
-                           "File: {}\n"                                   \
-                           "Line: {}\n"                                   \
-                           "Message: {}\n\n",                             \
-                           #Expr, __FILE__, __LINE__, Msg);               \
+            SCL_CORE_ERROR(__VA_ARGS__);                                  \
             SCL_DEBUGBREAK();                                             \
         }                                                                 \
     }
+
 
     /**
      * Assertion function.
@@ -62,19 +58,15 @@
      * \param Msg - message to be displayed in case of assertion faield.
      * \return None.
      */
-#   define SCL_ASSERT(Expr, Msg)                                          \
+#   define SCL_ASSERT(Expr, ...)                                          \
     {                                                                     \
         if (!(Expr))                                                      \
         {                                                                 \
-            SCL_ERROR("Assertion Failed!\n"                               \
-                      "Expr: {}\n"                                        \
-                      "File: {}\n"                                        \
-                      "Line: {}\n"                                        \
-                      "Message: {}\n\n",                                  \
-                      #Expr, __FILE__, __LINE__, Msg);                    \
+            SCL_ERROR(__VA_ARGS__);                                       \
             SCL_DEBUGBREAK();                                             \
         }                                                                 \
     }
+
 #else /* !SCL_ASSERTION_ENABLED */
 #   define SCL_CORE_ASSERT(expr, msg) (expr)
 #   define SCL_ASSERT(expr, msg) (expr)

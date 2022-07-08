@@ -11,11 +11,11 @@
 #include "texture.h"
 #include "platform/opengl/gl_texture.h"
 
-scl::shared<scl::texture_2d> scl::texture_2d::Create(const image &Image)
+scl::shared<scl::texture_2d> scl::texture_2d::Create(const image &Image, texture_2d_type Type)
 {
     switch (render_context::GetApi())
     {
-    case scl::render_context::api::OpenGL:  return CreateShared<gl_texture_2d>(Image);
+    case scl::render_context::api::OpenGL:  return CreateShared<gl_texture_2d>(Image, Type);
     case scl::render_context::api::DirectX: SCL_CORE_ASSERT(0, "This API is currently unsupported."); return nullptr;
     }
 
@@ -25,9 +25,17 @@ scl::shared<scl::texture_2d> scl::texture_2d::Create(const image &Image)
 
 scl::shared<scl::texture_2d> scl::texture_2d::Create(const std::string &FileName)
 {
+    image texture_image(FileName);
+    if (texture_image.IsEmpty())
+    {
+        SCL_CORE_ERROR("Texture \"{}\" not found!");
+        return nullptr;
+    }
+
+    texture_image.FlipHorizontaly();
     switch (render_context::GetApi())
     {
-    case scl::render_context::api::OpenGL:  return CreateShared<gl_texture_2d>(FileName);
+    case scl::render_context::api::OpenGL:  return CreateShared<gl_texture_2d>(texture_image, texture_2d_type::COLOR);
     case scl::render_context::api::DirectX: SCL_CORE_ASSERT(0, "This API is currently unsupported."); return nullptr;
     }
 

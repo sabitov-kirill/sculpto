@@ -96,6 +96,17 @@ namespace scl
     constexpr string_id StringId(const StringClass &Str) {
         return crc32(&Str[0], Str.size());
     }
+
+    /**
+     * Generate string id using crc32 algorithm function.
+     *
+     * \param Str - srting to genrerate id of.
+     * \return id of string.
+     */
+    constexpr string_id operator ""_id(const char *Str, size_t Length)
+    {
+        return crc32((char *)Str, Length);
+    }
 }
 
 /**

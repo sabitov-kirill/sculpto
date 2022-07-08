@@ -82,7 +82,7 @@ public:
 
         render_bridge::Clear();
 
-        renderer::SubmitCamera(RenderCamera);
+        renderer::StartRenderPass(RenderCamera.GetViewProjection(), RenderCamera.GetDirection(), RenderCamera.GetPosition(), 0, 0);
 
         renderer::Submit(CubeMesh, CrateMaterial,              matr4::Translate(vec3 { -0.5 }) * matr4::RotateX(timer::GetTime() * 30) * matr4::RotateY(timer::GetTime() * 30) * matr4::Translate(vec3 { 1 }));
         renderer::Submit(PlaneMesh, ForestLeavesMaterial,      matr4::Scale(vec3 { 5 }) * matr4::Translate(vec3 { -25, 0, -25 }));
@@ -94,7 +94,7 @@ public:
         renderer::SubmitDirectionalLight(vec3 { 0.1, -1, 0.5 }, vec3 { 0.3 });
         // renderer::SubmitSpotLight(vec3 { -5, 5, -5 }, vec3 { 0.5, -1, 0.5 }, vec3 { 0.2, 0.65, 0.38 }, cos(radians(degrees(15.0f))), cos(radians(degrees(30.0f))), cos(radians(degrees(15.0f))) - cos(radians(degrees(30.0f))));
 
-        renderer::FlushToDefaultFrameBuffer();
+        renderer::EndRenderPass();
     }
 
     void OnGuiRender() override

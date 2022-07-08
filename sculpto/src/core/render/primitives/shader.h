@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "base.h"
+#include "render_primitive.h"
 
 namespace scl
 {
@@ -21,24 +21,14 @@ namespace scl
         COMPUTE,
     };
 
-    class shader_props
+    /* Shader creation properties structure. */
+    struct shader_props
     {
-    private: /* Shader data. */
         shader_type Type {};
         std::string Source {};
 
-        std::string Path {};
-        bool Watch {}; // TODO: Shader source code file reload on change
-
-    public:
-        /* Shader type getter function. */
-        shader_type GetType() const { return Type; }
-        /* Shader source code getter function. */
-        const std::string &GetSource() const { return Source; }
-        /* Shader sorce code file location getter function. */
-        const std::string &GetPath() const { return Path; }
-        /* Shader source code file changes watching flag getter function. */
-        bool GetWatch() const { return Watch; }
+        /* Shader properties default constructor. */
+        shader_props() = default;
 
         /**
          * Shader constructor by source code.
@@ -46,46 +36,13 @@ namespace scl
          * \param Type - shader_props type.
          * \param Source - shader_props source code.
          */
-        shader_props(shader_type Type, const std::string &Source)
-            : Type(Type), Source(Source), Path("Shader created from string literal"), Watch(false) {}
-
-        /**
-         * Shader constructor, loading source code from file.
-         * 
-         * \param Type - shader_props type.
-         * \param Path - path to shader_props source code file
-         * \param Watch - shader_props source code file changes watching flag
-         */
-        shader_props(shader_type Type, const std::string &Path, bool Watch) :
-            Type(Type), Path(Path), Watch(Watch)
-        {
-            std::ifstream shader_file(Path, std::ios::in, std::ios::binary);
-            if (!shader_file.is_open()) SCL_CORE_ERROR("Shader file \"{}\" is not found!", Path);
-
-            std::stringstream buffer;
-            buffer << shader_file.rdbuf();
-            Source = buffer.str();
-        }
+        shader_props(shader_type Type, const std::string &Source) : Type(Type), Source(Source) {}
     };
 
     /* Shader progream interface. */
-    class shader_program abstract
+    class shader_program: public render_primitive
     {
-    protected: /* Shader program data. */
-        std::vector<shader_props> Shaders;
-        std::string DebugName;
-
     public: /* Saader program getter/setter functions. */
-        /* Shader program shaders array getter function. */
-        const std::vector<shader_props> &GetShareds() const { return Shaders; }
-        /* Degug name getter function. */
-        const std::string &GetDebugName() const { return DebugName; }
-
-        std::vector<shader_props>::iterator begin() { return Shaders.begin(); }
-        std::vector<shader_props>::iterator end() { return Shaders.end(); }
-        std::vector<shader_props>::const_iterator begin() const { return Shaders.begin(); }
-        std::vector<shader_props>::const_iterator end() const { return Shaders.end(); }
-
         /**
          * Set uniform variable to shader_props function.
          *
@@ -136,14 +93,6 @@ namespace scl
 
     public:
         /**
-         * Shader program default constructor.
-         * 
-         * \param Shaders - shaders array.
-         * \param DubugName - shader program debug name.
-         */
-        shader_program(const std::initializer_list<shader_props> &Shaders, const std::string &DebugName);
-
-        /**
          * Bind buffer to current render stage function.
          *
          * \param None.
@@ -160,12 +109,12 @@ namespace scl
         virtual void Unbind() const = 0;
 
         /**
-         * Update (recompile from dource file).
+         * Recompile shader program function.
          * 
-         * \param None.
+         * \param Shaders - shaders array.
          * \return None.
          */
-        virtual void Update() = 0;
+        virtual void Update(const std::vector<shader_props> &Shaders) = 0;
 
         /**
          * Unload shader program from GPU memory function.
@@ -182,18 +131,6 @@ namespace scl
          * \param DubugName - shader program debug name.
          * \return Pointer to created shader_props program.
          */
-        static shared<shader_program> Create(const std::initializer_list<shader_props> &Shaders, const std::string &DebugName);
-
-        /**
-         * Shader program creation function, loading all shaders from directory.
-         * Shader files formath: vertex.(glsl/hlsl)
-         *                       geometry.(glsl/hlsl)
-         *                       pixel.(glsl/hlsl)
-         *                       compute.(glsl/hlsl)
-         *
-         * \param Shaders - shaders array.
-         * \return Pointer to created shader_props program.
-         */
-        static shared<shader_program> Create(const std::string &FolderPath);
+        static shared<shader_program> Create(const std::vector<shader_props> &Shaders, const std::string &DebugName);
     };
 }

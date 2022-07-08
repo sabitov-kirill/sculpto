@@ -31,19 +31,21 @@
 namespace scl
 {
     /* Math module generic types. */
-    using degrees = math::degrees<float>;
-    using radians = math::radians<float>;
-    using vec2 = math::vec2<float>;
-    using vec3 = math::vec3<float>;
-    using vec4 = math::vec4<float>;
-    using ivec2 = math::vec2<int>;
-    using ivec3 = math::vec3<int>;
-    using ivec4 = math::vec4<int>;
-    using uvec2 = math::vec2<u32>;
-    using uvec3 = math::vec3<u32>;
-    using uvec4 = math::vec4<u32>;
-    using matr3 = math::matr3<float>;
-    using matr4 = math::matr4<float>;
+    using degrees    = math::degrees<float>;
+    using radians    = math::radians<float>;
+    using vec2       = math::vec2<float>;
+    using vec3       = math::vec3<float>;
+    using vec4       = math::vec4<float>;
+    using ivec2      = math::vec2<int>;
+    using ivec3      = math::vec3<int>;
+    using ivec4      = math::vec4<int>;
+    using uvec2      = math::vec2<u32>;
+    using uvec3      = math::vec3<u32>;
+    using uvec4      = math::vec4<u32>;
+    using matr3      = math::matr3<float>;
+    using matr3_data = math::matr3_data<float>;
+    using matr4      = math::matr4<float>;
+    using matr4_data = math::matr4_data<float>;
 
     /* Windows platform specific types */
 #ifdef SCL_PLATFORM_WINDOWS

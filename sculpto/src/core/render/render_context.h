@@ -63,15 +63,17 @@ namespace scl
         static api GetApi() { return Api; }
 
         /* Rendering context shader constants. */
-        static const int BINDING_POINT_MESH_DATA          = 0;
-        static const int BINDING_POINT_MATERIAL_DATA      = 5;
-        static const int BINDING_POINT_LIGHTS_STORAGE     = 10;
-        static const int BINDING_POINT_FREE               = 20;
-        static const int TEXTURE_SLOT_MATERIAL_DIFFUSE    = 0;
-        static const int TEXTURE_SLOT_MATERIAL_SPECULAR   = 1;
-        static const int TEXTURE_SLOT_MATERIAL_NORMAL_MAP = 2;
-        static const int LIGHTS_MAX_POINT                 = 50;
-        static const int LIGHTS_MAX_SPOT                  = 50;
+        static const int BINDING_POINT_SCENE_DATA             = 0;
+        static const int BINDING_POINT_MATERIAL_DATA          = 5;
+        static const int BINDING_POINT_LIGHTS_STORAGE         = 10;
+        static const int BINDING_POINT_SHADOW_CASTERS_STORAGE = 11;
+        static const int BINDING_POINT_FREE                   = 20;
+        static const int TEXTURE_SLOT_MATERIAL_DIFFUSE        = 0;
+        static const int TEXTURE_SLOT_MATERIAL_SPECULAR       = 1;
+        static const int TEXTURE_SLOT_MATERIAL_NORMAL_MAP     = 2;
+        static const int TEXTURE_SLOT_SHADOW_MAP              = 5;
+        static const int LIGHTS_MAX_POINT                     = 50;
+        static const int LIGHTS_MAX_SPOT                      = 50;
 
     private: /* render context data. */
         static api Api; /* Render system backend api. */

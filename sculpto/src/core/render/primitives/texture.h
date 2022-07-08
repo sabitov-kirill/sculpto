@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "base.h"
+#include "render_primitive.h"
 #include "utilities/image/image.h"
 
 namespace scl
@@ -16,12 +16,13 @@ namespace scl
     /* Texture types enum class. */
     enum class texture_2d_type
     {
-        COLOR,
-        DEPTH
+        COLOR,   /* Default color texture type. */
+        DEPTH,   /* Depth buffer texture type. */
+        STENCIL, /* ? Stencil buffer texture type. Probably worse than buffer. */
     };
 
     /* Texture interface. */
-    class texture_2d
+    class texture_2d : public render_primitive
     {
     public:
         /**
@@ -30,7 +31,7 @@ namespace scl
          * \param Slot - texture slot to bind it in.
          * \return None.
          */
-        virtual void Bind(int Slot) = 0;
+        virtual void Bind(u32 Slot) const = 0;
 
         /**
          * Unbind texture from current render stage function.
@@ -38,7 +39,7 @@ namespace scl
          * \param Slot - texture slot to unbind it from.
          * \return None.
          */
-        virtual void Unbind() = 0;
+        virtual void Unbind() const = 0;
 
         /**
          * Load texture image from GPU memory function.
@@ -58,12 +59,13 @@ namespace scl
 
         /**
          * Create texture from image container function.
-         * 
+         *
          * \param Image - image container to get data from.
          * \return created texture pointer.
          */
-        static shared<texture_2d> Create(const image &Image);
+        static shared<texture_2d> Create(const image &Image, texture_2d_type Type = texture_2d_type::COLOR);
 
+        // TODO: Delete these creation function, move functionality to assets manager
         /**
          * Create texture from loaded from specified file image function.
          * 

@@ -36,6 +36,7 @@
 #include "core/application/platform_detection.h"
 
 #ifdef SCL_PLATFORM_WINDOWS
+#   define NOMINMAX
 #   include <windows.h>
 #   include <windowsx.h>
 #   include <wrl/client.h>
