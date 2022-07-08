@@ -15,26 +15,26 @@ Allows implement your ideas through computer graphics via scripts or scene edito
 
     - [x] shadow caster component                                  | 07.06
     - [x] GLSL shaders preprocessor                                |
-    - [ ] normal mapping                                           |
 
-    - [ ] HDR                                                      | 08.07
-    - [ ] bloom                                                    |
+    - [x] normal mapping                                           | 08.07
+    - [ ] models loading                                           |
+    - [~] assets manager                                           |
+    - [x] single color material and shader (color/texture)         |
 
-    - [ ] models loading                                           | 10.07
-    - [ ] assets manager                                           |
-
-    - [ ] deffered rendering                                       | 09.07
-    - [ ] cube map                                                 |
-
-    - [ ] PBR try                                                  | 11.07
-
-    - [ ] UI panels:                                               | 12.07
+    - [ ] UI panels:                                               | 09.07
         - [ ] Scene hierarchy                                      |
         - [ ] Objects components configuration                     |
         - [ ] Renderer configuration                               |
         - [ ] Profiling (FPS, time per each frame functions calls  |
 
-    
+    - [ ] HDR                                                      | 10.07
+    - [ ] bloom                                                    |
+
+    - [ ] deffered rendering                                       | 11.07
+    - [ ] cube map                                                 |
+
+    - [ ] PBR try                                                  | 12.07
+
     - [ ] embeded C++ scriping                                     | 13.07
 
     - [ ] sceletal animation                                       | 14.07

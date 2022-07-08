@@ -9,8 +9,7 @@
 #include "sclpch.h"
 #include "cube.h"
 
-scl::topology::cube::cube(const vec3 &A, const vec3 &B) :
-    basis(mesh_type::TRIANGLES)
+scl::topology::cube::cube(const vec3 &A, const vec3 &B)
 {
     float ax = A.GetX(), ay = A.GetY(), az = A.GetZ();
     float bx = B.GetX(), by = B.GetY(), bz = B.GetZ();
@@ -92,4 +91,7 @@ scl::topology::cube::cube(const vec3 &A, const vec3 &B) :
     Indices.push_back(21);
     Indices.push_back(22);
     Indices.push_back(23);
+
+    Min = vec3::Min(A, B), Max = vec3::Max(A, B);
+    EvaluateTangentSpace();
 }

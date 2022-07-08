@@ -11,10 +11,6 @@
 #include "core/render/primitives/vertex_array.h"
 #include "gl.h"
 
-/* Debug output function. */
-static void APIENTRY glDebugOutput(UINT Source, UINT Type, UINT Id, UINT Severity,
-                                   INT Length, const CHAR *Message, const VOID *UserParam);
-
 #ifdef SCL_PLATFORM_WINDOWS
 
 /* OpenGL WGL rendering context creation definitions. */
@@ -118,6 +114,8 @@ HGLRC scl::gl::hGLRC;
 HDC scl::gl::hDC;
 const HWND *scl::gl::hWnd;
 
+#endif /* !SCL_PLATFORM_WINDOWS */
+
 inline GLenum scl::gl::GetGLPrimitiveType(mesh_type MeshType)
 {
 
@@ -135,19 +133,28 @@ inline GLenum scl::gl::GetGLPrimitiveType(mesh_type MeshType)
 }
 
 /**
- * Render system type constructor.
+ * OpenGl Debug output function.
  *
- * \param hAppWnd - window handle.
- * \param W, H - window size.
- * \param VSync - vertical syncronisation enable flag.
+ * \param Source - source APi or device.
+ * \param Type - error type.
+ * \param Id - error message id.
+ * \param Severity - message severity.
+ * \param Length - message text length.
+ * \param Message - message text.
+ * \param UserParam - user addon parameters pointer.
  * \return None.
  */
+static void APIENTRY glDebugOutput(UINT Source, UINT Type, UINT Id, UINT Severity,
+                                   INT Length, const CHAR *Message, const VOID *UserParam);
+
 void scl::gl::CreateContext(const HWND &hAppWnd, int W, int H, bool VSync)
 {
+#ifdef SCL_PLATFORM_WINDOWS
     hWnd = &hAppWnd;
     hDC = GetDC(hAppWnd);
     glInitialiseExtentions(hDC);
     hGLRC = glInitialiseContext(hDC);
+#endif /* !SCL_PLATFORM_WINDOWS */
 
     // TODO: Add vsync handle.
 
@@ -165,10 +172,8 @@ void scl::gl::CreateContext(const HWND &hAppWnd, int W, int H, bool VSync)
     glEnable(GL_DEPTH_TEST);
 
     glEnable(GL_PRIMITIVE_RESTART);
-    glPrimitiveRestartIndex(-1);
+    glPrimitiveRestartIndex(render_context::MESH_RESTART_INDEX);
 }
-
-#endif /* !SCL_PLATFORM_WINDOWS */
 
 void scl::gl::Init()
 {
@@ -249,18 +254,6 @@ void scl::gl::SetContextCurrent() const
     SCL_CORE_ASSERT(wglMakeCurrent(hDC, hGLRC), "Failed to set rendering context to main window.");
 }
 
-/**
- * OpenGl Debug output function.
- * 
- * \param Source - source APi or device.
- * \param Type - error type.
- * \param Id - error message id.
- * \param Severity - message severity.
- * \param Length - message text length.
- * \param Message - message text.
- * \param UserParam - user addon parameters pointer.
- * \return None.
- */
 static void APIENTRY glDebugOutput(UINT Source, UINT Type, UINT Id, UINT Severity,
                                    INT Length, const CHAR *Message, const VOID *UserParam)
 {

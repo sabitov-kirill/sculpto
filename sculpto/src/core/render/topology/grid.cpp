@@ -12,10 +12,6 @@
 scl::topology::grid::grid(int Width, int Height) :
     basis(mesh_type::TRIANGLES), Width(Width), Height(Height)
 {
-    for (float i = 0; i <= Width; ++i)
-        for (float j = 0; j <= Height; ++j)
-            Vertices.push_back(vertex({ i, 0, j }, { 0, 1, 0 }, { i, j }));
-
     for (int i = 0; i < Height; ++i)
         for (int j = 0; j < Width; ++j)
         {

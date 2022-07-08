@@ -47,12 +47,12 @@ void scl::renderer::DrawShadowPass(const shared<mesh> &Mesh, const matr4 &Transf
 }
 
 void scl::renderer::StartPipeline(const matr4 &ViewProjection,
-                                    const vec3 &CameraDirection, const vec3 &CameraLocation,
-                                    const int ViewportWidth, const int ViewportHeight)
+                                  const vec3 &CameraDirection, const vec3 &CameraPosition,
+                                  const int ViewportWidth, const int ViewportHeight)
 {
     PipelineViewProjection = ViewProjection;
-    PipelineData.CameraPosition = CameraDirection;
-    PipelineData.CameraLocation = CameraLocation;
+    PipelineData.CameraPosition = CameraPosition;
+    PipelineData.CameraDirection = CameraDirection;
     PipelineData.ViewportWidth = ViewportWidth;
     PipelineData.ViewportHeight = ViewportHeight;
     PipelineData.Time = timer::GetTime();

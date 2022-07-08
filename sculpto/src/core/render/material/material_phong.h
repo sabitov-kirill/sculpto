@@ -40,14 +40,22 @@ namespace scl
     public: /* Material for blin-phong lighing model data getter setter functions. */
         /* Diffuse coeffisient setter function.*/
         void SetDiffuse(const vec3 &Diffuse) {
-            if (DiffuseMapTexture) DiffuseMapTexture->Free();
+            if (DiffuseMapTexture)
+            {
+                DiffuseMapTexture->Free();
+                DiffuseMapTexture = nullptr;
+            }
             Data.IsDiffuseMap = false;
             Data.Diffuse = Diffuse;
             DataBuffer->Update(&Data, sizeof(Data));
         }
         /* Specular coefficient setter function. */
         void SetSpecular(const vec3 &Specular) {
-            if (SpecularMapTexture) SpecularMapTexture->Free();
+            if (SpecularMapTexture)
+            {
+                SpecularMapTexture->Free();
+                SpecularMapTexture = nullptr;
+            }
             Data.IsSpecularMap = false;
             Data.Specular = Specular;
             DataBuffer->Update(&Data, sizeof(Data));
@@ -87,15 +95,6 @@ namespace scl
         material_phong(const material_phong &MaterialData) = default;
 
         /**
-         * Material constructor by shader only.
-         *
-         * \param Shader - material shader to use while mesh with this material rendering.
-         */
-        material_phong(shared<shader_program> Shader) :
-            material(Shader),
-            DataBuffer(constant_buffer::Create(sizeof(buffer_data))) {}
-
-        /**
          * Material for blin-phong lighting model class contructor.
          *
          * \param Shader - material shader to use while mesh with this material rendering.
@@ -124,8 +123,8 @@ namespace scl
             if (Shader != nullptr) Shader->Bind();
             if (DataBuffer != nullptr) DataBuffer->Bind(render_context::BINDING_POINT_MATERIAL_DATA);
 
-            if (Data.IsSpecularMap) SpecularMapTexture->Bind(render_context::TEXTURE_SLOT_MATERIAL_SPECULAR);
             if (Data.IsDiffuseMap) DiffuseMapTexture->Bind(render_context::TEXTURE_SLOT_MATERIAL_DIFFUSE);
+            if (Data.IsSpecularMap) SpecularMapTexture->Bind(render_context::TEXTURE_SLOT_MATERIAL_SPECULAR);
             if (Data.IsNormalMap) NormalMapTexture->Bind(render_context::TEXTURE_SLOT_MATERIAL_NORMAL_MAP);
         }
 
@@ -142,17 +141,6 @@ namespace scl
             if (Data.IsSpecularMap) SpecularMapTexture->Unbind();
             if (Data.IsDiffuseMap) DiffuseMapTexture->Unbind();
             if (Data.IsNormalMap) NormalMapTexture->Unbind();
-        }
-
-        /**
-         * Material creation function by shader only.
-         *
-         * \param Shader - material shader to use while mesh with this material rendering.
-         * \return created material pointer.
-         */
-        static shared<material_phong> Create(shared<shader_program> Shader)
-        {
-            return CreateShared<material_phong>(Shader);
         }
 
        /**

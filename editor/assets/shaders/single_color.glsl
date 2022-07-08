@@ -1,31 +1,35 @@
 #version 460
 
+#include "binding_points.glsl"
+
 #shader-begin vert
-    /* Shader input  data */
-    layout (location = 0) in vec3 v_Pos;
-    layout (location = 3) in vec4 v_Color;
+    #include "default_vertex_layout.glsl"
 
     uniform mat4 u_MatrWVP;
-
-    /* Shader output data. */
-    out vec4 o_Color;
+    out vec2 vert_out_TexCoords;
 
     void main()
     {
-        o_Color      = v_Color;
+        vert_out_TexCoords = v_TexCoords;
         gl_Position  = u_MatrWVP * vec4(v_Pos, 1.0);
     }
 #shader-end
 
 #shader-begin frag
-    /* Shader inpur data. */
-    in vec4 o_Color;
+    /* Currently rendering mesh material data. */
+    layout(std140, binding = BINDING_POINT_MATERIAL_DATA) uniform ubo_Material {
+        vec3 Color;
+        float IsTexture;
+    };
+    layout(binding = TEXTURE_SLOT_MATERIAL_DIFFUSE) uniform sampler2D u_Texture;
+    in vec2 vert_out_TexCoords;
 
     /* Shader output data. */
     layout(location = 0) out vec4 OutColor;
 
     void main()
     {
-        OutColor = o_Color;
+        if (IsTexture) OutColor = vec4(texture(u_Texture, vert_out_TexCoords).rgb, 1);
+        else           OutColor = vec4(Color, 1);
     }
 #shader-end

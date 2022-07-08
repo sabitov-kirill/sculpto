@@ -33,9 +33,10 @@
   <ItemGroup>
     <None Include="assets\shaders\phong.glsl" />
     <None Include="assets\shaders\single_color.glsl" />
-    <None Include="assets\shaders\lights_data.glsl" />
+    <None Include="assets\shaders\phong_lights_data.glsl" />
     <None Include="assets\shaders\binding_points.glsl" />
-    <None Include="assets\shaders\material_data.glsl" />
+    <None Include="assets\shaders\phong_material_data.glsl" />
     <None Include="assets\shaders\scene_data.glsl" />
+    <None Include="assets\shaders\default_vertex_layout.glsl" />
   </ItemGroup>
 </Project>

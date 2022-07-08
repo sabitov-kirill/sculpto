@@ -350,8 +350,8 @@ namespace scl::math
             T c = cos((radians<T>)Angle);
             T s = sin((radians<T>)Angle);
 
-            return matr4(c, s, 0, 0,
-                        -s, c, 0, 0,
+            return matr4(c, -s, 0, 0,
+                         s, c, 0, 0,
                          0, 0, 1, 0,
                          0, 0, 0, 1);
         }
@@ -399,7 +399,11 @@ namespace scl::math
         static matr4 View(vec3<T> Location, vec3<T> At, vec3<T> Up)
         {
             vec3<T> d = (At - Location).Normalized();
-            vec3<T> r = d.Cross(Up).Normalized();
+            vec3<T> r = (
+                d.Dot(Up.Normalized()) == -1 ?
+                vec3 { -d.Y, d.X, d.Z } :
+                r = d.Cross(Up).Normalized()
+            );
             vec3<T> u = r.Cross(d);
 
             return matr4(r.X, u.X, -d.X, 0,

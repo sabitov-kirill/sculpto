@@ -21,13 +21,17 @@
 #include "core/render/primitives/texture.h"
 #include "core/render/primitives/frame_buffer.h"
 
-#include "core/render/topology/grid.h"
+#include "core/render/topology/trimesh.h"
 #include "core/render/topology/cube.h"
+#include "core/render/topology/grid.h"
+#include "core/render/topology/grid.h"
+#include "core/render/topology/plane.h"
 #include "core/render/topology/sphere.h"
 #include "core/render/topology/cone.h"
 
 #include "core/render/material/material.h"
 #include "core/render/material/material_phong.h"
+#include "core/render/material/material_single_color.h"
 #include "core/render/mesh.h"
 
 #include "core/render/render_bridge.h"

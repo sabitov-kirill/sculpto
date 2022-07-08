@@ -134,6 +134,22 @@ namespace scl::math
          */
         static vec4 Rnd(T Min = 0, T Max = 1) { return vec4(::scl::math::Rnd(Min, Max)); }
 
+        /**
+         * Vector with compund of minimums of specified vectors components.
+         *
+         * \param A, B - vectors to take minimums of components.
+         * \return minimum vector.
+         */
+        static vec4 Min(const vec4 &A, const vec4 &B) { return vec4(math::Min(A.X, B.X), math::Min(A.Y, B.Y), math::Min(A.Z, B.Z), math::Min(A.W, B.W)); }
+
+        /**
+         * Vector with compund of maximums of specified vectors components.
+         *
+         * \param A, B - vectors to take maximums of components.
+         * \return minimum vector.
+         */
+        static vec4 Max(const vec4 &A, const vec4 &B) { return vec4(math::Max(A.X, B.X), math::Max(A.Y, B.Y), math::Max(A.Z, B.Z), math::Max(A.W, B.W)); }
+
     public: /* Operators overloading. */
         /**
          * Vector compare function.

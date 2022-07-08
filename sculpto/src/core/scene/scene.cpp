@@ -27,15 +27,18 @@ void scl::scene::Render()
     for (auto &&[entity, point_light, transform] : Registry.group<point_light_component>(entt::get<transform_component>).each())
         renderer::SubmitPointLight(transform.Position, point_light.Color, point_light.Constant, point_light.Linear, point_light.Quadratic);
     for (auto &&[entity, directional_light] : Registry.view<directional_light_component>().each())
+    {
+        vec3 pos = -directional_light.Direction * directional_light.Distance / 2, at = pos + directional_light.Direction * 5;
         renderer::SubmitDirectionalLight(directional_light.Direction, directional_light.Color, directional_light.IsShadows,
-                                         matr4::View(-directional_light.Direction * directional_light.Distance / 2, vec3 {}, { 0, 1, 0 }) *
+                                         matr4::View(pos, at, { 0, 1, 0 }) *
                                          directional_light.Projection, directional_light.ShadowMap);
+    }
     for (auto &&[entity, spot_light, transform] : Registry.group<spot_light_component>(entt::get<transform_component>).each())
         renderer::SubmitSpotLight(transform.Position, spot_light.Direction, spot_light.Color, spot_light.InnerCutoffCos, spot_light.OuterCutoffCos, spot_light.Epsilon);
 
     // Main color pass
-    renderer::StartPipeline(MainCamera->Camera.GetViewProjection(), MainCamera->Camera.GetPosition(), MainCamera->Camera.GetPosition(),
-                              ViewportWidth, ViewportHeight);
+    renderer::StartPipeline(MainCamera->Camera.GetViewProjection(), MainCamera->Camera.GetDirection(), MainCamera->Camera.GetPosition(),
+                            ViewportWidth, ViewportHeight);
     for (auto &&[entity, mesh, material, transform] : Registry.group<mesh_component>(entt::get<mesh_renderer_component, transform_component>).each())
     {
         renderer::Submit(mesh, material, transform);

@@ -96,22 +96,12 @@ namespace scl
     {
         vec3 Position {};    /* Vertex position. */
         vec3 Normal {};      /* Normal of surface in vertex position. */
+        vec3 Tangent {};     /* Vertex tangent space first vector. */
+        vec3 Bitangent {};   /* Vertex tangent space second vector. */
         vec2 TexCoords {};   /* Vertex texture cordinate. */
-        vec4 Color {};       /* Vecrtex color. */
 
         /* Vertex default constructor. */
         vertex() = default;
-
-        /**
-         * Veretex contructor by color.
-         * It is implied that the texture will not be used.
-         * 
-         * \param Position - vertex position.
-         * \param Normal - vertex surface normal.
-         * \param Color - vertex color.
-         */
-        vertex(vec3 Position, vec3 Normal, vec4 Color) :
-            Position(Position), Normal(Normal), Color(Color) {}
 
         /**
          * Veretex contructor by texture coordinates.
@@ -119,10 +109,22 @@ namespace scl
          * 
          * \param Position - vertex position.
          * \param Normal - vertex surface normal.
+         * \param Tangent, Bitangent - vertex surface tangent space basis vectors.
+         * \param TexCoords - vertex texture coordinates.
+         */
+        vertex(vec3 Position, vec3 Normal, vec3 Tangent, vec3 Bitangent, vec2 TexCoords) :
+            Position(Position), Normal(Normal), TexCoords(TexCoords), Tangent(Tangent), Bitangent(Bitangent) {}
+
+        /**
+         * Veretex contructor by texture coordinates.
+         * It is implied that the color attribute will not be used.
+         *
+         * \param Position - vertex position.
+         * \param Normal - vertex surface normal.
          * \param TexCoords - vertex texture coordinates.
          */
         vertex(vec3 Position, vec3 Normal, vec2 TexCoords) :
-            Position(Position), Normal(Normal), TexCoords(TexCoords) {}
+            Position(Position), Normal(Normal), TexCoords(TexCoords), Tangent(Tangent), Bitangent(Bitangent) {}
 
         /**
          * Vertex layout, describing all vertex atributes getter function.
@@ -135,28 +137,10 @@ namespace scl
             return vertex_layout({
                 { shader_variable_type::FLOAT3, "Position" },
                 { shader_variable_type::FLOAT3, "Normal" },
+                { shader_variable_type::FLOAT3, "Tangent" },
+                { shader_variable_type::FLOAT3, "Bitangent" },
                 { shader_variable_type::FLOAT2, "TexCoord" },
-                { shader_variable_type::FLOAT4, "Color" },
             });
         };
     };
-
-    /**
-     * Vertex for tangent space structure.
-     * class vertex_tspace : public vertex_base
-     * {
-     * };
-     * 
-     * Vertex for tangent space layout:
-     *
-     * return vertex_layout({
-     *     { shader_variable_type::FLOAT3, "Position" },
-     *     { shader_variable_type::FLOAT3, "Normal" },
-     *     { shader_variable_type::FLOAT2, "TexCoord" },
-     *     { shader_variable_type::FLOAT3, "Tangent" },
-     *     { shader_variable_type::FLOAT3, "Bitangent" },
-     * });
-     */
-
-
 }

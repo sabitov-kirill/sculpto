@@ -10,29 +10,34 @@
 #include "cone.h"
 
 scl::topology::cone::cone(const vec3 &A, float R1, const vec3 &B, float R2, int Slices) :
-    grid(Slices, Slices)
+    grid(1, Slices)
 {
-    float total_height = (A - B).Length();
-    vec3 height_dir = (A - B).Normalized();
+    float height       = (A - B).Length();
+    vec3 height_dir    = (A - B).Normalized();
     vec3 height_dir_90 = vec3 { -height_dir.Y, height_dir.X, height_dir.Z };
-    vec3 guide = height_dir_90 - height_dir;
-    float cos_alpha = height_dir_90.Dot(guide);
-    float sin_alpha = sqrt(1 - cos_alpha * cos_alpha);
-    vec3 normal = vec3(cos_alpha, sin_alpha, 0).Normalized();
+    vec3 guide         = height_dir_90 - height_dir;
+    float cos_alpha    = height_dir_90.Dot(guide);
+    float sin_alpha    = sqrt(1 - cos_alpha * cos_alpha);
+    vec3 normal        = vec3(cos_alpha, sin_alpha, 0).Normalized();
 
     for (int i = 0; i <= Slices; i++)
-        for (int j = 0; j <= Slices; j++)
-        {
-            float t1 = (float)j / Slices, t2 = (float)i / Slices;
-            float phi = t1 * 360;
-            float current_radius = math::Lerp(R1, R2, 1 - t2);
-            float current_height = total_height * t2;
-            matr4 rotation = matr4::Rotate(height_dir, phi);
+    {
+        float t        = (float)i / Slices;
+        float phi      = 360 * t;
+        float x        = sin(phi);
+        float z        = cos(phi);
+        matr4 rotation = matr4::Rotate(height_dir, phi);
+        vec3 normal = rotation.TransformVector(normal);
+        vec3 tangent = vec3 { z, 0, -x };
+        vec3 bitangent = tangent.Cross(normal);
 
-            vertex vert;
-            vert.Position = A + height_dir * current_height + rotation.TransformVector(height_dir_90 * current_radius);
-            vert.Normal = rotation.TransformVector(normal);
-            vert.TexCoords = { t2, t1 };
-            Vertices[i * (Slices + 1) + j] = vert;
-        }
+        Vertices.emplace_back(
+            A + rotation.TransformVector(height_dir_90 * R1),
+            normal, tangent, bitangent, vec2 { t, 0 }
+        );
+        Vertices.emplace_back(
+            B + rotation.TransformVector(height_dir_90 * R2),
+            normal, tangent, bitangent, vec2 { t, 1 }
+        );
+    }
 }

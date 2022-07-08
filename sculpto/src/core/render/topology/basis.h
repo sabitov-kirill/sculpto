@@ -41,28 +41,29 @@ namespace scl::topology
     public:
         /**
          * Topology object basis default constructor.
-         * 
+         *
          * \param MeshType- object mesh type.
          */
-        basis(mesh_type MeshType) :
-            MeshType(MeshType) {}
+        basis(mesh_type MeshType) : MeshType(MeshType) {}
 
         /**
-         * Topology object basis constructor.
-         *
+         * Topology object basis default constructor.
+         * 
+         * \param MeshType- object mesh type.
          * \param Vertices - verticeies array.
          * \param Indices - vertices indices.
          */
-        basis(const std::vector<Tvertex> &Vertices, const std::vector<u32> &Indices) :
-            Vertices(Vertices), Indices(Indices) {}
+        basis(mesh_type MeshType, const std::vector<Tvertex> &Vertices, const std::vector<u32> &Indices) :
+            MeshType(MeshType), Vertices(Vertices), Indices(Indices) {}
 
         /**
          * Topology object basis constructor.
          * 
+         * \param MeshType- object mesh type.
          * \param Vertices - verticeies array rvalue ref.
          * \param Indices - vertices indices rvalue ref.
          */
-        basis(std::vector<Tvertex> &&Vertices, std::vector<u32> &&Indices) :
+        basis(mesh_type MeshType, std::vector<Tvertex> &&Vertices, std::vector<u32> &&Indices) :
             Vertices(std::move(Vertices)), Indices(std::move(Indices)) {}
     };
 }

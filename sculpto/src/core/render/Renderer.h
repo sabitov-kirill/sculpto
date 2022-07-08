@@ -30,7 +30,7 @@ namespace scl
     {
         vec3       CameraPosition {};     /* Submission camera direction vector. */
         float      Time {};               /* Currently rendering frame time since porgram time. */
-        vec3       CameraLocation {};     /* Submission camer location vector. */
+        vec3       CameraDirection {};    /* Submission camer location vector. */
         int        ViewportWidth {};      /* Currently rendering frame viewport width. */
         int        ViewportHeight {};     /* Currently rendering frame viewport height. */
     };
@@ -134,13 +134,13 @@ namespace scl
          * 
          * \param ViewProjection - scene camera view projection matrix.
          * \param CameraDirection - scene camera direction vector.
-         * \param CameraLocation - scene camer location.
+         * \param CameraPosition - scene camer location.
          * \param ViewportWidth - scene viewport width.
          * \param ViewportHeight - scene viewport height.
          * \return None.
          */
         static void StartPipeline(const matr4 &ViewProjection,
-                                  const vec3 &CameraDirection, const vec3 &CameraLocation,
+                                  const vec3 &CameraDirection, const vec3 &CameraPosition,
                                   const int ViewportWidth, const int ViewportHeight);
 
         /**

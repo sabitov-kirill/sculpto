@@ -25,12 +25,14 @@ project "sculpto"
         "%{IncludeDir.stb_image}",
         "%{IncludeDir.entt}",
         "%{IncludeDir.imgui}",
+        "%{IncludeDir.assimp}",
     }
 
     links
     {
         "glad",
         "imgui",
+        "assimp",
         "opengl32.lib"
     }
 

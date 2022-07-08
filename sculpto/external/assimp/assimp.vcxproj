@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Dist|x64">
+      <Configuration>Dist</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{724885F2-5EEA-AFC8-47A5-C31C33E63619}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>assimp</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>bin\Debug-windows-x86_64-\assimp\</OutDir>
+    <IntDir>bin-int\Debug-windows-x86_64-\assimp\</IntDir>
+    <TargetName>assimp</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>bin\Release-windows-x86_64-\assimp\</OutDir>
+    <IntDir>bin-int\Release-windows-x86_64-\assimp\</IntDir>
+    <TargetName>assimp</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
+    <OutDir>bin\Dist-windows-x86_64-\assimp\</OutDir>
+    <IntDir>bin-int\Dist-windows-x86_64-\assimp\</IntDir>
+    <TargetName>assimp</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>ASSIMP_BUILD_NO_OWN_ZLIB;ASSIMP_BUILD_NO_X_IMPORTER;ASSIMP_BUILD_NO_MD3_IMPORTER;ASSIMP_BUILD_NO_MDL_IMPORTER;ASSIMP_BUILD_NO_MD2_IMPORTER;ASSIMP_BUILD_NO_ASE_IMPORTER;ASSIMP_BUILD_NO_AMF_IMPORTER;ASSIMP_BUILD_NO_HMP_IMPORTER;ASSIMP_BUILD_NO_SMD_IMPORTER;ASSIMP_BUILD_NO_MDC_IMPORTER;ASSIMP_BUILD_NO_MD5_IMPORTER;ASSIMP_BUILD_NO_STL_IMPORTER;ASSIMP_BUILD_NO_LWO_IMPORTER;ASSIMP_BUILD_NO_DXF_IMPORTER;ASSIMP_BUILD_NO_NFF_IMPORTER;ASSIMP_BUILD_NO_RAW_IMPORTER;ASSIMP_BUILD_NO_OFF_IMPORTER;ASSIMP_BUILD_NO_AC_IMPORTER;ASSIMP_BUILD_NO_BVH_IMPORTER;ASSIMP_BUILD_NO_IRRMESH_IMPORTER;ASSIMP_BUILD_NO_IRR_IMPORTER;ASSIMP_BUILD_NO_Q3D_IMPORTER;ASSIMP_BUILD_NO_B3D_IMPORTER;ASSIMP_BUILD_NO_TERRAGEN_IMPORTER;ASSIMP_BUILD_NO_CSM_IMPORTER;ASSIMP_BUILD_NO_3D_IMPORTER;ASSIMP_BUILD_NO_LWS_IMPORTER;ASSIMP_BUILD_NO_OGRE_IMPORTER;ASSIMP_BUILD_NO_OPENGEX_IMPORTER;ASSIMP_BUILD_NO_MS3D_IMPORTER;ASSIMP_BUILD_NO_COB_IMPORTER;ASSIMP_BUILD_NO_Q3BSP_IMPORTER;ASSIMP_BUILD_NO_NDO_IMPORTER;ASSIMP_BUILD_NO_IFC_IMPORTER;ASSIMP_BUILD_NO_XGL_IMPORTER;ASSIMP_BUILD_NO_FBX_IMPORTER;ASSIMP_BUILD_NO_ASSBIN_IMPORTER;ASSIMP_BUILD_NO_C4D_IMPORTER;ASSIMP_BUILD_NO_3MF_IMPORTER;ASSIMP_BUILD_NO_X3D_IMPORTER;ASSIMP_BUILD_NO_MMD_IMPORTER;ASSIMP_BUILD_NO_STEP_EXPORTER;ASSIMP_BUILD_NO_SIB_IMPORTER;ASSIMP_BUILD_NO_JOINVERTICES_PROCESS;ASSIMP_BUILD_NO_GENFACENORMALS_PROCESS;ASSIMP_BUILD_NO_REMOVEVC_PROCESS;ASSIMP_BUILD_NO_SPLITLARGEMESHES_PROCESS;ASSIMP_BUILD_NO_PRETRANSFORMVERTICES_PROCESS;ASSIMP_BUILD_NO_LIMITBONEWEIGHTS_PROCESS;ASSIMP_BUILD_NO_IMPROVECACHELOCALITY_PROCESS;ASSIMP_BUILD_NO_FIXINFACINGNORMALS_PROCESS;ASSIMP_BUILD_NO_REMOVE_REDUNDANTMATERIALS_PROCESS;ASSIMP_BUILD_NO_FINDINVALIDDATA_PROCESS;ASSIMP_BUILD_NO_FINDDEGENERATES_PROCESS;ASSIMP_BUILD_NO_SORTBYPTYPE_PROCESS;ASSIMP_BUILD_NO_GENUVCOORDS_PROCESS;ASSIMP_BUILD_NO_TRANSFORMTEXCOORDS_PROCESS;ASSIMP_BUILD_NO_FINDINSTANCES_PROCESS;ASSIMP_BUILD_NO_OPTIMIZEMESHES_PROCESS;ASSIMP_BUILD_NO_OPTIMIZEGRAPH_PROCESS;ASSIMP_BUILD_NO_SPLITBYBONECOUNT_PROCESS;ASSIMP_BUILD_NO_DEBONE_PROCESS;ASSIMP_BUILD_NO_EMBEDTEXTURES_PROCESS;ASSIMP_BUILD_NO_GLOBALSCALE_PROCESS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>include;contrib\irrXML;contrib\zlib;contrib\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>ASSIMP_BUILD_NO_OWN_ZLIB;ASSIMP_BUILD_NO_X_IMPORTER;ASSIMP_BUILD_NO_MD3_IMPORTER;ASSIMP_BUILD_NO_MDL_IMPORTER;ASSIMP_BUILD_NO_MD2_IMPORTER;ASSIMP_BUILD_NO_ASE_IMPORTER;ASSIMP_BUILD_NO_AMF_IMPORTER;ASSIMP_BUILD_NO_HMP_IMPORTER;ASSIMP_BUILD_NO_SMD_IMPORTER;ASSIMP_BUILD_NO_MDC_IMPORTER;ASSIMP_BUILD_NO_MD5_IMPORTER;ASSIMP_BUILD_NO_STL_IMPORTER;ASSIMP_BUILD_NO_LWO_IMPORTER;ASSIMP_BUILD_NO_DXF_IMPORTER;ASSIMP_BUILD_NO_NFF_IMPORTER;ASSIMP_BUILD_NO_RAW_IMPORTER;ASSIMP_BUILD_NO_OFF_IMPORTER;ASSIMP_BUILD_NO_AC_IMPORTER;ASSIMP_BUILD_NO_BVH_IMPORTER;ASSIMP_BUILD_NO_IRRMESH_IMPORTER;ASSIMP_BUILD_NO_IRR_IMPORTER;ASSIMP_BUILD_NO_Q3D_IMPORTER;ASSIMP_BUILD_NO_B3D_IMPORTER;ASSIMP_BUILD_NO_TERRAGEN_IMPORTER;ASSIMP_BUILD_NO_CSM_IMPORTER;ASSIMP_BUILD_NO_3D_IMPORTER;ASSIMP_BUILD_NO_LWS_IMPORTER;ASSIMP_BUILD_NO_OGRE_IMPORTER;ASSIMP_BUILD_NO_OPENGEX_IMPORTER;ASSIMP_BUILD_NO_MS3D_IMPORTER;ASSIMP_BUILD_NO_COB_IMPORTER;ASSIMP_BUILD_NO_Q3BSP_IMPORTER;ASSIMP_BUILD_NO_NDO_IMPORTER;ASSIMP_BUILD_NO_IFC_IMPORTER;ASSIMP_BUILD_NO_XGL_IMPORTER;ASSIMP_BUILD_NO_FBX_IMPORTER;ASSIMP_BUILD_NO_ASSBIN_IMPORTER;ASSIMP_BUILD_NO_C4D_IMPORTER;ASSIMP_BUILD_NO_3MF_IMPORTER;ASSIMP_BUILD_NO_X3D_IMPORTER;ASSIMP_BUILD_NO_MMD_IMPORTER;ASSIMP_BUILD_NO_STEP_EXPORTER;ASSIMP_BUILD_NO_SIB_IMPORTER;ASSIMP_BUILD_NO_JOINVERTICES_PROCESS;ASSIMP_BUILD_NO_GENFACENORMALS_PROCESS;ASSIMP_BUILD_NO_REMOVEVC_PROCESS;ASSIMP_BUILD_NO_SPLITLARGEMESHES_PROCESS;ASSIMP_BUILD_NO_PRETRANSFORMVERTICES_PROCESS;ASSIMP_BUILD_NO_LIMITBONEWEIGHTS_PROCESS;ASSIMP_BUILD_NO_IMPROVECACHELOCALITY_PROCESS;ASSIMP_BUILD_NO_FIXINFACINGNORMALS_PROCESS;ASSIMP_BUILD_NO_REMOVE_REDUNDANTMATERIALS_PROCESS;ASSIMP_BUILD_NO_FINDINVALIDDATA_PROCESS;ASSIMP_BUILD_NO_FINDDEGENERATES_PROCESS;ASSIMP_BUILD_NO_SORTBYPTYPE_PROCESS;ASSIMP_BUILD_NO_GENUVCOORDS_PROCESS;ASSIMP_BUILD_NO_TRANSFORMTEXCOORDS_PROCESS;ASSIMP_BUILD_NO_FINDINSTANCES_PROCESS;ASSIMP_BUILD_NO_OPTIMIZEMESHES_PROCESS;ASSIMP_BUILD_NO_OPTIMIZEGRAPH_PROCESS;ASSIMP_BUILD_NO_SPLITBYBONECOUNT_PROCESS;ASSIMP_BUILD_NO_DEBONE_PROCESS;ASSIMP_BUILD_NO_EMBEDTEXTURES_PROCESS;ASSIMP_BUILD_NO_GLOBALSCALE_PROCESS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>include;contrib\irrXML;contrib\zlib;contrib\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>ASSIMP_BUILD_NO_OWN_ZLIB;ASSIMP_BUILD_NO_X_IMPORTER;ASSIMP_BUILD_NO_MD3_IMPORTER;ASSIMP_BUILD_NO_MDL_IMPORTER;ASSIMP_BUILD_NO_MD2_IMPORTER;ASSIMP_BUILD_NO_ASE_IMPORTER;ASSIMP_BUILD_NO_AMF_IMPORTER;ASSIMP_BUILD_NO_HMP_IMPORTER;ASSIMP_BUILD_NO_SMD_IMPORTER;ASSIMP_BUILD_NO_MDC_IMPORTER;ASSIMP_BUILD_NO_MD5_IMPORTER;ASSIMP_BUILD_NO_STL_IMPORTER;ASSIMP_BUILD_NO_LWO_IMPORTER;ASSIMP_BUILD_NO_DXF_IMPORTER;ASSIMP_BUILD_NO_NFF_IMPORTER;ASSIMP_BUILD_NO_RAW_IMPORTER;ASSIMP_BUILD_NO_OFF_IMPORTER;ASSIMP_BUILD_NO_AC_IMPORTER;ASSIMP_BUILD_NO_BVH_IMPORTER;ASSIMP_BUILD_NO_IRRMESH_IMPORTER;ASSIMP_BUILD_NO_IRR_IMPORTER;ASSIMP_BUILD_NO_Q3D_IMPORTER;ASSIMP_BUILD_NO_B3D_IMPORTER;ASSIMP_BUILD_NO_TERRAGEN_IMPORTER;ASSIMP_BUILD_NO_CSM_IMPORTER;ASSIMP_BUILD_NO_3D_IMPORTER;ASSIMP_BUILD_NO_LWS_IMPORTER;ASSIMP_BUILD_NO_OGRE_IMPORTER;ASSIMP_BUILD_NO_OPENGEX_IMPORTER;ASSIMP_BUILD_NO_MS3D_IMPORTER;ASSIMP_BUILD_NO_COB_IMPORTER;ASSIMP_BUILD_NO_Q3BSP_IMPORTER;ASSIMP_BUILD_NO_NDO_IMPORTER;ASSIMP_BUILD_NO_IFC_IMPORTER;ASSIMP_BUILD_NO_XGL_IMPORTER;ASSIMP_BUILD_NO_FBX_IMPORTER;ASSIMP_BUILD_NO_ASSBIN_IMPORTER;ASSIMP_BUILD_NO_C4D_IMPORTER;ASSIMP_BUILD_NO_3MF_IMPORTER;ASSIMP_BUILD_NO_X3D_IMPORTER;ASSIMP_BUILD_NO_MMD_IMPORTER;ASSIMP_BUILD_NO_STEP_EXPORTER;ASSIMP_BUILD_NO_SIB_IMPORTER;ASSIMP_BUILD_NO_JOINVERTICES_PROCESS;ASSIMP_BUILD_NO_GENFACENORMALS_PROCESS;ASSIMP_BUILD_NO_REMOVEVC_PROCESS;ASSIMP_BUILD_NO_SPLITLARGEMESHES_PROCESS;ASSIMP_BUILD_NO_PRETRANSFORMVERTICES_PROCESS;ASSIMP_BUILD_NO_LIMITBONEWEIGHTS_PROCESS;ASSIMP_BUILD_NO_IMPROVECACHELOCALITY_PROCESS;ASSIMP_BUILD_NO_FIXINFACINGNORMALS_PROCESS;ASSIMP_BUILD_NO_REMOVE_REDUNDANTMATERIALS_PROCESS;ASSIMP_BUILD_NO_FINDINVALIDDATA_PROCESS;ASSIMP_BUILD_NO_FINDDEGENERATES_PROCESS;ASSIMP_BUILD_NO_SORTBYPTYPE_PROCESS;ASSIMP_BUILD_NO_GENUVCOORDS_PROCESS;ASSIMP_BUILD_NO_TRANSFORMTEXCOORDS_PROCESS;ASSIMP_BUILD_NO_FINDINSTANCES_PROCESS;ASSIMP_BUILD_NO_OPTIMIZEMESHES_PROCESS;ASSIMP_BUILD_NO_OPTIMIZEGRAPH_PROCESS;ASSIMP_BUILD_NO_SPLITBYBONECOUNT_PROCESS;ASSIMP_BUILD_NO_DEBONE_PROCESS;ASSIMP_BUILD_NO_EMBEDTEXTURES_PROCESS;ASSIMP_BUILD_NO_GLOBALSCALE_PROCESS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>include;contrib\irrXML;contrib\zlib;contrib\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="contrib\irrXML\CXMLReaderImpl.h" />
+    <ClInclude Include="contrib\irrXML\heapsort.h" />
+    <ClInclude Include="contrib\irrXML\irrArray.h" />
+    <ClInclude Include="contrib\irrXML\irrString.h" />
+    <ClInclude Include="contrib\irrXML\irrTypes.h" />
+    <ClInclude Include="contrib\irrXML\irrXML.h" />
+    <ClInclude Include="include\assimp\BaseImporter.h" />
+    <ClInclude Include="include\assimp\Bitmap.h" />
+    <ClInclude Include="include\assimp\BlobIOSystem.h" />
+    <ClInclude Include="include\assimp\ByteSwapper.h" />
+    <ClInclude Include="include\assimp\Compiler\poppack1.h" />
+    <ClInclude Include="include\assimp\Compiler\pstdint.h" />
+    <ClInclude Include="include\assimp\Compiler\pushpack1.h" />
+    <ClInclude Include="include\assimp\CreateAnimMesh.h" />
+    <ClInclude Include="include\assimp\DefaultIOStream.h" />
+    <ClInclude Include="include\assimp\DefaultIOSystem.h" />
+    <ClInclude Include="include\assimp\DefaultLogger.hpp" />
+    <ClInclude Include="include\assimp\Defines.h" />
+    <ClInclude Include="include\assimp\Exceptional.h" />
+    <ClInclude Include="include\assimp\Exporter.hpp" />
+    <ClInclude Include="include\assimp\GenericProperty.h" />
+    <ClInclude Include="include\assimp\Hash.h" />
+    <ClInclude Include="include\assimp\IOStream.hpp" />
+    <ClInclude Include="include\assimp\IOStreamBuffer.h" />
+    <ClInclude Include="include\assimp\IOSystem.hpp" />
+    <ClInclude Include="include\assimp\Importer.hpp" />
+    <ClInclude Include="include\assimp\LineSplitter.h" />
+    <ClInclude Include="include\assimp\LogAux.h" />
+    <ClInclude Include="include\assimp\LogStream.hpp" />
+    <ClInclude Include="include\assimp\Logger.hpp" />
+    <ClInclude Include="include\assimp\Macros.h" />
+    <ClInclude Include="include\assimp\MathFunctions.h" />
+    <ClInclude Include="include\assimp\MemoryIOWrapper.h" />
+    <ClInclude Include="include\assimp\NullLogger.hpp" />
+    <ClInclude Include="include\assimp\ParsingUtils.h" />
+    <ClInclude Include="include\assimp\Profiler.h" />
+    <ClInclude Include="include\assimp\ProgressHandler.hpp" />
+    <ClInclude Include="include\assimp\RemoveComments.h" />
+    <ClInclude Include="include\assimp\SGSpatialSort.h" />
+    <ClInclude Include="include\assimp\SceneCombiner.h" />
+    <ClInclude Include="include\assimp\SkeletonMeshBuilder.h" />
+    <ClInclude Include="include\assimp\SmoothingGroups.h" />
+    <ClInclude Include="include\assimp\SmoothingGroups.inl" />
+    <ClInclude Include="include\assimp\SpatialSort.h" />
+    <ClInclude Include="include\assimp\StandardShapes.h" />
+    <ClInclude Include="include\assimp\StreamReader.h" />
+    <ClInclude Include="include\assimp\StreamWriter.h" />
+    <ClInclude Include="include\assimp\StringComparison.h" />
+    <ClInclude Include="include\assimp\StringUtils.h" />
+    <ClInclude Include="include\assimp\Subdivision.h" />
+    <ClInclude Include="include\assimp\TinyFormatter.h" />
+    <ClInclude Include="include\assimp\Vertex.h" />
+    <ClInclude Include="include\assimp\XMLTools.h" />
+    <ClInclude Include="include\assimp\ai_assert.h" />
+    <ClInclude Include="include\assimp\anim.h" />
+    <ClInclude Include="include\assimp\camera.h" />
+    <ClInclude Include="include\assimp\cexport.h" />
+    <ClInclude Include="include\assimp\cfileio.h" />
+    <ClInclude Include="include\assimp\cimport.h" />
+    <ClInclude Include="include\assimp\color4.h" />
+    <ClInclude Include="include\assimp\color4.inl" />
+    <ClInclude Include="include\assimp\config.h" />
+    <ClInclude Include="include\assimp\defs.h" />
+    <ClInclude Include="include\assimp\fast_atof.h" />
+    <ClInclude Include="include\assimp\importerdesc.h" />
+    <ClInclude Include="include\assimp\irrXMLWrapper.h" />
+    <ClInclude Include="include\assimp\light.h" />
+    <ClInclude Include="include\assimp\material.h" />
+    <ClInclude Include="include\assimp\material.inl" />
+    <ClInclude Include="include\assimp\matrix3x3.h" />
+    <ClInclude Include="include\assimp\matrix3x3.inl" />
+    <ClInclude Include="include\assimp\matrix4x4.h" />
+    <ClInclude Include="include\assimp\matrix4x4.inl" />
+    <ClInclude Include="include\assimp\mesh.h" />
+    <ClInclude Include="include\assimp\metadata.h" />
+    <ClInclude Include="include\assimp\pbrmaterial.h" />
+    <ClInclude Include="include\assimp\port\AndroidJNI\AndroidJNIIOSystem.h" />
+    <ClInclude Include="include\assimp\postprocess.h" />
+    <ClInclude Include="include\assimp\qnan.h" />
+    <ClInclude Include="include\assimp\quaternion.h" />
+    <ClInclude Include="include\assimp\quaternion.inl" />
+    <ClInclude Include="include\assimp\scene.h" />
+    <ClInclude Include="include\assimp\texture.h" />
+    <ClInclude Include="include\assimp\types.h" />
+    <ClInclude Include="include\assimp\vector2.h" />
+    <ClInclude Include="include\assimp\vector2.inl" />
+    <ClInclude Include="include\assimp\vector3.h" />
+    <ClInclude Include="include\assimp\vector3.inl" />
+    <ClInclude Include="include\assimp\version.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="code\Assimp.cpp" />
+    <ClCompile Include="code\BaseImporter.cpp" />
+    <ClCompile Include="code\BaseProcess.cpp" />
+    <ClCompile Include="code\CalcTangentsProcess.cpp" />
+    <ClCompile Include="code\ColladaLoader.cpp" />
+    <ClCompile Include="code\ColladaParser.cpp" />
+    <ClCompile Include="code\ConvertToLHProcess.cpp" />
+    <ClCompile Include="code\CreateAnimMesh.cpp" />
+    <ClCompile Include="code\DefaultIOStream.cpp" />
+    <ClCompile Include="code\DefaultIOSystem.cpp" />
+    <ClCompile Include="code\DefaultLogger.cpp" />
+    <ClCompile Include="code\EmbedTexturesProcess.cpp" />
+    <ClCompile Include="code\GenVertexNormalsProcess.cpp" />
+    <ClCompile Include="code\Importer.cpp" />
+    <ClCompile Include="code\ImporterRegistry.cpp" />
+    <ClCompile Include="code\MakeVerboseFormat.cpp" />
+    <ClCompile Include="code\MaterialSystem.cpp" />
+    <ClCompile Include="code\ObjFileImporter.cpp" />
+    <ClCompile Include="code\ObjFileMtlImporter.cpp" />
+    <ClCompile Include="code\ObjFileParser.cpp" />
+    <ClCompile Include="code\PlyLoader.cpp" />
+    <ClCompile Include="code\PlyParser.cpp" />
+    <ClCompile Include="code\PostStepRegistry.cpp" />
+    <ClCompile Include="code\ProcessHelper.cpp" />
+    <ClCompile Include="code\SGSpatialSort.cpp" />
+    <ClCompile Include="code\ScaleProcess.cpp" />
+    <ClCompile Include="code\ScenePreprocessor.cpp" />
+    <ClCompile Include="code\SkeletonMeshBuilder.cpp" />
+    <ClCompile Include="code\SpatialSort.cpp" />
+    <ClCompile Include="code\TriangulateProcess.cpp" />
+    <ClCompile Include="code\ValidateDataStructure.cpp" />
+    <ClCompile Include="code\Version.cpp" />
+    <ClCompile Include="code\VertexTriangleAdjacency.cpp" />
+    <ClCompile Include="code\glTF2Importer.cpp" />
+    <ClCompile Include="code\glTFImporter.cpp" />
+    <ClCompile Include="code\scene.cpp" />
+    <ClCompile Include="contrib\irrXML\irrXML.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="contrib\irrXML\CMakeLists.txt" />
+    <None Include="include\assimp\.editorconfig" />
+    <None Include="include\assimp\config.h.in" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

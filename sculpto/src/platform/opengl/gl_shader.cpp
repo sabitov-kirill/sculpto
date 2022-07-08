@@ -111,6 +111,20 @@ int scl::gl_shader_program::GetOrCacheLocation(const std::string &Name) const
     return location;
 }
 
+bool scl::gl_shader_program::CheckIfShaderBinded() const
+{
+    if (Id != gl_shader_program::CurrentlyBoundShaderId)
+    {
+        if (!ShaderNotBindedErrorAlreadyShown)
+        {
+            SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.", DebugName);
+            ShaderNotBindedErrorAlreadyShown = true;
+        }
+        return false;
+    }
+    return true;
+}
+
 scl::gl_shader_program::gl_shader_program(const std::vector<shader_props> &Shaders, const std::string &DebugName) :
     DebugName(DebugName)
 {
@@ -146,6 +160,7 @@ void scl::gl_shader_program::Update(const std::vector<shader_props> &Shaders)
 void scl::gl_shader_program::Free()
 {
     VariablesLocations.clear();
+    ShaderNotBindedErrorAlreadyShown = false;
 
     if (Id == 0) return;
 
@@ -163,11 +178,7 @@ void scl::gl_shader_program::Free()
 
 bool scl::gl_shader_program::SetBool(const std::string &Name, bool Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
+    if (!CheckIfShaderBinded()) return false;
     int location = GetOrCacheLocation(Name);
     if (location == -1) return false;
 
@@ -177,11 +188,7 @@ bool scl::gl_shader_program::SetBool(const std::string &Name, bool Value) const
 
 bool scl::gl_shader_program::SetFloat(const std::string &Name, float Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
+    if (!CheckIfShaderBinded()) return false;
     int location = GetOrCacheLocation(Name);
     if (location == -1) return false;
 
@@ -191,11 +198,7 @@ bool scl::gl_shader_program::SetFloat(const std::string &Name, float Value) cons
 
 bool scl::gl_shader_program::SetFloat2(const std::string &Name, const vec2 &Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
+    if (!CheckIfShaderBinded()) return false;
     int location = GetOrCacheLocation(Name);
     if (location == -1) return false;
 
@@ -205,11 +208,7 @@ bool scl::gl_shader_program::SetFloat2(const std::string &Name, const vec2 &Valu
 
 bool scl::gl_shader_program::SetFloat3(const std::string &Name, const vec3 &Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
+    if (!CheckIfShaderBinded()) return false;
     int location = GetOrCacheLocation(Name);
     if (location == -1) return false;
 
@@ -219,11 +218,7 @@ bool scl::gl_shader_program::SetFloat3(const std::string &Name, const vec3 &Valu
 
 bool scl::gl_shader_program::SetFloat4(const std::string &Name, const vec4 &Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
+    if (!CheckIfShaderBinded()) return false;
     int location = GetOrCacheLocation(Name);
     if (location == -1) return false;
 
@@ -233,11 +228,7 @@ bool scl::gl_shader_program::SetFloat4(const std::string &Name, const vec4 &Valu
 
 bool scl::gl_shader_program::SetInt(const std::string &Name, int Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
+    if (!CheckIfShaderBinded()) return false;
     int location = GetOrCacheLocation(Name);
     if (location == -1) return false;
 
@@ -247,11 +238,7 @@ bool scl::gl_shader_program::SetInt(const std::string &Name, int Value) const
 
 bool scl::gl_shader_program::SetInt2(const std::string &Name, const ivec2 &Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
+    if (!CheckIfShaderBinded()) return false;
     int location = GetOrCacheLocation(Name);
     if (location == -1) return false;
 
@@ -261,11 +248,7 @@ bool scl::gl_shader_program::SetInt2(const std::string &Name, const ivec2 &Value
 
 bool scl::gl_shader_program::SetInt3(const std::string &Name, const ivec3 &Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
+    if (!CheckIfShaderBinded()) return false;
     int location = GetOrCacheLocation(Name);
     if (location == -1) return false;
 
@@ -275,11 +258,7 @@ bool scl::gl_shader_program::SetInt3(const std::string &Name, const ivec3 &Value
 
 bool scl::gl_shader_program::SetInt4(const std::string &Name, const ivec4 &Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
+    if (!CheckIfShaderBinded()) return false;
     int location = GetOrCacheLocation(Name);
     if (location == -1) return false;
 
@@ -289,11 +268,7 @@ bool scl::gl_shader_program::SetInt4(const std::string &Name, const ivec4 &Value
 
 bool scl::gl_shader_program::SetUInt(const std::string &Name, u32 Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
+    if (!CheckIfShaderBinded()) return false;
     int location = GetOrCacheLocation(Name);
     if (location == -1) return false;
 
@@ -303,11 +278,7 @@ bool scl::gl_shader_program::SetUInt(const std::string &Name, u32 Value) const
 
 bool scl::gl_shader_program::SetUInt2(const std::string &Name, const uvec2 &Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
+    if (!CheckIfShaderBinded()) return false;
     int location = GetOrCacheLocation(Name);
     if (location == -1) return false;
 
@@ -317,11 +288,7 @@ bool scl::gl_shader_program::SetUInt2(const std::string &Name, const uvec2 &Valu
 
 bool scl::gl_shader_program::SetUInt3(const std::string &Name, const uvec3 &Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
+    if (!CheckIfShaderBinded()) return false;
     int location = GetOrCacheLocation(Name);
     if (location == -1) return false;
 
@@ -331,11 +298,7 @@ bool scl::gl_shader_program::SetUInt3(const std::string &Name, const uvec3 &Valu
 
 bool scl::gl_shader_program::SetUInt4(const std::string &Name, const uvec4 &Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
+    if (!CheckIfShaderBinded()) return false;
     int location = GetOrCacheLocation(Name);
     if (location == -1) return false;
 
@@ -345,11 +308,7 @@ bool scl::gl_shader_program::SetUInt4(const std::string &Name, const uvec4 &Valu
 
 bool scl::gl_shader_program::SetMatr3(const std::string &Name, const matr3 &Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
+    if (!CheckIfShaderBinded()) return false;
     int location = GetOrCacheLocation(Name);
     if (location == -1) return false;
 
@@ -359,11 +318,7 @@ bool scl::gl_shader_program::SetMatr3(const std::string &Name, const matr3 &Valu
 
 bool scl::gl_shader_program::SetMatr4(const std::string &Name, const matr4 &Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
+    if (!CheckIfShaderBinded()) return false;
     int location = GetOrCacheLocation(Name);
     if (location == -1) return false;
 
@@ -373,180 +328,105 @@ bool scl::gl_shader_program::SetMatr4(const std::string &Name, const matr4 &Valu
 
 bool scl::gl_shader_program::SetBool(int Location, bool Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
-
+    if (!CheckIfShaderBinded()) return false;
     glUniform1i(Location, Value);
     return true;
 }
 
 bool scl::gl_shader_program::SetFloat(int Location, float Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
-
+    if (!CheckIfShaderBinded()) return false;
     glUniform1f(Location, Value);
     return true;
 }
 
 bool scl::gl_shader_program::SetFloat2(int Location, const vec2 &Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
-
+    if (!CheckIfShaderBinded()) return false;
     glUniform2fv(Location, 1, (float *)&Value);
     return true;
 }
 
 bool scl::gl_shader_program::SetFloat3(int Location, const vec3 &Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
-
+    if (!CheckIfShaderBinded()) return false;
     glUniform3fv(Location, 1, (float *)&Value);
     return true;
 }
 
 bool scl::gl_shader_program::SetFloat4(int Location, const vec4 &Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
-
+    if (!CheckIfShaderBinded()) return false;
     glUniform4fv(Location, 1, (float *)&Value);
     return true;
 }
 
 bool scl::gl_shader_program::SetInt(int Location, int Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
-
+    if (!CheckIfShaderBinded()) return false;
     glUniform1i(Location, Value);
     return true;
 }
 
 bool scl::gl_shader_program::SetInt2(int Location, const ivec2 &Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
-
+    if (!CheckIfShaderBinded()) return false;
     glUniform2iv(Location, 1, (int *)&Value);
     return true;
 }
 
 bool scl::gl_shader_program::SetInt3(int Location, const ivec3 &Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
-
+    if (!CheckIfShaderBinded()) return false;
     glUniform3iv(Location, 1, (int *)&Value);
     return true;
 }
 
 bool scl::gl_shader_program::SetInt4(int Location, const ivec4 &Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
-
+    if (!CheckIfShaderBinded()) return false;
     glUniform4iv(Location, 1, (int *)&Value);
     return true;
 }
 
 bool scl::gl_shader_program::SetUInt(int Location, u32 Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
-
+    if (!CheckIfShaderBinded()) return false;
     glUniform1ui(Location, Value);
     return true;
 }
 
 bool scl::gl_shader_program::SetUInt2(int Location, const uvec2 &Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
-
+    if (!CheckIfShaderBinded()) return false;
     glUniform2uiv(Location, 1, (u32 *)&Value);
     return true;
 }
 
 bool scl::gl_shader_program::SetUInt3(int Location, const uvec3 &Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
-
+    if (!CheckIfShaderBinded()) return false;
     glUniform3uiv(Location, 1, (u32 *)&Value);
     return true;
 }
 
 bool scl::gl_shader_program::SetUInt4(int Location, const uvec4 &Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
-
+    if (!CheckIfShaderBinded()) return false;
     glUniform4uiv(Location, 1, (u32 *)&Value);
     return true;
 }
 
 bool scl::gl_shader_program::SetMatr3(int Location, const matr3 &Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
-
+    if (!CheckIfShaderBinded()) return false;
     glUniformMatrix3fv(Location, 1, FALSE, (float *)&Value);
     return true;
 }
 
 bool scl::gl_shader_program::SetMatr4(int Location, const matr4 &Value) const
 {
-    if (Id != gl_shader_program::CurrentlyBoundShaderId)
-    {
-        SCL_CORE_ERROR("Trying set shader variable to shader \"{}\", which is not binded shader.");
-        return false;
-    }
-
+    if (!CheckIfShaderBinded()) return false;
     glUniformMatrix4fv(Location, 1, FALSE, (float *)&Value);
     return true;
 }

@@ -131,6 +131,22 @@ namespace scl::math
          */
         static vec3 Rnd(T Min = 0, T Max = 1) { return vec3(Rnd(Min, Max)); }
 
+        /**
+         * Vector with compund of minimums of specified vectors components.
+         *
+         * \param A, B - vectors to take minimums of components.
+         * \return minimum vector.
+         */
+        static vec3 Min(const vec3 &A, const vec3 &B) { return vec3(math::Min(A.X, B.X), math::Min(A.Y, B.Y), math::Min(A.Z, B.Z)); }
+
+        /**
+         * Vector with compund of maximums of specified vectors components.
+         *
+         * \param A, B - vectors to take maximums of components.
+         * \return minimum vector.
+         */
+        static vec3 Max(const vec3 &A, const vec3 &B) { return vec3(math::Max(A.X, B.X), math::Max(A.Y, B.Y), math::Max(A.Z, B.Z)); }
+
     public: /* Vector methods. */
         /**
          * Vector squared length getting function.
@@ -174,6 +190,18 @@ namespace scl::math
         vec3 Normalized() const
         {
             return *this / Length();
+        }
+
+        /**
+         * Normalize vector function.
+         *
+         * \param None.
+         * \return normalized vector.
+         */
+        vec3 &Normalize()
+        {
+            *this /= Length();
+            return *this;
         }
 
         /**

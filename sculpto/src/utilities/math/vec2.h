@@ -106,6 +106,22 @@ namespace scl::math
          */
         static vec2 Rnd(T Min = 0, T Max = 1) { return vec2(Rnd(Min, Max)); }
 
+        /**
+         * Vector with compund of minimums of specified vectors components.
+         * 
+         * \param A, B - vectors to take minimums of components.
+         * \return minimum vector.
+         */
+        static vec2 Min(const vec2 &A, const vec2 &B) { return vec2(math::Min(A.X, B.X), math::Min(A.Y, B.Y)); }
+
+        /**
+         * Vector with compund of maximums of specified vectors components.
+         *
+         * \param A, B - vectors to take maximums of components.
+         * \return minimum vector.
+         */
+        static vec2 Max(const vec2 &A, const vec2 &B) { return vec2(math::Max(A.X, B.X), math::Max(A.Y, B.Y)); }
+
     public: /* Vector methods. */
         /**
          * Vector squared length getting function.
@@ -149,6 +165,18 @@ namespace scl::math
         vec2 Normalized() const
         {
             return *this / Length();
+        }
+
+        /**
+         * Normalize vector function.
+         *
+         * \param None.
+         * \return normalized vector.
+         */
+        vec2 &Normalize()
+        {
+            *this /= Length();
+            return *this;
         }
 
         /**

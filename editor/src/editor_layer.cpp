@@ -64,76 +64,72 @@ void editor::editor_layer::OnInit()
     auto basic_lighting_shader = assets_manager::LoadShader("assets/shaders/phong.glsl");
     auto single_color_shader = assets_manager::LoadShader("assets/shaders/single_color.glsl");
 
-    auto sphere_material = material_phong::Create(basic_lighting_shader, vec3 { 1, 0.5, 0.3 }, vec3 { 0.7, 0.9, 0.9 }, 128.0f);
-
-    auto floor_matrerial = material_phong::Create(basic_lighting_shader, vec3 { 1, 0.5, 0.3 }, vec3 { 0.6, 0.5, 0.55 }, 128.0f);
- // floor_matrerial->SetDiffuseMapTexture(texture_2d::Create("assets/images/forest_leaves/forest_leaves_02_diffuse_4k.jpg"));
-    floor_matrerial->SetDiffuseMapTexture(texture_2d::Create("assets/images/wood.png"));
-
-    auto crate_material = material_phong::Create(basic_lighting_shader, vec3 {}, vec3 {}, 8.0f);
-    crate_material->SetDiffuseMapTexture(texture_2d::Create("assets/images/crate.png"));
-    crate_material->SetSpecularMapTexture(texture_2d::Create("assets/images/crate_specular.png"));
-
-    auto single_color_material = material::Create(single_color_shader);
-
-    auto cube_mesh = mesh::Create<topology::cube>(vec3(0), vec3(1));
-    auto plane_mesh = mesh::Create<topology::grid>(10, 10);
-    auto sphere_mesh = mesh::Create<topology::sphere>(vec3 { 0 }, 1, 20);
-
-    topology::cone cone_topo(vec3(0, 1, 0), 0, vec3(0.5, 0, 0.5), 0.4, 20);
-    cone_topo.SetColor(vec4 { 0.2, 0.65, 0.38, 1 });
-    auto cone_mesh = mesh::Create(cone_topo);
-
-    topology::sphere sphere_topo = topology::sphere(vec3 { 0 }, 1, 20);
-    sphere_topo.SetColor(vec4 { 1 });
-    auto light_bulb_mesh = mesh::Create(sphere_topo);
-
-    renderer_camera rend_camera { camera_projection_type::PERSPECTIVE };
-    rend_camera.SetPosition({ 4, 5, -5 });
-
-    render_bridge::SetClearColor(ClearColor);
-    render_bridge::SetWireframeMode(IsWireframe);
-
     /*
      * Creating scene objects
      */
     EditorScene = CreateShared<scene>();
 
+    auto wall_material = material_phong::Create(basic_lighting_shader, vec3 {}, vec3 {}, 8.0f);
+    wall_material->SetDiffuseMapTexture(texture_2d::Create("assets/images/stone_wall/diff.jpg"));
+    wall_material->SetNormalMapTexture(texture_2d::Create("assets/images/stone_wall/bump.jpg"));
+    auto wall = EditorScene->CreateObject();
+    wall.AddComponent<mesh_component>(mesh::Create<topology::plane>(4, 2));
+    wall.AddComponent<mesh_renderer_component>(wall_material);
+    wall.AddComponent<transform_component>(vec3 { 2 }, vec3 { 0, 0, 90 }, vec3 { -3, 4, -2 });
+
+    auto crate_material = material_phong::Create(basic_lighting_shader, vec3 {}, vec3 { 0 }, 8.0f);
+    crate_material->SetDiffuseMapTexture(texture_2d::Create("assets/images/crate.png"));
+    crate_material->SetSpecularMapTexture(texture_2d::Create("assets/images/crate_specular.png"));
+    //crate_material->SetDiffuseMapTexture(texture_2d::Create("assets/images/crate/diff.png"));
+    //crate_material->SetNormalMapTexture(texture_2d::Create("assets/images/crate/bump.jpg"));
     auto cube = EditorScene->CreateObject();
-    cube.AddComponent<mesh_component>(cube_mesh);
+    cube.AddComponent<mesh_component>(mesh::Create<topology::cube>(vec3(0), vec3(1)));
     cube.AddComponent<mesh_renderer_component>(crate_material);
     cube.AddComponent<transform_component>(vec3 { 1 }, vec3 { 0 }, vec3 { 1 });
     cube.AddComponent<native_script_component>().Bind<cube_behaviour>();
 
+    auto floor_matrerial = material_phong::Create(basic_lighting_shader, vec3 { 1, 0.5, 0.3 }, vec3 { 0.6, 0.5, 0.55 }, 128.0f);
+    floor_matrerial->SetDiffuseMapTexture(texture_2d::Create("assets/images/wood.png"));
     auto plane = EditorScene->CreateObject();
-    plane.AddComponent<mesh_component>(plane_mesh);
+    plane.AddComponent<mesh_component>(mesh::Create<topology::plane>(10, 10));
     plane.AddComponent<mesh_renderer_component>(floor_matrerial);
     plane.AddComponent<transform_component>(vec3 { 5 }, vec3 { 0 }, vec3 { -25, 0, -25 });
 
     auto sphere = EditorScene->CreateObject();
-    sphere.AddComponent<mesh_component>(sphere_mesh);
-    sphere.AddComponent<mesh_renderer_component>(sphere_material);
+    sphere.AddComponent<mesh_component>(mesh::Create<topology::sphere>(vec3 { 0 }, 1, 20));
+    sphere.AddComponent<mesh_renderer_component>(material_phong::Create(basic_lighting_shader, vec3 { 1, 0.5, 0.3 }, vec3 { 0.7, 0.9, 0.9 }, 128.0f));
     sphere.AddComponent<transform_component>(vec3 { 0.5 }, vec3 { 0 }, vec3 { -2, 2, -2 });
 
-    auto cone = EditorScene->CreateObject();
-    cone.AddComponent<mesh_component>(cone_mesh);
-    cone.AddComponent<mesh_renderer_component>(single_color_material);
-    cone.AddComponent<transform_component>(vec3 { 1 }, vec3 {}, vec3 { -5, 5, -5 });
-    cone.AddComponent<spot_light_component>(vec3 { 0.2, 0.65, 0.38 }, vec3 { 0.5, -1, 0.5 }, 15.0f, 30.0f);
-    
+    vec3 col = vec3 { 1 };
+    topology::sphere sphere_topo = topology::sphere(vec3 { 0 }, 1, 20);
     auto light_bulb = EditorScene->CreateObject();
-    light_bulb.AddComponent<mesh_component>(light_bulb_mesh);
-    light_bulb.AddComponent<mesh_renderer_component>(single_color_material);
-    light_bulb.AddComponent<transform_component>(vec3 { 0.1 }, vec3 { 0 }, vec3 { 2, 1, 2 });
-    light_bulb.AddComponent<point_light_component>(vec3 { 1 }, 1.0f, 0.001f, 0.017f);
+    light_bulb.AddComponent<mesh_component>(mesh::Create(sphere_topo));
+    light_bulb.AddComponent<mesh_renderer_component>(material_single_color::Create(single_color_shader, col));
+    light_bulb.AddComponent<transform_component>(vec3 { 0.1 }, vec3 { 0 }, vec3 { 2, 4, 2 });
+    light_bulb.AddComponent<point_light_component>(col, 1.0, 0.022, 0.0019);
 
     auto projector = EditorScene->CreateObject();
-    projector.AddComponent<directional_light_component>(vec3 { -1, -1, 0.5 }, vec3 { 0.5, 0.5, 0.5 }, true, 10.0f, 10.0f);
+    projector.AddComponent<directional_light_component>(vec3 { -1, -1, 0 }, vec3 { 0.2, 0.2, 0.2 }, true, 10.0f, 10.0f);
 
+    vec3 A = vec3(0, 1, 0), B = vec3(-2, 0, 1);
+    col = vec3 { 0.55, 0.85, 0.45 };
+    topology::cone cone_topo(A, 0, B, 0.4, 20);
+    auto cone_mesh = mesh::Create(cone_topo);
+    auto cone = EditorScene->CreateObject();
+    cone.AddComponent<mesh_component>(cone_mesh);
+    cone.AddComponent<mesh_renderer_component>(material_single_color::Create(single_color_shader, col));
+    cone.AddComponent<transform_component>(vec3 { 1 }, vec3 {}, vec3 { 5, 5, -5 });
+    cone.AddComponent<spot_light_component>(col, (B - A).Normalized(), 15.0f, 30.0f);
+
+    renderer_camera rend_camera { camera_projection_type::PERSPECTIVE };
+    rend_camera.SetPosition({ 4, 5, -5 });
     auto camera = EditorScene->CreateObject("MainCamera");
     camera.AddComponent<camera_controller_component>(rend_camera);
     camera.AddComponent<native_script_component>().Bind<camera_behaviour>();
     EditorScene->SetMainCamera("MainCamera");
+
+    render_bridge::SetClearColor(ClearColor);
+    render_bridge::SetWireframeMode(IsWireframe);
     // EditorScene->SetRenderToSwapChainBuffer(true);
     // application::Get().SetGuiEnabled(false);
 }

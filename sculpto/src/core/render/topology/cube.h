@@ -8,22 +8,14 @@
 
 #pragma once
 
-#include "basis.h"
+#include "trimesh.h"
 #include "../vertex.h"
 
 namespace scl::topology
 {
     /* Topology cube object class. */
-    class cube : public basis<vertex>
+    class cube : public trimesh
     {
-    public: /* Cube data getter/setter functions. */
-        /* Topology vertices color setter function. */
-        void SetColor(const vec4 &Color)
-        {
-            for (size_t i = 0; i < Vertices.size(); i++)
-                Vertices[i].Color = Color;
-        }
-
     public:
         /**
          * Cube topology object constructor by two points.

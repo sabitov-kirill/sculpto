@@ -75,6 +75,8 @@ namespace scl
         static const int LIGHTS_MAX_POINT                     = 50;
         static const int LIGHTS_MAX_SPOT                      = 50;
 
+        static const int MESH_RESTART_INDEX = -1;
+
     private: /* render context data. */
         static api Api; /* Render system backend api. */
 

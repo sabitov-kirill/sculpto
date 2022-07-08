@@ -20,6 +20,7 @@ namespace scl
         std::string DebugName {};
         GLuint Id {};
         mutable std::unordered_map<std::string, int> VariablesLocations {};
+        mutable bool ShaderNotBindedErrorAlreadyShown {};
         static int CurrentlyBoundShaderId;
 
     private:
@@ -63,6 +64,14 @@ namespace scl
          * \return shader variable location.
          */
         int GetOrCacheLocation(const std::string &Name) const;
+
+        /**
+         * Check if current shader is binded.
+         * 
+         * \param None.
+         * \return None.
+         */
+        bool CheckIfShaderBinded() const;
 
     public:
         /* Backend api render primitive hadnle getter function. */
