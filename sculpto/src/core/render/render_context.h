@@ -15,6 +15,8 @@ namespace scl
 {
     /* Vertex array class declaration. */
     class vertex_array;
+    class shader_program;
+    class mesh;
     enum class mesh_type;
 
     /* Shader variable type enum. */
@@ -70,8 +72,11 @@ namespace scl
         static const int BINDING_POINT_FREE                   = 20;
         static const int TEXTURE_SLOT_MATERIAL_DIFFUSE        = 0;
         static const int TEXTURE_SLOT_MATERIAL_SPECULAR       = 1;
-        static const int TEXTURE_SLOT_MATERIAL_NORMAL_MAP     = 2;
+        static const int TEXTURE_SLOT_MATERIAL_EMISSION_MAP   = 2;
+        static const int TEXTURE_SLOT_MATERIAL_NORMAL_MAP     = 3;
         static const int TEXTURE_SLOT_SHADOW_MAP              = 5;
+        static const int TEXTURE_SLOT_HDR_BUFFER              = 6;
+        static const int TEXTURE_SLOT_BLUR_BUFFER             = 7;
         static const int LIGHTS_MAX_POINT                     = 50;
         static const int LIGHTS_MAX_SPOT                      = 50;
 
@@ -158,6 +163,22 @@ namespace scl
          * \return None.
          */
         virtual void DrawIndicesInstanced(const shared<vertex_array> &Mesh, int InstanceCount) = 0;
+
+    public: /* Sculpto library built-in backend API specific rendering objects getter function. */
+        /* Backend API specific single color material shader getter function. */
+        virtual shared<shader_program> GetSingleColorMaterialShader() const = 0;
+
+        /* Backend API specific phong lighting model material shader getter function. */
+        virtual shared<shader_program> GetPhongMaterialShader() const = 0;
+
+        /* Backend API specific shadow pass shader getter function. */
+        virtual shared<shader_program> GetShadowPassShader() const = 0;
+
+        /* Backend API specific tone mapping pass shader getter function. */
+        virtual shared<shader_program> GetToneMappingPassShader() const = 0;
+
+        /* Backend API specific gaussian blur pass shader getter function. */
+        virtual shared<shader_program> GetGaussianBlurPassShader() const = 0;
 
         /**
          * Rendering context creation function.

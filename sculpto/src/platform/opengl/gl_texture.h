@@ -29,9 +29,10 @@ namespace scl
          * Create OpenGL color texture from image container function.
          * 
          * \param Image - image container to create texture from.
+         * \param IsFloatingPoint - flag, showing wheather texture use range [0; 1] or higher.
          * \return None.
          */
-        void CreateColor(const image &Image);
+        void CreateColor(const image &Image, bool IsFloatingPoint);
 
         /**
          * Create OpenGL depth texture function.
@@ -49,7 +50,7 @@ namespace scl
          * \param Type - texture type.
          * \return created texture pointer.
          */
-        gl_texture_2d(const image &Image, texture_2d_type Type);
+        gl_texture_2d(const image &Image, texture_type Type);
 
         /**
          * Bind texture to current render stage function.

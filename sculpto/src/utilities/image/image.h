@@ -11,7 +11,6 @@
 #include <stb_image.h>
 
 #include "base.h"
-#include "utilities/memory/memory_swap.h"
 
 namespace scl
 {
@@ -21,7 +20,7 @@ namespace scl
     private: /* Image data. */
         int Width {}, Height {};
         int ComponentsCount {};
-        u8 *Data {};
+        u8 *Data { nullptr };
 
     public: /* Image getter/setter functions. */
         /* Image width getter function. */
@@ -81,11 +80,12 @@ namespace scl
          * \param Width - width of creating image.
          * \param Height - height of creating image.
          * \param ComponentsCount - dimentions (components per pixel) count.
+         * \param AllocateMemory - flag, showing weather allocate mrmory for data buffer or not.
          */
-        image(int Width, int Height, int ComponentsCount) :
+        image(int Width, int Height, int ComponentsCount, bool AllocateMemory = true) :
             Width(Width), Height(Height), ComponentsCount(ComponentsCount)
         {
-            Data = new u8[(u64)Width * Height * ComponentsCount];
+            if (AllocateMemory) Allocate();
         }
 
         /**
@@ -117,8 +117,30 @@ namespace scl
         /* Image default destructor. */
         ~image()
         {
+            Free();
+        }
+
+        /**
+         * Allocate memory for image data buffer (of current image size).
+         *
+         * \param None.
+         * \return None.
+         */
+        void Allocate()
+        {
+            Data = new u8[(u64)Width * Height * ComponentsCount];
+        }
+
+        /**
+         * Free memory of image data buffer.
+         * 
+         * \param None.
+         * \return None.
+         */
+        void Free()
+        {
             Width = Height = ComponentsCount = 0;
-            if (Data != nullptr) delete[] Data;
+            if (Data != nullptr) stbi_image_free(Data);
         }
 
         /**
@@ -139,6 +161,7 @@ namespace scl
             {
                 SCL_CORE_ERROR("Error during loading image from file \"{}\"!", FileName);
                 Width = Height = ComponentsCount = 0;
+                if (Data) stbi_image_free(Data);
                 return false;
             }
 

@@ -10,6 +10,12 @@
     <Filter Include="contrib\irrXML">
       <UniqueIdentifier>{03DA25FB-EFA7-1901-D83B-8A27C4A8F565}</UniqueIdentifier>
     </Filter>
+    <Filter Include="contrib\unzip">
+      <UniqueIdentifier>{BB173D2F-27D8-B865-F012-02E35C92FD41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="contrib\zlib">
+      <UniqueIdentifier>{168D044F-02F0-93F3-AB75-CCA997B75F76}</UniqueIdentifier>
+    </Filter>
     <Filter Include="include">
       <UniqueIdentifier>{89AF369E-F58E-B539-FEA6-40106A051C9B}</UniqueIdentifier>
     </Filter>
@@ -44,6 +50,51 @@
     </ClInclude>
     <ClInclude Include="contrib\irrXML\irrXML.h">
       <Filter>contrib\irrXML</Filter>
+    </ClInclude>
+    <ClInclude Include="contrib\unzip\crypt.h">
+      <Filter>contrib\unzip</Filter>
+    </ClInclude>
+    <ClInclude Include="contrib\unzip\ioapi.h">
+      <Filter>contrib\unzip</Filter>
+    </ClInclude>
+    <ClInclude Include="contrib\unzip\unzip.h">
+      <Filter>contrib\unzip</Filter>
+    </ClInclude>
+    <ClInclude Include="contrib\zlib\crc32.h">
+      <Filter>contrib\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="contrib\zlib\deflate.h">
+      <Filter>contrib\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="contrib\zlib\gzguts.h">
+      <Filter>contrib\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="contrib\zlib\inffast.h">
+      <Filter>contrib\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="contrib\zlib\inffixed.h">
+      <Filter>contrib\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="contrib\zlib\inflate.h">
+      <Filter>contrib\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="contrib\zlib\inftrees.h">
+      <Filter>contrib\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="contrib\zlib\trees.h">
+      <Filter>contrib\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="contrib\zlib\zconf.h">
+      <Filter>contrib\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="contrib\zlib\zconf.in.h">
+      <Filter>contrib\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="contrib\zlib\zlib.h">
+      <Filter>contrib\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="contrib\zlib\zutil.h">
+      <Filter>contrib\zlib</Filter>
     </ClInclude>
     <ClInclude Include="include\assimp\BaseImporter.h">
       <Filter>include\assimp</Filter>
@@ -305,6 +356,27 @@
     <ClCompile Include="code\BaseProcess.cpp">
       <Filter>code</Filter>
     </ClCompile>
+    <ClCompile Include="code\BlenderBMesh.cpp">
+      <Filter>code</Filter>
+    </ClCompile>
+    <ClCompile Include="code\BlenderCustomData.cpp">
+      <Filter>code</Filter>
+    </ClCompile>
+    <ClCompile Include="code\BlenderDNA.cpp">
+      <Filter>code</Filter>
+    </ClCompile>
+    <ClCompile Include="code\BlenderLoader.cpp">
+      <Filter>code</Filter>
+    </ClCompile>
+    <ClCompile Include="code\BlenderModifier.cpp">
+      <Filter>code</Filter>
+    </ClCompile>
+    <ClCompile Include="code\BlenderScene.cpp">
+      <Filter>code</Filter>
+    </ClCompile>
+    <ClCompile Include="code\BlenderTessellator.cpp">
+      <Filter>code</Filter>
+    </ClCompile>
     <ClCompile Include="code\CalcTangentsProcess.cpp">
       <Filter>code</Filter>
     </ClCompile>
@@ -330,6 +402,51 @@
       <Filter>code</Filter>
     </ClCompile>
     <ClCompile Include="code\EmbedTexturesProcess.cpp">
+      <Filter>code</Filter>
+    </ClCompile>
+    <ClCompile Include="code\FBXAnimation.cpp">
+      <Filter>code</Filter>
+    </ClCompile>
+    <ClCompile Include="code\FBXBinaryTokenizer.cpp">
+      <Filter>code</Filter>
+    </ClCompile>
+    <ClCompile Include="code\FBXConverter.cpp">
+      <Filter>code</Filter>
+    </ClCompile>
+    <ClCompile Include="code\FBXDeformer.cpp">
+      <Filter>code</Filter>
+    </ClCompile>
+    <ClCompile Include="code\FBXDocument.cpp">
+      <Filter>code</Filter>
+    </ClCompile>
+    <ClCompile Include="code\FBXDocumentUtil.cpp">
+      <Filter>code</Filter>
+    </ClCompile>
+    <ClCompile Include="code\FBXImporter.cpp">
+      <Filter>code</Filter>
+    </ClCompile>
+    <ClCompile Include="code\FBXMaterial.cpp">
+      <Filter>code</Filter>
+    </ClCompile>
+    <ClCompile Include="code\FBXMeshGeometry.cpp">
+      <Filter>code</Filter>
+    </ClCompile>
+    <ClCompile Include="code\FBXModel.cpp">
+      <Filter>code</Filter>
+    </ClCompile>
+    <ClCompile Include="code\FBXNodeAttribute.cpp">
+      <Filter>code</Filter>
+    </ClCompile>
+    <ClCompile Include="code\FBXParser.cpp">
+      <Filter>code</Filter>
+    </ClCompile>
+    <ClCompile Include="code\FBXProperties.cpp">
+      <Filter>code</Filter>
+    </ClCompile>
+    <ClCompile Include="code\FBXTokenizer.cpp">
+      <Filter>code</Filter>
+    </ClCompile>
+    <ClCompile Include="code\FBXUtil.cpp">
       <Filter>code</Filter>
     </ClCompile>
     <ClCompile Include="code\GenVertexNormalsProcess.cpp">
@@ -374,6 +491,9 @@
     <ClCompile Include="code\ScaleProcess.cpp">
       <Filter>code</Filter>
     </ClCompile>
+    <ClCompile Include="code\SceneCombiner.cpp">
+      <Filter>code</Filter>
+    </ClCompile>
     <ClCompile Include="code\ScenePreprocessor.cpp">
       <Filter>code</Filter>
     </ClCompile>
@@ -381,6 +501,9 @@
       <Filter>code</Filter>
     </ClCompile>
     <ClCompile Include="code\SpatialSort.cpp">
+      <Filter>code</Filter>
+    </ClCompile>
+    <ClCompile Include="code\Subdivision.cpp">
       <Filter>code</Filter>
     </ClCompile>
     <ClCompile Include="code\TriangulateProcess.cpp">
@@ -407,10 +530,79 @@
     <ClCompile Include="contrib\irrXML\irrXML.cpp">
       <Filter>contrib\irrXML</Filter>
     </ClCompile>
+    <ClCompile Include="contrib\unzip\ioapi.c">
+      <Filter>contrib\unzip</Filter>
+    </ClCompile>
+    <ClCompile Include="contrib\unzip\unzip.c">
+      <Filter>contrib\unzip</Filter>
+    </ClCompile>
+    <ClCompile Include="contrib\zlib\adler32.c">
+      <Filter>contrib\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="contrib\zlib\compress.c">
+      <Filter>contrib\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="contrib\zlib\crc32.c">
+      <Filter>contrib\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="contrib\zlib\deflate.c">
+      <Filter>contrib\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="contrib\zlib\gzclose.c">
+      <Filter>contrib\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="contrib\zlib\gzlib.c">
+      <Filter>contrib\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="contrib\zlib\gzread.c">
+      <Filter>contrib\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="contrib\zlib\gzwrite.c">
+      <Filter>contrib\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="contrib\zlib\infback.c">
+      <Filter>contrib\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="contrib\zlib\inffast.c">
+      <Filter>contrib\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="contrib\zlib\inflate.c">
+      <Filter>contrib\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="contrib\zlib\inftrees.c">
+      <Filter>contrib\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="contrib\zlib\trees.c">
+      <Filter>contrib\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="contrib\zlib\uncompr.c">
+      <Filter>contrib\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="contrib\zlib\zutil.c">
+      <Filter>contrib\zlib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="contrib\irrXML\CMakeLists.txt">
       <Filter>contrib\irrXML</Filter>
+    </None>
+    <None Include="contrib\zlib\CMakeLists.txt">
+      <Filter>contrib\zlib</Filter>
+    </None>
+    <None Include="contrib\zlib\README">
+      <Filter>contrib\zlib</Filter>
+    </None>
+    <None Include="contrib\zlib\zconf.h.cmakein">
+      <Filter>contrib\zlib</Filter>
+    </None>
+    <None Include="contrib\zlib\zconf.h.in">
+      <Filter>contrib\zlib</Filter>
+    </None>
+    <None Include="contrib\zlib\zconf.h.included">
+      <Filter>contrib\zlib</Filter>
+    </None>
+    <None Include="contrib\zlib\zlib.pc.cmakein">
+      <Filter>contrib\zlib</Filter>
     </None>
     <None Include="include\assimp\.editorconfig">
       <Filter>include\assimp</Filter>

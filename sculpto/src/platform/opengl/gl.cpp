@@ -224,12 +224,10 @@ void scl::gl::Resize(int Width, int Height)
 
 void scl::gl::DrawIndices(const shared<vertex_array> &VertexArray)
 {
-    const shared<index_buffer> &Indices = VertexArray->GetIndexBuffer();
-    const shared<vertex_buffer> &Vertices = VertexArray->GetVertexBuffer();
-
+    VertexArray->Bind();
     glDrawElements(
         GetGLPrimitiveType(VertexArray->GetType()),
-        Indices->GetCount(),
+        VertexArray->GetIndexBuffer()->GetCount(),
         GL_UNSIGNED_INT,
         nullptr
     );

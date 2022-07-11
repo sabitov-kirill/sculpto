@@ -9,23 +9,19 @@
 #pragma once
 
 #include <sculpto.h>
-using namespace scl;
 
-namespace editor
+namespace scl::editor
 {
     class editor_layer: public layer
     {
     private:
-        scl::vec4 ClearColor {};
-        bool IsWireframe {};
-        bool IsDockspace { true };
-
-        shared<scene> EditorScene;
-
-        void DrawDockSpace();
-        void DrawRendererConfigWindow();
-        void DrawSceneObjectConfigWindow();
-        void DrawViewportWindow();
+        shared<scene> EditorScene {};
+        shared<application_config_window> ConfigWindow {};
+        shared<viewport_window> MainViewportWindow {};
+        shared<profiller_window> ProfillerWindow {};
+        shared<scene_config_window> SceneConfigWindow {};
+        shared<scene_hierarchy_window> SceneHierarchyWindow {};
+        shared<scene_object_config_window> SceneObjectConfigWindow {};
 
     public:
         editor_layer() = default;

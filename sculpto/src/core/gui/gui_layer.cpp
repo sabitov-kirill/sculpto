@@ -90,7 +90,8 @@ void scl::gui_layer::OnEvent(event &Event)
     ImGuiIO &io = ImGui::GetIO();
     Event.Handled |= (Event.GetType() == keyboard_event::StaticType) & io.WantCaptureKeyboard;
     Event.Handled |= (Event.GetType() == mouse_button_event::StaticType ||
-                      Event.GetType() == mouse_move_event::StaticType) & io.WantCaptureMouse;
+                      Event.GetType() == mouse_move_event::StaticType   ||
+                      Event.GetType() == mouse_wheel_event::StaticType) & io.WantCaptureMouse;
 }
 
 void scl::gui_layer::RenderGui()
@@ -98,6 +99,8 @@ void scl::gui_layer::RenderGui()
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
+
+    if (IsDockspace) DrawDockspace();
 }
 
 void scl::gui_layer::SubmitRenderedGui()
@@ -118,6 +121,31 @@ void scl::gui_layer::SubmitRenderedGui()
 #   error Other platforms currently dont support GUI
 #endif
     }
+}
+
+void scl::gui_layer::DrawDockspace()
+{
+    ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
+    ImGuiWindowFlags window_flags =
+        ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus |
+        ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+
+    const ImGuiViewport *viewport = ImGui::GetMainViewport();
+    ImGui::SetNextWindowPos(viewport->WorkPos);
+    ImGui::SetNextWindowSize(viewport->WorkSize);
+    ImGui::SetNextWindowViewport(viewport->ID);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+    ImGui::Begin("DockSpace Demo", &IsDockspace, window_flags);
+    ImGui::PopStyleVar(2);
+
+    ImGuiIO &io = ImGui::GetIO();
+    if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
+    {
+        ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+        ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
+    }
+    ImGui::End();
 }
 
 void scl::gui_layer::SetUpTheme()
@@ -190,4 +218,5 @@ void scl::gui_layer::SetUpTheme()
     colors[ImGuiCol_NavWindowingHighlight]  = ImVec4(1.00f, 0.00f, 0.00f, 0.70f);
     colors[ImGuiCol_NavWindowingDimBg]      = ImVec4(1.00f, 0.00f, 0.00f, 0.20f);
     colors[ImGuiCol_ModalWindowDimBg]       = ImVec4(1.00f, 0.00f, 0.00f, 0.35f);
+    colors[ImGuiCol_PlotLines]              = ImVec4(0.51f, 0.42f, 0.42f, 1.00f);
 }

@@ -30,13 +30,14 @@ namespace scl
 
         directional_light_component() = default;
         directional_light_component(const directional_light_component &Other) = default;
-        directional_light_component(const vec3 &Direction, const vec3 &Color, bool IsShadows = false, float BoxSize = 0, float Distance = 0) :
+        directional_light_component(const vec3 &Direction, const vec3 &Color, bool IsShadows = false, float BoxSize = 0, float Distance = 0,
+                                    int ShadowMapWidth = 1000, int ShadowMapHeight = 1000) :
             Direction(Direction.Normalized()), Color(Color), IsShadows(IsShadows), BoxSize(BoxSize), Distance(Distance)
         {
             if (IsShadows)
             {
                 Projection = matr4::Ortho(-BoxSize, BoxSize, -BoxSize, BoxSize, 1, Distance);
-                ShadowMap = frame_buffer::Create({ 1000, 1000, 1, false, 0, 1 });
+                ShadowMap = frame_buffer::Create({ ShadowMapWidth, ShadowMapHeight, 1, false, 0, 1 });
             }
         }
         ~directional_light_component() = default;

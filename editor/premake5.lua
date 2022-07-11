@@ -36,7 +36,6 @@ project "editor"
     filter "configurations:Debug"
         defines { "SCL_DEBUG", "SCL_DEBUG_MEMORY_ENABLED", "SCL_ASSERTION_ENABLED" }
         symbols "On"
-        runtime "Debug"
 
     filter "configurations:Release"
         defines "SCL_RELEASE"

@@ -9,6 +9,8 @@
 
 #pragma once
 
+#define SCL_MAKE_STRING(T) #T
+
 namespace scl
 {
     // CRC lookup table

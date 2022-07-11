@@ -14,16 +14,4 @@
       <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\sandbox.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\sandbox.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="assets\shaders\phong.vert.glsl" />
-    <None Include="assets\shaders\phong.frag.glsl" />
-    <None Include="assets\shaders\single_color.vert.glsl" />
-    <None Include="assets\shaders\single_color.frag.glsl" />
-  </ItemGroup>
 </Project>

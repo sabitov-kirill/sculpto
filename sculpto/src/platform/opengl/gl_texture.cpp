@@ -1,7 +1,15 @@
+/*****************************************************************//**
+ * \file   gl_texture.cpp
+ * \brief  OpenGL texture class implementation module.
+ * 
+ * \author Sabitov Kirill
+ * \date   28 June 2022
+ *********************************************************************/
+
 #include "sclpch.h"
 #include "gl_texture.h"
 
-void scl::gl_texture_2d::CreateColor(const image &Image)
+void scl::gl_texture_2d::CreateColor(const image &Image, bool IsFloatingPoint)
 {
     // Generate texture primitive
     glGenTextures(1, &Id);
@@ -11,10 +19,13 @@ void scl::gl_texture_2d::CreateColor(const image &Image)
     // Create texture pixels storage
     int w = Image.GetWidth(), h = Image.GetHeight();
     int c = Image.GetComponentsCount();
-    GLenum color_mode = c == 3 ? GL_RGB8 : c == 4 ? GL_RGBA8 : GL_R8;
-    GLenum data_format = c == 3 ? GL_RGB : c == 4 ? GL_RGBA : GL_RED;
-    glTexStorage2D(GL_TEXTURE_2D, 1, color_mode, w, h);
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, w, h, data_format, GL_UNSIGNED_BYTE, Image.GetRawData());
+    GLenum internal_format = IsFloatingPoint ?
+        (c == 3 ? GL_RGB16F : c == 4 ? GL_RGBA16F : GL_R16F) :
+        (c == 3 ? GL_RGB8   : c == 4 ? GL_RGBA8   : GL_R8  );
+    GLenum format = c == 3 ? GL_RGB : c == 4 ? GL_RGBA : GL_RED;
+    GLenum type = IsFloatingPoint ? GL_FLOAT : GL_UNSIGNED_BYTE;
+    glTexStorage2D(GL_TEXTURE_2D, 1, internal_format, w, h);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, w, h, format, type, Image.GetRawData());
     glGenerateMipmap(GL_TEXTURE_2D);
 
     // Configure texture sampling.
@@ -41,12 +52,13 @@ void scl::gl_texture_2d::CreateDepth(const image &Image)
     glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 }
 
-scl::gl_texture_2d::gl_texture_2d(const image &Image, texture_2d_type Type)
+scl::gl_texture_2d::gl_texture_2d(const image &Image, texture_type Type)
 {
     switch (Type)
     {
-    case scl::texture_2d_type::COLOR:   this->CreateColor(Image); return;
-    case scl::texture_2d_type::DEPTH:   this->CreateDepth(Image); return;
+    case scl::texture_type::COLOR:                this->CreateColor(Image, false); return;
+    case scl::texture_type::COLOR_FLOATING_POINT: this->CreateColor(Image, true);  return;
+    case scl::texture_type::DEPTH:                this->CreateDepth(Image);        return;
     }
 
     SCL_CORE_ASSERT(0, "Unknown texture type.");

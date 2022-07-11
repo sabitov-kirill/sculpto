@@ -21,22 +21,10 @@
     <ClCompile Include="src\editor_layer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\editor_layer_windows.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\editor_layer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="assets\shaders\phong.glsl" />
-    <None Include="assets\shaders\single_color.glsl" />
-    <None Include="assets\shaders\phong_lights_data.glsl" />
-    <None Include="assets\shaders\binding_points.glsl" />
-    <None Include="assets\shaders\phong_material_data.glsl" />
-    <None Include="assets\shaders\scene_data.glsl" />
-    <None Include="assets\shaders\default_vertex_layout.glsl" />
   </ItemGroup>
 </Project>

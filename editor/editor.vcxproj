@@ -139,7 +139,6 @@
   <ItemGroup>
     <ClCompile Include="src\editor.cpp" />
     <ClCompile Include="src\editor_layer.cpp" />
-    <ClCompile Include="src\editor_layer_windows.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\sculpto\sculpto.vcxproj">

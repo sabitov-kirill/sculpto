@@ -17,20 +17,32 @@ Allows implement your ideas through computer graphics via scripts or scene edito
     - [x] GLSL shaders preprocessor                                |
 
     - [x] normal mapping                                           | 08.07
-    - [ ] models loading                                           |
-    - [~] assets manager                                           |
+    - [x] models loading                                           |
+    - [x] assets manager                                           |
     - [x] single color material and shader (color/texture)         |
 
     - [ ] UI panels:                                               | 09.07
-        - [ ] Scene hierarchy                                      |
-        - [ ] Objects components configuration                     |
-        - [ ] Renderer configuration                               |
-        - [ ] Profiling (FPS, time per each frame functions calls  |
+        - [x] Scene hierarchy                                      |
+        - [~] Objects components configuration                     |
+            - [x] Name component                                   |
+            - [x] Transform component                              |
+            - [x] Native script component                          |
+            - [~] Mesh component                                   | 
+            - [ ] Camera controller component                      |
+            - [ ] Point light component                            |
+            - [ ] Directional light component                      |
+            - [ ] Spot light component                             |
+            - [ ] Add/delete components                            |
+            - [ ] Create/delete objects                            |
+        - [x] Renderer configuration                               |
+        - [~] Profiling (FPS, time per each frame functions calls) |
 
-    - [ ] HDR                                                      | 10.07
-    - [ ] bloom                                                    |
+    - [x] HDR                                                      | 10.07
+    - [x] bloom                                                    |
 
-    - [ ] deffered rendering                                       | 11.07
+    - [ ] render architecture redisgn                              | 11.07
+    - [ ] memory leaks while window resize                         |
+    - [ ] deffered rendering                                       |
     - [ ] cube map                                                 |
 
     - [ ] PBR try                                                  | 12.07

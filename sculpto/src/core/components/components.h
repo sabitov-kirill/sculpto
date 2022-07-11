@@ -11,7 +11,6 @@
 #include "object_name_component.h"
 #include "transform_component.h"
 #include "mesh_component.h"
-#include "mesh_renderer_component.h"
 #include "camera_controller_component.h"
 #include "native_script_component.h"
 #include "lights/point_light_component.h"

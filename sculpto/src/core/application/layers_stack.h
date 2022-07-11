@@ -69,9 +69,9 @@ namespace scl
         iterator end() { return Layers.end(); }
         reverse_iterator rbegin() { return Layers.rbegin(); }
         reverse_iterator rend() { return Layers.rend(); }
-        const_iterator cbegin() { return Layers.cbegin(); }
-        const_iterator cend() { return Layers.cend(); }
-        const_reverse_iterator crbegin() { return Layers.crbegin(); }
-        const_reverse_iterator crend() { return Layers.crend(); }
+        const_iterator cbegin() const { return Layers.cbegin(); }
+        const_iterator cend() const { return Layers.cend(); }
+        const_reverse_iterator crbegin() const { return Layers.crbegin(); }
+        const_reverse_iterator crend() const { return Layers.crend(); }
     };
 }

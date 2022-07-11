@@ -7,8 +7,10 @@
  *********************************************************************/
 
 #include "sclpch.h"
-#include "application.h"
 
+#include <imgui.h>
+
+#include "application.h"
 #include "../render/render_bridge.h"
 #include "../render/renderer.h"
 

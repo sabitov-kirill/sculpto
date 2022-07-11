@@ -134,12 +134,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\sandbox.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\sandbox.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\sculpto\sculpto.vcxproj">
       <Project>{0FF69987-7BD5-1823-84ED-A3F9F04B7F84}</Project>
     </ProjectReference>

@@ -10,7 +10,7 @@
 
 #include "render_primitive.h"
 #include "../render_context.h"
-#include "../vertex.h"
+#include "core/resources/vertex.h"
 
 namespace scl
 {

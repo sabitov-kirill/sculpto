@@ -14,11 +14,11 @@
 namespace scl
 {
     /* Texture types enum class. */
-    enum class texture_2d_type
+    enum class texture_type
     {
-        COLOR,   /* Default color texture type. */
-        DEPTH,   /* Depth buffer texture type. */
-        STENCIL, /* ? Stencil buffer texture type. Probably worse than buffer. */
+        COLOR,                   /* Default color texture type. */
+        COLOR_FLOATING_POINT,    /* High dynamic range color texture type. */
+        DEPTH,                   /* Depth component texture type. */
     };
 
     /* Texture interface. */
@@ -63,15 +63,6 @@ namespace scl
          * \param Image - image container to get data from.
          * \return created texture pointer.
          */
-        static shared<texture_2d> Create(const image &Image, texture_2d_type Type = texture_2d_type::COLOR);
-
-        // TODO: Delete these creation function, move functionality to assets manager
-        /**
-         * Create texture from loaded from specified file image function.
-         * 
-         * \param FileName - file name to load image from.
-         * \return pointer to created texture.
-         */
-        static shared<texture_2d> Create(const std::string &FileName);
+        static shared<texture_2d> Create(const image &Image, texture_type Type = texture_type::COLOR);
     };
 }

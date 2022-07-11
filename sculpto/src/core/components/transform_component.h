@@ -45,12 +45,35 @@ namespace scl
         void SetAngles(const vec3 &Angles)
         {
             this->Angles = Angles;
-            ScaleMatr = matr4::RotateX(Angles.X) * matr4::RotateY(Angles.Y) * matr4::RotateZ(Angles.Z);
+            AnglesMatr = matr4::RotateX(Angles.X) * matr4::RotateY(Angles.Y) * matr4::RotateZ(Angles.Z);
             Transform = ScaleMatr * AnglesMatr * PositionMatr;
         }
         void SetPosition(const vec3 &Position)
         {
             this->Position = Position;
+            PositionMatr = matr4::Translate(Position);
+            Transform = ScaleMatr * AnglesMatr * PositionMatr;
+        }
+
+        void InvalidateScale()
+        {
+            ScaleMatr = matr4::Scale(Scale);
+            Transform = ScaleMatr * AnglesMatr * PositionMatr;
+        }
+        void InvalidateRotation()
+        {
+            AnglesMatr = matr4::RotateX(Angles.X) * matr4::RotateY(Angles.Y) * matr4::RotateZ(Angles.Z);
+            Transform = ScaleMatr * AnglesMatr * PositionMatr;
+        }
+        void InvalidatePosition()
+        {
+            PositionMatr = matr4::Translate(Position);
+            Transform = ScaleMatr * AnglesMatr * PositionMatr;
+        }
+        void Invalidate()
+        {
+            ScaleMatr = matr4::Scale(Scale);
+            AnglesMatr = matr4::RotateX(Angles.X) * matr4::RotateY(Angles.Y) * matr4::RotateZ(Angles.Z);
             PositionMatr = matr4::Translate(Position);
             Transform = ScaleMatr * AnglesMatr * PositionMatr;
         }

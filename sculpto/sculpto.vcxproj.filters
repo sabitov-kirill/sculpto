@@ -28,20 +28,26 @@
     <Filter Include="src\core\gui">
       <UniqueIdentifier>{B9454E7B-A5A8-DD1F-4E2E-16D63A70A9A2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\core\gui\windows">
+      <UniqueIdentifier>{133106C7-FFBF-8F90-A8DE-A38B944CA036}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\core\render">
       <UniqueIdentifier>{B442559F-20CE-C263-29DF-455895E91E64}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\core\render\lights">
-      <UniqueIdentifier>{4E4D65AA-3A47-8EFC-23B4-240D0F4DF468}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\core\render\material">
-      <UniqueIdentifier>{F257797B-DE7C-C8FB-07C8-AD8BF34BC719}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\core\render\primitives">
       <UniqueIdentifier>{2F4C5D34-1B5C-0905-8415-6E237044F89D}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\core\render\topology">
-      <UniqueIdentifier>{409F521E-2CC4-A19E-550F-872E4193A0BC}</UniqueIdentifier>
+    <Filter Include="src\core\resources">
+      <UniqueIdentifier>{8FDF779B-7BC3-38F1-E423-3344D0262373}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\resources\lights">
+      <UniqueIdentifier>{C98551A6-3548-8530-7EF8-13BDEAF95D0E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\resources\materials">
+      <UniqueIdentifier>{4001098E-2CBC-F839-D573-7184C10D43CA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\resources\topology">
+      <UniqueIdentifier>{7BE22EC6-E7EF-5CAC-70D6-5897DCE22863}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\core\scene">
       <UniqueIdentifier>{C2DCC588-AEAA-B98E-973E-2AB583AB95F3}</UniqueIdentifier>
@@ -141,9 +147,6 @@
     <ClInclude Include="src\core\components\mesh_component.h">
       <Filter>src\core\components</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\components\mesh_renderer_component.h">
-      <Filter>src\core\components</Filter>
-    </ClInclude>
     <ClInclude Include="src\core\components\native_script_component.h">
       <Filter>src\core\components</Filter>
     </ClInclude>
@@ -171,20 +174,23 @@
     <ClInclude Include="src\core\gui\gui_layer.h">
       <Filter>src\core\gui</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\render\lights\light.h">
-      <Filter>src\core\render\lights</Filter>
+    <ClInclude Include="src\core\gui\windows\application_config_window.h">
+      <Filter>src\core\gui\windows</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\render\material\material.h">
-      <Filter>src\core\render\material</Filter>
+    <ClInclude Include="src\core\gui\windows\profiller_window.h">
+      <Filter>src\core\gui\windows</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\render\material\material_phong.h">
-      <Filter>src\core\render\material</Filter>
+    <ClInclude Include="src\core\gui\windows\scene_config_window.h">
+      <Filter>src\core\gui\windows</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\render\material\material_single_color.h">
-      <Filter>src\core\render\material</Filter>
+    <ClInclude Include="src\core\gui\windows\scene_hierarchy_window.h">
+      <Filter>src\core\gui\windows</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\render\mesh.h">
-      <Filter>src\core\render</Filter>
+    <ClInclude Include="src\core\gui\windows\scene_object_config_window.h">
+      <Filter>src\core\gui\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\gui\windows\viewport_window.h">
+      <Filter>src\core\gui\windows</Filter>
     </ClInclude>
     <ClInclude Include="src\core\render\primitives\buffer.h">
       <Filter>src\core\render\primitives</Filter>
@@ -213,32 +219,50 @@
     <ClInclude Include="src\core\render\renderer.h">
       <Filter>src\core\render</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\render\renderer_camera.h">
-      <Filter>src\core\render</Filter>
+    <ClInclude Include="src\core\resources\camera.h">
+      <Filter>src\core\resources</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\render\topology\basis.h">
-      <Filter>src\core\render\topology</Filter>
+    <ClInclude Include="src\core\resources\lights\light.h">
+      <Filter>src\core\resources\lights</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\render\topology\cone.h">
-      <Filter>src\core\render\topology</Filter>
+    <ClInclude Include="src\core\resources\materials\material.h">
+      <Filter>src\core\resources\materials</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\render\topology\cube.h">
-      <Filter>src\core\render\topology</Filter>
+    <ClInclude Include="src\core\resources\materials\material_phong.h">
+      <Filter>src\core\resources\materials</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\render\topology\grid.h">
-      <Filter>src\core\render\topology</Filter>
+    <ClInclude Include="src\core\resources\materials\material_single_color.h">
+      <Filter>src\core\resources\materials</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\render\topology\plane.h">
-      <Filter>src\core\render\topology</Filter>
+    <ClInclude Include="src\core\resources\mesh.h">
+      <Filter>src\core\resources</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\render\topology\sphere.h">
-      <Filter>src\core\render\topology</Filter>
+    <ClInclude Include="src\core\resources\topology\basis.h">
+      <Filter>src\core\resources\topology</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\render\topology\trimesh.h">
-      <Filter>src\core\render\topology</Filter>
+    <ClInclude Include="src\core\resources\topology\cone.h">
+      <Filter>src\core\resources\topology</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\render\vertex.h">
-      <Filter>src\core\render</Filter>
+    <ClInclude Include="src\core\resources\topology\cube.h">
+      <Filter>src\core\resources\topology</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\resources\topology\grid.h">
+      <Filter>src\core\resources\topology</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\resources\topology\plane.h">
+      <Filter>src\core\resources\topology</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\resources\topology\points.h">
+      <Filter>src\core\resources\topology</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\resources\topology\sphere.h">
+      <Filter>src\core\resources\topology</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\resources\topology\trimesh.h">
+      <Filter>src\core\resources\topology</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\resources\vertex.h">
+      <Filter>src\core\resources</Filter>
     </ClInclude>
     <ClInclude Include="src\core\scene\scene.h">
       <Filter>src\core\scene</Filter>
@@ -285,10 +309,16 @@
     <ClInclude Include="src\utilities\assets_manager\files_load.h">
       <Filter>src\utilities\assets_manager</Filter>
     </ClInclude>
+    <ClInclude Include="src\utilities\assets_manager\meshes_load.h">
+      <Filter>src\utilities\assets_manager</Filter>
+    </ClInclude>
     <ClInclude Include="src\utilities\assets_manager\shaders_load.h">
       <Filter>src\utilities\assets_manager</Filter>
     </ClInclude>
     <ClInclude Include="src\utilities\assets_manager\shaders_preprocessor.h">
+      <Filter>src\utilities\assets_manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utilities\assets_manager\textures_load.h">
       <Filter>src\utilities\assets_manager</Filter>
     </ClInclude>
     <ClInclude Include="src\utilities\event\event.h">
@@ -357,6 +387,7 @@
     <ClInclude Include="src\utilities\string\string_id.h">
       <Filter>src\utilities\string</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\render\render_pireline.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="external\stb_image\stb_image.cpp">
@@ -383,6 +414,24 @@
     <ClCompile Include="src\core\gui\gui_layer.cpp">
       <Filter>src\core\gui</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\gui\windows\application_config_window.cpp">
+      <Filter>src\core\gui\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\gui\windows\profiller_window.cpp">
+      <Filter>src\core\gui\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\gui\windows\scene_config_window.cpp">
+      <Filter>src\core\gui\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\gui\windows\scene_hierarchy_window.cpp">
+      <Filter>src\core\gui\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\gui\windows\scene_object_config_window.cpp">
+      <Filter>src\core\gui\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\gui\windows\viewport_window.cpp">
+      <Filter>src\core\gui\windows</Filter>
+    </ClCompile>
     <ClCompile Include="src\core\render\primitives\buffer.cpp">
       <Filter>src\core\render\primitives</Filter>
     </ClCompile>
@@ -407,26 +456,26 @@
     <ClCompile Include="src\core\render\renderer.cpp">
       <Filter>src\core\render</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\render\renderer_camera.cpp">
-      <Filter>src\core\render</Filter>
+    <ClCompile Include="src\core\resources\topology\cone.cpp">
+      <Filter>src\core\resources\topology</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\render\topology\cone.cpp">
-      <Filter>src\core\render\topology</Filter>
+    <ClCompile Include="src\core\resources\topology\cube.cpp">
+      <Filter>src\core\resources\topology</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\render\topology\cube.cpp">
-      <Filter>src\core\render\topology</Filter>
+    <ClCompile Include="src\core\resources\topology\grid.cpp">
+      <Filter>src\core\resources\topology</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\render\topology\grid.cpp">
-      <Filter>src\core\render\topology</Filter>
+    <ClCompile Include="src\core\resources\topology\plane.cpp">
+      <Filter>src\core\resources\topology</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\render\topology\plane.cpp">
-      <Filter>src\core\render\topology</Filter>
+    <ClCompile Include="src\core\resources\topology\points.cpp">
+      <Filter>src\core\resources\topology</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\render\topology\sphere.cpp">
-      <Filter>src\core\render\topology</Filter>
+    <ClCompile Include="src\core\resources\topology\sphere.cpp">
+      <Filter>src\core\resources\topology</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\render\topology\trimesh.cpp">
-      <Filter>src\core\render\topology</Filter>
+    <ClCompile Include="src\core\resources\topology\trimesh.cpp">
+      <Filter>src\core\resources\topology</Filter>
     </ClCompile>
     <ClCompile Include="src\core\scene\scene.cpp">
       <Filter>src\core\scene</Filter>
@@ -435,6 +484,9 @@
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
     <ClCompile Include="src\platform\opengl\gl_buffer.cpp">
+      <Filter>src\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\opengl\gl_built_in_objects.cpp">
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
     <ClCompile Include="src\platform\opengl\gl_frame_buffer.cpp">
@@ -464,10 +516,16 @@
     <ClCompile Include="src\utilities\assets_manager\files_load.cpp">
       <Filter>src\utilities\assets_manager</Filter>
     </ClCompile>
+    <ClCompile Include="src\utilities\assets_manager\meshes_load.cpp">
+      <Filter>src\utilities\assets_manager</Filter>
+    </ClCompile>
     <ClCompile Include="src\utilities\assets_manager\shaders_load.cpp">
       <Filter>src\utilities\assets_manager</Filter>
     </ClCompile>
     <ClCompile Include="src\utilities\assets_manager\shaders_preprocessor.cpp">
+      <Filter>src\utilities\assets_manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utilities\assets_manager\textures_load.cpp">
       <Filter>src\utilities\assets_manager</Filter>
     </ClCompile>
     <ClCompile Include="src\utilities\logger\logger.cpp">

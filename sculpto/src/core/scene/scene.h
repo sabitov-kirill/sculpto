@@ -9,28 +9,43 @@
 #pragma once
 
 #include <entt.hpp>
-#include "../components/camera_controller_component.h"
+#include "core/components/camera_controller_component.h"
 
 namespace scl
 {
-    /* Event class declaration. */
+    /* Classes declaration. */
     class event;
+    class scene_object;
+    class frame_buffer;
+    class shader;
+    class mesh;
 
     /* Application scene class. */
     class scene
     {
         friend class scene_object;
+        friend class scene_hierarchy_window;
 
     private: /* Application scene data. */
         entt::registry Registry {};                 /* Container for all components.
                                                      * Contains both enitty datas and Ids.
                                                      */
-        
-        float UpdateDelay {};                       /* Scripts update call delay timer. */
 
-        camera_controller_component *MainCamera {};      /* Scene main camera controller. */
-        int ViewportWidth { 16 }, ViewportHeight { 16 }; /* Scene window viewport size. */
-        bool RenderToSwapChainBuffer {};                 /* Flag, indicating whether render to swap chain buffer or not. */
+        camera_controller_component *MainCamera {};       /* Scene main camera controller. */
+        int                  ViewportWidth { 16 };        /* Scene window viewport width. */
+        int                  ViewportHeight { 16 };       /* Scene window viewport height. */
+        bool                 RenderToSwapChainBuffer {};  /* Flag, showing whether render to swap chain buffer or not. */
+        bool                 IsHDR { true };              /* Flag, showing wheather use hight dynamic range for colors while rendering frame. */
+        shared<mesh>         HDRPassFullscreenQuad {};    /* Full screen quad mesh for HDR Tone mapping pass. */
+        bool                 IsBloom { true };            /* Flag, showing wheather apply bloom effect or not while rendering frame. */
+        shared<mesh>         BloomBluringFullscreenQuad {};
+
+        float UpdateDelay {};  /* Scripts update call timer. */
+
+    public:
+        shared<frame_buffer> BloomBlurringBuffers[2] {};  /* Frame buffers for blurring bright colors during bloom effect apply. */
+        vec3    EnviromentAmbient { 0.1f };     /* Enviroment ambient color. */
+        float   Exposure { 1 };                 /* Tone mapping exposure level. Works only if rendering with HDR. */
 
     public: /* Application scene getter/setter functions. */
         /* Scene main camera getter function */
@@ -39,6 +54,10 @@ namespace scl
         int GetViewportWidth() const { return ViewportWidth; }
         /* Scene window viewport height getter function. */
         int GetViewportHeight() const { return ViewportHeight; }
+        /* Flag, showing wheather use hight dynamic range for colors while rendering frame getter function. */
+        bool GetIsHDR() const { return IsHDR; }
+        /* Flag, showing wheather apply bloom effect or not while rendering frame getter function. */
+        bool GetIsBloom() const { return IsBloom; }
 
         /**
          * Set scene main camera by name function.
@@ -51,14 +70,26 @@ namespace scl
         /**
          * Set flag, indicating whether render to swap chain buffer or not.
          *
-         * \param RenderToSwapChainBuffer - flag, indicating whether render to swap chain buffer or not.
+         * \param RenderToSwapChainBuffer - flag, showing whether render to swap chain buffer or not.
          * \return None.
          */
         void SetRenderToSwapChainBuffer(bool RenderToSwapChainBuffer);
 
-    private: /* Application scene methods. */
-        void Render();
-        void CallUpdate();
+        /**
+         * Set flag, indicating wheather use high dynamic range of colors while rendering.
+         * 
+         * \param IsHDR - flag, showing wheather use HDR, or not.
+         * \return None.
+         */
+        void SetIsHDR(bool IsHDR);
+
+        /**
+         * Set flag, indicatinf whaether apply bloom effect while rendering frame or not.
+         * 
+         * \param IsBloom - flag, indicatinf whaether apply bloom effect while rendering frame or not.
+         * \return None.
+         */
+        void SetIsBloom(bool IsBloom);
 
     public: /* Application scene methods. */
         /* Scene default constructor. */
@@ -90,5 +121,9 @@ namespace scl
          * \return created object.
          */
         scene_object CreateObject(const std::string &Name = "");
+
+    private: /* Application scene methods. */
+        void Render();
+        void CallUpdate();
     };
 }

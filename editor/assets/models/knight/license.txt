@@ -1,0 +1,11 @@
+Model Information:
+* title:	Boss Emiss Test
+* source:	https://sketchfab.com/3d-models/boss-emiss-test-afa4846713ba4e43910f2041977ea969
+* author:	BlakkMato (https://sketchfab.com/BlakkMato)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Boss Emiss Test" (https://sketchfab.com/3d-models/boss-emiss-test-afa4846713ba4e43910f2041977ea969) by BlakkMato (https://sketchfab.com/BlakkMato) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

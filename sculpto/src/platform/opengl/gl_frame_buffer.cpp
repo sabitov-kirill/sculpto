@@ -35,7 +35,7 @@ void scl::gl_frame_buffer::Invalidate()
 {
     this->Free();
 
-    if (Props.SwapChainTarget) { Id = 0; ClearConfig = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT; return; }
+    if (Props.IsSwapChainTarget) { Id = 0; ClearConfig = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT; return; }
 
     // Create and bind frame buffer
     glGenFramebuffers(1, &Id);
@@ -47,22 +47,26 @@ void scl::gl_frame_buffer::Invalidate()
     SCL_CORE_ASSERT(Props.DepthAttachmentsCount <= 1, "OpenGL support max 1 depth attachment per frame buffer.");
 
     // Frame buffer color and depth attachments creation
-    image viewport(Props.Width, Props.Height, 4);
+    std::vector<GLenum> active_color_attachments {};
+    image viewport(Props.Width, Props.Height, 4, false);
     ColorAttachments.resize(Props.ColorAttachmentsCount);
     for (int i = 0; i < Props.ColorAttachmentsCount; i++) {
-        ColorAttachments[i] = texture_2d::Create(viewport, texture_2d_type::COLOR);
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, ColorAttachments[i]->GetHandle(), 0);
-    } if (Props.ColorAttachmentsCount == 0) {
-        glDrawBuffer(GL_NONE);
-        glReadBuffer(GL_NONE);
-    } if (Props.DepthAttachmentsCount == 1) {
-        DepthAttachment = texture_2d::Create(viewport, texture_2d_type::DEPTH);
+        texture_type color_attachment_texture_type = Props.IsHDR ? texture_type::COLOR_FLOATING_POINT : texture_type::COLOR;
+        ColorAttachments[i] = texture_2d::Create(viewport, color_attachment_texture_type);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, ColorAttachments[i]->GetHandle(), 0);
+        active_color_attachments.push_back(GL_COLOR_ATTACHMENT0 + i);
+    }
+    if (Props.ColorAttachmentsCount == 0) glDrawBuffer(GL_NONE), glReadBuffer(GL_NONE);
+    else glDrawBuffers(Props.ColorAttachmentsCount, active_color_attachments.data());
+
+    if (Props.DepthAttachmentsCount == 1) {
+        DepthAttachment = texture_2d::Create(viewport, texture_type::DEPTH);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, DepthAttachment->GetHandle(), 0);
     }
 
     // Set frame buffer clear config depending on attachments count
     ClearConfig = ((Props.ColorAttachmentsCount > 0) * GL_COLOR_BUFFER_BIT) |
-                  ((Props.DepthAttachmentsCount == 1) * GL_DEPTH_BUFFER_BIT);
+                  ((Props.DepthAttachmentsCount > 0) * GL_DEPTH_BUFFER_BIT);
 
     // Check frame buffer status, unbinding
     SCL_CORE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Frame buffer creation error!");

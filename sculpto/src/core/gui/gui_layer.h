@@ -16,6 +16,26 @@ namespace scl
     /* Application graphics user interface layer class. */
     class gui_layer: public layer
     {
+    public: /* Application graphics user interface layer data. */
+        bool IsDockspace { true };
+
+    private:
+        /**
+         * Draw docking space to window function.
+         * 
+         * \param None.
+         * \return None.
+         */
+        void DrawDockspace();
+
+        /**
+         * Setup Dear ImGui color scheme function.
+         *
+         * \param None.
+         * \return None.
+         */
+        void SetUpTheme();
+
     public:
         /* Default layer constructor. */
         gui_layer() = default;
@@ -62,13 +82,5 @@ namespace scl
          * \return None.
          */
         void SubmitRenderedGui();
-
-        /**
-         * Setup Dear ImGui color scheme function.
-         * 
-         * \param None.
-         * \return None.
-         */
-        void SetUpTheme();
     };
 }

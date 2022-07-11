@@ -36,6 +36,7 @@ namespace scl
         unique<window>      Window;              /* Main app window. */
         layers_stack        Layers {};           /* Application layers stack. */
 
+    public:
         bool                GuiEnabled { true }; /* Application graphic user interface enabled flag. If false do not rendering gui. */
         gui_layer          *GUILayer {};         /* Application graphic user interface layer pointer. */
 
@@ -44,10 +45,6 @@ namespace scl
         static application &Get() { return *Instance; }
         /* Window getter function. */
         const window &GetWindow() const { return *Window; }
-        /* Graphic user interface enabled flag getter function. */
-        const bool GetGuiEnabled() const { return GuiEnabled; }
-        /* Graphic user interface enabled flag setter function. */
-        void SetGuiEnabled(bool IsGuiEnabled) { GuiEnabled = IsGuiEnabled; }
 
     private: /* Private methods. */
         /**

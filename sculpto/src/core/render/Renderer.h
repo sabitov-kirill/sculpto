@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "renderer_camera.h"
+#include "base.h"
 
 namespace scl
 {
@@ -28,23 +28,24 @@ namespace scl
     /* Scene rendering data. */
     struct render_pass_data
     {
-        vec3       CameraPosition {};     /* Submission camera direction vector. */
-        float      Time {};               /* Currently rendering frame time since porgram time. */
-        vec3       CameraDirection {};    /* Submission camer location vector. */
-        int        ViewportWidth {};      /* Currently rendering frame viewport width. */
-        int        ViewportHeight {};     /* Currently rendering frame viewport height. */
+        vec3       CameraPosition;     /* Submission camera direction vector. */
+        float      Time;               /* Currently rendering frame time since porgram time. */
+        vec3       CameraDirection;    /* Submission camer location vector. */
+        int        ViewportWidth;      /* Currently rendering frame viewport width. */
+        vec3       EnviromentAmbient;  /* Scene enviroment apbient color. */
+        int        ViewportHeight;     /* Currently rendering frame viewport height. */
+        u32        IsBloomActive;      /* Flag, showing wheather bloom effect is active or not. */
     };
 
     /* Render object render_pass_submission structure. */
     struct render_pass_submission
     {
         shared<mesh>              Mesh;             /* Submitted to render mesh. */
-        shared<material>          Material;         /* Submitted to render mesh material. */
         matr4                     Transform;        /* Submitted to render mesh tranformation matrix. */
 
         /* Submission default constructor. */
-        render_pass_submission(shared<mesh> Mesh, shared<material> Material, matr4 Transform) :
-            Mesh(Mesh), Material(Material), Transform(Transform) {}
+        render_pass_submission(shared<mesh> Mesh, matr4 Transform) :
+            Mesh(Mesh), Transform(Transform) {}
     };
 
     /* Point light structure. */
@@ -112,11 +113,10 @@ namespace scl
          * Draw mesh function.
          * 
          * \param Mesh - mesh to draw.
-         * \param Material - mesh material.
          * \param Transform - mesh tranformations matrix.
          * \return None.
          */
-        static void Draw(const shared<mesh> &Mesh, const shared<material> &Material, const matr4 &Transform);
+        static void Draw(const shared<mesh> &Mesh, const matr4 &Transform);
 
         /**
          * Draw mesh during shadow pass function.
@@ -130,6 +130,15 @@ namespace scl
     public:
         /**
          * Begin render pass function.
+         * Dummy function, just for uniformity. For render passes when you dont need dipeline data.
+         *
+         * \param None.
+         * \return None.
+         */
+        static void StartPipeline();
+
+        /**
+         * Begin render pass function.
          * Updates scene data buffer.
          * 
          * \param ViewProjection - scene camera view projection matrix.
@@ -137,11 +146,13 @@ namespace scl
          * \param CameraPosition - scene camer location.
          * \param ViewportWidth - scene viewport width.
          * \param ViewportHeight - scene viewport height.
+         * \param ViewportHeight - scene enviroment ambient color.
+         * \param Exposure - exposure level for HDR.
          * \return None.
          */
-        static void StartPipeline(const matr4 &ViewProjection,
-                                  const vec3 &CameraDirection, const vec3 &CameraPosition,
-                                  const int ViewportWidth, const int ViewportHeight);
+        static void StartPipeline(const matr4 &ViewProjection, const vec3 &CameraDirection, const vec3 &CameraPosition,
+                                  const int ViewportWidth, const int ViewportHeight,
+                                  const vec3 &EnviromentAmbient, bool IsBloomActive = false);
 
         /**
          * End render pass function.
@@ -193,23 +204,20 @@ namespace scl
          * Calculate mesh transorm matrix and submit to queue (rendered while flush call) function.
          *
          * \param Mesh - mesh to submit to queue.
-         * \param Material - mesh material.
          * \param Scale - mesh scale factor along 3 axies.
          * \param Angles - mesh rotation angles factor along 3 axies.
          * \param Position - mesh world position.
          * \return None.
          */
-        static void Submit(const shared<mesh> &Mesh, const shared<material> &Material, 
-                           const vec3 &Scale, const vec3 &Angles, const vec3 &Position);
+        static void Submit(const shared<mesh> &Mesh, const vec3 &Scale, const vec3 &Angles, const vec3 &Position);
 
         /**
          * Submit mesh to render_pass_submission queue (rendered while flush call) function.
          * 
          * \param Mesh - mesh to submit to queue.
-         * \param Material - mesh material.
          * \param Transform - mesh tranformations matrix.
          * \return None.
          */
-        static void Submit(const shared<mesh> &Mesh, const shared<material> &Material, const matr4 &Transform);
+        static void Submit(const shared<mesh> &Mesh, const matr4 &Transform);
     };
 }

@@ -77,7 +77,7 @@
       <PrecompiledHeaderFile>sclpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SCL_DEBUG;SCL_DEBUG_MEMORY_ENABLED;SCL_ASSERTION_ENABLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;external\glad\include;external\stb_image;external\entt;external\imgui;external\assimp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;external\glad\include;external\stb_image;external\entt;external\imgui;external\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -97,7 +97,7 @@
       <PrecompiledHeaderFile>sclpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SCL_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;external\glad\include;external\stb_image;external\entt;external\imgui;external\assimp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;external\glad\include;external\stb_image;external\entt;external\imgui;external\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -121,7 +121,7 @@
       <PrecompiledHeaderFile>sclpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SCL_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;external\glad\include;external\stb_image;external\entt;external\imgui;external\assimp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;external\glad\include;external\stb_image;external\entt;external\imgui;external\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -141,6 +141,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="external\stb_image\stb_image.h" />
+    <ClInclude Include="src\core\render\render_pireline.h" />
     <ClInclude Include="src\base.h" />
     <ClInclude Include="src\core\application\application.h" />
     <ClInclude Include="src\core\application\entry_point.h" />
@@ -158,7 +159,6 @@
     <ClInclude Include="src\core\components\lights\point_light_component.h" />
     <ClInclude Include="src\core\components\lights\spot_light_component.h" />
     <ClInclude Include="src\core\components\mesh_component.h" />
-    <ClInclude Include="src\core\components\mesh_renderer_component.h" />
     <ClInclude Include="src\core\components\native_script_component.h" />
     <ClInclude Include="src\core\components\object_name_component.h" />
     <ClInclude Include="src\core\components\transform_component.h" />
@@ -168,11 +168,12 @@
     <ClInclude Include="src\core\events\mouse_event.h" />
     <ClInclude Include="src\core\events\window_event.h" />
     <ClInclude Include="src\core\gui\gui_layer.h" />
-    <ClInclude Include="src\core\render\lights\light.h" />
-    <ClInclude Include="src\core\render\material\material.h" />
-    <ClInclude Include="src\core\render\material\material_phong.h" />
-    <ClInclude Include="src\core\render\material\material_single_color.h" />
-    <ClInclude Include="src\core\render\mesh.h" />
+    <ClInclude Include="src\core\gui\windows\application_config_window.h" />
+    <ClInclude Include="src\core\gui\windows\profiller_window.h" />
+    <ClInclude Include="src\core\gui\windows\scene_config_window.h" />
+    <ClInclude Include="src\core\gui\windows\scene_hierarchy_window.h" />
+    <ClInclude Include="src\core\gui\windows\scene_object_config_window.h" />
+    <ClInclude Include="src\core\gui\windows\viewport_window.h" />
     <ClInclude Include="src\core\render\primitives\buffer.h" />
     <ClInclude Include="src\core\render\primitives\frame_buffer.h" />
     <ClInclude Include="src\core\render\primitives\render_primitive.h" />
@@ -182,15 +183,21 @@
     <ClInclude Include="src\core\render\render_bridge.h" />
     <ClInclude Include="src\core\render\render_context.h" />
     <ClInclude Include="src\core\render\renderer.h" />
-    <ClInclude Include="src\core\render\renderer_camera.h" />
-    <ClInclude Include="src\core\render\topology\basis.h" />
-    <ClInclude Include="src\core\render\topology\cone.h" />
-    <ClInclude Include="src\core\render\topology\cube.h" />
-    <ClInclude Include="src\core\render\topology\grid.h" />
-    <ClInclude Include="src\core\render\topology\plane.h" />
-    <ClInclude Include="src\core\render\topology\sphere.h" />
-    <ClInclude Include="src\core\render\topology\trimesh.h" />
-    <ClInclude Include="src\core\render\vertex.h" />
+    <ClInclude Include="src\core\resources\camera.h" />
+    <ClInclude Include="src\core\resources\lights\light.h" />
+    <ClInclude Include="src\core\resources\materials\material.h" />
+    <ClInclude Include="src\core\resources\materials\material_phong.h" />
+    <ClInclude Include="src\core\resources\materials\material_single_color.h" />
+    <ClInclude Include="src\core\resources\mesh.h" />
+    <ClInclude Include="src\core\resources\topology\basis.h" />
+    <ClInclude Include="src\core\resources\topology\cone.h" />
+    <ClInclude Include="src\core\resources\topology\cube.h" />
+    <ClInclude Include="src\core\resources\topology\grid.h" />
+    <ClInclude Include="src\core\resources\topology\plane.h" />
+    <ClInclude Include="src\core\resources\topology\points.h" />
+    <ClInclude Include="src\core\resources\topology\sphere.h" />
+    <ClInclude Include="src\core\resources\topology\trimesh.h" />
+    <ClInclude Include="src\core\resources\vertex.h" />
     <ClInclude Include="src\core\scene\scene.h" />
     <ClInclude Include="src\core\scene\scene_object.h" />
     <ClInclude Include="src\core\scene\scene_object_behaviour.h" />
@@ -206,8 +213,10 @@
     <ClInclude Include="src\sclpch.h" />
     <ClInclude Include="src\sculpto.h" />
     <ClInclude Include="src\utilities\assets_manager\files_load.h" />
+    <ClInclude Include="src\utilities\assets_manager\meshes_load.h" />
     <ClInclude Include="src\utilities\assets_manager\shaders_load.h" />
     <ClInclude Include="src\utilities\assets_manager\shaders_preprocessor.h" />
+    <ClInclude Include="src\utilities\assets_manager\textures_load.h" />
     <ClInclude Include="src\utilities\event\event.h" />
     <ClInclude Include="src\utilities\event\event_dispatcher.h" />
     <ClInclude Include="src\utilities\image\image.h" />
@@ -240,6 +249,12 @@
     <ClCompile Include="src\core\application\timer.cpp" />
     <ClCompile Include="src\core\application\window.cpp" />
     <ClCompile Include="src\core\gui\gui_layer.cpp" />
+    <ClCompile Include="src\core\gui\windows\application_config_window.cpp" />
+    <ClCompile Include="src\core\gui\windows\profiller_window.cpp" />
+    <ClCompile Include="src\core\gui\windows\scene_config_window.cpp" />
+    <ClCompile Include="src\core\gui\windows\scene_hierarchy_window.cpp" />
+    <ClCompile Include="src\core\gui\windows\scene_object_config_window.cpp" />
+    <ClCompile Include="src\core\gui\windows\viewport_window.cpp" />
     <ClCompile Include="src\core\render\primitives\buffer.cpp" />
     <ClCompile Include="src\core\render\primitives\frame_buffer.cpp" />
     <ClCompile Include="src\core\render\primitives\shader.cpp" />
@@ -248,16 +263,17 @@
     <ClCompile Include="src\core\render\render_bridge.cpp" />
     <ClCompile Include="src\core\render\render_context.cpp" />
     <ClCompile Include="src\core\render\renderer.cpp" />
-    <ClCompile Include="src\core\render\renderer_camera.cpp" />
-    <ClCompile Include="src\core\render\topology\cone.cpp" />
-    <ClCompile Include="src\core\render\topology\cube.cpp" />
-    <ClCompile Include="src\core\render\topology\grid.cpp" />
-    <ClCompile Include="src\core\render\topology\plane.cpp" />
-    <ClCompile Include="src\core\render\topology\sphere.cpp" />
-    <ClCompile Include="src\core\render\topology\trimesh.cpp" />
+    <ClCompile Include="src\core\resources\topology\cone.cpp" />
+    <ClCompile Include="src\core\resources\topology\cube.cpp" />
+    <ClCompile Include="src\core\resources\topology\grid.cpp" />
+    <ClCompile Include="src\core\resources\topology\plane.cpp" />
+    <ClCompile Include="src\core\resources\topology\points.cpp" />
+    <ClCompile Include="src\core\resources\topology\sphere.cpp" />
+    <ClCompile Include="src\core\resources\topology\trimesh.cpp" />
     <ClCompile Include="src\core\scene\scene.cpp" />
     <ClCompile Include="src\platform\opengl\gl.cpp" />
     <ClCompile Include="src\platform\opengl\gl_buffer.cpp" />
+    <ClCompile Include="src\platform\opengl\gl_built_in_objects.cpp" />
     <ClCompile Include="src\platform\opengl\gl_frame_buffer.cpp" />
     <ClCompile Include="src\platform\opengl\gl_shader.cpp" />
     <ClCompile Include="src\platform\opengl\gl_texture.cpp" />
@@ -269,8 +285,10 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\utilities\assets_manager\files_load.cpp" />
+    <ClCompile Include="src\utilities\assets_manager\meshes_load.cpp" />
     <ClCompile Include="src\utilities\assets_manager\shaders_load.cpp" />
     <ClCompile Include="src\utilities\assets_manager\shaders_preprocessor.cpp" />
+    <ClCompile Include="src\utilities\assets_manager\textures_load.cpp" />
     <ClCompile Include="src\utilities\logger\logger.cpp" />
   </ItemGroup>
   <ItemGroup>

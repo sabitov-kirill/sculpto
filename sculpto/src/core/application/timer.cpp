@@ -11,6 +11,7 @@
 #include "timer.h"
 
 scl::shared<scl::timer> scl::timer::GlobalTimerInstance = scl::CreateShared<timer>();
+const float scl::timer::UpdateDelay = 0.2f;
 
 scl::timer::timer()
 {
@@ -24,7 +25,7 @@ void scl::timer::Response()
 
     LastFpsCalcutionFramesCount++;
     float fps_calculation_delta_time = duration<float>(current_time - LastFpsCalcutionTime).count();
-    if (fps_calculation_delta_time >= 1)
+    if (fps_calculation_delta_time >= UpdateDelay)
     {
         Fps = LastFpsCalcutionFramesCount / fps_calculation_delta_time;
         LastFpsCalcutionTime = high_resolution_clock::now();

@@ -32,6 +32,8 @@ namespace scl
         static shared<timer> GlobalTimerInstance;
 
     public: /* Timer getter/setter functions. */
+        static const float UpdateDelay; /* Timer update delay in seconds. */
+
         /* Is timer paused flag getter function. */
         static bool GetIsPause() { return GlobalTimerInstance->IsPause; }
         /* Current time since 1970 1st Jan getter function. */

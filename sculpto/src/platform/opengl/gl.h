@@ -124,5 +124,21 @@ namespace scl
          * \return None.
          */
         void SetContextCurrent() const;
+
+    public: /* Sculpto library built-in backend API specific rendering objects getter function. */
+        /* OpenGL specific single color material shader getter function. */
+        shared<shader_program> GetSingleColorMaterialShader() const override;
+
+        /* OpenGL specific phong lighting model material shader getter function. */
+        shared<shader_program> GetPhongMaterialShader() const override;
+
+        /* OpenGL specific shadow pass shader getter function. */
+        shared<shader_program> GetShadowPassShader() const override;
+
+        /* OpenGL specific full viewport mesh with tone mapping shader. */
+        shared<shader_program> GetToneMappingPassShader() const override;
+
+        /* Backend API specific gaussian blur pass shader getter function. */
+        shared<shader_program> GetGaussianBlurPassShader() const override;
     };
 }

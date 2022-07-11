@@ -11,12 +11,12 @@
 
 #include "renderer.h"
 #include "render_bridge.h"
-#include "mesh.h"
 #include "primitives/frame_buffer.h"
 #include "primitives/buffer.h"
 #include "primitives/texture.h"
-#include "material/material.h"
 #include "core/application/timer.h"
+#include "core/resources/mesh.h"
+#include "core/resources/materials/material.h"
 
 std::vector<scl::render_pass_submission> scl::renderer::SubmissionQueue {};
 
@@ -28,48 +28,58 @@ scl::render_pass_lights_storage   scl::renderer::PipelineLightsStorage {};
 scl::shared<scl::material>        scl::renderer::PipelineShadowCasterMaterial {};
 scl::shared<scl::frame_buffer>    scl::renderer::PipelineShadowCasterFrameBuffer {};
 
-void scl::renderer::Draw(const shared<mesh> &Mesh, const shared<material> &Material, const matr4 &Transform)
+void scl::renderer::Draw(const shared<mesh> &Mesh, const matr4 &Transform)
 {
-    Material->Bind();
-    Material->Shader->SetMatr3("u_MatrN", matr3(Transform.Inverse().Transpose()));
-    Material->Shader->SetMatr4("u_MatrW", Transform);
-    Material->Shader->SetMatr4("u_MatrWVP", Transform * PipelineViewProjection);
-    Mesh->GetVertexArray()->Bind();
-    render_bridge::DrawIndices(Mesh->GetVertexArray());
+    if (!Mesh->IsDrawing) return;
+
+    for (auto &submesh : Mesh->SubMeshes)
+    {
+        matr4 world = Transform;
+
+        submesh.Material->Bind();
+        submesh.Material->Shader->SetMatr3("u_MatrN", matr3(world.Inverse().Transpose()));
+        submesh.Material->Shader->SetMatr4("u_MatrW", world);
+        submesh.Material->Shader->SetMatr4("u_MatrWVP", world * PipelineViewProjection);
+        render_bridge::DrawIndices(submesh.VertexArray);
+    }
 }
 
 void scl::renderer::DrawShadowPass(const shared<mesh> &Mesh, const matr4 &Transform)
 {
+    if (!Mesh->IsCastingShadow) return;
+
     PipelineShadowCasterMaterial->Bind();
-    PipelineShadowCasterMaterial->Shader->SetMatr4("u_MatrWVP", Transform * matr4(PipelineLightsStorage.DirectionalLight.ViewProjection));
-    Mesh->GetVertexArray()->Bind();
-    render_bridge::DrawIndices(Mesh->GetVertexArray());
+    for (auto &submesh : Mesh->SubMeshes)
+    {
+        matr4 world = submesh.LocalTransform * Transform;
+        
+        PipelineShadowCasterMaterial->Shader->SetMatr4("u_MatrWVP", world * matr4(PipelineLightsStorage.DirectionalLight.ViewProjection));
+        render_bridge::DrawIndices(submesh.VertexArray);
+    }
 }
 
 void scl::renderer::StartPipeline(const matr4 &ViewProjection,
                                   const vec3 &CameraDirection, const vec3 &CameraPosition,
-                                  const int ViewportWidth, const int ViewportHeight)
+                                  const int ViewportWidth, const int ViewportHeight,
+                                  const vec3 &EnviromentAmbient, bool IsBloomActive)
 {
     PipelineViewProjection = ViewProjection;
     PipelineData.CameraPosition = CameraPosition;
     PipelineData.CameraDirection = CameraDirection;
     PipelineData.ViewportWidth = ViewportWidth;
     PipelineData.ViewportHeight = ViewportHeight;
+    PipelineData.EnviromentAmbient = EnviromentAmbient;
+    PipelineData.IsBloomActive = IsBloomActive;
     PipelineData.Time = timer::GetTime();
 }
 
+void scl::renderer::StartPipeline() {}
+
 void scl::renderer::EndPipeline(const shared<frame_buffer> &MainColorPassFrameBuffer)
 {
-    if (PipelineLightsStorage.IsDirectionalLight && PipelineLightsStorage.DirectionalLight.IsShadows)
+    if (PipelineLightsStorage.IsDirectionalLight && PipelineLightsStorage.DirectionalLight.IsShadows && PipelineShadowCasterFrameBuffer)
     {
-        if (!PipelineShadowCasterMaterial)
-            PipelineShadowCasterMaterial = material::Create(shader_program::Create({
-                { shader_type::VERTEX, R"(#version 460
-                                          layout (location = 0) in vec3 v_Pos; uniform mat4 u_MatrWVP;
-                                          void main() { gl_Position = u_MatrWVP * vec4(v_Pos, 1.0); })" },
-                { shader_type::PIXEL,  R"(#version 460
-                                          void main() {})" },
-            }, "directional_shadow_caster_shader"));
+        if (!PipelineShadowCasterMaterial) PipelineShadowCasterMaterial = material::Create(render_bridge::GetShadowPassShader());
 
         // Shadow pass. Render just all geometery.
         PipelineShadowCasterFrameBuffer->Clear();
@@ -80,23 +90,22 @@ void scl::renderer::EndPipeline(const shared<frame_buffer> &MainColorPassFrameBu
     }
 
     // Updateing data, independent by concrete mesh
-    if (!PipelineDataBuffer)
-        PipelineDataBuffer = constant_buffer::Create(sizeof(render_pass_data));
+    if (!PipelineDataBuffer) PipelineDataBuffer = constant_buffer::Create(sizeof(render_pass_data));
     PipelineDataBuffer->Update(&PipelineData, sizeof(render_pass_data));
     PipelineDataBuffer->Bind(render_context::BINDING_POINT_SCENE_DATA);
 
     // Updating light storage, which is need in main color pass
-    if (!PipelineLightsStorageBuffer)
-        PipelineLightsStorageBuffer = scl::constant_buffer::Create(sizeof(scl::render_pass_lights_storage));
+    if (!PipelineLightsStorageBuffer) PipelineLightsStorageBuffer = scl::constant_buffer::Create(sizeof(scl::render_pass_lights_storage));
     PipelineLightsStorageBuffer->Update(&PipelineLightsStorage, sizeof(render_pass_lights_storage));
     PipelineLightsStorageBuffer->Bind(render_context::BINDING_POINT_LIGHTS_STORAGE);
 
     // Main color pass.
-    if (MainColorPassFrameBuffer) MainColorPassFrameBuffer->Bind();
+    MainColorPassFrameBuffer->Clear();
+    MainColorPassFrameBuffer->Bind();
     if (PipelineShadowCasterFrameBuffer) PipelineShadowCasterFrameBuffer->GetDepthAttachment()->Bind(render_context::TEXTURE_SLOT_SHADOW_MAP);
     for (const render_pass_submission &subm : SubmissionQueue)
-        renderer::Draw(subm.Mesh, subm.Material, subm.Transform);
-    if (MainColorPassFrameBuffer) MainColorPassFrameBuffer->Unbind();
+        renderer::Draw(subm.Mesh, subm.Transform);
+    MainColorPassFrameBuffer->Unbind();
 
     // Clear render pass 
     memset(&PipelineData, 0, sizeof(render_pass_data));
@@ -145,8 +154,7 @@ void scl::renderer::SubmitSpotLight(const vec3 &Position, const vec3 &Direction,
     PipelineLightsStorage.SpotLightsCount++;
 }
 
-void scl::renderer::Submit(const shared<mesh> &Mesh, const shared<material> &Material,
-                           const vec3 &Scale, const vec3 &Angles, const vec3 &Position)
+void scl::renderer::Submit(const shared<mesh> &Mesh, const vec3 &Scale, const vec3 &Angles, const vec3 &Position)
 {
     matr4 transform =
         matr4::Scale(Scale) *
@@ -154,10 +162,10 @@ void scl::renderer::Submit(const shared<mesh> &Mesh, const shared<material> &Mat
         matr4::RotateY(Angles.Y) *
         matr4::RotateZ(Angles.Z) *
         matr4::Translate(Position);
-    SubmissionQueue.emplace_back<render_pass_submission>({ Mesh, Material, transform });
+    SubmissionQueue.emplace_back<render_pass_submission>({ Mesh, transform });
 }
 
-void scl::renderer::Submit(const shared<mesh> &Mesh, const shared<material> &Material, const matr4 &Transform)
+void scl::renderer::Submit(const shared<mesh> &Mesh, const matr4 &Transform)
 {
-    SubmissionQueue.emplace_back<render_pass_submission>({ Mesh, Material, Transform });
+    SubmissionQueue.emplace_back<render_pass_submission>({ Mesh, Transform });
 }

@@ -18,53 +18,159 @@ namespace scl
     class scene_object
     {
         friend class scene;
+        friend class scene_hierarchy_window;
+
+    public:
+        using handle = entt::entity;
 
     private:
-        entt::entity Entity { entt::null };
+        handle Entity { entt::null };
         scene *Scene {};
 
-        scene_object(entt::entity Entity, scene *Scene)
+        /**
+         * Scene object constructor by entity and scene.
+         * 
+         * \param Entity - entity for scene object.
+         * \param Scene - scene connected to scene object.
+         */
+        scene_object(handle Entity, scene *Scene)
             : Entity(Entity), Scene(Scene) {}
 
     public:
+        /* Scene object default constructor. */
         scene_object() = default;
+
+        /* Scene object default copy constructor. */
         scene_object(const scene_object &Other) = default;
+
+        /* scene object default destructor.*/
         ~scene_object() = default;
 
+        /**
+         * Scene object inner handle getter function.
+         * 
+         * \param None.
+         * \return object inner handle.
+         */
+        handle GetHandle() const { return Entity; }
+
+        /**
+         * Check if scene object is valid function.
+         * 
+         * \param None.
+         * \return wheather object is valid or not.
+         */
+        bool IsOk() const { return Scene && Entity != entt::null; }
+
+        /**
+         * Check if object has specified component function.
+         *
+         * \tparam component to check.
+         * \param None.
+         * \return None.
+         */
         template <typename T>
         const bool HasComponent() const
         {
             return Scene->Registry.all_of<T>(Entity);
         }
 
+        /**
+         * Add component to object function.
+         *
+         * \tparam component to add to object.
+         * \param None.
+         * \return None.
+         */
         template <typename T, typename... Targs>
-        T &AddComponent(Targs&&... Args)
+        decltype(auto) AddComponent(Targs&&... Args)
         {
-            SCL_CORE_ASSERT(!HasComponent<T>(), "Entity already have this component!");
             return Scene->Registry.emplace<T>(Entity, std::forward<Targs>(Args)...);
         }
 
+        /**
+         * Gect object component function.
+         *
+         * \tparam component to get from object.
+         * \param None.
+         * \return None.
+         */
         template <typename T>
         T &GetComponent()
         {
-            SCL_CORE_ASSERT(HasComponent<T>(), "Entity do not have this component!");
             return Scene->Registry.get<T>(Entity);
         }
 
+        /**
+         * Gect object component function.
+         *
+         * \tparam component to get from object.
+         * \param None.
+         * \return None.
+         */
         template <typename T>
         const T &GetComponent() const 
         {
-            SCL_CORE_ASSERT(HasComponent<T>(), "Entity do not have this component!");
             return Scene->Registry.get<T>(Entity);
         }
 
+        /**
+         * Remove component from scene object function.
+         * 
+         * \tparam component to remove from object.
+         * \param None.
+         * \return None.
+         */
         template <typename T>
         void RemovetComponent()
         {
-            SCL_CORE_ASSERT(HasComponent<T>(), "Entity do not have this component!");
             Scene->Registry.remove<T>(Entity);
         }
 
+        /**
+         * Check if scene object exists function.
+         * 
+         * \param None.
+         * \return wheather scene object exists or not.
+         */
         operator bool() const { return Entity != entt::null; }
+
+        /**
+         * Getting scene object inner handle.
+         * 
+         * \param None.
+         * \return inner object handle.
+         */
+        operator u32() const { return (u32)Entity; }
+
+        /**
+         * Getting scene object inner handle.
+         *
+         * \param None.
+         * \return inner object handle.
+         */
+        operator handle() const { return Entity; }
+
+        /**
+         * Scene objects compare function.
+         * 
+         * \param Other - scene object to compare with.
+         * \return wheather scene objects are the same or not.
+         */
+        bool operator==(const scene_object &Other) const
+        {
+            return Entity == Other.Entity && Scene == Other.Scene;
+        }
+
+        /**
+         * Scene objects compare function.
+         *
+         * \param Other - scene object to compare with.
+         * \return wheather scene objects are the same or not.
+         */
+        bool operator!=(const scene_object &Other) const
+        {
+            return Entity != Other.Entity || Scene != Other.Scene;
+        }
     };
 }

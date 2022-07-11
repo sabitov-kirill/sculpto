@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "core/render/renderer_camera.h"
+#include "core/resources/camera.h"
 #include "core/render/primitives/frame_buffer.h"
 
 namespace scl
@@ -16,11 +16,12 @@ namespace scl
     /* Application scene system object camera component class. */
     struct camera_controller_component
     {
-        renderer_camera Camera { camera_projection_type::PERSPECTIVE };
-        shared<frame_buffer> MainFrameBuffer { frame_buffer::Create({ 16, 16, 1, false }) };
+        camera Camera { camera_projection_type::PERSPECTIVE };
+        shared<frame_buffer> MainFrameBuffer { frame_buffer::Create({ 16, 16, 1, false, 1, 1, false }) };
+        shared<frame_buffer> HDRFrameBuffer { frame_buffer::Create({ 16, 16, 1, false, 2, 1, true }) };
 
         camera_controller_component() = default;
-        camera_controller_component(const renderer_camera &Camera) : Camera(Camera) {}
+        camera_controller_component(const camera &Camera) : Camera(Camera) {}
         camera_controller_component(const camera_controller_component &Other) = default;
         ~camera_controller_component() = default;
 
@@ -32,6 +33,11 @@ namespace scl
             current_props.Width = Width;
             current_props.Height = Height;
             MainFrameBuffer->SetFrameBufferProps(current_props);
+
+            current_props = HDRFrameBuffer->GetFrameBufferProps();
+            current_props.Width = Width;
+            current_props.Height = Height;
+            HDRFrameBuffer->SetFrameBufferProps(current_props);
         }
     };
 }

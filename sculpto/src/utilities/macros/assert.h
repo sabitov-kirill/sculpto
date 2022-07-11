@@ -11,8 +11,6 @@
 /* Detect SCL platform. */
 #include "core/application/platform_detection.h"
 
-
-
 /* Debug break macro. */
 #ifdef _DEBUG
 #   if defined(SCL_PLATFORM_WINDOWS)
@@ -68,6 +66,6 @@
     }
 
 #else /* !SCL_ASSERTION_ENABLED */
-#   define SCL_CORE_ASSERT(expr, msg) (expr)
-#   define SCL_ASSERT(expr, msg) (expr)
+#   define SCL_CORE_ASSERT(expr, ...) (expr)
+#   define SCL_ASSERT(expr, ...) (expr)
 #endif

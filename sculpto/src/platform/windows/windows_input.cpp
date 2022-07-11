@@ -7,6 +7,9 @@
  *********************************************************************/
 
 #include "sclpch.h"
+
+#include <imgui.h>
+
 #include "windows_input.h"
 #include "core/application/application.h"
 
@@ -40,7 +43,7 @@ void scl::windows_input_system::MouseRead()
     // Wheel (z) value
     if (*Wheel != 0)
     {
-        Mouse.PosDeltaZ = *Wheel;
+        Mouse.PosDeltaZ = *Wheel * (!ImGui::GetIO().WantCaptureMouse);
         Mouse.PosZ += *Wheel;
         *Wheel = 0;
     }
@@ -56,10 +59,28 @@ void scl::windows_input_system::KeyboardInit()
 void scl::windows_input_system::KeyboardRead()
 {
     bool _ = GetKeyboardState((PBYTE)Keyboard.Keys);
+
+    ImGuiIO io = ImGui::GetIO();
+    if (io.WantCaptureMouse)
+        Keyboard.Keys[(int)keycode::LBUTTON] =
+        Keyboard.Keys[(int)keycode::RBUTTON] =
+        Keyboard.Keys[(int)keycode::MBUTTON] = 0;
+
     for (INT i = 0; i < 256; i++)
     {
         Keyboard.Keys[i] >>= 7;
         Keyboard.KeysClick[i] = Keyboard.Keys[i] & !Keyboard.KeysOld[i];
+    }
+    if (io.WantCaptureKeyboard)
+    {
+        char lbut = Keyboard.Keys[(int)keycode::LBUTTON];
+        char rbut = Keyboard.Keys[(int)keycode::RBUTTON];
+        char mbut = Keyboard.Keys[(int)keycode::MBUTTON];
+
+        memset(Keyboard.Keys, 0, 256), memset(Keyboard.KeysClick, 0, 256);
+        Keyboard.Keys[(int)keycode::LBUTTON] = lbut;
+        Keyboard.Keys[(int)keycode::RBUTTON] = rbut;
+        Keyboard.Keys[(int)keycode::MBUTTON] = mbut;
     }
     memcpy(Keyboard.KeysOld, Keyboard.Keys, 256);
 }
@@ -68,9 +89,6 @@ void scl::windows_input_system::Init(window_handle *WindowHandle, int *MouseWhee
 {
     this->WindowHandle = WindowHandle;
     this->Wheel = MouseWheel;
-
-    MouseInit();
-    KeyboardRead();
 }
 
 void scl::windows_input_system::SelfResponse()

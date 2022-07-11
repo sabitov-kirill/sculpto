@@ -115,5 +115,36 @@ namespace scl
         {
             RenderContext->DrawIndicesInstanced(VertexArray, InstanceCount);
         }
+
+    public: /* Sculpto library built-in backend API specific rendering objects getter function. */
+        /* Backend API specific single color material shader getter function. */
+        inline static shared<shader_program> GetSingleColorMaterialShader()
+        {
+            return RenderContext->GetSingleColorMaterialShader();
+        }
+
+        /* Backend API specific phong lighting model material shader getter function. */
+        inline static shared<shader_program> GetPhongMaterialShader()
+        {
+            return RenderContext->GetPhongMaterialShader();
+        }
+
+        /* Backend API specific shadow pass shader getter function. */
+        inline static shared<shader_program> GetShadowPassShader()
+        {
+            return RenderContext->GetShadowPassShader();
+        }
+
+        /* Backend API specific full viewport mesh with tone mapping shader. */
+        inline static shared<shader_program> GetToneMappingPassShader()
+        {
+            return RenderContext->GetToneMappingPassShader();
+        }
+
+        /* Backend API specific full viewport mesh with tone mapping shader. */
+        inline static shared<shader_program> GetGaussianBlurPassShader()
+        {
+            return RenderContext->GetGaussianBlurPassShader();
+        }
     };
 }

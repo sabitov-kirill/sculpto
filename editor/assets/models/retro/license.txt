@@ -1,0 +1,11 @@
+Model Information:
+* title:	Diorema Retro
+* source:	https://sketchfab.com/3d-models/diorema-retro-bb04ebbbee2e451bbc4bcbb21fb6a2be
+* author:	PaulinDelgadillo (https://sketchfab.com/PaulinDELRawr)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Diorema Retro" (https://sketchfab.com/3d-models/diorema-retro-bb04ebbbee2e451bbc4bcbb21fb6a2be) by PaulinDelgadillo (https://sketchfab.com/PaulinDELRawr) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

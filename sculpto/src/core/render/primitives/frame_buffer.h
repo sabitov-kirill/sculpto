@@ -18,13 +18,13 @@ namespace scl
     /* Frame buffer specification structure. */
     struct frame_buffer_props
     {
-     // frame_buffer_format Format;      /* Frame buffer texture format. */
-        int Width { 16 }, Height { 16 }; /* Frame buffer texture size */
-        int Samples = 1;                 /* Frame buffer samples count. */
-        bool SwapChainTarget = false;    /* Frame buffer creating in purpose of rendering to screen. */
-        int ColorAttachmentsCount = 1;   /* Frame buffer color attachments count. */
-        int DepthAttachmentsCount = 1;   /* Frame buffer depth attachments count. */
-                                         /* Note: at least one of attachments count must be > 0. */
+        int  Width { 16 }, Height { 16 };   /* Frame buffer texture size */
+        int  Samples { 1 };                 /* Frame buffer samples count. */
+        bool IsSwapChainTarget {};          /* Flag, showing wheather frame buffer creating in purpose of rendering to screen or not. */
+        bool IsHDR {};                      /* Flag, showing wheather frame buffer uses high dynamic range or default [0; 1] range. */
+        int  ColorAttachmentsCount { 1 };   /* Frame buffer color attachments count. */
+        int  DepthAttachmentsCount { 1 };   /* Frame buffer depth attachments count. */
+                                            /* Note: at least one of attachments count must be > 0. */
 
         /* Frame buffer default constructor. */
         frame_buffer_props() = default;
@@ -34,12 +34,12 @@ namespace scl
          * 
          * \param Width, Height - frame buffer texture size.
          * \param Samples - frame buffer samples count.
-         * \param SwapChainTarget - frame buffer creating in purpose of rendering to screen.
+         * \param IsSwapChainTarget - frame buffer creating in purpose of rendering to screen.
          * \param ColorAttachmentsCount - frame buffer color attachments count.
          * \param DepthAttachmentsCount - frame buffer depth attachments count.
          */
-        frame_buffer_props(int Width, int Height, int Samples = 1, bool SwapChainTarget = false, int ColorAttachmentsCount = 1, int DepthAttachmentsCount = 1) :
-            Width(Width), Height(Height), Samples(Samples), SwapChainTarget(SwapChainTarget),
+        frame_buffer_props(int Width, int Height, int Samples = 1, bool IsSwapChainTarget = true, int ColorAttachmentsCount = 1, int DepthAttachmentsCount = 1, bool IsHDR = false) :
+            Width(Width), Height(Height), Samples(Samples), IsSwapChainTarget(IsSwapChainTarget), IsHDR(IsHDR),
             ColorAttachmentsCount(ColorAttachmentsCount), DepthAttachmentsCount(DepthAttachmentsCount) {}
     };
 
