@@ -44,7 +44,7 @@ namespace scl
         {
             Out <<
                 "[" << CurrentTime() << "] {|" << Name << "|} " <<
-                std::format(Format, std::forward<Targs>(Args)...) <<
+                std::vformat(Format, std::make_format_args(Args...)) <<
                 '\n';
         }
 
@@ -60,7 +60,7 @@ namespace scl
             Out <<
                 "[" << CurrentTime() << "] {|" << Name << "|} " <<
                 console::color_literal(console::color::GREEN) <<
-                std::format(Format, std::forward<Targs>(Args)...) <<
+                std::vformat(Format, std::make_format_args(Args...)) <<
                 console::color_literal_reset() << '\n';
         }
 
@@ -76,7 +76,7 @@ namespace scl
             Out <<
                 "[" << CurrentTime() << "] {|" << Name << "|} " <<
                 console::color_literal(console::color::YELLOW) <<
-                std::format(Format, std::forward<Targs>(Args)...) <<
+                std::vformat(Format, std::make_format_args(Args...)) <<
                 console::color_literal_reset() << '\n';
         }
 
@@ -92,7 +92,7 @@ namespace scl
             Out <<
                 "[" << CurrentTime() << "] {|" << Name << "|} " <<
                 console::color_literal(console::color::RED) <<
-                std::format(Format, std::forward<Targs>(Args)...) <<
+                std::vformat(Format, std::make_format_args(Args...)) <<
                 console::color_literal_reset() << '\n';
         }
 
