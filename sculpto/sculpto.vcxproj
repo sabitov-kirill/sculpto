@@ -141,7 +141,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="external\stb_image\stb_image.h" />
-    <ClInclude Include="src\core\render\render_pireline.h" />
     <ClInclude Include="src\base.h" />
     <ClInclude Include="src\core\application\application.h" />
     <ClInclude Include="src\core\application\entry_point.h" />
@@ -153,7 +152,7 @@
     <ClInclude Include="src\core\application\platform_detection.h" />
     <ClInclude Include="src\core\application\timer.h" />
     <ClInclude Include="src\core\application\window.h" />
-    <ClInclude Include="src\core\components\camera_controller_component.h" />
+    <ClInclude Include="src\core\components\camera_component.h" />
     <ClInclude Include="src\core\components\components.h" />
     <ClInclude Include="src\core\components\lights\directional_light_component.h" />
     <ClInclude Include="src\core\components\lights\point_light_component.h" />
@@ -182,9 +181,9 @@
     <ClInclude Include="src\core\render\primitives\vertex_array.h" />
     <ClInclude Include="src\core\render\render_bridge.h" />
     <ClInclude Include="src\core\render\render_context.h" />
+    <ClInclude Include="src\core\render\render_pipeline.h" />
     <ClInclude Include="src\core\render\renderer.h" />
     <ClInclude Include="src\core\resources\camera.h" />
-    <ClInclude Include="src\core\resources\lights\light.h" />
     <ClInclude Include="src\core\resources\materials\material.h" />
     <ClInclude Include="src\core\resources\materials\material_phong.h" />
     <ClInclude Include="src\core\resources\materials\material_single_color.h" />
@@ -192,6 +191,7 @@
     <ClInclude Include="src\core\resources\topology\basis.h" />
     <ClInclude Include="src\core\resources\topology\cone.h" />
     <ClInclude Include="src\core\resources\topology\cube.h" />
+    <ClInclude Include="src\core\resources\topology\full_screen_quad.h" />
     <ClInclude Include="src\core\resources\topology\grid.h" />
     <ClInclude Include="src\core\resources\topology\plane.h" />
     <ClInclude Include="src\core\resources\topology\points.h" />
@@ -263,8 +263,10 @@
     <ClCompile Include="src\core\render\render_bridge.cpp" />
     <ClCompile Include="src\core\render\render_context.cpp" />
     <ClCompile Include="src\core\render\renderer.cpp" />
+    <ClCompile Include="src\core\resources\camera.cpp" />
     <ClCompile Include="src\core\resources\topology\cone.cpp" />
     <ClCompile Include="src\core\resources\topology\cube.cpp" />
+    <ClCompile Include="src\core\resources\topology\full_screen_quad.cpp" />
     <ClCompile Include="src\core\resources\topology\grid.cpp" />
     <ClCompile Include="src\core\resources\topology\plane.cpp" />
     <ClCompile Include="src\core\resources\topology\points.cpp" />
@@ -289,6 +291,7 @@
     <ClCompile Include="src\utilities\assets_manager\shaders_load.cpp" />
     <ClCompile Include="src\utilities\assets_manager\shaders_preprocessor.cpp" />
     <ClCompile Include="src\utilities\assets_manager\textures_load.cpp" />
+    <ClCompile Include="src\utilities\event\event_dispatcher.cpp" />
     <ClCompile Include="src\utilities\logger\logger.cpp" />
   </ItemGroup>
   <ItemGroup>

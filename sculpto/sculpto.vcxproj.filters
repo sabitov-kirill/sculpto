@@ -40,9 +40,6 @@
     <Filter Include="src\core\resources">
       <UniqueIdentifier>{8FDF779B-7BC3-38F1-E423-3344D0262373}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\core\resources\lights">
-      <UniqueIdentifier>{C98551A6-3548-8530-7EF8-13BDEAF95D0E}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\core\resources\materials">
       <UniqueIdentifier>{4001098E-2CBC-F839-D573-7184C10D43CA}</UniqueIdentifier>
     </Filter>
@@ -129,7 +126,7 @@
     <ClInclude Include="src\core\application\window.h">
       <Filter>src\core\application</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\components\camera_controller_component.h">
+    <ClInclude Include="src\core\components\camera_component.h">
       <Filter>src\core\components</Filter>
     </ClInclude>
     <ClInclude Include="src\core\components\components.h">
@@ -216,14 +213,14 @@
     <ClInclude Include="src\core\render\render_context.h">
       <Filter>src\core\render</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\render\render_pipeline.h">
+      <Filter>src\core\render</Filter>
+    </ClInclude>
     <ClInclude Include="src\core\render\renderer.h">
       <Filter>src\core\render</Filter>
     </ClInclude>
     <ClInclude Include="src\core\resources\camera.h">
       <Filter>src\core\resources</Filter>
-    </ClInclude>
-    <ClInclude Include="src\core\resources\lights\light.h">
-      <Filter>src\core\resources\lights</Filter>
     </ClInclude>
     <ClInclude Include="src\core\resources\materials\material.h">
       <Filter>src\core\resources\materials</Filter>
@@ -244,6 +241,9 @@
       <Filter>src\core\resources\topology</Filter>
     </ClInclude>
     <ClInclude Include="src\core\resources\topology\cube.h">
+      <Filter>src\core\resources\topology</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\resources\topology\full_screen_quad.h">
       <Filter>src\core\resources\topology</Filter>
     </ClInclude>
     <ClInclude Include="src\core\resources\topology\grid.h">
@@ -387,7 +387,6 @@
     <ClInclude Include="src\utilities\string\string_id.h">
       <Filter>src\utilities\string</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\render\render_pireline.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="external\stb_image\stb_image.cpp">
@@ -456,10 +455,16 @@
     <ClCompile Include="src\core\render\renderer.cpp">
       <Filter>src\core\render</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\resources\camera.cpp">
+      <Filter>src\core\resources</Filter>
+    </ClCompile>
     <ClCompile Include="src\core\resources\topology\cone.cpp">
       <Filter>src\core\resources\topology</Filter>
     </ClCompile>
     <ClCompile Include="src\core\resources\topology\cube.cpp">
+      <Filter>src\core\resources\topology</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\resources\topology\full_screen_quad.cpp">
       <Filter>src\core\resources\topology</Filter>
     </ClCompile>
     <ClCompile Include="src\core\resources\topology\grid.cpp">
@@ -527,6 +532,9 @@
     </ClCompile>
     <ClCompile Include="src\utilities\assets_manager\textures_load.cpp">
       <Filter>src\utilities\assets_manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utilities\event\event_dispatcher.cpp">
+      <Filter>src\utilities\event</Filter>
     </ClCompile>
     <ClCompile Include="src\utilities\logger\logger.cpp">
       <Filter>src\utilities\logger</Filter>

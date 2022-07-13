@@ -126,7 +126,7 @@ bool scl::gl_shader_program::CheckIfShaderBinded() const
 }
 
 scl::gl_shader_program::gl_shader_program(const std::vector<shader_props> &Shaders, const std::string &DebugName) :
-    DebugName(DebugName)
+    shader_program(DebugName)
 {
     Create(Shaders);
 }

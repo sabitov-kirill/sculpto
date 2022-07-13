@@ -19,7 +19,10 @@ scl::shared<scl::shader_program> scl::assets_manager::LoadShader(const std::file
 
     std::vector<shader_props> Out;
     assets_manager::shader_preprocessor::SeparateShaders(ShaderProgamFilePath.string(), shader_text, Out);
-    return shader_program::Create(Out, ShaderProgamFilePath.string());
+
+    auto shader = shader_program::Create(Out, ShaderProgamFilePath.string());
+    shader->SingleSourceFileName = ShaderProgamFilePath.string();
+    return shader;
 }
 
 scl::shared<scl::shader_program> scl::assets_manager::LoadShader(const std::filesystem::path &VertexShaderFilePath,
@@ -39,7 +42,10 @@ scl::shared<scl::shader_program> scl::assets_manager::LoadShader(const std::file
     assets_manager::shader_preprocessor::ProcessIncludes(PixelShaderFilePath.string(), PixelShaderFilePath.parent_path().string(), shader_text);
     shaders.push_back({ shader_type::PIXEL, shader_text });
 
-    return shader_program::Create(shaders, VertexShaderFilePath.string());
+    auto shader = shader_program::Create(shaders, VertexShaderFilePath.string());
+    shader->VertexShadersourceFileName = VertexShaderFilePath.string();
+    shader->PixelShadersourceFileName = PixelShaderFilePath.string();
+    return shader;
 }
 
 scl::shared<scl::shader_program> scl::assets_manager::LoadShader(const std::filesystem::path &VertexShaderFilePath,
@@ -65,5 +71,67 @@ scl::shared<scl::shader_program> scl::assets_manager::LoadShader(const std::file
     assets_manager::shader_preprocessor::ProcessIncludes(PixelShaderFilePath.string(), PixelShaderFilePath.parent_path().string(), shader_text);
     shaders.push_back({ shader_type::PIXEL, shader_text });
 
-    return shader_program::Create(shaders, VertexShaderFilePath.string());
+    auto shader = shader_program::Create(shaders, VertexShaderFilePath.string());
+    shader->VertexShadersourceFileName = VertexShaderFilePath.string();
+    shader->GeometryShadersourceFileName = GeomShaderFilePath.string();
+    shader->PixelShadersourceFileName = PixelShaderFilePath.string();
+    return shader;
+}
+
+void scl::assets_manager::UpdateShader(shared<shader_program> &ShaderProgram)
+{
+    std::stringstream file_buffer;
+    std::string shader_text;
+    std::vector<shader_props> shaders;
+
+    if (ShaderProgram->SingleSourceFileName != "") {
+        shader_text = LoadFile(ShaderProgram->SingleSourceFileName);
+        assets_manager::shader_preprocessor::ProcessIncludes(ShaderProgram->SingleSourceFileName,
+                                                             std::filesystem::path(ShaderProgram->SingleSourceFileName).parent_path().string(),
+                                                             shader_text);
+
+        assets_manager::shader_preprocessor::SeparateShaders(ShaderProgram->SingleSourceFileName, shader_text, shaders);
+        ShaderProgram->Update(shaders);
+    } else if (ShaderProgram->VertexShadersourceFileName != "" && ShaderProgram->PixelShadersourceFileName != "" &&
+               ShaderProgram->GeometryShadersourceFileName == "") {
+
+        // Vertex shader
+        shader_text = LoadFile(ShaderProgram->VertexShadersourceFileName);
+        assets_manager::shader_preprocessor::ProcessIncludes(ShaderProgram->VertexShadersourceFileName,
+                                                             std::filesystem::path(ShaderProgram->VertexShadersourceFileName).parent_path().string(),
+                                                             shader_text);
+        shaders.push_back({ shader_type::VERTEX, shader_text });
+
+        // Fragment shader
+        shader_text = LoadFile(ShaderProgram->PixelShadersourceFileName);
+        assets_manager::shader_preprocessor::ProcessIncludes(ShaderProgram->PixelShadersourceFileName,
+                                                             std::filesystem::path(ShaderProgram->PixelShadersourceFileName).parent_path().string(),
+                                                             shader_text);
+        shaders.push_back({ shader_type::PIXEL, shader_text });
+
+        ShaderProgram->Update(shaders);
+    } else {
+        // Vertex shader
+        shader_text = LoadFile(ShaderProgram->VertexShadersourceFileName);
+        assets_manager::shader_preprocessor::ProcessIncludes(ShaderProgram->VertexShadersourceFileName,
+                                                             std::filesystem::path(ShaderProgram->VertexShadersourceFileName).parent_path().string(),
+                                                             shader_text);
+        shaders.push_back({ shader_type::VERTEX, shader_text });
+
+        // Geometry shader
+        shader_text = LoadFile(ShaderProgram->GeometryShadersourceFileName);
+        assets_manager::shader_preprocessor::ProcessIncludes(ShaderProgram->GeometryShadersourceFileName,
+                                                             std::filesystem::path(ShaderProgram->GeometryShadersourceFileName).parent_path().string(),
+                                                             shader_text);
+        shaders.push_back({ shader_type::GEOMETRY, shader_text });
+
+        // Fragment shader
+        shader_text = LoadFile(ShaderProgram->PixelShadersourceFileName);
+        assets_manager::shader_preprocessor::ProcessIncludes(ShaderProgram->PixelShadersourceFileName,
+                                                             std::filesystem::path(ShaderProgram->PixelShadersourceFileName).parent_path().string(),
+                                                             shader_text);
+        shaders.push_back({ shader_type::PIXEL, shader_text });
+
+        ShaderProgram->Update(shaders);
+    }
 }

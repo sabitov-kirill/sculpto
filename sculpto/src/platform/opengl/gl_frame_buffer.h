@@ -43,22 +43,6 @@ namespace scl
          */
         void Invalidate();
 
-        /**
-         * Create color attachment for current frame buffer.
-         * 
-         * \param None.
-         * \return None.
-         */
-        void CreateColorAttachment();
-
-        /**
-         * Create depth attachment for current frame buffer.
-         * 
-         * \param None.
-         * \return None.
-         */
-        void CreateDepthAttachment();
-
     public:
         /* Backend api render primitive hadnle getter function. */
         render_primitive::handle GetHandle() const override { return Id; }
@@ -71,7 +55,7 @@ namespace scl
         gl_frame_buffer(const frame_buffer_props &Props);
 
         /* OpenGL frame buffer default destructor. */
-        ~gl_frame_buffer();
+        ~gl_frame_buffer() override;
 
         /**
          * Bind frame buffer to current render stage function.
@@ -88,6 +72,15 @@ namespace scl
          * \return None.
          */
         void Unbind() const override;
+
+        /**
+         * Resize frame buffer (resize also could be called by setting frame buffer props).
+         *
+         * \param Width - new frame buffer width.
+         * \param Height - new frame buffer height.
+         * \return None.
+         */
+        void Resize(int Width, int Height) override;
 
         /**
          * Unload frame buffer render target texture from GPU memory function.

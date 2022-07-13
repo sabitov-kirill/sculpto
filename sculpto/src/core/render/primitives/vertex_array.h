@@ -49,6 +49,9 @@ namespace scl
          */
         vertex_array(mesh_type Type, shared<vertex_buffer> VertexBuffer, shared<index_buffer> IndexBuffer);
 
+        /* Vertex array default destructor. */
+        virtual ~vertex_array() = default;
+
         /**
          * Bind vertex array to current render stage function.
          *

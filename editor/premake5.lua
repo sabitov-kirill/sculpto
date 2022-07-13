@@ -19,6 +19,7 @@ project "editor"
         "%{wks.location}/sculpto/external",
         "%{IncludeDir.entt}",
         "%{IncludeDir.stb_image}",
+        "%{IncludeDir.imgui}",
     }
 
     links

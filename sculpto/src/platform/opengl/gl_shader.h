@@ -17,7 +17,6 @@ namespace scl
     class gl_shader_program : public shader_program
     {
     private: /* Shader program data. */
-        std::string DebugName {};
         GLuint Id {};
         mutable std::unordered_map<std::string, int> VariablesLocations {};
         mutable bool ShaderNotBindedErrorAlreadyShown {};

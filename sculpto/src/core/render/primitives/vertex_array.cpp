@@ -18,8 +18,8 @@ scl::shared<scl::vertex_array> scl::vertex_array::Create(mesh_type Type, shared<
 {
     switch (render_context::GetApi())
     {
-    case scl::render_context::api::OpenGL:  return CreateShared<gl_vertex_array>(Type, VertexBuffer, IndexBuffer);
-    case scl::render_context::api::DirectX: SCL_CORE_ASSERT(0, "This API is currently unsupported."); return nullptr;
+    case scl::render_context_api::OpenGL:  return CreateShared<gl_vertex_array>(Type, VertexBuffer, IndexBuffer);
+    case scl::render_context_api::DirectX: SCL_CORE_ASSERT(0, "This API is currently unsupported."); return nullptr;
     }
 
     SCL_CORE_ASSERT(0, "Unknown render API was selected.");

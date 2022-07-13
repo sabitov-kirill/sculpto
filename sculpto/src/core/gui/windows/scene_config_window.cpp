@@ -18,11 +18,5 @@ scl::scene_config_window::scene_config_window(scene *Scene) :
 void scl::scene_config_window::Draw()
 {
     ImGui::Begin("Scene Consfiguration");
-    ImGui::DragFloat3("Enviroment ambient", Scene->EnviromentAmbient, 0.05f, 0, 1);
-    bool IsHDR = Scene->GetIsHDR();
-    if (ImGui::Checkbox("HDR", &IsHDR)) Scene->SetIsHDR(IsHDR);
-    bool IsBloom = Scene->GetIsBloom();
-    if (ImGui::Checkbox("Bloom", &IsBloom)) Scene->SetIsBloom(IsBloom);
-    ImGui::DragFloat("Exposure level", &Scene->Exposure, 0.005f, 0.001f, 10);
     ImGui::End();
 }

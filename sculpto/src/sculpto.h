@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include <entt.hpp>
-
 /* Core module. */
 #include "core/application/application.h"
 
@@ -37,6 +35,7 @@
 #include "core/resources/topology/sphere.h"
 #include "core/resources/topology/cone.h"
 #include "core/resources/topology/points.h"
+#include "core/resources/topology/full_screen_quad.h"
 #include "core/resources/materials/material.h"
 #include "core/resources/materials/material_phong.h"
 #include "core/resources/materials/material_single_color.h"

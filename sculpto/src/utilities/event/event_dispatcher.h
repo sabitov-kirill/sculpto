@@ -9,23 +9,24 @@
 #pragma once
 
 #include "event.h"
+#include "utilities/string/string_id.h"
 
 namespace scl
 {
     /* Static event dispatcher class.
        Should be created once, then event listners added
        to it and dispatched on event invoke. */
-    class static_event_dispatcher
+    class event_dispatcher
     {
         template <typename Tevent>
-        using event_callback = bool (*)(Tevent &);
-        using base_event_callback = bool (*)(event &);
+        using event_callback = std::function<bool(Tevent &)>;
+        using base_event_callback = std::function<bool(event &)>;
         using callback_list = std::vector<base_event_callback>;
 
-    private:
-        std::map<string_id, callback_list> EventHandlers {};
+    private: /* Static event dispatcher data. */
+        static std::map<string_id, callback_list> EventHandlers;
 
-    public:
+    public: /* Static event dispatcher methods. */
         /**
          * Add event listner to specific event function.
          *
@@ -33,28 +34,31 @@ namespace scl
          * \param Event - callback to be called on event dispatch.
          * \return None.
          */
-        template <typename T>
-        void AddEventListner(event_callback<T> EventCallback)
+        template <typename Tevent>
+        static void AddEventListner(base_event_callback &&EventCallback)
         {
-            if (EventHandlers.find(T::StaticType) == EventHandlers.end())
-                EventHandlers.emplace(T::StaticType, std::vector { EventCallback });
+            auto event_handlers = EventHandlers.find(Tevent::StaticType);
+            if (event_handlers == EventHandlers.end())
+                EventHandlers.emplace(Tevent::StaticType, std::vector { std::move(EventCallback) });
             else
-                EventHandlers[T::StaticType].push_back(EventCallback);
+                event_handlers->second.push_back(std::move(EventCallback));
         }
 
         /**
-         * Add event listner to specific event operator overload.
+         * Add event listner to specific event function.
          *
+         * \tparam Tevent - event to set listner to.
          * \param Event - callback to be called on event dispatch.
          * \return None.
          */
-        template <typename T>
-        void operator+=(event_callback<T> EventCallback)
+        template <typename Tevent>
+        static void AddEventListner(std::function<bool(Tevent &)> &&EventCallback)
         {
-            if (EventHandlers.find(T::StaticType) == EventHandlers.end())
-                EventHandlers.emplace(T::StaticType, std::vector { EventCallback });
-            else
-                EventHandlers[T::StaticType].push_back(EventCallback);
+            AddEventListner<Tevent>([callback = std::move(EventCallback)](event &Event)
+            {
+                if (Event.GetType() != Tevent::StaticType) return false;
+                return callback(static_cast<Tevent &>(Event));
+            });
         }
 
         /**
@@ -64,38 +68,17 @@ namespace scl
          * \param Event - event to handle.
          * \return None.
          */
-        void Invoke(event &Event)
+        template <typename Tevent>
+        static void Invoke(Tevent &Event)
         {
-            if (EventHandlers.find(Event.GetType()) == EventHandlers.end())
-                return;
+            std::map<string_id, callback_list>::iterator event_handlers = EventHandlers.find(Event.GetType());
+            if (event_handlers == EventHandlers.end()) return;
 
-            for (const auto &callback : EventHandlers[Event.GetType()])
-                callback(Event);
-        }
-    };
-
-    /* Event dispatcher class. */
-    class event_dispatcher
-    {
-    private:
-        event &Event;
-
-    public:
-        /**
-         * Event default constructor.
-         * 
-         * \param Event - event to be dispatched reference.
-         */
-        event_dispatcher(event &Event) :
-            Event(Event) {}
-
-        template <typename T, typename F>
-        bool Dispatch(const F &EventCallback)
-        {
-            if (Event.GetType() != T::StaticType) return false;
-
-            Event.Handled |= EventCallback(static_cast<T&>(Event));
-            return true;
+            for (const auto &callback : event_handlers->second)
+            {
+                Event.Handled |= callback(Event);
+                if (Event.Handled) break;
+            }
         }
     };
 }

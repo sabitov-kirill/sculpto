@@ -45,7 +45,7 @@ void scl::gl_frame_buffer::Invalidate()
     SCL_CORE_ASSERT(Props.ColorAttachmentsCount > 0 || Props.DepthAttachmentsCount > 0, "At least one of attachments count must be > 0.");
     SCL_CORE_ASSERT(Props.DepthAttachmentsCount <= 8, "OpenGL support max 8 collor attachments per frame buffer.");
     SCL_CORE_ASSERT(Props.DepthAttachmentsCount <= 1, "OpenGL support max 1 depth attachment per frame buffer.");
-
+    
     // Frame buffer color and depth attachments creation
     std::vector<GLenum> active_color_attachments {};
     image viewport(Props.Width, Props.Height, 4, false);
@@ -58,12 +58,12 @@ void scl::gl_frame_buffer::Invalidate()
     }
     if (Props.ColorAttachmentsCount == 0) glDrawBuffer(GL_NONE), glReadBuffer(GL_NONE);
     else glDrawBuffers(Props.ColorAttachmentsCount, active_color_attachments.data());
-
+    
     if (Props.DepthAttachmentsCount == 1) {
         DepthAttachment = texture_2d::Create(viewport, texture_type::DEPTH);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, DepthAttachment->GetHandle(), 0);
     }
-
+    
     // Set frame buffer clear config depending on attachments count
     ClearConfig = ((Props.ColorAttachmentsCount > 0) * GL_COLOR_BUFFER_BIT) |
                   ((Props.DepthAttachmentsCount > 0) * GL_DEPTH_BUFFER_BIT);
@@ -95,14 +95,21 @@ void scl::gl_frame_buffer::Unbind() const
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
+void scl::gl_frame_buffer::Resize(int Width, int Height)
+{
+    Props.Width = Width;
+    Props.Height = Height;
+    this->Invalidate();
+}
+
 void scl::gl_frame_buffer::Free()
 {
     if (Id != 0) glDeleteFramebuffers(1, &Id), Id = 0;
 
-    for (auto &color_attachment : ColorAttachments) color_attachment->Free();
+    for (auto &color_attachment : ColorAttachments) color_attachment.reset();
     ColorAttachments.clear();
 
-    if (DepthAttachment) DepthAttachment->Free();
+    if (DepthAttachment) DepthAttachment.reset();
 }
 
 void scl::gl_frame_buffer::Clear()

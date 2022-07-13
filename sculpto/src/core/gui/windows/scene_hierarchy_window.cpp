@@ -13,8 +13,8 @@
 #include "scene_hierarchy_window.h"
 #include "core/components/components.h"
 
-scl::scene_hierarchy_window::scene_hierarchy_window(scene *Scene, scene_object &SelectedSceneObject) :
-    Scene(Scene), SelectedSceneObject(SelectedSceneObject) {}
+scl::scene_hierarchy_window::scene_hierarchy_window(scene *Scene, const std::function<void(scene_object)> &OnObjectSelect) :
+    Scene(Scene), OnObjectSelect(OnObjectSelect) {}
 
 void scl::scene_hierarchy_window::Draw()
 {
@@ -27,9 +27,12 @@ void scl::scene_hierarchy_window::Draw()
     for (auto &&[entity, tag] : Scene->Registry.view<object_name_component>().each())
     {
         bool is_open = ImGui::TreeNodeEx((void *)(u64)(u32)entity,
-                                         node_flags | (ImGuiTreeNodeFlags_Selected * (entity == SelectedSceneObject)),
+                                         node_flags | (ImGuiTreeNodeFlags_Selected * (entity == SelectedObject)),
                                          "%s", tag.Name.c_str());
-        if (ImGui::IsItemClicked()) SelectedSceneObject = scene_object { entity, Scene };
+        if (ImGui::IsItemClicked()) {
+            SelectedObject = scene_object { entity, Scene };
+            OnObjectSelect(SelectedObject);
+        }
         if (is_open) ImGui::TreePop();
     }
     ImGui::End();

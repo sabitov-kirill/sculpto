@@ -18,6 +18,8 @@
 #include "../application/application.h"
 #include "../render/render_context.h"
 
+bool scl::gui_layer::IsDockspace { true };
+
 void scl::gui_layer::OnInit()
 {
     // Setup ImGui context
@@ -32,7 +34,7 @@ void scl::gui_layer::OnInit()
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;        // Enable Docking
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;     // Enable Gamepad Controls
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable &&    // Enable Multi-Viewport / Platform Windows / Not OpenGL
-        render_context::GetApi() != render_context::api::OpenGL;
+        render_context::GetApi() != render_context_api::OpenGL;
 
     // Configuring ImGui styles
     SetUpTheme();
@@ -48,15 +50,16 @@ void scl::gui_layer::OnInit()
     // Initialise ImGui render api dependent context
     switch (render_context::GetApi())
     {
-    case render_context::api::OpenGL:
-        ImGui_ImplOpenGL3_Init("#version 450 core");
-        break;
-    case render_context::api::DirectX:
-        SCL_CORE_ASSERT(0, "DirectX currently dont support GUI");
-        return;
-    default:
-        SCL_CORE_ASSERT(0, "Other platforms currently dont support GUI"); return;
+    case render_context_api::OpenGL:  ImGui_ImplOpenGL3_Init("#version 450 core");              break;
+    case render_context_api::DirectX: SCL_CORE_ASSERT(0, "DirectX currently dont support GUI"); return;
+    default: SCL_CORE_ASSERT(0, "Other platforms currently dont support GUI"); return;
     }
+
+    // Set up event handlers
+    event_dispatcher::AddEventListner<keyboard_event>([&io](keyboard_event &) { return io.WantCaptureKeyboard; });
+    event_dispatcher::AddEventListner<mouse_button_event>([&io](mouse_button_event &) { return io.WantCaptureMouse; });
+    event_dispatcher::AddEventListner<mouse_move_event>([&io](mouse_move_event &) { return io.WantCaptureMouse; });
+    event_dispatcher::AddEventListner<mouse_wheel_event>([&io](mouse_wheel_event &) { return io.WantCaptureMouse; });
 }
 
 void scl::gui_layer::OnClose()
@@ -64,14 +67,9 @@ void scl::gui_layer::OnClose()
     // Deinitialise render context dependent ImGui Implementation
     switch (render_context::GetApi())
     {
-    case render_context::api::OpenGL:
-        ImGui_ImplOpenGL3_Shutdown();
-        break;
-    case render_context::api::DirectX:
-        SCL_CORE_ASSERT(0, "DirectX currently dont support GUI");
-        return;
-    default:
-        SCL_CORE_ASSERT(0, "Other render APIs currently dont support GUI"); return;
+    case render_context_api::OpenGL:  ImGui_ImplOpenGL3_Shutdown(); break;
+    case render_context_api::DirectX: SCL_CORE_ASSERT(0, "DirectX currently dont support GUI"); return; 
+    default: SCL_CORE_ASSERT(0, "Other render APIs currently dont support GUI"); return;
     }
 
     // Deinitialise ImGui render api dependent context
@@ -83,15 +81,6 @@ void scl::gui_layer::OnClose()
 
     // Deinitialise ImGui core conext
     ImGui::DestroyContext();
-}
-
-void scl::gui_layer::OnEvent(event &Event)
-{
-    ImGuiIO &io = ImGui::GetIO();
-    Event.Handled |= (Event.GetType() == keyboard_event::StaticType) & io.WantCaptureKeyboard;
-    Event.Handled |= (Event.GetType() == mouse_button_event::StaticType ||
-                      Event.GetType() == mouse_move_event::StaticType   ||
-                      Event.GetType() == mouse_wheel_event::StaticType) & io.WantCaptureMouse;
 }
 
 void scl::gui_layer::RenderGui()

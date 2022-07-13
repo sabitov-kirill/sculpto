@@ -40,15 +40,12 @@ Allows implement your ideas through computer graphics via scripts or scene edito
     - [x] HDR                                                      | 10.07
     - [x] bloom                                                    |
 
-    - [ ] render architecture redisgn                              | 11.07
-    - [ ] memory leaks while window resize                         |
-    - [ ] deffered rendering                                       |
-    - [ ] cube map                                                 |
+    - [x] render architecture redisgn                              | 12.07
+    - [x] memory leaks while window resize                         |
+    - [x] deffered rendering                                       |
 
-    - [ ] PBR try                                                  | 12.07
+    - [ ] finish UI components windows                             | 13.07
+    - [ ] embeded C++ scriping                                     |
+    - [ ] sceletal animation                                       |
 
-    - [ ] embeded C++ scriping                                     | 13.07
-
-    - [ ] sceletal animation                                       | 14.07
-
-    - [ ] Vulcan/DirectX                                           | 14.07-??.07
+    - [ ] PBR try                                                  | 14.07

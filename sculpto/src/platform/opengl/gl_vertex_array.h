@@ -26,7 +26,7 @@ namespace scl
          * \param Type - shader variable type to convert to OpenGL specific.
          * \return OpenGL specific shader variable type.
          */
-        constexpr static GLenum GetGLShaderVariableType(shader_variable_type Type);
+        inline constexpr static GLenum GetGLShaderVariableType(shader_variable_type Type);
 
     public:
         /* Backend api render primitive hadnle getter function. */

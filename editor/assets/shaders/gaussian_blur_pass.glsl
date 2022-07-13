@@ -1,37 +1,14 @@
 #version 460
 
 #shader-begin vert
-    void main( void )
-    {
-      gl_Position = vec4(0, 0, 0, 1);
-    }
-#shader-end
-
-#shader-begin geom
-    layout (points) in;
-    layout (triangle_strip, max_vertices = 4) out;
+    #include "default_vertex_layout.include.glsl"
 
     out vec2 TexCoords;
 
-    void main( void )
+    void main()
     {
-        gl_Position = vec4(-1, 1, 0, 1);
-        TexCoords = vec2(0, 1);
-        EmitVertex();
-
-        gl_Position = vec4(-1, -1, 0, 1);
-        TexCoords = vec2(0, 0);
-        EmitVertex();
-
-        gl_Position = vec4(1, 1, 0, 1);
-        TexCoords = vec2(1, 1);
-        EmitVertex();
-
-        gl_Position = vec4(1, -1, 0, 1);
-        TexCoords = vec2(1, 0);
-        EmitVertex();
-
-        EndPrimitive();
+        TexCoords = v_TexCoords;
+        gl_Position = vec4(v_Pos, 1.0);
     }
 #shader-end
 

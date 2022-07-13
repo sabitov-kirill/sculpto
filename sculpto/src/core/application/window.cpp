@@ -12,25 +12,15 @@
 #   include "platform/windows/windows_window.h"
 #endif
 
-scl::window::window(int Width, int Height, const std::string &Title, bool VSync) :
-    Data(Width, Height, Title, false)
+scl::window::window(int Width, int Height, const std::string &Title) :
+    Data(Width, Height, Title)
 {
 }
 
-scl::unique<scl::window> scl::window::Create(int Width, int Height, const std::string &Title, bool VSync)
+scl::unique<scl::window> scl::window::Create(int Width, int Height, const std::string &Title)
 {
 #ifdef SCL_PLATFORM_WINDOWS
-    return CreateUnique<windows_window>(Width, Height, Title, VSync);
-#else /* !SCL_PLATFORM_WINDOWS */
-    SCL_CORE_ASSERT(false, "Unknown platform!");
-    return nullptr;
-#endif
-}
-
-scl::unique<scl::window> scl::window::Create(int Width, int Height, const std::string &Title, bool VSync, const events_handler &EventHandler)
-{
-#ifdef SCL_PLATFORM_WINDOWS
-    return CreateUnique<windows_window>(Width, Height, Title, VSync, EventHandler);
+    return CreateUnique<windows_window>(Width, Height, Title);
 #else /* !SCL_PLATFORM_WINDOWS */
     SCL_CORE_ASSERT(false, "Unknown platform!");
     return nullptr;

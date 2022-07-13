@@ -2,170 +2,138 @@
  * \file   renderer.h
  * \brief  Static hich-level renderer class definition module.
  *         Implements objects rendering functions via render_pass_submission queue.
- * 
+ *
  * \author Sabitov Kirill
  * \date   01 July 2022
  *********************************************************************/
 
 #pragma once
 
-#include "base.h"
+#include "render_pipeline.h"
+#include "core/resources/camera.h"
 
 namespace scl
 {
-    /**
-     * Renderer classes declaration.
-     */
-    class mesh;
-    class material;
-    class frame_buffer;
-    class constant_buffer;
-
-    struct point_light_component;
-    struct directional_light_component;
-    struct spot_light_component;
-
-    /* Scene rendering data. */
-    struct render_pass_data
-    {
-        vec3       CameraPosition;     /* Submission camera direction vector. */
-        float      Time;               /* Currently rendering frame time since porgram time. */
-        vec3       CameraDirection;    /* Submission camer location vector. */
-        int        ViewportWidth;      /* Currently rendering frame viewport width. */
-        vec3       EnviromentAmbient;  /* Scene enviroment apbient color. */
-        int        ViewportHeight;     /* Currently rendering frame viewport height. */
-        u32        IsBloomActive;      /* Flag, showing wheather bloom effect is active or not. */
-    };
-
-    /* Render object render_pass_submission structure. */
-    struct render_pass_submission
-    {
-        shared<mesh>              Mesh;             /* Submitted to render mesh. */
-        matr4                     Transform;        /* Submitted to render mesh tranformation matrix. */
-
-        /* Submission default constructor. */
-        render_pass_submission(shared<mesh> Mesh, matr4 Transform) :
-            Mesh(Mesh), Transform(Transform) {}
-    };
-
-    /* Point light structure. */
-    struct point_light
-    {
-        vec3 Position;
-        float Constant;
-        vec3 Color;
-        float Linear;
-        float Quadratic;
-        float __dummy[3];
-    };
-
-    /* Directional light structure. */
-    struct directional_light
-    {
-        vec3 Direction;
-        u32 IsShadows;
-        vec3 Color;
-        float __dummy2;
-        matr4_data ViewProjection;
-    };
-
-    /* Spot light structure. */
-    struct spot_light
-    {
-        vec3 Position;
-        float InnerCutoffCos;
-        vec3 Direction;
-        float OuterCutoffCos;
-        vec3 Color;
-        float Epsilon;
-    };
-
-    /* Lights storage structure. */
-    struct render_pass_lights_storage
-    {
-        point_light PointLights[50] {};
-        directional_light DirectionalLight {};
-        spot_light SpotLights[50] {};
-        u32 PointLightsCount {};
-        u32 IsDirectionalLight {};
-        u32 SpotLightsCount {};
-    };
+    /* Classes declaration. */
+    class texture_2d;
 
     /* Renderer class. */
     class renderer
     {
-    private: /* renderer data. */
-        static std::vector<render_pass_submission> SubmissionQueue;  /* Render pass meshes submissions queue.
-                                                                      * Each render_pass_submission queue contains submitted mesh and data for its rendering.
-                                                                      * Submission queue could be rendered and cleared via flush function.
-                                                                      */
+    private: /* Renderer data. */
+        static render_pipeline Pipeline;
 
-        static shared<constant_buffer>     PipelineDataBuffer;                 /* Constant buffer for current scene data. */
-        static render_pass_data            PipelineData;                       /* Current scene data. */
-        static matr4                       PipelineViewProjection;             /* Current scene camera view projection matrix. */
-        static shared<constant_buffer>     PipelineLightsStorageBuffer;        /* Constant buffer for current scene lights. */
-        static render_pass_lights_storage  PipelineLightsStorage;              /* Current scene lights storage. */
-        static shared<material>            PipelineShadowCasterMaterial;       /* Current scene shadow caster material with shader for shadow pass. */
-        static shared<frame_buffer>        PipelineShadowCasterFrameBuffer;    /* Current scene shadow caster frame buffer with shadow map texture. */
-
-    private:
+    private: /* Helper functions. */
         /**
-         * Draw mesh function.
-         * 
+         * Draw mesh geometry (for geometry pass) function.
+         *
          * \param Mesh - mesh to draw.
          * \param Transform - mesh tranformations matrix.
          * \return None.
          */
-        static void Draw(const shared<mesh> &Mesh, const matr4 &Transform);
+        static void DrawGeometry(const shared<mesh> &Mesh, const matr4 &Transform);
 
         /**
-         * Draw mesh during shadow pass function.
-         * 
+         * Draw mesh depth only (for shadow pass, creating shadow mpa of shadow caster) function.
+         *
          * \param Mesh - mesh to draw.
          * \param Transform - mesh transformation matrix.
          * \return None.
          */
-        static void DrawShadowPass(const shared<mesh> &Mesh, const matr4 &Transform);
+        static void DrawDepth(const shared<mesh> &Mesh, const matr4 &Transform);
 
-    public:
         /**
-         * Begin render pass function.
-         * Dummy function, just for uniformity. For render passes when you dont need dipeline data.
+         * Draw fullscreen quad to call binded shader for each pixel of frame buffer.
          *
          * \param None.
          * \return None.
          */
-        static void StartPipeline();
+        static void DrawFullscreenQuad();
 
         /**
-         * Begin render pass function.
-         * Updates scene data buffer.
-         * 
-         * \param ViewProjection - scene camera view projection matrix.
-         * \param CameraDirection - scene camera direction vector.
-         * \param CameraPosition - scene camer location.
-         * \param ViewportWidth - scene viewport width.
-         * \param ViewportHeight - scene viewport height.
-         * \param ViewportHeight - scene enviroment ambient color.
-         * \param Exposure - exposure level for HDR.
+         * Add texture colors to main color attachment of detination frame buffer function.
+         *
+         * \param Destination - destination frame buffer to add texture color in.
+         * \param Texture - texture to add to destination frame buffer.
          * \return None.
          */
-        static void StartPipeline(const matr4 &ViewProjection, const vec3 &CameraDirection, const vec3 &CameraPosition,
-                                  const int ViewportWidth, const int ViewportHeight,
-                                  const vec3 &EnviromentAmbient, bool IsBloomActive = false);
+        static void ApplyTexture(const shared<frame_buffer> &Destination, const shared<texture_2d> &SourceTexture);
+
+        /**
+         * Add texture colors, blurred with two-pass gaussian blur, to main color attachment of destination frame buffer function.
+         *
+         * \param Destination - destination frame buffer.
+         * \param Source - source texture to blur and apply to destination frame buffer.
+         * \param Iterations - gaussian blur iterations count.
+         * \return None.
+         */
+        static void ApplyBluredTexture(const shared<frame_buffer> &Destination, const shared<texture_2d> &Source, int Iterations);
+
+    private: /* Render passes computation functions. */
+        /**
+         * Apply depth computation of current scene (from pipeline submissions list) to destination buffer.
+         * 
+         * \param None.
+         * \return None.
+         */
+        static void ComputeDepth();
+
+        /**
+         * Apply geometry computation of current scene (from pipeline submissions list) to pipeline geometry buffer (concrete buffer depends on current lighting model).
+         *
+         * \param None.
+         * \return None.
+         */
+        static void ComputeGeometry();
+
+        /**
+         * Apply default lighting pass (of selected lighting model) to frame buffer (concrete buffer depends on pipeline settings - HDR on/off).
+         * 
+         * \param None.
+         * \return None.
+         */
+        static void ComputateLighting();
+
+        /**
+         * Apply bloom effect to main color attachment of detination frame buffer function.
+         *
+         * \param Destination - destination frame buffer.
+         * \param BrightColorsTexture- texture with bright colors of blooming image.
+         * \return None.
+         */
+        static void ComputeBloom();
+
+        /**
+         * Apply tone mapping algorithm, translating HDR to main frame buffer.
+         *
+         * \param None.
+         * \return None.
+         */
+        static void ComputeToneMapping();
+
+    public: /* Renderer API functions. */
+        /**
+         * Begin render pass function.
+         * Updates renderer pipeline data buffer.
+         *
+         * \param Camera - camera to render in.
+         * \param EnviromantAmbient - rendering scene enviroment ambient color.
+         * \return None.
+         */
+        static void StartPipeline(const camera &Camera, const vec3 &EnviromentAmbiente);
 
         /**
          * End render pass function.
          * Flush render_pass_submission quque and draw all meshes to specified frame buffer function.
          *
-         * \param FrameBuffer - frame buffer to draw in.
+         * \param Destination - destination frame buffer to draw in.
          * \return None.
          */
-        static void EndPipeline(const shared<frame_buffer> &FrameBuffer = nullptr);
+        static void EndPipeline();
 
         /**
          * Submit point light function.
-         * 
+         *
          * \param Position - light possition.
          * \param Color - light color.
          * \param Constant - light attenutation constant coefficient.
@@ -181,12 +149,12 @@ namespace scl
          * \param Direction - light direction.
          * \param Color - light color.
          * \param IsShadows - is directional light casts shadows flag.
-         * \param VP - matrix for light cooredinate space tranformation. Need only for shadow casting.
-         * \param FrameBuffer - frame buffer for shadow pass.
+         * \param ViewProjection - shadow caster view projection matrix.
+         * \param ShadowMap - shadow caster shadow map frame buffer.
          * \return None.
          */
         static void SubmitDirectionalLight(const vec3 &Direction, const vec3 &Color, bool IsShadows = false,
-                                           const matr4 &ViewProjection = {}, shared<frame_buffer> FrameBuffer = nullptr);
+                                           const matr4 &ViewProjection = {}, const shared<frame_buffer> &ShadowMap = nullptr);
 
         /**
          * Submit point light function.
@@ -213,7 +181,7 @@ namespace scl
 
         /**
          * Submit mesh to render_pass_submission queue (rendered while flush call) function.
-         * 
+         *
          * \param Mesh - mesh to submit to queue.
          * \param Transform - mesh tranformations matrix.
          * \return None.

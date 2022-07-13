@@ -42,6 +42,13 @@ namespace scl
     /* Shader progream interface. */
     class shader_program: public render_primitive
     {
+    public: /* Shader program data. */
+        std::string SingleSourceFileName {};
+        std::string VertexShadersourceFileName {};
+        std::string GeometryShadersourceFileName {};
+        std::string PixelShadersourceFileName {};
+        std::string DebugName {};
+
     public: /* Saader program getter/setter functions. */
         /**
          * Set uniform variable to shader_props function.
@@ -92,6 +99,12 @@ namespace scl
         virtual bool SetMatr4(int Location, const matr4 &Value) const = 0;
 
     public:
+        /* Shader program default constructor. */
+        shader_program(const std::string &DebugName);
+
+        /* Shader program default deatructor. */
+        virtual ~shader_program() = default;
+
         /**
          * Bind buffer to current render stage function.
          *

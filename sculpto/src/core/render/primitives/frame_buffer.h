@@ -57,6 +57,9 @@ namespace scl
         virtual const shared<texture_2d> &GetDepthAttachment(int Index = 0) const = 0;
 
     public:
+        /* Frame buffer default deatructor. */
+        virtual ~frame_buffer() = default;
+
         /**
          * Bind frame buffer to current render stage function.
          *
@@ -72,6 +75,15 @@ namespace scl
          * \return None.
          */
         virtual void Unbind() const = 0;
+
+        /**
+         * Resize frame buffer (resize also could be called by setting frame buffer props).
+         *
+         * \param Width - new frame buffer width.
+         * \param Height - new frame buffer height.
+         * \return None.
+         */
+        virtual void Resize(int Width, int Height) = 0;
 
         /**
          * Unload frame buffer render target texture from GPU memory function.

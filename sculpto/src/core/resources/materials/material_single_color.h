@@ -50,6 +50,8 @@ namespace scl
         }
         /* Texture setter function.*/
         void SetTexture(shared<texture_2d> Texture) {
+            if (!Texture) return;
+
             if (this->Texture) this->Texture->Free();
             this->Texture = Texture;
             if (!Data.IsTexture)
@@ -98,9 +100,9 @@ namespace scl
          */
         void Bind() const override
         {
-            if (Shader != nullptr) Shader->Bind();
-            if (DataBuffer != nullptr) DataBuffer->Bind(render_context::BINDING_POINT_MATERIAL_DATA);
-            if (Data.IsTexture) Texture->Bind(render_context::TEXTURE_SLOT_MATERIAL_DIFFUSE);
+            if (Shader) Shader->Bind();
+            if (DataBuffer) DataBuffer->Bind(render_context::BINDING_POINT_MATERIAL_DATA);
+            if (Texture && Data.IsTexture) Texture->Bind(render_context::TEXTURE_SLOT_MATERIAL_DIFFUSE);
         }
 
         /**
@@ -111,9 +113,9 @@ namespace scl
          */
         void Unbind() const override
         {
-            if (Shader != nullptr) Shader->Unbind();
-            if (DataBuffer != nullptr) DataBuffer->Unbind();
-            if (Data.IsTexture) Texture->Unbind();
+            if (Shader) Shader->Unbind();
+            if (DataBuffer) DataBuffer->Unbind();
+            if (Texture && Data.IsTexture) Texture->Unbind();
         }
 
         /**

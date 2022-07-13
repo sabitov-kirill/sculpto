@@ -33,7 +33,7 @@ void scl::viewport_window::Draw()
             {
                 // Call scene on event function to dispatche window resize callback
                 window_resize_event e { (int)window_size.x, (int)window_size.y };
-                Scene->OnEvent(e);
+                event_dispatcher::Invoke(e);
             }
             else
             {
@@ -45,7 +45,7 @@ void scl::viewport_window::Draw()
             }
 
         // Render framebuffer
-        ImGui::Image((ImTextureID)ViewportBuffer->GetColorAttachment(0)->GetHandle(),
+        ImGui::Image((ImTextureID)ViewportBuffer->GetColorAttachment()->GetHandle(),
                      ImVec2(window_size.x, window_size.y), { 0, 1 }, { 1, 0 });
 
         if (ImGui::IsItemHovered()) ImGui::CaptureMouseFromApp(false);

@@ -14,25 +14,64 @@
 
 namespace scl
 {
+    /* Classes declaration. */
+    class shader_program;
+
     /* OpenGL context */
     class gl : public render_context
     {
-#ifdef SCL_PLATFORM_WINDOWS
-    private: /* OpenGL context data. */
-        static HGLRC hGLRC;
-        static HDC hDC;
-        static const HWND *hWnd;
 
-    private:
+    private: /* OpenGL context data. */
+        vec4 ClearColor { 1, 0, 0, 1 };
+        bool IsWireframe {};
+        render_cull_face_mode CullingMode { render_cull_face_mode::BACK };
+
+        static shared<shader_program> single_color_material_shader;
+        static shared<shader_program> phong_material_shader;
+        static shared<shader_program> shadow_pass_shader;
+        static shared<shader_program> tone_mapping_pass_shader;
+        static shared<shader_program> gaussian_blur_pass_shader;
+
+#ifdef SCL_PLATFORM_WINDOWS
+        HGLRC hGLRC;
+        HDC hDC;
+        const HWND *hWnd;
+#else /* !SCL_PLATFORM_WINDOWS */
+#   error Other platforms currently dont support OpenGL
+#endif
+
+    public: /* OpenGL data getter/setter functions. */
+        /* Frame clear color setter function. */
+        const vec4 &GetClearColor() const override;
+        /* Render wire frame mode setter function. */
+        bool GetWireframeMode() const override;
+        /* Render culling mode setter function. */
+        render_cull_face_mode GetCullingMode() const override;
+
+        /* Frame clear color setter function. */
+        void SetClearColor(const vec4 &ClearColor) override;
+        /* Render wire frame mode setter function. */
+        void SetWireframeMode(bool IsWireframe) override;
+        /* Render culling mode setter function. */
+        void SetCullingMode(render_cull_face_mode CullingMode) override;
+
         /**
          * Get OpenGL primitive type by mesh type function.
-         * 
+         *
          * \param MeshType - mesh type to get OpenGL primitive type according to.
          * \return OpenGL primitive type.
          */
-        inline static GLenum GetGLPrimitiveType(mesh_type MeshType);
+        static GLenum GetGLPrimitiveType(mesh_type MeshType);
 
-    public:
+        /**
+         * Get OpenGL shader variable type function.
+         * 
+         * \param Type - top-level api shader variable.
+         * \return OpenGL shader variable type.
+         */
+        static GLenum GetGLShaderVariableType(shader_variable_type Type);
+
+    public: /* OpenGL context methods. */
         /**
          * Render system type constructor.
          *
@@ -41,10 +80,8 @@ namespace scl
          * \param VSync - vertical syncronisation enable flag.
          * \return None.
          */
-        static void CreateContext(const HWND &hAppWnd, int W, int H, bool VSync);
-#else /* !SCL_PLATFORM_WINDOWS */
-#   error Other platforms currently dont support OpenGL
-#endif
+        void CreateContext(const HWND &hAppWnd, int W, int H, bool VSync);
+
         /**
          * Render context initialisation function.
          *
@@ -62,44 +99,12 @@ namespace scl
         void Close() override;
 
         /**
-         * Frame clear color setter function.
-         *
-         * \param Color - new frame clear color.
-         * \return None.
-         */
-        void SetClearColor(const vec4 &Color) override;
-
-        /**
-         * Setting render wire frame mode function.
-         *
-         * \param IsWireframe - wireframe rendering flag.
-         * \return None.
-         */
-        void SetWireframeMode(bool IsWireframe) override;
-
-        /**
-         * Clear current render target function.
-         *
-         * \param None.
-         * \return None.
-         */
-        void Clear() override;
-
-        /**
          * Swap frame buffers function.
          *
          * \param None.
          * \return None.
          */
         void SwapBuffers() override;
-
-        /**
-         * Conetxt resize function.
-         *
-         * \param Width, Height - new width and hight of applicatino window.
-         * \return None.
-         */
-        void Resize(int Width, int Height) override;
 
         /**
          * Draw vertices function.
@@ -117,27 +122,15 @@ namespace scl
          */
         void DrawIndicesInstanced(const shared<vertex_array> &VertexArray, int InstanceCount) override;
 
-        /**
-         * Set rendering context to main window.
-         * 
-         * \param None.
-         * \return None.
-         */
-        void SetContextCurrent() const;
-
     public: /* Sculpto library built-in backend API specific rendering objects getter function. */
         /* OpenGL specific single color material shader getter function. */
         shared<shader_program> GetSingleColorMaterialShader() const override;
-
         /* OpenGL specific phong lighting model material shader getter function. */
         shared<shader_program> GetPhongMaterialShader() const override;
-
         /* OpenGL specific shadow pass shader getter function. */
         shared<shader_program> GetShadowPassShader() const override;
-
         /* OpenGL specific full viewport mesh with tone mapping shader. */
         shared<shader_program> GetToneMappingPassShader() const override;
-
         /* Backend API specific gaussian blur pass shader getter function. */
         shared<shader_program> GetGaussianBlurPassShader() const override;
     };

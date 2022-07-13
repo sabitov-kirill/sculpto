@@ -52,6 +52,9 @@ namespace scl
          */
         gl_texture_2d(const image &Image, texture_type Type);
 
+        /* Texture default destructor. */
+        ~gl_texture_2d() override;
+
         /**
          * Bind texture to current render stage function.
          *

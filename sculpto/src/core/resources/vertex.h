@@ -29,7 +29,7 @@ namespace scl
          * \param Offset - vertex element offset by vertex layer start pointer.
          */
         vertex_element(shader_variable_type Type, const std::string &Name) :
-            Type(Type), Size(GetShaderVariableTypeSize(Type)), Index(-1), Offset(-1) {}
+            Type(Type), Size(render_context::GetShaderVariableTypeSize(Type)), Index(-1), Offset(-1) {}
     };
 
     /* Vertex layout structure. Represent data for one single vertex. */

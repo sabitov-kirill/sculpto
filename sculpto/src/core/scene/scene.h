@@ -9,7 +9,7 @@
 #pragma once
 
 #include <entt.hpp>
-#include "core/components/camera_controller_component.h"
+#include "core/components/camera_component.h"
 
 namespace scl
 {
@@ -27,37 +27,19 @@ namespace scl
         friend class scene_hierarchy_window;
 
     private: /* Application scene data. */
-        entt::registry Registry {};                 /* Container for all components.
-                                                     * Contains both enitty datas and Ids.
-                                                     */
+        entt::registry Registry {}; /* Container for all components.
+                                     * Contains both enitty datas and Ids.
+                                     */
 
-        camera_controller_component *MainCamera {};       /* Scene main camera controller. */
-        int                  ViewportWidth { 16 };        /* Scene window viewport width. */
-        int                  ViewportHeight { 16 };       /* Scene window viewport height. */
-        bool                 RenderToSwapChainBuffer {};  /* Flag, showing whether render to swap chain buffer or not. */
-        bool                 IsHDR { true };              /* Flag, showing wheather use hight dynamic range for colors while rendering frame. */
-        shared<mesh>         HDRPassFullscreenQuad {};    /* Full screen quad mesh for HDR Tone mapping pass. */
-        bool                 IsBloom { true };            /* Flag, showing wheather apply bloom effect or not while rendering frame. */
-        shared<mesh>         BloomBluringFullscreenQuad {};
-
-        float UpdateDelay {};  /* Scripts update call timer. */
-
-    public:
-        shared<frame_buffer> BloomBlurringBuffers[2] {};  /* Frame buffers for blurring bright colors during bloom effect apply. */
-        vec3    EnviromentAmbient { 0.1f };     /* Enviroment ambient color. */
-        float   Exposure { 1 };                 /* Tone mapping exposure level. Works only if rendering with HDR. */
+        camera_component *MainCamera {};   /* Scene main camera controller. */
+        int   ViewportWidth { 16 };        /* Scene viewport width. */
+        int   ViewportHeight { 16 };       /* Scene viewport height. */
+        float UpdateDelay {};              /* Scene scripts update call timer. */
+        vec3  EnviromentAmbient { 0.1f };  /* Scene enviroment ambient color. */
 
     public: /* Application scene getter/setter functions. */
         /* Scene main camera getter function */
-        const camera_controller_component &GetMainCamera() const { return *MainCamera; }
-        /* Scene window viewport width getter function. */
-        int GetViewportWidth() const { return ViewportWidth; }
-        /* Scene window viewport height getter function. */
-        int GetViewportHeight() const { return ViewportHeight; }
-        /* Flag, showing wheather use hight dynamic range for colors while rendering frame getter function. */
-        bool GetIsHDR() const { return IsHDR; }
-        /* Flag, showing wheather apply bloom effect or not while rendering frame getter function. */
-        bool GetIsBloom() const { return IsBloom; }
+        const camera_component &GetMainCamera() const;
 
         /**
          * Set scene main camera by name function.
@@ -67,31 +49,24 @@ namespace scl
          */
         void SetMainCamera(const std::string &Name);
 
+    private: /* Application scene methods. */
         /**
-         * Set flag, indicating whether render to swap chain buffer or not.
-         *
-         * \param RenderToSwapChainBuffer - flag, showing whether render to swap chain buffer or not.
-         * \return None.
-         */
-        void SetRenderToSwapChainBuffer(bool RenderToSwapChainBuffer);
-
-        /**
-         * Set flag, indicating wheather use high dynamic range of colors while rendering.
+         * Perform scene rendering function.
          * 
-         * \param IsHDR - flag, showing wheather use HDR, or not.
+         * \param None.
          * \return None.
          */
-        void SetIsHDR(bool IsHDR);
+        void Render();
 
         /**
-         * Set flag, indicatinf whaether apply bloom effect while rendering frame or not.
+         * Perform scene script update function.
          * 
-         * \param IsBloom - flag, indicatinf whaether apply bloom effect while rendering frame or not.
+         * \param None.
          * \return None.
          */
-        void SetIsBloom(bool IsBloom);
+        void CallUpdate();
 
-    public: /* Application scene methods. */
+    public:
         /* Scene default constructor. */
         scene();
 
@@ -107,23 +82,11 @@ namespace scl
         void OnUpdate(float DeltaTime);
 
         /**
-         * Scene on event callback function.
-         * 
-         * \param Event
-         * \return None.
-         */
-        void OnEvent(event &Event);
-
-        /**
          * Create scene object function.
          * 
          * \param Name - object name (mainly for debug purpose).
          * \return created object.
          */
         scene_object CreateObject(const std::string &Name = "");
-
-    private: /* Application scene methods. */
-        void Render();
-        void CallUpdate();
     };
 }

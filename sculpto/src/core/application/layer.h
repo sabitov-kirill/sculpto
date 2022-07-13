@@ -55,13 +55,5 @@ namespace scl
          * \return None.
          */
         virtual void OnGuiRender() {}
-
-        /**
-         * Layer event handling virtual callback function.
-         *
-         * \param Event - event to handle.
-         * \return None.
-         */
-        virtual void OnEvent(event &Event) {}
     };
 }

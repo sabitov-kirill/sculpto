@@ -62,7 +62,6 @@ scl::submesh_props<scl::vertex> scl::assets_manager::mesh_loader_phong::Generate
 
 scl::shared<scl::material_phong> scl::assets_manager::mesh_loader_phong::GenerateSubmeshMaterial(aiMesh *Mesh)
 {
-    shared<shader_program> shader = assets_manager::LoadShader("assets/shaders/phong.glsl");
     shared<material_phong> mat = material_phong::Create(vec3 { 0.4 }, vec3 { 0 }, 1);
     if (Mesh->mMaterialIndex < 0) return mat;
 

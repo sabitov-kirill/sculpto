@@ -44,16 +44,9 @@ void scl::windows_window::Create()
     ShowWindow(Handle, 1);
 }
 
-scl::windows_window::windows_window(int Width, int Height, const std::string &Title, bool VSync) :
-    window(Width, Height, Title, VSync)
+scl::windows_window::windows_window(int Width, int Height, const std::string &Title) :
+    window(Width, Height, Title)
 {
-    this->Create();
-}
-
-scl::windows_window::windows_window(int Width, int Height, const std::string &Title, bool VSync, const events_handler &EventHandler) :
-    window(Width, Height, Title, VSync)
-{
-    this->EventHandler = EventHandler;
     this->Create();
 }
 

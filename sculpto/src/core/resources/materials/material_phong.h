@@ -41,6 +41,31 @@ namespace scl
         shared<texture_2d> NormalMapTexture {};
 
     public: /* Material for blin-phong lighing model data getter setter functions. */
+        /* Material specular lighting coefficient getter function. */
+        const vec3 &GetSpecular() const { return Data.Specular; }
+        /* Material shiness exponent lighting coefficient getter function. */
+        const vec3 &GetDiffuse() const { return Data.Diffuse; }
+        /* Material diffuse lighting coefficient getter function. */
+        float GetShininess() const { return Data.Shininess; }
+
+        /* Flag, showing whether specular map passing to shader getter function. */
+        bool GetIsSpecularMap() const { return Data.IsSpecularMap; }
+        /* Flag, showing whether diffuse map passing to shader getter function. */
+        bool GetIsDiffuseMap() const { return Data.IsDiffuseMap; }
+        /* Flag, showing whether normal map passing to shader getter function. */
+        bool GetIsEmissionMap() const { return Data.IsEmissionMap; }
+        /* Flag, showing whether normal map passing to shader getter function. */
+        bool GetIsNormalMap() const { return Data.IsNormalMap; }
+
+        /* Diffuse map getter function. */
+        const shared<texture_2d> &GetDiffuseMapTexture() const { return DiffuseMapTexture; }
+        /* Specular map getter function. */
+        const shared<texture_2d> &GetSpecularMapTexture() const { return SpecularMapTexture; }
+        /* Emission map getter function. */
+        const shared<texture_2d> &GetEmissionMapTexture() const { return EmissionMapTexture; }
+        /* Normal map getter function. */
+        const shared<texture_2d> &GetNormalMapTexture() const { return NormalMapTexture; }
+
         /* Diffuse coeffisient setter function.*/
         void SetDiffuse(const vec3 &Diffuse) {
             if (DiffuseMapTexture)
@@ -71,6 +96,8 @@ namespace scl
 
         /* Diffuse map setter function. */
         void SetDiffuseMapTexture(shared<texture_2d> DiffuseMapTexture) {
+            if (!DiffuseMapTexture) return;
+
             if (this->DiffuseMapTexture) this->DiffuseMapTexture->Free();
             this->DiffuseMapTexture = DiffuseMapTexture;
             if (!Data.IsDiffuseMap)
@@ -81,6 +108,8 @@ namespace scl
         }
         /* Specular map setter function. */
         void SetSpecularMapTexture(shared<texture_2d> SpecularMapTexture) {
+            if (!SpecularMapTexture) return;
+
             if (this->SpecularMapTexture) this->SpecularMapTexture->Free();
             this->SpecularMapTexture = SpecularMapTexture;
             if (!Data.IsSpecularMap)
@@ -89,8 +118,10 @@ namespace scl
                 DataBuffer->Update(&Data, sizeof(Data));
             }
         }
-        /* Normal map setter function. */
+        /* Emission map setter function. */
         void SetEmissionMapTexture(shared<texture_2d> EmissionMapTexture) {
+            if (!EmissionMapTexture) return;
+
             if (this->EmissionMapTexture) this->EmissionMapTexture->Free();
             this->EmissionMapTexture = EmissionMapTexture;
             if (!Data.IsEmissionMap)
@@ -101,6 +132,8 @@ namespace scl
         }
         /* Normal map setter function. */
         void SetNormalMapTexture(shared<texture_2d> NormalMapTexture) {
+            if (!NormalMapTexture) return;
+
             if (this->NormalMapTexture) this->NormalMapTexture->Free();
             this->NormalMapTexture = NormalMapTexture;
             if (!Data.IsNormalMap)
@@ -144,10 +177,10 @@ namespace scl
             if (Shader != nullptr) Shader->Bind();
             if (DataBuffer != nullptr) DataBuffer->Bind(render_context::BINDING_POINT_MATERIAL_DATA);
 
-            if (Data.IsDiffuseMap) DiffuseMapTexture->Bind(render_context::TEXTURE_SLOT_MATERIAL_DIFFUSE);
-            if (Data.IsSpecularMap) SpecularMapTexture->Bind(render_context::TEXTURE_SLOT_MATERIAL_SPECULAR);
-            if (Data.IsEmissionMap) EmissionMapTexture->Bind(render_context::TEXTURE_SLOT_MATERIAL_EMISSION_MAP);
-            if (Data.IsNormalMap) NormalMapTexture->Bind(render_context::TEXTURE_SLOT_MATERIAL_NORMAL_MAP);
+            if (DiffuseMapTexture && Data.IsDiffuseMap) DiffuseMapTexture->Bind(render_context::TEXTURE_SLOT_MATERIAL_DIFFUSE);
+            if (SpecularMapTexture && Data.IsSpecularMap) SpecularMapTexture->Bind(render_context::TEXTURE_SLOT_MATERIAL_SPECULAR);
+            if (EmissionMapTexture && Data.IsEmissionMap) EmissionMapTexture->Bind(render_context::TEXTURE_SLOT_MATERIAL_EMISSION_MAP);
+            if (NormalMapTexture && Data.IsNormalMap) NormalMapTexture->Bind(render_context::TEXTURE_SLOT_MATERIAL_NORMAL_MAP);
         }
 
         /**
@@ -160,9 +193,9 @@ namespace scl
         {
             if (Shader != nullptr) Shader->Unbind();
             if (DataBuffer != nullptr) DataBuffer->Unbind();
-            if (Data.IsSpecularMap) SpecularMapTexture->Unbind();
-            if (Data.IsDiffuseMap) DiffuseMapTexture->Unbind();
-            if (Data.IsNormalMap) NormalMapTexture->Unbind();
+            if (SpecularMapTexture && Data.IsSpecularMap) SpecularMapTexture->Unbind();
+            if (DiffuseMapTexture && Data.IsDiffuseMap) DiffuseMapTexture->Unbind();
+            if (NormalMapTexture && Data.IsNormalMap) NormalMapTexture->Unbind();
         }
 
        /**

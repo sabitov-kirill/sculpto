@@ -24,14 +24,14 @@ void scl::application_config_window::Draw()
 {
     ImGui::Begin("Application Configuration");
     {
-        ImGui::Text("Rendering configuration");
+        ImGui::Text("Renderer configuration");
         if (ImGui::ColorEdit4("Clear Color", (float *)&ClearColor))
             render_bridge::SetClearColor(ClearColor);
         if (ImGui::Checkbox("Wireframe Mode", &IsWireframe))
             render_bridge::SetWireframeMode(IsWireframe);
         ImGui::Separator();
 
-        ImGui::Text("GUI data");
+        ImGui::Text("GUI configuration");
         ImGui::Checkbox("Use Dock space", &application::Get().GUILayer->IsDockspace);
     }
     ImGui::End();

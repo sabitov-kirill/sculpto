@@ -25,9 +25,19 @@ scl::application::application(const std::string &Name)
     // Application core subsystems initialisation
     scl::log::Init();
 
+    // Setup event handlers
+    event_dispatcher::AddEventListner<window_close_event>([&](window_close_event &) {
+        IsRunning = false;
+        this->OnClose();
+        for (layer *layer : Layers)
+            layer->OnClose();
+
+        render_bridge::CloseContext();
+        return false;
+    });
+
     // Window initilisation
-    Window = window::Create(700, 400, Name + " (Sculpto application).", false);
-    Window->SetEventHandler(std::bind_front(&application::EventHandler, this));
+    Window = window::Create(700, 400, Name + " (Sculpto application).");
 
     // Render initialisation
     render_bridge::InitContext();
@@ -47,39 +57,18 @@ scl::application::~application()
 
 bool scl::application::OnWindowResize(window_resize_event &Event)
 {
-    render_bridge::ResizeContext(Event.GetWidth(), Event.GetHeight());       // Call resize to render context
-    this->LoopIterationActions();                                            // Forece loop iteration to render frame
-    return false;                                                            // Let event be handled by other handlers
+    this->LoopIterationActions(); // Forece loop iteration to render frame
+    return false;                 // Let event be handled by other handlers
 }
 
 bool scl::application::OnWindowClose(window_close_event &Event)
 {
-    IsRunning = false;                                         // End main app loop
-    this->OnClose();                                           // Client application deinitialisation
-    for (layer *layer : Layers) layer->OnClose();              // All layers in stack deinitilisation
+    IsRunning = false;                            // End main app loop
+    this->OnClose();                              // Client application deinitialisation
+    for (layer *layer : Layers) layer->OnClose(); // All layers in stack deinitilisation
 
-    render_bridge::CloseContext();                             // Render deintialisation
-    return false;                                              // Let event be handled by other handlers
-}
-
-void scl::application::EventHandler(event &Event)
-{
-    event_dispatcher dispatcher(Event);
-
-    // Dispatch events, refelecting application work.
-    dispatcher.Dispatch<window_resize_event>(SCL_BIND_EVENT_FN(OnWindowResize));
-    dispatcher.Dispatch<window_close_event>(SCL_BIND_EVENT_FN(OnWindowClose));
-
-    // Do nothing if application is already closed.
-    if (!IsRunning) return;
-
-    // Call all layers event handlers in reversed order.
-    for (auto &layer : Layers)
-    {
-        layer->OnEvent(Event);
-        if (Event.Handled == true)
-            break;
-    }
+    render_bridge::CloseContext();                // Render deintialisation
+    return false;                                 // Let event be handled by other handlers
 }
 
 void scl::application::LoopIterationActions()

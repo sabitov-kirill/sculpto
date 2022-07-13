@@ -73,22 +73,7 @@ namespace scl
          * \param Name - Title of the creating window.
          * \param VSync - vertical syncrosination enabling flag.
          */
-        windows_window(int Width, int Height, const std::string &Title, bool VSync);
-
-        /**
-         * Windows OS specific window construcotor.
-         * Initialise window, but don't shows it and don't start message loop.
-         * If initialisation successful 'IsStartupSuccess' would be set to true
-         * and then window message loop could be started.
-         *
-         * \param Width - Width of the creating window in pixels.
-         * \param Height - Height of creating window in pixels.
-         * \param Title - Title of the creating window.
-         * \param VSync - vertical syncrosination enabling flag.
-         * \param EventHandler - window events handler function.
-         */
-        windows_window(int Width, int Height, const std::string &Title, bool VSync,
-                       const events_handler &EventHandler);
+        windows_window(int Width, int Height, const std::string &Title);
 
         /**
          * Window update function.

@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "base.h"
+#include "sclpch.h"
 
 #define SCL_MAKE_EVENT(name)                                          \
     public:                                                           \

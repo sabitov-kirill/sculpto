@@ -15,8 +15,8 @@ scl::shared<scl::constant_buffer> scl::constant_buffer::Create(u32 Size)
 {
     switch (render_context::GetApi())
     {
-    case scl::render_context::api::OpenGL:  return CreateShared<scl::gl_constant_buffer>(Size);
-    case scl::render_context::api::DirectX: SCL_CORE_ASSERT(0, "This API is currently unsupported."); return nullptr;
+    case scl::render_context_api::OpenGL:  return CreateShared<scl::gl_constant_buffer>(Size);
+    case scl::render_context_api::DirectX: SCL_CORE_ASSERT(0, "This API is currently unsupported."); return nullptr;
     }
 
     SCL_CORE_ASSERT(0, "Unknown render API was selected.");
@@ -27,8 +27,8 @@ scl::shared<scl::constant_buffer> scl::constant_buffer::Create(const void *Data,
 {
     switch (render_context::GetApi())
     {
-    case scl::render_context::api::OpenGL:  return CreateShared<scl::gl_constant_buffer>(Data, Size);
-    case scl::render_context::api::DirectX: SCL_CORE_ASSERT(0, "This API is currently unsupported."); return nullptr;
+    case scl::render_context_api::OpenGL:  return CreateShared<scl::gl_constant_buffer>(Data, Size);
+    case scl::render_context_api::DirectX: SCL_CORE_ASSERT(0, "This API is currently unsupported."); return nullptr;
     }
 
     SCL_CORE_ASSERT(0, "Unknown render API was selected.");
@@ -42,8 +42,8 @@ scl::shared<scl::vertex_buffer> scl::vertex_buffer::Create(u32 Count, const vert
 {
     switch (render_context::GetApi())
     {
-    case scl::render_context::api::OpenGL:  return CreateShared<scl::gl_vertex_buffer>(Count, VertexLayout);
-    case scl::render_context::api::DirectX: SCL_CORE_ASSERT(0, "This API is currently unsupported."); return nullptr;
+    case scl::render_context_api::OpenGL:  return CreateShared<scl::gl_vertex_buffer>(Count, VertexLayout);
+    case scl::render_context_api::DirectX: SCL_CORE_ASSERT(0, "This API is currently unsupported."); return nullptr;
     }
 
     SCL_CORE_ASSERT(0, "Unknown render API was selected.");
@@ -54,8 +54,8 @@ scl::shared<scl::vertex_buffer> scl::vertex_buffer::Create(const void *Vertices,
 {
     switch (render_context::GetApi())
     {
-    case scl::render_context::api::OpenGL:  return CreateShared<scl::gl_vertex_buffer>(Vertices, Count, VertexLayout);
-    case scl::render_context::api::DirectX: SCL_CORE_ASSERT(0, "This API is currently unsupported."); return nullptr;
+    case scl::render_context_api::OpenGL:  return CreateShared<scl::gl_vertex_buffer>(Vertices, Count, VertexLayout);
+    case scl::render_context_api::DirectX: SCL_CORE_ASSERT(0, "This API is currently unsupported."); return nullptr;
     }
 
     SCL_CORE_ASSERT(0, "Unknown render API was selected.");
@@ -66,8 +66,8 @@ scl::shared<scl::index_buffer> scl::index_buffer::Create(u32 *Indices, u32 Count
 {
     switch (render_context::GetApi())
     {
-    case scl::render_context::api::OpenGL:  return CreateShared<scl::gl_index_buffer>(Indices, Count);
-    case scl::render_context::api::DirectX: SCL_CORE_ASSERT(0, "This API is currently unsupported."); return nullptr;
+    case scl::render_context_api::OpenGL:  return CreateShared<scl::gl_index_buffer>(Indices, Count);
+    case scl::render_context_api::DirectX: SCL_CORE_ASSERT(0, "This API is currently unsupported."); return nullptr;
     }
 
     SCL_CORE_ASSERT(0, "Unknown render API was selected.");

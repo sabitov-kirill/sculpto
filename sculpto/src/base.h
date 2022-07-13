@@ -22,6 +22,7 @@
 #include "utilities/memory/smart_ptr.h"
 #include "utilities/string/fixed_string.h"
 #include "utilities/string/string_id.h"
+#include "utilities/event/event_dispatcher.h"
 
 #include "core/application/log.h"
 

@@ -12,7 +12,7 @@
 #include "render_context.h"
 #include "platform/opengl/gl.h"
 
-scl::u32 scl::GetShaderVariableTypeSize(shader_variable_type Type)
+scl::u32 scl::render_context::GetShaderVariableTypeSize(shader_variable_type Type)
 {
     switch (Type)
     {
@@ -33,7 +33,7 @@ scl::u32 scl::GetShaderVariableTypeSize(shader_variable_type Type)
     return u32();
 }
 
-scl::u32 scl::GetShaderVariableComponentsCount(shader_variable_type Type)
+scl::u32 scl::render_context::GetShaderVariableComponentsCount(shader_variable_type Type)
 {
     switch (Type)
     {
@@ -54,14 +54,14 @@ scl::u32 scl::GetShaderVariableComponentsCount(shader_variable_type Type)
     return u32();
 }
 
-scl::render_context::api scl::render_context::Api = scl::render_context::api::OpenGL;
+scl::render_context_api scl::render_context::Api = scl::render_context_api::OpenGL;
 
 scl::unique<scl::render_context> scl::render_context::Create()
 {
     switch (Api)
     {
-        case scl::render_context::api::OpenGL:  return CreateUnique<gl>();
-        case scl::render_context::api::DirectX: SCL_CORE_ASSERT(0, "This API is currently unsupported."); return nullptr;
+        case scl::render_context_api::OpenGL:  return CreateUnique<gl>();
+        case scl::render_context_api::DirectX: SCL_CORE_ASSERT(0, "This API is currently unsupported."); return nullptr;
     }
 
     SCL_CORE_ERROR("Unknown render API was selected.");

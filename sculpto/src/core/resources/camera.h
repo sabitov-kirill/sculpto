@@ -12,10 +12,29 @@
 
 namespace scl
 {
+    /* Classes declaration. */
+    class frame_buffer;
+
+    /* Camera projection type enum. */
     enum class camera_projection_type
     {
         ORTHOGRAPHIC,
         PERSPECTIVE,
+    };
+
+    /* Camer rendering effects structure. */
+    struct camera_effects
+    {
+        bool HDR { false };    /* Flag, showing whether use high dynamic range colors, whle rendering. */
+        float Exposure { 0 };  /* Exposure level coefficient for exposure tone mapping.
+                                  Note: tone mapping applyed only if HDR is on. */
+        bool Bloom { false };  /* Flag, showing whether apply bloom effect while rendering or not.
+                                  Note: wprks only if HDR is on. */
+        int BloomAmount { 0 }; /* Iteration of blur while applying bloom effect. */
+
+        /* Camera effects default constructor. */
+        camera_effects(bool HDR = false, float Exposure = 0, bool Bloom = false, int BloomAmount = 0) :
+            HDR(HDR), Exposure(Exposure), Bloom(Bloom), BloomAmount(BloomAmount) {}
     };
 
     /* Renderer virtual camer class. */
@@ -32,8 +51,8 @@ namespace scl
         float FieldOfView { 0.1f };
         float ProjectionDistance { 0.1f };
         float FarClip { 1000.0f };
-        float ProjectionWidth {};
-        float ProjectionHeight {};
+        float ViewportWidth {};
+        float ViewportHeight {};
 
         /* Camera view data. */
         vec3 UpDirection {};
@@ -41,6 +60,16 @@ namespace scl
         vec3 RightDirection {};
         vec3 Position {};
         vec3 Focus {};
+
+        /* Camera frame buffers. */
+        shared<frame_buffer> MainFrameBuffer {};     /* Main renderer frame buffer. */
+        shared<frame_buffer> GBuffer {};             /* Frame buffer for phong model geometry pass. */
+        shared<frame_buffer> HDRFrameBuffer {};      /* HDR Frame buffer, then tone mapped to destination frame buffer. */
+        shared<frame_buffer> BlurFrameBuffers[2] {}; /* Frame buffer for apllying gaussian blur effect. */
+
+    public:
+        /* Camera rendering effects data. */
+        camera_effects Effects {};
 
     public: /* Camer getter/setter functions. */
         /* Camera projection matrix getter function. */
@@ -59,9 +88,9 @@ namespace scl
         /* Distance to far clip plane getter function. */
         float GetFarClip() const { return FarClip; };
         /* Projection plane width in pixels getter function. */
-        float GetProjectionWidth() const { return ProjectionWidth; };
+        float GetViewportWidth() const { return ViewportWidth; };
         /* Projection plane height in pixels getter function. */
-        float GetProjectionHeight() const { return ProjectionHeight; };
+        float GetViewportHeight() const { return ViewportHeight; };
 
         /* Camera up direction getter function. */
         const vec3 &GetUpDirection() const { return UpDirection; }
@@ -74,63 +103,36 @@ namespace scl
         /* Camera focus point getter function. */
         const vec3 &GetFocus() const { return Focus; }
 
+        /* Main renderer frame buffer. */
+        const shared<frame_buffer> &GetMainFrameBuffer() const { return MainFrameBuffer; }
+        /* Frame buffer for phong model geometry pass. */
+        const shared<frame_buffer> &GetGBuffer() const { return GBuffer; }
+        /* HDR Frame buffer, then tone mapped to destination frame buffer. */
+        const shared<frame_buffer> &GetHDRFrameBuffer() const { return HDRFrameBuffer; }
+        /* Frame buffer for apllying gaussian blur effect getter function. */
+        const shared<frame_buffer> &GetBlurFrameBuffers(int Index = 0) const { return BlurFrameBuffers[Index]; }
+
         /* Camera projection type setter function. */
-        void SetProjectionType(camera_projection_type ProjectionType) {
-            this->ProjectionType = ProjectionType;
-            InvalidateProjection();
-        }
+        void SetProjectionType(camera_projection_type ProjectionType);
         /* Field of view getter function. */
-        void SetFieldOfView() {
-            this->FieldOfView = FieldOfView;
-            InvalidateProjection();
-        }
+        void SetFieldOfView();
         /* Distance to near clip plane getter function. */
-        void SetProjectionDistance(float ProjectionDistance) {
-            this->ProjectionDistance = ProjectionDistance;
-            InvalidateProjection();
-        }
+        void SetProjectionDistance(float ProjectionDistance);
         /* Distance to far clip plane getter function. */
-        void SetFarClip(float FarClip) {
-            this->FarClip = FarClip;
-            InvalidateProjection();
-        }
+        void SetFarClip(float FarClip);
         /* Projection plane width in pixels getter function. */
-        void SetProjectionWidth(float ProjectionWidth) {
-            this->ProjectionWidth = ProjectionWidth;
-            InvalidateProjection();
-        }
+        void SetViewportWidth(float ViewportWidth);
         /* Projection plane height in pixels getter function. */
-        void SetProjectionHeight(float ProjectionHeight) {
-            this->ProjectionHeight = ProjectionHeight;
-            InvalidateProjection();
-        }
+        void SetViewportHeight(float ViewportHeight);
 
         /* Camera up direction setter function. */
-        void SetUpDirection(const vec3 &UpDirection) {
-            this->UpDirection = UpDirection;
-            RightDirection = LookDirection.Cross(UpDirection).Normalized();
-            InvalidateView();
-        }
+        void SetUpDirection(const vec3 &UpDirection);
         /* Camera forward direction setter function. */
-        void SetDirection(const vec3 &Direction) {
-            this->LookDirection = Direction;
-            RightDirection = LookDirection.Cross(UpDirection).Normalized();
-            InvalidateView();
-        }
+        void SetDirection(const vec3 &Direction);
         /* Camer position setter function. */
-        void SetPosition(const vec3 &Position) {
-            this->Position = Position;
-            LookDirection = (Focus - Position).Normalized();
-            RightDirection = LookDirection.Cross(UpDirection).Normalized();
-            InvalidateView();
-        }
+        void SetPosition(const vec3 &Position);
         /* Camer focus point setter function. */
-        void SetFocus(const vec3 &Focus) {
-            this->Focus = Focus;
-            LookDirection = (Focus - Position).Normalized();
-            RightDirection = LookDirection.Cross(UpDirection).Normalized();
-            InvalidateView();
-        }
+        void SetFocus(const vec3 &Focus);
 
         /**
          * Set view matrix by camera translation parametrs.
@@ -139,15 +141,15 @@ namespace scl
          * \param Focus - camera focusing point.
          * \param UpDirection - camera up direction.
          */
-        void SetView(const vec3 &Position, const vec3 &Focus, const vec3 &UpDirection)
-        {
-            this->Position = Position;
-            this->UpDirection = UpDirection;
-            this->Focus = Focus;
-            LookDirection = (Focus - Position).Normalized();
-            RightDirection = LookDirection.Cross(UpDirection).Normalized();
-            InvalidateView();
-        }
+        void SetView(const vec3 &Position, const vec3 &Focus, const vec3 &UpDirection);
+
+        /**
+         * Set flag, showing wheather camera main buffer is swap chain target or not.
+         *
+         * \param IsSwapChainTarget - flag, showing wheather camera main buffer is swap chain target or not
+         * \return None.
+         */
+        void SetRenderToSwapChain(bool IsSwapChainTarget);
 
     private:
         /**
@@ -156,10 +158,7 @@ namespace scl
          * \param None.
          * \retrun None.
          */
-        void InvalidateViewProjection()
-        {
-            ViewProjection = View * Projection;
-        }
+        void InvalidateViewProjection();
 
         /**
          * Invalidate camera projection matrix function.
@@ -167,19 +166,7 @@ namespace scl
          * \param None.
          * \return None.
          */
-        void InvalidateProjection()
-        {
-            float ratio_x = FieldOfView / 2, ratio_y = FieldOfView / 2;
-
-            if (ProjectionWidth >= ProjectionHeight) ratio_x *= (float)ProjectionWidth / ProjectionHeight;
-            else ratio_y *= (float)ProjectionHeight / ProjectionWidth;
-
-            if (ProjectionType == camera_projection_type::ORTHOGRAPHIC)
-                Projection = matr4::Ortho(-ratio_x, ratio_x, -ratio_y, ratio_y, ProjectionDistance, FarClip);
-            if (ProjectionType == camera_projection_type::PERSPECTIVE)
-                Projection = matr4::Frustum(-ratio_x, ratio_x, -ratio_y, ratio_y, ProjectionDistance, FarClip);
-            InvalidateViewProjection();
-        }
+        void InvalidateProjection();
 
         /**
          * Invalidate camera view matrix function.
@@ -187,11 +174,26 @@ namespace scl
          * \param None.
          * \return None.
          */
-        void InvalidateView()
-        {
-            View = matr4::View(Position, Focus, UpDirection);
-            InvalidateViewProjection();
-        }
+        void InvalidateView();
+
+        /**
+         * Invalidate camera frame buffers function.
+         * Creates uncreated ones, and resizes if needed.
+         * 
+         * \param None.
+         * \return None.
+         */
+        void InvalidateBuffers();
+
+        /************************************************************************************
+         * Frame buffers resize functions.
+         * Call actual resize only if specifed viewport size is diffrent with buffer current.
+         ************************************************************************************/
+
+        void ResizeMainFrameBuffer();
+        void ResizeGBuffer();
+        void ResizeHDRFrameBuffer();
+        void ResizeBlurFrameBuffers();
 
     public:
         /**
@@ -199,28 +201,15 @@ namespace scl
          * 
          * \param ProjectionType - render camera projection type.
          */
-        camera(camera_projection_type ProjectionType)
-        {
-            this->ProjectionType = ProjectionType;
-
-            Resize(16, 16);
-            SetView({ 0, 3, 10 }, vec3 { 0 }, { 0, 1, 0 });
-        }
+        camera(camera_projection_type ProjectionType, camera_effects Effects = {});
 
         /**
          * Set camera project pixel size function..
          *
-         * \param ProjectionWidth, ProjectionHeight - new projection plane size in pixels.
+         * \param ViewportWidth, ViewportHeight - new projection plane size in pixels.
          * \return - self reference.
          */
-        camera &Resize(int ProjectionWidth, int ProjectionHeight)
-        {
-            this->ProjectionWidth = (float)ProjectionWidth;
-            this->ProjectionHeight = (float)ProjectionHeight;
-
-            InvalidateProjection();
-            return *this;
-        }
+        camera &Resize(int ViewportWidth, int ViewportHeight);
 
         /**
          * Camera rotate function..
@@ -229,22 +218,7 @@ namespace scl
          * \param Angle - rotation angle (in degree).
          * \return self reference.
          */
-        camera &Rotate(const vec3 &Axis, degrees Angle)
-        {
-            matr4 transform =
-                matr4::Translate(-Position) *
-                matr4::Rotate(Axis, Angle) *
-                matr4::Translate(Position);
-
-            Focus = transform.TransformPoint(Focus);
-            Position = transform.TransformPoint(Position);
-            UpDirection = transform.TransformVector(UpDirection);
-            LookDirection = (Focus - Position).Normalized();
-            RightDirection = LookDirection.Cross(UpDirection).Normalized();
-
-            InvalidateView();
-            return *this;
-        }
+        camera &Rotate(const vec3 &Axis, degrees Angle);
 
         /**
          * Camera movement function.
@@ -252,13 +226,6 @@ namespace scl
          * \param MoveVector - movement directions.
          * \return self reference.
          */
-        camera &Move(const vec3 &MoveVector)
-        {
-            Position += MoveVector;
-            Focus += MoveVector;
-
-            InvalidateView();
-            return *this;
-        }
+        camera &Move(const vec3 &MoveVector);
     };
 }

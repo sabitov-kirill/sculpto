@@ -23,27 +23,29 @@ namespace scl
         public:
             /* Window size properties */
             int  Width, Height;
-            /* Virtual synchrosisation enable flag. */
-            bool VSync;
             /* Window title. */
             std::string Title;
 
             /* Constructors */
             data() = default;
             data(const data &Other) = default;
-            data(int Width, int Height, const std::string &Title, bool VSync) :
-                Width(Width), Height(Height), VSync(VSync), Title(Title) {}
+            data(int Width, int Height, const std::string &Title) :
+                Width(Width), Height(Height), Title(Title) {}
         };
 
-        using events_handler = std::function<void(event &)>;
-
     protected: /* Window data. */
-        window_handle        Handle {};
-        bool                 IsInitialised { false };
-        bool                 IsFullscreen { false };
-        data                 Data {};
+        window_handle Handle {};
+        bool          IsInitialised { false };
+        bool          IsFullscreen { false };
+        data          Data {};
 
-        events_handler EventHandler = [](event &) {};
+    public: /* Class getters/setters */
+        /* Window data getting function. */
+        const data &GetWindowData() const { return Data; }
+        /* Window handle getter function. */
+        const window_handle &GetHandle() const { return Handle; }
+        /* Window initilised flag getter function. */
+        bool GetIsInitialised() const { return IsInitialised; }
 
     public: /* Class methods. */
         /***
@@ -69,7 +71,7 @@ namespace scl
          * \param Name - Title of the creating window.
          * \param VSync - vertical syncrosination enabling flag.
          */
-        window(int Width, int Height, const std::string &Title, bool VSync);
+        window(int Width, int Height, const std::string &Title);
 
         /**
          * Create window depends on platform function.
@@ -80,19 +82,7 @@ namespace scl
          * \param VSync - vertical syncrosination enabling flag.
          * \Return Created window pointer.
          */
-        static unique<window> Create(int Width, int Height, const std::string &Title, bool VSync);
-
-        /**
-         * Create window depends on platform function.
-         *
-         * \param Width - Width of the creating window in pixels.
-         * \param Height - Height of creating window in pixels.
-         * \param Name - Title of the creating window.
-         * \param Eventhandler - window events handler function.
-         * \Return Created window pointer.
-         */
-        static unique<window> Create(int Width, int Height, const std::string &Title, bool VSync,
-                                     const events_handler &EventHandler);
+        static unique<window> Create(int Width, int Height, const std::string &Title);
 
         /**
          * Window update function.
@@ -125,19 +115,5 @@ namespace scl
          * \return None.
          */
         virtual void ShutDown() = 0;
-
-    public: /* Class getters/setters */
-        /* Window data getting function. */
-        const data &GetWindowData() const { return Data; }
-        /* Window handle getter function. */
-        const window_handle &GetHandle() const { return Handle; }
-        /* Window initilised flag getter function. */
-        bool GetIsInitialised() const { return IsInitialised; }
-        /* Window size setter function. */
-        void SetSize(int NewWidth, int NewHeight) { Data.Width = NewWidth; Data.Height = NewHeight; }
-        /* Window VSync falg setter function. */
-        void SetVsync(bool NewVSync) { Data.VSync = NewVSync; }
-        /* Window event dispatcher setter function. */
-        void SetEventHandler(const events_handler &NewEventHandler) { EventHandler = NewEventHandler; }
     };
 }

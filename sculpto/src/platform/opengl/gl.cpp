@@ -109,16 +109,50 @@ HGLRC glInitialiseContext(HDC hDC)
     return hGLRC;
 }
 
-/* OpenGL conext static variables. */
-HGLRC scl::gl::hGLRC;
-HDC scl::gl::hDC;
-const HWND *scl::gl::hWnd;
-
 #endif /* !SCL_PLATFORM_WINDOWS */
 
-inline GLenum scl::gl::GetGLPrimitiveType(mesh_type MeshType)
+const scl::vec4 &scl::gl::GetClearColor() const
 {
+    return ClearColor;
+}
 
+bool scl::gl::GetWireframeMode() const
+{
+    return IsWireframe;
+}
+
+scl::render_cull_face_mode scl::gl::GetCullingMode() const
+{
+    return CullingMode;
+}
+
+void scl::gl::SetClearColor(const vec4 &ClearColor)
+{
+    this->ClearColor = ClearColor;
+    glClearColor(SCL_VEC_XYZW(ClearColor));
+}
+
+void scl::gl::SetWireframeMode(bool IsWireframe)
+{
+    this->IsWireframe = IsWireframe;
+    glPolygonMode(GL_FRONT_AND_BACK, IsWireframe ? GL_LINE : GL_FILL);
+}
+
+void scl::gl::SetCullingMode(render_cull_face_mode CullingMode)
+{
+    this->CullingMode = CullingMode;
+    switch (CullingMode)
+    {
+    case scl::render_cull_face_mode::OFF:   glDisable(GL_CULL_FACE); return;
+    case scl::render_cull_face_mode::BACK:  glEnable(GL_CULL_FACE); glCullFace(GL_BACK); return;
+    case scl::render_cull_face_mode::FRONT: glEnable(GL_CULL_FACE); glCullFace(GL_FRONT); return;
+    }
+
+    SCL_CORE_ASSERT(0, "Unknown culling mode!");
+}
+
+GLenum scl::gl::GetGLPrimitiveType(mesh_type MeshType)
+{
     switch (MeshType)
     {
     case scl::mesh_type::LINES:        return GL_LINES;
@@ -132,18 +166,31 @@ inline GLenum scl::gl::GetGLPrimitiveType(mesh_type MeshType)
     return GLenum();
 }
 
-/**
- * OpenGl Debug output function.
- *
- * \param Source - source APi or device.
- * \param Type - error type.
- * \param Id - error message id.
- * \param Severity - message severity.
- * \param Length - message text length.
- * \param Message - message text.
- * \param UserParam - user addon parameters pointer.
- * \return None.
- */
+GLenum scl::gl::GetGLShaderVariableType(shader_variable_type Type)
+{
+    switch (Type)
+    {
+    case scl::shader_variable_type::BOOL:
+        return GL_BOOL;
+
+    case scl::shader_variable_type::INT:
+    case scl::shader_variable_type::INT2:
+    case scl::shader_variable_type::INT3:
+    case scl::shader_variable_type::INT4:
+        return GL_INT;
+
+    case scl::shader_variable_type::FLOAT:
+    case scl::shader_variable_type::FLOAT2:
+    case scl::shader_variable_type::FLOAT3:
+    case scl::shader_variable_type::FLOAT4:
+    case scl::shader_variable_type::MATR4:
+        return GL_FLOAT;
+    }
+
+    SCL_CORE_ASSERT(0, "Unknown shader veriable type.");
+    return GLenum();
+}
+
 static void APIENTRY glDebugOutput(UINT Source, UINT Type, UINT Id, UINT Severity,
                                    INT Length, const CHAR *Message, const VOID *UserParam);
 
@@ -168,8 +215,10 @@ void scl::gl::CreateContext(const HWND &hAppWnd, int W, int H, bool VSync)
 
     // Set default OpenGL parameters
     glClearColor(0.30f, 0.5f, 0.7f, 1.0f);
-    glEnable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
+    // glEnable(GL_BLEND);
+    // glEnable(GL_CULL_FACE);
+    // glCullFace(GL_BACK);
 
     glEnable(GL_PRIMITIVE_RESTART);
     glPrimitiveRestartIndex(render_context::MESH_RESTART_INDEX);
@@ -181,10 +230,8 @@ void scl::gl::Init()
     const window &win = app.GetWindow();
     const window::data win_data = win.GetWindowData();
 
-#ifdef SCL_PLATFORM_WINDOWS
-    this->CreateContext(win.GetHandle(), win_data.Width, win_data.Height, win_data.VSync);
+    this->CreateContext(win.GetHandle(), win_data.Width, win_data.Height, false);
     SCL_CORE_SUCCES("OpenGL {}.{} context created.", GLVersion.major, GLVersion.minor);
-#endif /* !SCL_PLATFORM_WINDOWS */
 }
 
 void scl::gl::Close()
@@ -194,32 +241,12 @@ void scl::gl::Close()
     ReleaseDC(*hWnd, hDC);
 }
 
-void scl::gl::SetClearColor(const vec4 &Color)
-{
-    glClearColor(SCL_VEC_XYZW(Color));
-}
-
-void scl::gl::SetWireframeMode(bool IsWireframe)
-{
-    glPolygonMode(GL_FRONT_AND_BACK, IsWireframe ? GL_LINE : GL_FILL);
-}
-
-void scl::gl::Clear()
-{
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-
 void scl::gl::SwapBuffers()
 {
     /* Another way (not sure):
      * wglSwapLayerBuffers(hDC, WGL_SWAP_MAIN_PLANE);
      */
     ::SwapBuffers(hDC);
-}
-
-void scl::gl::Resize(int Width, int Height)
-{
-    glViewport(0, 0, Width, Height);
 }
 
 void scl::gl::DrawIndices(const shared<vertex_array> &VertexArray)
@@ -235,23 +262,28 @@ void scl::gl::DrawIndices(const shared<vertex_array> &VertexArray)
 
 void scl::gl::DrawIndicesInstanced(const shared<vertex_array> &VertexArray, int InstanceCount)
 {
-    const shared<index_buffer> &Indices = VertexArray->GetIndexBuffer();
-    const shared<vertex_buffer> &Vertices = VertexArray->GetVertexBuffer();
 
     glDrawElementsInstanced(
         GetGLPrimitiveType(VertexArray->GetType()),
-        Indices->GetCount(),
+        VertexArray->GetIndexBuffer()->GetCount(),
         GL_UNSIGNED_INT,
         nullptr,
         InstanceCount
     );
 }
 
-void scl::gl::SetContextCurrent() const
-{
-    SCL_CORE_ASSERT(wglMakeCurrent(hDC, hGLRC), "Failed to set rendering context to main window.");
-}
-
+/**
+ * OpenGl Debug output function.
+ *
+ * \param Source - source APi or device.
+ * \param Type - error type.
+ * \param Id - error message id.
+ * \param Severity - message severity.
+ * \param Length - message text length.
+ * \param Message - message text.
+ * \param UserParam - user addon parameters pointer.
+ * \return None.
+ */
 static void APIENTRY glDebugOutput(UINT Source, UINT Type, UINT Id, UINT Severity,
                                    INT Length, const CHAR *Message, const VOID *UserParam)
 {
@@ -265,56 +297,26 @@ static void APIENTRY glDebugOutput(UINT Source, UINT Type, UINT Id, UINT Severit
     len += sprintf_s(Buf + len, 10000, "OpenGL debug message (Id - %i):\n%s.\n", Id, Message);
     switch (Source)
     {
-    case GL_DEBUG_SOURCE_API:
-        len += sprintf_s(Buf + len, 10000, "Source: API\n");
-        break;
-    case GL_DEBUG_SOURCE_WINDOW_SYSTEM:
-        len += sprintf_s(Buf + len, 10000, "Source: Window System\n");
-        break;
-    case GL_DEBUG_SOURCE_SHADER_COMPILER:
-        len += sprintf_s(Buf + len, 10000, "Source: Shader Compiler\n");
-        break;
-    case GL_DEBUG_SOURCE_THIRD_PARTY:
-        len += sprintf_s(Buf + len, 10000, "Source: Third Party\n");
-        break;
-    case GL_DEBUG_SOURCE_APPLICATION:
-        len += sprintf_s(Buf + len, 10000, "Source: Application\n");
-        break;
-    case GL_DEBUG_SOURCE_OTHER:
-        len += sprintf_s(Buf + len, 10000, "Source: Other\n");
-        break;
+    case GL_DEBUG_SOURCE_API:             len += sprintf_s(Buf + len, 10000, "Source: API\n");             break;
+    case GL_DEBUG_SOURCE_WINDOW_SYSTEM:   len += sprintf_s(Buf + len, 10000, "Source: Window System\n");   break;
+    case GL_DEBUG_SOURCE_SHADER_COMPILER: len += sprintf_s(Buf + len, 10000, "Source: Shader Compiler\n"); break;
+    case GL_DEBUG_SOURCE_THIRD_PARTY:     len += sprintf_s(Buf + len, 10000, "Source: Third Party\n");     break;
+    case GL_DEBUG_SOURCE_APPLICATION:     len += sprintf_s(Buf + len, 10000, "Source: Application\n");     break;
+    case GL_DEBUG_SOURCE_OTHER:           len += sprintf_s(Buf + len, 10000, "Source: Other\n");           break;
     }
     len += sprintf_s(Buf + len, 10000, "\n");
 
     switch (Type)
     {
-    case GL_DEBUG_TYPE_ERROR:
-        len += sprintf_s(Buf + len, 10000, "Type: Error");
-        break;
-    case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
-        len += sprintf_s(Buf + len, 10000, "Type: Deprecated Behaviour");
-        break;
-    case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
-        len += sprintf_s(Buf + len, 10000, "Type: Undefined Behaviour");
-        break;
-    case GL_DEBUG_TYPE_PORTABILITY:
-        len += sprintf_s(Buf + len, 10000, "Type: Portability");
-        break;
-    case GL_DEBUG_TYPE_PERFORMANCE:
-        len += sprintf_s(Buf + len, 10000, "Type: Performance");
-        break;
-    case GL_DEBUG_TYPE_MARKER:
-        len += sprintf_s(Buf + len, 10000, "Type: Marker");
-        break;
-    case GL_DEBUG_TYPE_PUSH_GROUP:
-        len += sprintf_s(Buf + len, 10000, "Type: Push Group");
-        break;
-    case GL_DEBUG_TYPE_POP_GROUP:
-        len += sprintf_s(Buf + len, 10000, "Type: Pop Group");
-        break;
-    case GL_DEBUG_TYPE_OTHER:
-        len += sprintf_s(Buf + len, 10000, "Type: Other");
-        break;
+    case GL_DEBUG_TYPE_ERROR:               len += sprintf_s(Buf + len, 10000, "Type: Error");                break;
+    case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR: len += sprintf_s(Buf + len, 10000, "Type: Deprecated Behaviour"); break;
+    case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:  len += sprintf_s(Buf + len, 10000, "Type: Undefined Behaviour");  break;
+    case GL_DEBUG_TYPE_PORTABILITY:         len += sprintf_s(Buf + len, 10000, "Type: Portability"); break;
+    case GL_DEBUG_TYPE_PERFORMANCE:         len += sprintf_s(Buf + len, 10000, "Type: Performance"); break;
+    case GL_DEBUG_TYPE_MARKER:              len += sprintf_s(Buf + len, 10000, "Type: Marker");      break;
+    case GL_DEBUG_TYPE_PUSH_GROUP:          len += sprintf_s(Buf + len, 10000, "Type: Push Group");  break;
+    case GL_DEBUG_TYPE_POP_GROUP:           len += sprintf_s(Buf + len, 10000, "Type: Pop Group");   break;
+    case GL_DEBUG_TYPE_OTHER:               len += sprintf_s(Buf + len, 10000, "Type: Other");       break;
     }
 
     switch (Severity)

@@ -27,7 +27,7 @@ void scl::gl_texture_2d::CreateColor(const image &Image, bool IsFloatingPoint)
     glTexStorage2D(GL_TEXTURE_2D, 1, internal_format, w, h);
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, w, h, format, type, Image.GetRawData());
     glGenerateMipmap(GL_TEXTURE_2D);
-
+    
     // Configure texture sampling.
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -54,14 +54,22 @@ void scl::gl_texture_2d::CreateDepth(const image &Image)
 
 scl::gl_texture_2d::gl_texture_2d(const image &Image, texture_type Type)
 {
+    this->Width = Image.GetWidth();
+    this->Height = Image.GetHeight();
+
     switch (Type)
     {
     case scl::texture_type::COLOR:                this->CreateColor(Image, false); return;
     case scl::texture_type::COLOR_FLOATING_POINT: this->CreateColor(Image, true);  return;
     case scl::texture_type::DEPTH:                this->CreateDepth(Image);        return;
     }
-
+    
     SCL_CORE_ASSERT(0, "Unknown texture type.");
+}
+
+scl::gl_texture_2d::~gl_texture_2d()
+{
+    Free();
 }
 
 void scl::gl_texture_2d::Bind(u32 Slot) const
@@ -83,7 +91,7 @@ void scl::gl_texture_2d::Free()
 {
     if (Id == 0) return;
 
-    glDeleteTextures(0, &Id);
+    glDeleteTextures(1, &Id);
     Id = 0;
 }
 

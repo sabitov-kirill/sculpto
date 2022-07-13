@@ -32,13 +32,13 @@ namespace scl
     private: /* Application data. */
         static application *Instance;            /* Global application instance. */
 
-        bool                IsRunning { true };  /* Application main loop running flag. */
-        unique<window>      Window;              /* Main app window. */
-        layers_stack        Layers {};           /* Application layers stack. */
+        bool           IsRunning { true };  /* Application main loop running flag. */
+        unique<window> Window;              /* Main app window. */
+        layers_stack   Layers {};           /* Application layers stack. */
 
     public:
-        bool                GuiEnabled { true }; /* Application graphic user interface enabled flag. If false do not rendering gui. */
-        gui_layer          *GUILayer {};         /* Application graphic user interface layer pointer. */
+        bool      GuiEnabled { true }; /* Application graphic user interface enabled flag. If false do not rendering gui. */
+        gui_layer *GUILayer {};         /* Application graphic user interface layer pointer. */
 
     public: /* Applicatino getters/setters functions. */
         /* Get applciation instance function. */
@@ -62,14 +62,6 @@ namespace scl
          * \return whether event was can be handled by next event handlers or not.
          */
         bool OnWindowClose(window_close_event &Event);
-
-        /**
-         * Event handling function.
-         * 
-         * \param Event - event reference to handle.
-         * \return None.
-         */
-        void EventHandler(event &Event);
 
         /**
          * Per main application loop actions function.

@@ -44,4 +44,12 @@ namespace scl::assets_manager
     shared<shader_program> LoadShader(const std::filesystem::path &VertexShaderFilePath,
                                       const std::filesystem::path &GeomShaderFilePath,
                                       const std::filesystem::path &PixelShaderFilePath);
+
+    /**
+     * Update existing shader program function.
+     * 
+     * \param ShaderProgram - shader program to update.
+     * \return None.
+     */
+    void UpdateShader(shared<shader_program> &ShaderProgram);
 }

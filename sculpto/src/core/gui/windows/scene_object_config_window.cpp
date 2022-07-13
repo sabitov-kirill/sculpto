@@ -8,17 +8,27 @@
 
 #include "sclpch.h"
 
-#include <entt.hpp>
-#include <imgui.h>
-
 #include "scene_object_config_window.h"
-#include "core/components/components.h"
-#include "core/resources/materials/material_phong.h"
-#include "core/resources/materials/material_single_color.h"
+
+scl::scene_object scl::scene_object_config_window::GetConfiguringObject() const { return ConfiguringObject; }
+
+void scl::scene_object_config_window::SetConfiguringObject(scene_object ConfiguringObject)
+{
+    this->ConfiguringObject = ConfiguringObject;
+    SubmeshSelectComboItems.clear();
+    CurrentSubmeshIndex = 0;
+    GBufferPreviewColorAttachment = 0;
+
+    memset(PhongDiffuseTextureTextBuffer, 0, 128);
+    memset(PhongSpecularTextureTextBuffer, 0, 128);
+    memset(PhongEmissionTextureTextBuffer, 0, 128);
+    memset(NormalMapTextureTextBuffer, 0, 128);
+    memset(SingleColorTextureTextBuffer, 0, 128);
+
+}
 
 void scl::scene_object_config_window::Draw()
 {
-    //     if (ImGui::Begin("Scene Object Configuration"))
     ImGui::Begin("Scene Object Configuration");
     {
         if (!ConfiguringObject.IsOk())
@@ -27,82 +37,25 @@ void scl::scene_object_config_window::Draw()
             return;
         }
 
+        auto window_size = ImGui::GetWindowSize();
+        PanelWidth = (float)window_size.x - 15;
+
         if (ConfiguringObject.HasComponent<object_name_component>())
-        {
-            auto &name = ConfiguringObject.GetComponent<object_name_component>();
-            if (strcmp(NameComponentTextBuffer, name.Name.c_str()) != 0) strcpy_s(NameComponentTextBuffer, name.Name.c_str());
-            if (ImGui::InputText("Name", NameComponentTextBuffer, 512))
-                name.Name = std::string(NameComponentTextBuffer);
-            ImGui::Separator();
-        }
-
+            DrawComponentPanel<object_name_component>();
         if (ConfiguringObject.HasComponent<transform_component>())
-        {
-            auto &transform = ConfiguringObject.GetComponent<transform_component>();
-            ImGui::Text("Transformation");
-            if (ImGui::DragFloat3("Scale", transform.Scale, 0.05f, 0.005f, 10.0f))
-                transform.InvalidateScale();
-            if (ImGui::DragFloat3("Rotation", transform.Angles, 0.25f, -180.0f, 180.0f))
-                transform.InvalidateRotation();
-            if (ImGui::DragFloat3("Position", transform.Position, 0.1f, -50.0f, 50.0f))
-                transform.InvalidatePosition();
-            ImGui::Separator();
-        }
-
+            DrawComponentPanel<transform_component>();
         if (ConfiguringObject.HasComponent<native_script_component>())
-        {
-            auto &native_script = ConfiguringObject.GetComponent<native_script_component>();
-            ImGui::Text("Native sript \"%s\"", native_script.Name.c_str());
-            ImGui::Checkbox("Is active", &native_script.IsActive);
-            ImGui::Separator();
-        }
-
+            DrawComponentPanel<native_script_component>();
         if (ConfiguringObject.HasComponent<mesh_component>())
-        {
-            auto &mesh = ConfiguringObject.GetComponent<mesh_component>().Mesh;
-            size_t submeshes_count = mesh->SubMeshes.size();
-            if (submeshes_count != SubmeshSelectComboItems.size())
-            {
-                SubmeshSelectComboItems.resize(submeshes_count);
-                for (int i = 0; i < submeshes_count; i++)
-                    SubmeshSelectComboItems[i] = std::string("Mesh No.") + std::to_string(i);
-            }
-
-            ImGui::Text("Mesh");
-            if (ImGui::BeginCombo("Select Submesh", SubmeshSelectComboItems[CurrentSubmeshIndex].c_str()))
-            {
-                for (int i = 0; i < submeshes_count; ++i)
-                {
-                    const bool isSelected = (CurrentSubmeshIndex == i);
-                    if (ImGui::Selectable(SubmeshSelectComboItems[i].c_str(), isSelected))
-                        CurrentSubmeshIndex = i;
-                    if (isSelected)
-                        ImGui::SetItemDefaultFocus();
-                }
-                ImGui::EndCombo();
-            }
-            ImGui::Checkbox("Drawing", &mesh->IsDrawing);
-            ImGui::Checkbox("Casting shadows", &mesh->IsCastingShadow);
-
-            auto &submesh = mesh->SubMeshes[CurrentSubmeshIndex];
-            ImGui::Text("Submesh Data");
-            ImGui::Text("Vertice count: %d", submesh.VertexBuffer->GetCount());
-            ImGui::Text("Indices count: %d", submesh.IndexBuffer->GetCount());
-            auto material_ph = std::dynamic_pointer_cast<material_phong>(submesh.Material);
-            if (material_ph)
-            {
-
-            }
-            auto material_single = std::dynamic_pointer_cast<material_single_color>(submesh.Material);
-            if (material_single)
-            {
-                vec3 color = material_single->GetColor();
-                if (ImGui::DragFloat3("Color", color, 0.001, 0, 1))
-                    material_single->SetColor(color);
-            }
-
-            ImGui::Separator();
-        }
+            DrawComponentPanel<mesh_component>();
+        if (ConfiguringObject.HasComponent<camera_component>())
+            DrawComponentPanel<camera_component>();
+        if (ConfiguringObject.HasComponent<point_light_component>())
+            DrawComponentPanel<point_light_component>();
+        if (ConfiguringObject.HasComponent<directional_light_component>())
+            DrawComponentPanel<directional_light_component>();
+        if (ConfiguringObject.HasComponent<spot_light_component>())
+            DrawComponentPanel<spot_light_component>();
     }
     ImGui::End();
 }

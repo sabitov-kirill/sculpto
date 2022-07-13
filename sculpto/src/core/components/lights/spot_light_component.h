@@ -15,17 +15,34 @@ namespace scl
     /* Spot light component class. Transform component sets position of light cone. */
     struct spot_light_component
     {
-        /* Light color. */
-        vec3 Color {};
-
-        /* Light direction. */
-        vec3 Direction {};
-
+    private: /* Spot light ccomponent data. */
         /* Light cutoff angles. */
+        float InnerCutoff;
+        float OuterCutoff;
+
+    public:
         float InnerCutoffCos {};
         float OuterCutoffCos {};
         float Epsilon {};
 
+        /* Light direction. */
+        vec3 Direction {};
+
+        /* Light color. */
+        vec3 Color {};
+
+    public: /* Spot light component data getter/setter functions. */
+        /* Light iner cutoff angle getter functions. */
+        float GetInnerCutoff() const { return InnerCutoff; }
+        /* Light outer cutoff angle getter functions. */
+        float GetOuterCutoff() const { return OuterCutoff; }
+
+        /* Light inner cutoff angle setter functions. */
+        void SetInnerCutoff(degrees Angle) { InnerCutoff = Angle; InnerCutoffCos = cos((radians)Angle); Epsilon = InnerCutoffCos - OuterCutoffCos; }
+        /* Light outer cutoff angle setter functions. */
+        void SetOuterCutoff(degrees Angle) { OuterCutoff = Angle; OuterCutoffCos = cos((radians)Angle); Epsilon = InnerCutoffCos - OuterCutoffCos; }
+
+    public:
         spot_light_component() = default;
         spot_light_component(const spot_light_component &Other) = default;
         spot_light_component(const vec3 &Color, const vec3 &Direction, degrees InnerCutoffAngle, degrees OuterCutoffAngle) :

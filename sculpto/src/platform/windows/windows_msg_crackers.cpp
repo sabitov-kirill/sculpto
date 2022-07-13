@@ -29,7 +29,7 @@ void scl::windows_window::OnSize(window_handle WindowHandle, u32 State, int W, i
 
     // Call resize callback
     window_resize_event e { W, H };
-    EventHandler(e);
+    event_dispatcher::Invoke(e);
 }
 
 bool scl::windows_window::OnClose(window_handle WindowHandle)
@@ -43,7 +43,7 @@ void scl::windows_window::OnDestroy(window_handle WindowHandle)
     if (IsInitialised)
     {
         window_close_event e {};
-        EventHandler(e);
+        event_dispatcher::Invoke(e);
     }
 
     PostQuitMessage(30);
@@ -58,7 +58,7 @@ void scl::windows_window::OnTimer(window_handle WindowHandle, UINT id)
 
     // Call resize callback
     window_resize_event e { Data.Width, Data.Height };
-    EventHandler(e);
+    event_dispatcher::Invoke(e);
 }
 
 bool scl::windows_window::OnEraseBackground(window_handle WindowHandle, HDC hDC)
@@ -88,7 +88,7 @@ void scl::windows_window::OnMMove(HWND hwnd, int x, int y, u32 keyFlags)
         (bool)(keyFlags & MK_RBUTTON), (bool)(keyFlags & MK_LBUTTON), (bool)(keyFlags & MK_MBUTTON),
         (bool)(keyFlags & MK_SHIFT), (bool)(keyFlags & MK_CONTROL)
     };
-    EventHandler(e);
+    event_dispatcher::Invoke(e);
 }
 
 void scl::windows_window::OnMWheel(window_handle WindowHandle, int X, int Y, int Z, u32 Keys)
@@ -99,7 +99,7 @@ void scl::windows_window::OnMWheel(window_handle WindowHandle, int X, int Y, int
     input_system::Response();
 
     mouse_wheel_event e { Z };
-    EventHandler(e);
+    event_dispatcher::Invoke(e);
 }
 
 void scl::windows_window::OnMButDown(window_handle WindowHandle, bool IsDblClick, int X, int Y, u32 Keys)
@@ -107,7 +107,7 @@ void scl::windows_window::OnMButDown(window_handle WindowHandle, bool IsDblClick
     if (!IsInitialised) return;
 
     mouse_button_event e { true, X, Y, (mouse_button)Keys };
-    EventHandler(e);
+    event_dispatcher::Invoke(e);
 }
 
 void scl::windows_window::OnMButUp(window_handle WindowHandle, int X, int Y, u32 Keys)
@@ -115,7 +115,7 @@ void scl::windows_window::OnMButUp(window_handle WindowHandle, int X, int Y, u32
     if (!IsInitialised) return;
 
     mouse_button_event e { false, X, Y, (mouse_button)Keys };
-    EventHandler(e);
+    event_dispatcher::Invoke(e);
 }
 
 void scl::windows_window::OnKey(HWND hwnd, u32 vk, bool fDown, int cRepeat, u32 flags)
@@ -123,5 +123,5 @@ void scl::windows_window::OnKey(HWND hwnd, u32 vk, bool fDown, int cRepeat, u32 
     if (!IsInitialised) return;
 
     keyboard_event e { (bool)fDown, (bool)(flags & (1 << 14)), (keycode)vk};
-    EventHandler(e);
+    event_dispatcher::Invoke(e);
 }

@@ -24,7 +24,19 @@ namespace scl
     /* Texture interface. */
     class texture_2d : public render_primitive
     {
+    protected: /* Texture data. */
+        int Width {}, Height {};
+
+    public: /* Texture data getter/setter function. */
+        /* Texture width (in pixels) getter function. */
+        int GetWidth() const { return Width; }
+        /* Texture height (in pixels) getter function. */
+        int GetHeight() const { return Height; }
+
     public:
+        /* Texture default deatructor. */
+        virtual ~texture_2d() = default;
+
         /**
          * Bind texture to current render stage function.
          *

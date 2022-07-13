@@ -30,7 +30,5 @@ namespace scl::editor
         void OnInit() override;
         void OnUpdate(float DeltaTime) override;
         void OnGuiRender() override;
-        void OnEvent(event &Event) override;
     };
-
 }

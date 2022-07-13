@@ -18,7 +18,8 @@ namespace scl
     {
     private: /* Scene hierarchy window data. */
         scene *Scene {};
-        scene_object &SelectedSceneObject;
+        std::function<void(scene_object)> OnObjectSelect {};
+        scene_object SelectedObject {};
 
     public:
         /**
@@ -27,7 +28,7 @@ namespace scl
          * \param Scene - scene to display hierarchy tree of.
          * \param SelectedSceneObject - pointer to variable to set selecting itmes in.
          */
-        scene_hierarchy_window(scene *Scene, scene_object &SelectedSceneObject);
+        scene_hierarchy_window(scene *Scene, const std::function<void(scene_object)> &OnObjectSelect);
 
         /**
          * Draw scene hierarchy window function.

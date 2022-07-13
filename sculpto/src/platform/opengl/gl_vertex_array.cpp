@@ -10,7 +10,7 @@
 #include "sclpch.h"
 #include "gl_vertex_array.h"
 
-constexpr GLenum scl::gl_vertex_array::GetGLShaderVariableType(shader_variable_type Type)
+inline constexpr GLenum scl::gl_vertex_array::GetGLShaderVariableType(shader_variable_type Type)
 {
     switch (Type)
     {
@@ -60,7 +60,7 @@ scl::gl_vertex_array::gl_vertex_array(mesh_type Type, shared<vertex_buffer> Vert
         case shader_variable_type::INT4:
             glEnableVertexAttribArray(element.Index);
             glVertexAttribIPointer(element.Index,
-                                   GetShaderVariableComponentsCount(element.Type),
+                                   render_context::GetShaderVariableComponentsCount(element.Type),
                                    GetGLShaderVariableType(element.Type),
                                    layout.GetSize(),
                                    (const void *)(u64)element.Offset);
@@ -71,7 +71,7 @@ scl::gl_vertex_array::gl_vertex_array(mesh_type Type, shared<vertex_buffer> Vert
         case shader_variable_type::FLOAT4:
             glEnableVertexAttribArray(element.Index);
             glVertexAttribPointer(element.Index,
-                                  GetShaderVariableComponentsCount(element.Type),
+                                  render_context::GetShaderVariableComponentsCount(element.Type),
                                   GetGLShaderVariableType(element.Type),
                                   GL_FALSE,
                                   layout.GetSize(),
@@ -79,7 +79,7 @@ scl::gl_vertex_array::gl_vertex_array(mesh_type Type, shared<vertex_buffer> Vert
             break;
         case shader_variable_type::MATR4:
         {
-            u32 count = GetShaderVariableComponentsCount(element.Type);
+            u32 count = render_context::GetShaderVariableComponentsCount(element.Type);
             for (uint8_t i = 0; i < count; i++)
             {
                 glEnableVertexAttribArray(element.Index);

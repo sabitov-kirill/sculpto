@@ -15,8 +15,8 @@ scl::shared<scl::frame_buffer> scl::frame_buffer::Create(const frame_buffer_prop
 {
     switch (render_context::GetApi())
     {
-    case scl::render_context::api::OpenGL:  return CreateShared<gl_frame_buffer>(Props);
-    case scl::render_context::api::DirectX: SCL_CORE_ASSERT(0, "This API is currently unsupported."); return nullptr;
+    case scl::render_context_api::OpenGL:  return CreateShared<gl_frame_buffer>(Props);
+    case scl::render_context_api::DirectX: SCL_CORE_ASSERT(0, "This API is currently unsupported."); return nullptr;
     }
 
     SCL_CORE_ASSERT(0, "Unknown render API was selected.");

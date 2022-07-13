@@ -24,7 +24,23 @@ namespace scl
     private: /* Render bridge data. */
         static shared<render_context> RenderContext;
 
-    public:
+    public: /* Render bridge data getter/setter functions. */
+        /* Frame clear color setter function. */
+        inline static const vec4 &GetClearColor() { return RenderContext->GetClearColor(); }
+        /* Render wire frame mode setter function. */
+        inline static bool GetWireframeMode() { return RenderContext->GetWireframeMode(); }
+        /* Render culling mode setter function. */
+        inline static render_cull_face_mode GetCullingMode() { return RenderContext->GetCullingMode(); }
+
+        /* Frame clear color setter function. */
+        inline static void SetClearColor(const vec4 &ClearColor) { RenderContext->SetClearColor(ClearColor); }
+        /* Render wire frame mode setter function. */
+        inline static void SetWireframeMode(bool IsWireframe) { RenderContext->SetWireframeMode(IsWireframe); }
+        /* Render culling mode setter function. */
+        inline static void SetCullingMode(render_cull_face_mode CullingMode) { RenderContext->SetCullingMode(CullingMode); }
+
+
+    public: /* Render bridge methods. */
         /**
          * Render context initialisation call function.
          * 
@@ -40,47 +56,6 @@ namespace scl
          * \return None.
          */
         inline static void CloseContext() { RenderContext->Close(); }
-
-        /**
-         * Render context resize default render target call function.
-         *
-         * \param None.
-         * \return None.
-         */
-        inline static void ResizeContext(int Width, int Height)
-        {
-            RenderContext->Resize(Width, Height);
-        }
-
-        /**
-         * Render context set clear color call function.
-         * 
-         * \param ClearColor - new clear color.
-         * \return None.
-         */
-        inline static void SetClearColor(const vec4 &ClearColor)
-        {
-            RenderContext->SetClearColor(ClearColor);
-        }
-
-        /**
-         * Render context set wire frame mode call function.
-         * 
-         * \param IsWireframe - is wire frame mode enabled flag.
-         * \return None.
-         */
-        inline static void SetWireframeMode(bool IsWireframe)
-        {
-            RenderContext->SetWireframeMode(IsWireframe);
-        }
-
-        /**
-         * Cleare current render target function.
-         * 
-         * \param None.
-         * \return None.
-         */
-        inline static void Clear() { RenderContext->Clear(); }
 
         /**
          * Swap render targets function.
