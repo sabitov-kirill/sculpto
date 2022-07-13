@@ -39,12 +39,12 @@ namespace scl
          * \param Message - message to log.
          * \return None.
          */
-        template <typename... types>
-        void Info(const std::string_view Format, const types&... Args) const
+        template <typename... Targs>
+        void Info(std::string_view Format, Targs&&... Args) const
         {
             Out <<
                 "[" << CurrentTime() << "] {|" << Name << "|} " <<
-                std::format(Format, Args...) <<
+                std::format(Format, std::forward<Targs>(Args)...) <<
                 '\n';
         }
 
@@ -54,13 +54,13 @@ namespace scl
          * \param Message - message to log.
          * \return None.
          */
-        template <typename... types>
-        void Success(const std::string_view Format, const types&... Args) const
+        template <typename... Targs>
+        void Success(std::string_view Format, Targs&&... Args) const
         {
             Out <<
                 "[" << CurrentTime() << "] {|" << Name << "|} " <<
                 console::color_literal(console::color::GREEN) <<
-                std::format(Format, Args...) <<
+                std::format(Format, std::forward<Targs>(Args)...) <<
                 console::color_literal_reset() << '\n';
         }
 
@@ -70,13 +70,13 @@ namespace scl
          * \param Message - message to log.
          * \return None.
          */
-        template <typename... types>
-        void Warn(const std::string_view Format, const types&... Args) const
+        template <typename... Targs>
+        void Warn(std::string_view Format, Targs&&... Args) const
         {
             Out <<
                 "[" << CurrentTime() << "] {|" << Name << "|} " <<
                 console::color_literal(console::color::YELLOW) <<
-                std::format(Format, Args...) <<
+                std::format(Format, std::forward<Targs>(Args)...) <<
                 console::color_literal_reset() << '\n';
         }
 
@@ -86,13 +86,13 @@ namespace scl
          * \param Message - message to log.
          * \return None.
          */
-        template <typename... types>
-        void Error(const std::string_view Format, const types&... Args) const
+        template <typename... Targs>
+        void Error(std::string_view Format, Targs&&... Args) const
         {
             Out <<
                 "[" << CurrentTime() << "] {|" << Name << "|} " <<
                 console::color_literal(console::color::RED) <<
-                std::format(Format, Args...) <<
+                std::format(Format, std::forward<Targs>(Args)...) <<
                 console::color_literal_reset() << '\n';
         }
 
