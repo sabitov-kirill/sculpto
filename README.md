@@ -47,7 +47,7 @@ Allows implement your ideas through computer graphics via native C++ code/script
     - [x] propeper mesh component configuration                    | final
           there is problems with meshes in whole application       |
     - [x] scene cameras system                                     |
-    - [ ] GPU ray tracing (client app example)                     |
+    - [x] GPU ray tracing (client app example)                     |
     - [ ] scene serialization (save/load)                          |
     - [ ] embeded C++/Py scriping                                  |
     - [ ] sceletal animation                                       |
