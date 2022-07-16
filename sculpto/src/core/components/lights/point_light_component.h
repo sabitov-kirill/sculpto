@@ -32,12 +32,13 @@ namespace scl
     struct point_light_component
     {
         /* Light color. */
-        vec3 Color {};
+        vec3 Color { 0.7f };
+        float Strength { 1 };
 
         /* Point light attenuation coefficients. */
-        float Constant {};
-        float Linear {};
-        float Quadratic {};
+        float Constant { 1.0f };
+        float Linear { 0.22f };
+        float Quadratic { 0.20f };
 
         point_light_component() = default;
         point_light_component(const point_light_component &Other) = default;

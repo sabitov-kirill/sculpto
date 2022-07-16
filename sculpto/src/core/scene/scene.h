@@ -9,7 +9,7 @@
 #pragma once
 
 #include <entt.hpp>
-#include "core/components/camera_component.h"
+#include "base.h"
 
 namespace scl
 {
@@ -31,23 +31,22 @@ namespace scl
                                      * Contains both enitty datas and Ids.
                                      */
 
-        camera_component *MainCamera {};   /* Scene main camera controller. */
-        int   ViewportWidth { 16 };        /* Scene viewport width. */
-        int   ViewportHeight { 16 };       /* Scene viewport height. */
-        float UpdateDelay {};              /* Scene scripts update call timer. */
-        vec3  EnviromentAmbient { 0.1f };  /* Scene enviroment ambient color. */
+        int     ViewportId { 30 };             /* Scene window viewport id. */
+        int     ViewportWidth { 16 };          /* SCene viewport width. */
+        int     ViewportHeight { 16 };         /* Scene viewport height. */
+        vec3    EnviromentAmbient { 0.1f };    /* Scene enviroment ambient color. */
+        float   UpdateDelay {};                /* Scene scripts update call timer. */
 
     public: /* Application scene getter/setter functions. */
-        /* Scene main camera getter function */
-        const camera_component &GetMainCamera() const;
+        /* Scene viewport id gette function. */
+        int GetViewportId() const { return ViewportId; }
+        /* Scene ambient color getter function. */
+        const vec3 &GetEnviromentAmbient() const { return EnviromentAmbient; }
 
-        /**
-         * Set scene main camera by name function.
-         *
-         * \param Name - camera to set as main name.
-         * \return None.
-         */
-        void SetMainCamera(const std::string &Name);
+        /* Scene viewport setter function. */
+        void SetViewportId(int ViewportId) { this->ViewportId = ViewportId; }
+        /* Scene enviroment ambient color setter function. */
+        void SetEnviromentAmbient(const vec3 &EnviromentAmbient) { this->EnviromentAmbient = EnviromentAmbient; }
 
     private: /* Application scene methods. */
         /**

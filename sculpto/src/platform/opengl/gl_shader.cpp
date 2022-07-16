@@ -95,6 +95,7 @@ bool scl::gl_shader_program::Create(const std::vector<shader_props> &Shaders)
         return false;
     }
 
+    SCL_CORE_SUCCES("OpenGL Shader with id {} created.", Id);
     return true;
 }
 
@@ -155,6 +156,7 @@ void scl::gl_shader_program::Update(const std::vector<shader_props> &Shaders)
 {
     Free();
     Create(Shaders);
+    SCL_CORE_INFO("OpenGL Shader with id {} updated.", Id);
 }
 
 void scl::gl_shader_program::Free()
@@ -173,7 +175,9 @@ void scl::gl_shader_program::Free()
         glDetachShader(Id, shaders_ids[i]);
         glDeleteShader(shaders_ids[i]);
     }
-    glDeleteProgram(Id), Id = 0;
+    glDeleteProgram(Id);
+    SCL_CORE_INFO("OpenGL Shader with id {} freed.", Id);
+    Id = 0;
 }
 
 bool scl::gl_shader_program::SetBool(const std::string &Name, bool Value) const

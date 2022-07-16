@@ -8,7 +8,8 @@
 
 #pragma once
 
-#include <glad/glad.h>
+#define GLEW_STATIC
+#include <glew.h>
 
 #include "core/render/render_context.h"
 
@@ -22,15 +23,18 @@ namespace scl
     {
 
     private: /* OpenGL context data. */
-        vec4 ClearColor { 1, 0, 0, 1 };
+        vec4 ClearColor { 0 };
         bool IsWireframe {};
+        bool IsVSync {};
         render_cull_face_mode CullingMode { render_cull_face_mode::BACK };
 
         static shared<shader_program> single_color_material_shader;
-        static shared<shader_program> phong_material_shader;
+        static shared<shader_program> phong_geometry_shader;
+        static shared<shader_program> phong_lighting_shader;
         static shared<shader_program> shadow_pass_shader;
         static shared<shader_program> tone_mapping_pass_shader;
         static shared<shader_program> gaussian_blur_pass_shader;
+        static shared<shader_program> texture_add_pass_shader;
 
 #ifdef SCL_PLATFORM_WINDOWS
         HGLRC hGLRC;
@@ -47,6 +51,8 @@ namespace scl
         bool GetWireframeMode() const override;
         /* Render culling mode setter function. */
         render_cull_face_mode GetCullingMode() const override;
+        /* Render virtual syncronisation flag getter function. */
+        bool GetVSync() const override;
 
         /* Frame clear color setter function. */
         void SetClearColor(const vec4 &ClearColor) override;
@@ -54,6 +60,8 @@ namespace scl
         void SetWireframeMode(bool IsWireframe) override;
         /* Render culling mode setter function. */
         void SetCullingMode(render_cull_face_mode CullingMode) override;
+        /* Render virtual syncronisation flag setter function. */
+        void SetVSync(bool VSync);
 
         /**
          * Get OpenGL primitive type by mesh type function.
@@ -125,13 +133,17 @@ namespace scl
     public: /* Sculpto library built-in backend API specific rendering objects getter function. */
         /* OpenGL specific single color material shader getter function. */
         shared<shader_program> GetSingleColorMaterialShader() const override;
-        /* OpenGL specific phong lighting model material shader getter function. */
-        shared<shader_program> GetPhongMaterialShader() const override;
+        /* OpenGL specific phong lighint model shader for geometry pass getter function. */
+        shared<shader_program> GetPhongGeometryShader() const override;
+        /* OpenGL specific phong lighint model shader for lighting pass getter function. */
+        shared<shader_program> GetPhongLightingShader() const override;
         /* OpenGL specific shadow pass shader getter function. */
         shared<shader_program> GetShadowPassShader() const override;
         /* OpenGL specific full viewport mesh with tone mapping shader. */
         shared<shader_program> GetToneMappingPassShader() const override;
-        /* Backend API specific gaussian blur pass shader getter function. */
+        /* OpenGL specific gaussian blur pass shader getter function. */
         shared<shader_program> GetGaussianBlurPassShader() const override;
+        /* OpenGL specific gaussian blur pass shader getter function. */
+        shared<shader_program> GetTextureAddPassShader() const override;
     };
 }

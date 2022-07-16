@@ -10,6 +10,7 @@
 #pragma once
 
 #include "base.h"
+#include "core/render/render_bridge.h"
 #include "core/render/primitives/buffer.h"
 #include "utilities/assets_manager/shaders_load.h"
 
@@ -135,11 +136,11 @@ namespace scl
         {
             IsInitialized = true;
 
-            ShadowPassShader         = assets_manager::LoadShader("assets/shaders/shadow_pass.glsl");
-            PhongLightingApplyShader = assets_manager::LoadShader("assets/shaders/phong_lighting_pass.glsl");
-            GaussianBlurApplyShader  = assets_manager::LoadShader("assets/shaders/gaussian_blur_pass.glsl");
-            TextureAddShader         = assets_manager::LoadShader("assets/shaders/texture_add.glsl");
-            ToneMappingApplyShader   = assets_manager::LoadShader("assets/shaders/tone_mapping_pass.glsl");
+            ShadowPassShader         = render_bridge::GetShadowPassShader();
+            PhongLightingApplyShader = render_bridge::GetPhongLightingShader();
+            GaussianBlurApplyShader  = render_bridge::GetGaussianBlurPassShader();
+            TextureAddShader         = render_bridge::GetTextureAddPassShader();
+            ToneMappingApplyShader   = render_bridge::GetToneMappingPassShader();
             DataBuffer               = constant_buffer::Create(sizeof(pipeline_data));
             LightsStorageBuffer      = constant_buffer::Create(sizeof(lights_storage));
         }
@@ -155,6 +156,13 @@ namespace scl
             SubmissionsList.clear();
             std::memset(&Data, 0, sizeof(pipeline_data));
             std::memset(&LightsStorage, 0, sizeof(lights_storage));
+
+            ShadowMap.reset();
+            MainFrameBuffer.reset();
+            GBuffer.reset();
+            HDRFrameBuffer.reset();
+            BlurFrameBuffers0.reset();
+            BlurFrameBuffers1.reset();
         }
     };
 }

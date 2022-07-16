@@ -51,8 +51,10 @@ namespace scl
         float FieldOfView { 0.1f };
         float ProjectionDistance { 0.1f };
         float FarClip { 1000.0f };
-        float ViewportWidth {};
-        float ViewportHeight {};
+        int ViewportWidth {};
+        int ViewportHeight {};
+        float ViewportProjectionWidth {};
+        float ViewportProjectionHeight {};
 
         /* Camera view data. */
         vec3 UpDirection {};
@@ -88,9 +90,13 @@ namespace scl
         /* Distance to far clip plane getter function. */
         float GetFarClip() const { return FarClip; };
         /* Projection plane width in pixels getter function. */
-        float GetViewportWidth() const { return ViewportWidth; };
+        int GetViewportWidth() const { return ViewportWidth; };
         /* Projection plane height in pixels getter function. */
-        float GetViewportHeight() const { return ViewportHeight; };
+        int GetViewportHeight() const { return ViewportHeight; };
+        /* Viewport projection plane normalized width getter function. */
+        float GetViewportProjectionWidth() const { return ViewportProjectionWidth; }
+        /* Viewport projection plane normalized height getter function. */
+        float GetViewportProjectionHeight() const { return ViewportProjectionHeight; }
 
         /* Camera up direction getter function. */
         const vec3 &GetUpDirection() const { return UpDirection; }
@@ -115,15 +121,15 @@ namespace scl
         /* Camera projection type setter function. */
         void SetProjectionType(camera_projection_type ProjectionType);
         /* Field of view getter function. */
-        void SetFieldOfView();
+        void SetFieldOfView(float FieldOfView);
         /* Distance to near clip plane getter function. */
         void SetProjectionDistance(float ProjectionDistance);
         /* Distance to far clip plane getter function. */
         void SetFarClip(float FarClip);
         /* Projection plane width in pixels getter function. */
-        void SetViewportWidth(float ViewportWidth);
+        void SetViewportWidth(int ViewportWidth);
         /* Projection plane height in pixels getter function. */
-        void SetViewportHeight(float ViewportHeight);
+        void SetViewportHeight(int ViewportHeight);
 
         /* Camera up direction setter function. */
         void SetUpDirection(const vec3 &UpDirection);
@@ -202,6 +208,9 @@ namespace scl
          * \param ProjectionType - render camera projection type.
          */
         camera(camera_projection_type ProjectionType, camera_effects Effects = {});
+
+        /* Default camera destructor. */
+        ~camera() {}
 
         /**
          * Set camera project pixel size function..

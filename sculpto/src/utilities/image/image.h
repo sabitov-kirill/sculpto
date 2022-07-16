@@ -141,6 +141,7 @@ namespace scl
         {
             Width = Height = ComponentsCount = 0;
             if (Data != nullptr) stbi_image_free(Data);
+            Data = nullptr;
         }
 
         /**

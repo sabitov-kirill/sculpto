@@ -157,7 +157,7 @@ namespace scl
          * \param Shininess  - Material shiness exponent lighting coefficient.
          */
         material_phong(const vec3 &Diffuse, const vec3 &Specular, float Shininess) :
-            material(render_bridge::GetPhongMaterialShader())
+            material(render_bridge::GetPhongGeometryShader())
         {
             Data.Diffuse = Diffuse;
             Data.Specular = Specular;

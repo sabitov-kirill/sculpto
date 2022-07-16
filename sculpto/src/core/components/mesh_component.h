@@ -15,7 +15,7 @@ namespace scl
     /* Application scene system objects mesh component class. */
     struct mesh_component
     {
-        shared<mesh> Mesh;
+        shared<mesh> Mesh {};
 
         mesh_component() = default;
         mesh_component(const mesh_component &Other) = default;

@@ -15,13 +15,9 @@ namespace scl
     /* Application configuration GUI window class. */
     class application_config_window
     {
-    private:
-        vec4 ClearColor {};
-        bool IsWireframe {};
-
     public:
         /* Application configuration GUI window default constructor. */
-        application_config_window();
+        application_config_window() = default;
 
         /**
          * Application configuration GUI window draw function.

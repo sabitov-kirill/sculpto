@@ -31,7 +31,9 @@ void scl::renderer::DrawDepth(const shared<mesh> &Mesh, const matr4 &Transform)
     Pipeline.ShadowPassShader->Bind();
     for (auto &submesh : Mesh->SubMeshes)
     {
+        // Currently local tranform matrix is usless.
         // matr4 world = submesh.LocalTransform * Transform;
+
         Pipeline.ShadowPassShader->SetMatr4("u_MatrWVP", Transform * matr4(Pipeline.LightsStorage.DirectionalLight.ViewProjection));
         render_bridge::DrawIndices(submesh.VertexArray);
     }
@@ -97,7 +99,6 @@ void scl::renderer::ApplyBluredTexture(const shared<frame_buffer> &Destination, 
 
 void scl::renderer::ComputeDepth()
 {
-    glCullFace(GL_FRONT);
     Pipeline.ShadowPassShader->Bind();
 
     Pipeline.ShadowMap->Clear();
@@ -105,7 +106,6 @@ void scl::renderer::ComputeDepth()
     for (const submission &subm : Pipeline.SubmissionsList)
         renderer::DrawDepth(subm.Mesh, subm.Transform);
     Pipeline.ShadowMap->Unbind();
-    glCullFace(GL_BACK);
 }
 
 void scl::renderer::ComputeGeometry()
@@ -166,6 +166,11 @@ void scl::renderer::ComputeToneMapping()
     Pipeline.MainFrameBuffer->Unbind();
 }
 
+void scl::renderer::Initialize()
+{
+    Pipeline.Initalize();
+}
+
 void scl::renderer::StartPipeline(const camera &Camera, const vec3 &EnviromentAmbient)
 {
     if (!Pipeline.IsInitialized) Pipeline.Initalize();
@@ -178,10 +183,10 @@ void scl::renderer::StartPipeline(const camera &Camera, const vec3 &EnviromentAm
     Pipeline.Data.CameraPosition  = Camera.GetPosition();
     Pipeline.Data.CameraDirection = Camera.GetDirection();
     Pipeline.ViewProjection       = Camera.GetViewProjection();
-    Pipeline.Data.Exposure = Camera.Effects.Exposure;
-    Pipeline.Data.IsHDR = Camera.Effects.HDR;
-    Pipeline.Data.IsBloom = Camera.Effects.Bloom;
-    Pipeline.Data.BloomAmount = Camera.Effects.BloomAmount;
+    Pipeline.Data.Exposure        = Camera.Effects.Exposure;
+    Pipeline.Data.IsHDR           = Camera.Effects.HDR;
+    Pipeline.Data.IsBloom         = Camera.Effects.Bloom;
+    Pipeline.Data.BloomAmount     = Camera.Effects.BloomAmount;
 
     Pipeline.MainFrameBuffer   = Camera.GetMainFrameBuffer();
     Pipeline.GBuffer           = Camera.GetGBuffer();

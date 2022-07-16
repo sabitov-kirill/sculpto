@@ -42,6 +42,7 @@ void scl::windows_window::Create()
         nullptr, nullptr, InstanceHandle, reinterpret_cast<void *>(this)
     );
     ShowWindow(Handle, 1);
+    SCL_CORE_SUCCES("Windows window created.");
 }
 
 scl::windows_window::windows_window(int Width, int Height, const std::string &Title) :

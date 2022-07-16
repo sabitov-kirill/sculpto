@@ -30,7 +30,6 @@ namespace scl
          *
          * \param BindingPoint - shader_props binding point of buffer.
          * \param Size - buffer data size.
-         * \return constant buffer pointer.
          */
         gl_constant_buffer(u32 Size);
 
@@ -40,7 +39,6 @@ namespace scl
          * \param BindingPoint - shader_props binding point of buffer.
          * \param Data - buffer data pointer.
          * \param Size - buffer data size.
-         * \return constant buffer pointer.
          */
         gl_constant_buffer(const void *Data, u32 Size);
 
@@ -111,7 +109,6 @@ namespace scl
          * \param Vertices - buffer data pointer.
          * \param Count - vertices in buffer count.
          * \param VertexLayout - layout of vertices in buffer.
-         * \return constant buffer pointer.
          */
         gl_vertex_buffer(const void *Vertices, u32 Count, const vertex_layout &VertexLayout);
 
@@ -137,11 +134,11 @@ namespace scl
         /**
          * Update buffer data function.
          *
-         * \param Data - verices array.
-         * \param Size - length of vertices array.
+         * \param Vertices - verices array.
+         * \param Count - length of vertices array.
          * \return None.
          */
-        void Update(const void *Data, u32 Size) override;
+        void Update(const void *Vertices, u32 Count) override;
 
         /**
          * Clear buffer from GPU memory function.
@@ -170,9 +167,8 @@ namespace scl
         /**
          * Create API specific vertex buffer by vertices count and data.
          *
-         * \param Data - indices array.
+         * \param Indices - indices array.
          * \param Count - indices in buffer count.
-         * \return vertex buffer pointer.
          */
         gl_index_buffer(u32 *Indices, u32 Count);
 
@@ -194,6 +190,14 @@ namespace scl
          * \return None.
          */
         void Unbind() const override;
+
+        /**
+         * Update buffer function function.
+         * 
+         * \param Indices - array of indices.
+         * \param Count
+         */
+        void Update(u32 *Indices, u32 Count) override;
 
         /**
          * Clear buffer from GPU memory function.

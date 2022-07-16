@@ -11,7 +11,7 @@
 
 bool scl::windows_window::OnCreate(window_handle WindowHandle, CREATESTRUCT *CS)
 {
-    // Set window window_handle to newly created one
+    // Set window window_handle to newly created window
     Handle = WindowHandle;
     reinterpret_cast<windows_input_system *>(input_system::Get().get())->Init(&Handle, &MouseWheel);
 
@@ -28,7 +28,7 @@ void scl::windows_window::OnSize(window_handle WindowHandle, u32 State, int W, i
     if (!IsInitialised) return;
 
     // Call resize callback
-    window_resize_event e { W, H };
+    viewport_resize_event e { W, H, window::ViewportId };
     event_dispatcher::Invoke(e);
 }
 
@@ -42,7 +42,7 @@ void scl::windows_window::OnDestroy(window_handle WindowHandle)
 {
     if (IsInitialised)
     {
-        window_close_event e {};
+        close_event e {};
         event_dispatcher::Invoke(e);
     }
 
@@ -57,7 +57,7 @@ void scl::windows_window::OnTimer(window_handle WindowHandle, UINT id)
     KillTimer(Handle, InitialisationTimer);
 
     // Call resize callback
-    window_resize_event e { Data.Width, Data.Height };
+    viewport_resize_event e { Data.Width, Data.Height, window::ViewportId };
     event_dispatcher::Invoke(e);
 }
 
@@ -83,8 +83,7 @@ void scl::windows_window::OnMMove(HWND hwnd, int x, int y, u32 keyFlags)
 {
     if (!IsInitialised) return;
 
-    mouse_move_event e {
-        x, y,
+    mouse_move_event e { x, y,
         (bool)(keyFlags & MK_RBUTTON), (bool)(keyFlags & MK_LBUTTON), (bool)(keyFlags & MK_MBUTTON),
         (bool)(keyFlags & MK_SHIFT), (bool)(keyFlags & MK_CONTROL)
     };

@@ -66,6 +66,8 @@ namespace scl
         virtual bool GetWireframeMode() const = 0;
         /* Render culling mode setter function. */
         virtual render_cull_face_mode GetCullingMode() const = 0;
+        /* Render virtual syncronisation flag getter function. */
+        virtual bool GetVSync() const = 0;
 
         /* Frame clear color setter function. */
         virtual void SetClearColor(const vec4 &ClearColor) = 0;
@@ -73,6 +75,8 @@ namespace scl
         virtual void SetWireframeMode(bool IsWireframe) = 0;
         /* Render culling mode setter function. */
         virtual void SetCullingMode(render_cull_face_mode CullingMode) = 0;
+        /* Render virtual syncronisation flag setter function. */
+        virtual void SetVSync(bool VSync) = 0;
 
     public:
         /**
@@ -149,14 +153,18 @@ namespace scl
     public: /* Sculpto library built-in backend API specific rendering objects getter function. */
         /* Backend API specific single color material shader getter function. */
         virtual shared<shader_program> GetSingleColorMaterialShader() const = 0;
-        /* Backend API specific phong lighting model material shader getter function. */
-        virtual shared<shader_program> GetPhongMaterialShader() const = 0;
+        /* Backend API specific phong lighint model shader for geometry pass getter function. */
+        virtual shared<shader_program> GetPhongGeometryShader() const = 0;
+        /* Backend API specific phong lighint model shader for lighting pass getter function. */
+        virtual shared<shader_program> GetPhongLightingShader() const = 0;
         /* Backend API specific shadow pass shader getter function. */
         virtual shared<shader_program> GetShadowPassShader() const = 0;
         /* Backend API specific tone mapping pass shader getter function. */
         virtual shared<shader_program> GetToneMappingPassShader() const = 0;
         /* Backend API specific gaussian blur pass shader getter function. */
         virtual shared<shader_program> GetGaussianBlurPassShader() const = 0;
+        /* Backend API specific gaussian blur pass shader getter function. */
+        virtual shared<shader_program> GetTextureAddPassShader() const = 0;
 
     public: /* Rendering context shader constants. */
         static const int BINDING_POINT_SCENE_DATA              = 0;

@@ -21,6 +21,8 @@ namespace scl
         std::function<void(scene_object)> OnObjectSelect {};
         scene_object SelectedObject {};
 
+        char ObjectCreationNameTextBuffer[128] {};
+
     public:
         /**
          * Scene hierarchy window default constructor.

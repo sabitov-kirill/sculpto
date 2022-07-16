@@ -23,10 +23,11 @@ namespace scl
     public:
         using handle = entt::entity;
 
-    private:
+    private: /* Scne object data. */
         handle Entity { entt::null };
         scene *Scene {};
 
+    private: /* Scene object methods. */
         /**
          * Scene object constructor by entity and scene.
          * 
@@ -89,7 +90,7 @@ namespace scl
         }
 
         /**
-         * Gect object component function.
+         * Get object component function.
          *
          * \tparam component to get from object.
          * \param None.
@@ -98,6 +99,7 @@ namespace scl
         template <typename T>
         T &GetComponent()
         {
+            SCL_CORE_ASSERT(HasComponent<T>(), "Scene object don't have \"{}\" component!", typeid(T).name());
             return Scene->Registry.get<T>(Entity);
         }
 
@@ -111,6 +113,7 @@ namespace scl
         template <typename T>
         const T &GetComponent() const 
         {
+            SCL_CORE_ASSERT(HasComponent<T>(), "Scene object don't have \"{}\" component!", typeid(T).name());
             return Scene->Registry.get<T>(Entity);
         }
 

@@ -31,6 +31,8 @@ namespace scl
         inline static bool GetWireframeMode() { return RenderContext->GetWireframeMode(); }
         /* Render culling mode setter function. */
         inline static render_cull_face_mode GetCullingMode() { return RenderContext->GetCullingMode(); }
+        /* Render virtual syncronisation flag getter function. */
+        inline static bool GetVSync() { return RenderContext->GetVSync(); }
 
         /* Frame clear color setter function. */
         inline static void SetClearColor(const vec4 &ClearColor) { RenderContext->SetClearColor(ClearColor); }
@@ -38,7 +40,8 @@ namespace scl
         inline static void SetWireframeMode(bool IsWireframe) { RenderContext->SetWireframeMode(IsWireframe); }
         /* Render culling mode setter function. */
         inline static void SetCullingMode(render_cull_face_mode CullingMode) { RenderContext->SetCullingMode(CullingMode); }
-
+        /* Render virtual syncronisation flag setter function. */
+        inline static void SetVSync(bool VSync) { RenderContext->SetVSync(VSync); }
 
     public: /* Render bridge methods. */
         /**
@@ -98,10 +101,16 @@ namespace scl
             return RenderContext->GetSingleColorMaterialShader();
         }
 
-        /* Backend API specific phong lighting model material shader getter function. */
-        inline static shared<shader_program> GetPhongMaterialShader()
+        /* Backend API specific phong lighint model shader for geometry pass getter function. */
+        inline static shared<shader_program> GetPhongGeometryShader()
         {
-            return RenderContext->GetPhongMaterialShader();
+            return RenderContext->GetPhongGeometryShader();
+        }
+
+        /* Backend API specific phong lighint model shader for lighting pass getter function. */
+        inline static shared<shader_program> GetPhongLightingShader()
+        {
+            return RenderContext->GetPhongLightingShader();
         }
 
         /* Backend API specific shadow pass shader getter function. */
@@ -120,6 +129,12 @@ namespace scl
         inline static shared<shader_program> GetGaussianBlurPassShader()
         {
             return RenderContext->GetGaussianBlurPassShader();
+        }
+
+        /* Backend API specific gaussian blur pass shader getter function. */
+        inline static shared<shader_program> GetTextureAddPassShader()
+        {
+            return RenderContext->GetTextureAddPassShader();
         }
     };
 }

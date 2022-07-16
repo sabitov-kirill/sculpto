@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "application_event.h"
-#include "window_event.h"
+#include "close_event.h"
+#include "vieport_resize_event.h"
 #include "keyboard_event.h"
 #include "mouse_event.h"

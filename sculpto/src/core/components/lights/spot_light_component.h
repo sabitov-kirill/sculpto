@@ -17,19 +17,17 @@ namespace scl
     {
     private: /* Spot light ccomponent data. */
         /* Light cutoff angles. */
-        float InnerCutoff;
-        float OuterCutoff;
+        float InnerCutoff {};
+        float OuterCutoff {};
 
     public:
         float InnerCutoffCos {};
         float OuterCutoffCos {};
         float Epsilon {};
 
-        /* Light direction. */
-        vec3 Direction {};
-
         /* Light color. */
         vec3 Color {};
+        float Strength { 1 };
 
     public: /* Spot light component data getter/setter functions. */
         /* Light iner cutoff angle getter functions. */
@@ -45,8 +43,10 @@ namespace scl
     public:
         spot_light_component() = default;
         spot_light_component(const spot_light_component &Other) = default;
-        spot_light_component(const vec3 &Color, const vec3 &Direction, degrees InnerCutoffAngle, degrees OuterCutoffAngle) :
-            Color(Color), Direction(Direction), InnerCutoffCos(cos((radians)InnerCutoffAngle)), OuterCutoffCos(cos((radians)OuterCutoffAngle)),
+        spot_light_component(const vec3 &Color, degrees InnerCutoffAngle, degrees OuterCutoffAngle) :
+            Color(Color),
+            InnerCutoffCos(cos((radians)InnerCutoffAngle)), InnerCutoff(InnerCutoffAngle),
+            OuterCutoffCos(cos((radians)OuterCutoffAngle)), OuterCutoff(OuterCutoffAngle),
             Epsilon(InnerCutoffCos - OuterCutoffCos) {}
         ~spot_light_component() = default;
     };

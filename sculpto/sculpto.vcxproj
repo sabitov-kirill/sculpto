@@ -19,7 +19,7 @@
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>sculpto</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.22000.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -77,7 +77,7 @@
       <PrecompiledHeaderFile>sclpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SCL_DEBUG;SCL_DEBUG_MEMORY_ENABLED;SCL_ASSERTION_ENABLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;external\glad\include;external\stb_image;external\entt;external\imgui;external\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;external\glad\include;external\glew\include;external\stb_image;external\entt;external\imgui;external\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -97,7 +97,7 @@
       <PrecompiledHeaderFile>sclpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SCL_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;external\glad\include;external\stb_image;external\entt;external\imgui;external\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;external\glad\include;external\glew\include;external\stb_image;external\entt;external\imgui;external\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -121,7 +121,7 @@
       <PrecompiledHeaderFile>sclpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SCL_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;external\glad\include;external\stb_image;external\entt;external\imgui;external\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;external\glad\include;external\glew\include;external\stb_image;external\entt;external\imgui;external\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -161,12 +161,12 @@
     <ClInclude Include="src\core\components\native_script_component.h" />
     <ClInclude Include="src\core\components\object_name_component.h" />
     <ClInclude Include="src\core\components\transform_component.h" />
-    <ClInclude Include="src\core\events\application_event.h" />
+    <ClInclude Include="src\core\events\close_event.h" />
     <ClInclude Include="src\core\events\events.h" />
     <ClInclude Include="src\core\events\keyboard_event.h" />
     <ClInclude Include="src\core\events\mouse_event.h" />
-    <ClInclude Include="src\core\events\window_event.h" />
-    <ClInclude Include="src\core\gui\gui_layer.h" />
+    <ClInclude Include="src\core\events\vieport_resize_event.h" />
+    <ClInclude Include="src\core\gui\gui.h" />
     <ClInclude Include="src\core\gui\windows\application_config_window.h" />
     <ClInclude Include="src\core\gui\windows\profiller_window.h" />
     <ClInclude Include="src\core\gui\windows\scene_config_window.h" />
@@ -248,7 +248,7 @@
     <ClCompile Include="src\core\application\log.cpp" />
     <ClCompile Include="src\core\application\timer.cpp" />
     <ClCompile Include="src\core\application\window.cpp" />
-    <ClCompile Include="src\core\gui\gui_layer.cpp" />
+    <ClCompile Include="src\core\gui\gui.cpp" />
     <ClCompile Include="src\core\gui\windows\application_config_window.cpp" />
     <ClCompile Include="src\core\gui\windows\profiller_window.cpp" />
     <ClCompile Include="src\core\gui\windows\scene_config_window.cpp" />
@@ -297,6 +297,9 @@
   <ItemGroup>
     <ProjectReference Include="external\glad\glad.vcxproj">
       <Project>{DD62977C-C999-980D-7286-7E105E9C140F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="external\glew\glew.vcxproj">
+      <Project>{7463977C-609A-980D-0987-7E10F59C140F}</Project>
     </ProjectReference>
     <ProjectReference Include="external\imgui\imgui.vcxproj">
       <Project>{0098A80F-6CAC-D0C0-352E-7420A101CDF1}</Project>

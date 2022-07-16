@@ -13,61 +13,8 @@
 
 #ifdef SCL_PLATFORM_WINDOWS
 
-/* OpenGL WGL rendering context creation definitions. */
-typedef HGLRC WINAPI wglCreateContextAttribsARB_type(HDC hdc, HGLRC hShareContext, const int *attribList);
-wglCreateContextAttribsARB_type *wglCreateContextAttribsARB;
-
-#define WGL_CONTEXT_MAJOR_VERSION_ARB             0x2091
-#define WGL_CONTEXT_MINOR_VERSION_ARB             0x2092
-#define WGL_CONTEXT_PROFILE_MASK_ARB              0x9126
-#define WGL_CONTEXT_CORE_PROFILE_BIT_ARB          0x00000001
-#define WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB 0x00000002
-
-/* OpenGL WGL pixel format configuration definitions. */
-typedef BOOL WINAPI wglChoosePixelFormatARB_type(HDC hdc, const int *piAttribIList, const FLOAT *pfAttribFList, UINT nMaxFormats, int *piFormats, UINT *nNumFormats);
-wglChoosePixelFormatARB_type *wglChoosePixelFormatARB;
-
-#define WGL_DRAW_TO_WINDOW_ARB                    0x2001
-#define WGL_ACCELERATION_ARB                      0x2003
-#define WGL_SUPPORT_OPENGL_ARB                    0x2010
-#define WGL_DOUBLE_BUFFER_ARB                     0x2011
-#define WGL_PIXEL_TYPE_ARB                        0x2013
-#define WGL_COLOR_BITS_ARB                        0x2014
-#define WGL_DEPTH_BITS_ARB                        0x2022
-#define WGL_STENCIL_BITS_ARB                      0x2023
-#define WGL_FULL_ACCELERATION_ARB                 0x2027
-#define WGL_TYPE_RGBA_ARB                         0x202B
-
-/* OpenGL WGL initialisation functions. */
-void glInitialiseExtentions(HDC hDC)
-{
-    // Temporery context creation
-    PIXELFORMATDESCRIPTOR pfd {};
-    pfd.nSize = sizeof(pfd);
-    pfd.nVersion = 1;
-    pfd.iPixelType = PFD_TYPE_RGBA;
-    pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
-    pfd.cColorBits = 32;
-    pfd.cAlphaBits = 8;
-    pfd.iLayerType = PFD_MAIN_PLANE;
-    pfd.cDepthBits = 32;
-    pfd.cStencilBits = 8;
-
-    int pixel_format = ChoosePixelFormat(hDC, &pfd);
-    SCL_CORE_ASSERT(pixel_format, "Failed to find a suitable pixel format.");
-    SCL_CORE_ASSERT(SetPixelFormat(hDC, pixel_format, &pfd), "Failed to set the pixel format.");
-
-    HGLRC hTmpGLRC = wglCreateContext(hDC);
-    SCL_CORE_ASSERT(hTmpGLRC, "Failed to create temporery OpenGL rendering context.");
-    SCL_CORE_ASSERT(wglMakeCurrent(hDC, hTmpGLRC), "Failed to activate temporery OpenGL rendering context.");
-
-    // Load functions pointers
-    wglCreateContextAttribsARB = (wglCreateContextAttribsARB_type *)wglGetProcAddress("wglCreateContextAttribsARB");
-    wglChoosePixelFormatARB = (wglChoosePixelFormatARB_type *)wglGetProcAddress("wglChoosePixelFormatARB");
-
-    wglMakeCurrent(nullptr, nullptr);
-    wglDeleteContext(hTmpGLRC);
-}
+#include <wglew.h>
+#include <wglext.h>
 
 HGLRC glInitialiseContext(HDC hDC)
 {
@@ -84,14 +31,34 @@ HGLRC glInitialiseContext(HDC hDC)
         0
     };
 
-    int pixel_format;
-    UINT num_formats;
-    wglChoosePixelFormatARB(hDC, pixel_format_attribs, 0, 1, &pixel_format, &num_formats);
-    SCL_CORE_ASSERT(num_formats, "Failed to set the OpenGL pixel format.");
+    // Pixel format setup
+    PIXELFORMATDESCRIPTOR pfd = { 0 };
+    pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
+    pfd.nVersion = 1;
+    pfd.dwFlags = PFD_DOUBLEBUFFER | PFD_SUPPORT_OPENGL;
+    pfd.cColorBits = 32;
+    pfd.cDepthBits = 32;
 
-    PIXELFORMATDESCRIPTOR pfd {};
-    DescribePixelFormat(hDC, pixel_format, sizeof(pfd), &pfd);
-    SCL_CORE_ASSERT(SetPixelFormat(hDC, pixel_format, &pfd), "Failed to set the OpenGL pixel format.");
+    INT pixel_format = ChoosePixelFormat(hDC, &pfd);
+    SCL_CORE_ASSERT(pixel_format, "Failed to find a suitable pixel format.");
+    DescribePixelFormat(hDC, pixel_format, sizeof(PIXELFORMATDESCRIPTOR), &pfd);
+    SCL_CORE_ASSERT(SetPixelFormat(hDC, pixel_format, &pfd), "Failed to set the pixel format.");
+
+    // Setup temporary rendering context
+    HGLRC hTmpGLRC = wglCreateContext(hDC);
+    SCL_CORE_ASSERT(hTmpGLRC, "Failed to create temporery OpenGL rendering context.");
+    SCL_CORE_ASSERT(wglMakeCurrent(hDC, hTmpGLRC), "Failed to activate temporery OpenGL rendering context.");
+
+    // Initializing GLEW library
+    glewExperimental = true;
+    GLenum glew_init_status = glewInit();
+    SCL_CORE_ASSERT(glew_init_status == GLEW_OK, "Failed to initialize OpenGL glew.\nError log:\n{}", (const char *)glewGetErrorString(glew_init_status));
+    SCL_CORE_ASSERT(GLEW_ARB_vertex_shader && GLEW_ARB_fragment_shader, "Your hardware not supported. No shaders support.");
+
+    // Enable a new OpenGL profile support
+    UINT num_formats;
+    wglChoosePixelFormatARB(hDC, pixel_format_attribs, nullptr, 1, &pixel_format, &num_formats);
+    SCL_CORE_ASSERT(num_formats, "Failed to set the OpenGL pixel format.");
 
     // Setup rendering context
     int context_attribs[] = {
@@ -101,10 +68,12 @@ HGLRC glInitialiseContext(HDC hDC)
         0
     };
 
-    HGLRC hGLRC = wglCreateContextAttribsARB(hDC, 0, context_attribs);
-    SCL_CORE_ASSERT(hGLRC, "Failed to create OpenGL context.");
+    SCL_CORE_ASSERT(wglMakeCurrent(nullptr, nullptr), "Falied to deactivate temporery rendering context.");
+    SCL_CORE_ASSERT(wglDeleteContext(hTmpGLRC), "Failed to delete temporary rendering context.");
+
+    HGLRC hGLRC = wglCreateContextAttribsARB(hDC, nullptr, context_attribs);
+    SCL_CORE_ASSERT(hGLRC, "Failed to create rendering context.");
     SCL_CORE_ASSERT(wglMakeCurrent(hDC, hGLRC), "Failed to set rendering context to main window.");
-    SCL_CORE_ASSERT(gladLoadGL(), "Failed to load OpenGL functions pointers with glad.");
 
     return hGLRC;
 }
@@ -124,6 +93,11 @@ bool scl::gl::GetWireframeMode() const
 scl::render_cull_face_mode scl::gl::GetCullingMode() const
 {
     return CullingMode;
+}
+
+bool scl::gl::GetVSync() const
+{
+    return IsVSync;
 }
 
 void scl::gl::SetClearColor(const vec4 &ClearColor)
@@ -149,6 +123,14 @@ void scl::gl::SetCullingMode(render_cull_face_mode CullingMode)
     }
 
     SCL_CORE_ASSERT(0, "Unknown culling mode!");
+}
+
+void scl::gl::SetVSync(bool IsVSync)
+{
+    this->IsVSync = IsVSync;
+#ifdef SCL_PLATFORM_WINDOWS
+    wglSwapIntervalEXT(IsVSync);
+#endif /* SCL_PLATFORM_WINDOWS */
 }
 
 GLenum scl::gl::GetGLPrimitiveType(mesh_type MeshType)
@@ -199,39 +181,40 @@ void scl::gl::CreateContext(const HWND &hAppWnd, int W, int H, bool VSync)
 #ifdef SCL_PLATFORM_WINDOWS
     hWnd = &hAppWnd;
     hDC = GetDC(hAppWnd);
-    glInitialiseExtentions(hDC);
     hGLRC = glInitialiseContext(hDC);
 #endif /* !SCL_PLATFORM_WINDOWS */
 
-    // TODO: Add vsync handle.
+    SetVSync(VSync);
+
+    // Set default OpenGL parameters
+    glClearColor(0, 0, 0, 0);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+
+    glEnable(GL_PRIMITIVE_RESTART);
+    glPrimitiveRestartIndex(render_context::MESH_RESTART_INDEX);
 
     // Enable debug callback
-#ifdef SCL_DEBUG
+#ifndef SCL_DIST
     glEnable(GL_DEBUG_OUTPUT);
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     glDebugMessageCallback(glDebugOutput, nullptr);
     glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
 #endif
-
-    // Set default OpenGL parameters
-    glClearColor(0.30f, 0.5f, 0.7f, 1.0f);
-    glEnable(GL_DEPTH_TEST);
-    // glEnable(GL_BLEND);
-    // glEnable(GL_CULL_FACE);
-    // glCullFace(GL_BACK);
-
-    glEnable(GL_PRIMITIVE_RESTART);
-    glPrimitiveRestartIndex(render_context::MESH_RESTART_INDEX);
 }
 
 void scl::gl::Init()
 {
+    SCL_CORE_SUCCES("OpenGL render context initialisation started.");
+
+#ifdef SCL_PLATFORM_WINDOWS
     application &app = application::Get();
     const window &win = app.GetWindow();
     const window::data win_data = win.GetWindowData();
 
-    this->CreateContext(win.GetHandle(), win_data.Width, win_data.Height, false);
-    SCL_CORE_SUCCES("OpenGL {}.{} context created.", GLVersion.major, GLVersion.minor);
+    this->CreateContext(win.GetHandle(), win_data.Width, win_data.Height, true);
+    SCL_CORE_SUCCES("Windows OpenGL render context initialised successfully.");
+#endif /* !SCL_PLATFORM_WINDOWS */
 }
 
 void scl::gl::Close()
@@ -258,11 +241,12 @@ void scl::gl::DrawIndices(const shared<vertex_array> &VertexArray)
         GL_UNSIGNED_INT,
         nullptr
     );
+    VertexArray->Unbind();
 }
 
 void scl::gl::DrawIndicesInstanced(const shared<vertex_array> &VertexArray, int InstanceCount)
 {
-
+    VertexArray->Bind();
     glDrawElementsInstanced(
         GetGLPrimitiveType(VertexArray->GetType()),
         VertexArray->GetIndexBuffer()->GetCount(),
@@ -270,6 +254,7 @@ void scl::gl::DrawIndicesInstanced(const shared<vertex_array> &VertexArray, int 
         nullptr,
         InstanceCount
     );
+    VertexArray->Unbind();
 }
 
 /**

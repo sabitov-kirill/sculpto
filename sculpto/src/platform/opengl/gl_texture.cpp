@@ -59,11 +59,11 @@ scl::gl_texture_2d::gl_texture_2d(const image &Image, texture_type Type)
 
     switch (Type)
     {
-    case scl::texture_type::COLOR:                this->CreateColor(Image, false); return;
-    case scl::texture_type::COLOR_FLOATING_POINT: this->CreateColor(Image, true);  return;
-    case scl::texture_type::DEPTH:                this->CreateDepth(Image);        return;
+    case scl::texture_type::COLOR:                this->CreateColor(Image, false); SCL_CORE_SUCCES("OpenGL Color Texture with id {} created.", Id); return;
+    case scl::texture_type::COLOR_FLOATING_POINT: this->CreateColor(Image, true);  SCL_CORE_SUCCES("OpenGL HDR Texture with id {} created.", Id); return;
+    case scl::texture_type::DEPTH:                this->CreateDepth(Image);        SCL_CORE_SUCCES("OpenGL Depth Texture with id {} created.", Id); return;
     }
-    
+
     SCL_CORE_ASSERT(0, "Unknown texture type.");
 }
 

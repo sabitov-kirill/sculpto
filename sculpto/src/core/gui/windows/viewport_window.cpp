@@ -13,42 +13,31 @@
 
 #include "viewport_window.h"
 #include "core/scene/scene.h"
-#include "core/events/window_event.h"
-#include "core/render/primitives/texture.h"
+#include "core/events/events.h"
 #include "core/render/primitives/frame_buffer.h"
+#include "core/render/primitives/texture.h"
 
-scl::viewport_window::viewport_window(shared<frame_buffer> ViewportBuffer, bool ResizeBuffer, scene *Scene) :
-    ViewportBuffer(ViewportBuffer), ResizeBuffer(ResizeBuffer), Scene(Scene) {}
+scl::viewport_window::viewport_window(const shared<frame_buffer> &ViewportBuffer, int ViewportId) :
+    ViewportBuffer(ViewportBuffer) { SetViewportId(ViewportId); }
 
 void scl::viewport_window::Draw()
 {
     ImGui::Begin("Viewport");
     {
         const ImVec2 window_size = ImGui::GetContentRegionAvail();
-        const frame_buffer_props &viewport_buffer_props = ViewportBuffer->GetFrameBufferProps();
-
-        if (ResizeBuffer && (viewport_buffer_props.Width != window_size.x || viewport_buffer_props.Height != window_size.y) &&
-            window_size.x > 0 && window_size.y > 0)
-            if (Scene)
+        if ((window_size.x != ViewportWidth || window_size.y != ViewportHeight) &&
+             window_size.x > 0 && window_size.y > 0)
             {
-                // Call scene on event function to dispatche window resize callback
-                window_resize_event e { (int)window_size.x, (int)window_size.y };
+                ViewportWidth = window_size.x, ViewportHeight = window_size.y;
+                viewport_resize_event e { ViewportWidth, ViewportHeight, ViewportId };
                 event_dispatcher::Invoke(e);
             }
-            else
-            {
-                // Just resize viewport framebuffer
-                frame_buffer_props new_viewport_buffer_props = viewport_buffer_props;
-                new_viewport_buffer_props.Width  = window_size.x;
-                new_viewport_buffer_props.Height = window_size.y;
-                ViewportBuffer->SetFrameBufferProps(new_viewport_buffer_props);
-            }
 
-        // Render framebuffer
-        ImGui::Image((ImTextureID)ViewportBuffer->GetColorAttachment()->GetHandle(),
-                     ImVec2(window_size.x, window_size.y), { 0, 1 }, { 1, 0 });
+        if (auto viewport_buffer = ViewportBuffer.lock())
+            ImGui::Image((ImTextureID)viewport_buffer->GetColorAttachment()->GetHandle(), window_size, {0, 1}, {1, 0});
 
-        if (ImGui::IsItemHovered()) ImGui::CaptureMouseFromApp(false);
+        if (ImGui::IsItemHovered()) ImGui::SetNextFrameWantCaptureMouse(false);
+        if (ImGui::IsItemActive()) ImGui::SetNextFrameWantCaptureKeyboard(false);
     }
     ImGui::End();
 }

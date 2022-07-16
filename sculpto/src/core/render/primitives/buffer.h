@@ -210,6 +210,14 @@ namespace scl
         virtual void Free() = 0;
 
         /**
+         * Update buffer function function.
+         *
+         * \param Indices - array of indices.
+         * \param Count
+         */
+        virtual void Update(u32 *Indices, u32 Count) = 0;
+
+        /**
          * Index biffer indices count getter function.
          * 
          * \param None.

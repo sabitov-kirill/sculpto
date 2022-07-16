@@ -35,18 +35,14 @@ inline constexpr GLenum scl::gl_vertex_array::GetGLShaderVariableType(shader_var
     return GLenum();
 }
 
-scl::gl_vertex_array::gl_vertex_array(mesh_type Type, shared<vertex_buffer> VertexBuffer, shared<index_buffer> IndexBuffer) :
-    vertex_array(Type, VertexBuffer, IndexBuffer)
+void scl::gl_vertex_array::SetVertexBuffer(const shared<vertex_buffer> &VertexBuffer)
 {
     SCL_CORE_ASSERT(VertexBuffer->GetVertexLayout().GetCount() != 0,
                     "Vertex Buffer has no layout!");
 
-    glCreateVertexArrays(1, &Id);
-    SCL_CORE_ASSERT(Id != 0, "Vertex array OpenGL primitive creation error.");
-
+    this->VertexBuffer = VertexBuffer;
     this->Bind();
     VertexBuffer->Bind();
-    IndexBuffer->Bind();
 
     const auto &layout = VertexBuffer->GetVertexLayout();
     for (const auto &element : layout)
@@ -99,12 +95,31 @@ scl::gl_vertex_array::gl_vertex_array(mesh_type Type, shared<vertex_buffer> Vert
         }
     }
 
+    VertexBuffer->Unbind();
     this->Unbind();
+}
+
+void scl::gl_vertex_array::SetIndexBuffer(const shared<index_buffer> &IndexBuffer)
+{
+    this->IndexBuffer = IndexBuffer;
+    this->Bind();
+    IndexBuffer->Bind();
+    this->Unbind();
+    IndexBuffer->Unbind();
+}
+
+scl::gl_vertex_array::gl_vertex_array(mesh_type MeshType) :
+    vertex_array(MeshType)
+{
+    glCreateVertexArrays(1, &Id);
+    SCL_CORE_ASSERT(Id != 0, "Vertex array OpenGL primitive creation error.");
+    SCL_CORE_SUCCES("OpenGL Vertex array with id {} created.", Id);
 }
 
 scl::gl_vertex_array::~gl_vertex_array()
 {
     glDeleteVertexArrays(1, &Id);
+    SCL_CORE_INFO("OpenGL Vertex array with id {} freed.", Id);
 }
 
 void scl::gl_vertex_array::Bind() const

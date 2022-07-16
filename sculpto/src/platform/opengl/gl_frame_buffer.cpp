@@ -14,6 +14,7 @@ void scl::gl_frame_buffer::SetFrameBufferProps(const frame_buffer_props &Props)
 {
     this->Props = Props;
     this->Invalidate();
+    SCL_CORE_INFO("OpenGL Frame Buffer with id {} props changed.", Id);
 }
 
 const scl::frame_buffer_props &scl::gl_frame_buffer::GetFrameBufferProps() const
@@ -33,9 +34,14 @@ const scl::shared<scl::texture_2d> &scl::gl_frame_buffer::GetDepthAttachment(int
 
 void scl::gl_frame_buffer::Invalidate()
 {
-    this->Free();
+    if (Id != 0) this->Free();
 
-    if (Props.IsSwapChainTarget) { Id = 0; ClearConfig = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT; return; }
+    if (Props.IsSwapChainTarget) {
+        Id = 0; 
+        ClearConfig = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
+        SCL_CORE_INFO("OpenGL Frame Buffer swap chain target invalidated.");
+        return;
+    }
 
     // Create and bind frame buffer
     glGenFramebuffers(1, &Id);
@@ -71,12 +77,16 @@ void scl::gl_frame_buffer::Invalidate()
     // Check frame buffer status, unbinding
     SCL_CORE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Frame buffer creation error!");
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    SCL_CORE_INFO("OpenGL Frame Buffer with id {}, width {}, height {}, color attachments {}, depth attachments invalidated.",
+                  Id, Props.Width, Props.Height, Props.ColorAttachmentsCount, Props.DepthAttachmentsCount);
 }
 
 scl::gl_frame_buffer::gl_frame_buffer(const frame_buffer_props &Props) :
     Props(Props)
 {
     this->Invalidate();
+    SCL_CORE_SUCCES("OpenGL Frame Buffer with id {} created.", Id);
 }
 
 scl::gl_frame_buffer::~gl_frame_buffer()
@@ -104,12 +114,15 @@ void scl::gl_frame_buffer::Resize(int Width, int Height)
 
 void scl::gl_frame_buffer::Free()
 {
-    if (Id != 0) glDeleteFramebuffers(1, &Id), Id = 0;
+    if (Id != 0) glDeleteFramebuffers(1, &Id);
 
     for (auto &color_attachment : ColorAttachments) color_attachment.reset();
     ColorAttachments.clear();
 
     if (DepthAttachment) DepthAttachment.reset();
+
+    SCL_CORE_INFO("OpenGL Frame Buffer with id {} freed.", Id);
+    Id = 0;
 }
 
 void scl::gl_frame_buffer::Clear()

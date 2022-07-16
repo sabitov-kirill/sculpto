@@ -15,7 +15,7 @@ void scl::camera::SetProjectionType(camera_projection_type ProjectionType) {
     InvalidateProjection();
 }
 
-void scl::camera::SetFieldOfView() {
+void scl::camera::SetFieldOfView(float FieldOfView) {
     this->FieldOfView = FieldOfView;
     InvalidateProjection();
 }
@@ -30,12 +30,12 @@ void scl::camera::SetFarClip(float FarClip) {
     InvalidateProjection();
 }
 
-void scl::camera::SetViewportWidth(float ViewportWidth) {
+void scl::camera::SetViewportWidth(int ViewportWidth) {
     this->ViewportWidth = ViewportWidth;
     InvalidateProjection();
 }
 
-void scl::camera::SetViewportHeight(float ViewportHeight) {
+void scl::camera::SetViewportHeight(int ViewportHeight) {
     this->ViewportHeight = ViewportHeight;
     InvalidateProjection();
 }
@@ -97,6 +97,8 @@ void scl::camera::InvalidateProjection()
 
     if (ViewportWidth >= ViewportHeight) ratio_x *= (float)ViewportWidth / ViewportHeight;
     else ratio_y *= (float)ViewportHeight / ViewportWidth;
+    ViewportProjectionWidth = ratio_x * 2;
+    ViewportProjectionHeight = ratio_y * 2;
 
     if (ProjectionType == camera_projection_type::ORTHOGRAPHIC)
         Projection = matr4::Ortho(-ratio_x, ratio_x, -ratio_y, ratio_y, ProjectionDistance, FarClip);
@@ -180,8 +182,8 @@ scl::camera::camera(camera_projection_type ProjectionType, camera_effects Effect
 
 scl::camera &scl::camera::Resize(int ViewportWidth, int ViewportHeight)
 {
-    this->ViewportWidth = (float)ViewportWidth;
-    this->ViewportHeight = (float)ViewportHeight;
+    this->ViewportWidth = ViewportWidth;
+    this->ViewportHeight = ViewportHeight;
 
     InvalidateProjection();
     InvalidateBuffers();

@@ -14,9 +14,10 @@
 
 namespace scl
 {
+    /* Abstarct, platfomr independent window class. */
     class window
     {
-    public:
+    public: /* Abstract, platform independent window data. */
         /* Window consfig data structure. */
         struct data
         {
@@ -33,13 +34,16 @@ namespace scl
                 Width(Width), Height(Height), Title(Title) {}
         };
 
-    protected: /* Window data. */
+        /* Application main window viewport id. */
+        static const int ViewportId = 0;
+
+    protected:
         window_handle Handle {};
         bool          IsInitialised { false };
         bool          IsFullscreen { false };
         data          Data {};
 
-    public: /* Class getters/setters */
+    public: /* Abstract, platform independent window data getters/setters. */
         /* Window data getting function. */
         const data &GetWindowData() const { return Data; }
         /* Window handle getter function. */
@@ -47,7 +51,7 @@ namespace scl
         /* Window initilised flag getter function. */
         bool GetIsInitialised() const { return IsInitialised; }
 
-    public: /* Class methods. */
+    public: /* Abstratc, platform independent window methods. */
         /***
          * Copying and moving constructors,
          * lvalue and rvalue copy assigment and move assigment operators

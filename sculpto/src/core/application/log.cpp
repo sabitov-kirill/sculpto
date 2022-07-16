@@ -16,4 +16,6 @@ void scl::log::Init()
 {
     CoreLogger = std::make_shared<scl::logger>("Core");
     ClientLogger = std::make_shared<scl::logger>("Client");
+
+    SCL_CORE_SUCCES("Logging system initialized.");
 }

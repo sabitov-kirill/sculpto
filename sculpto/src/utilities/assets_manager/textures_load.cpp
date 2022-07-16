@@ -13,6 +13,8 @@
 
 scl::shared<scl::texture_2d> scl::assets_manager::LoadTexture(const std::filesystem::path &TextureImageFilePath)
 {
+    SCL_CORE_INFO("Texture creation from file \"{}\" started.", TextureImageFilePath.string());
+
     image texture_image(TextureImageFilePath.string());
     if (texture_image.IsEmpty())
     {

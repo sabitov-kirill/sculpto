@@ -17,6 +17,8 @@ scl::gl_constant_buffer::gl_constant_buffer(u32 Size)
     glBindBuffer(GL_UNIFORM_BUFFER, Id);
     glBufferData(GL_UNIFORM_BUFFER, Size, nullptr, GL_STATIC_DRAW);
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+    SCL_CORE_SUCCES("OpenGL Constant buffer with id {} and size {} created.", Id, Size);
 }
 
 scl::gl_constant_buffer::gl_constant_buffer(const void *Data, u32 Size)
@@ -27,6 +29,8 @@ scl::gl_constant_buffer::gl_constant_buffer(const void *Data, u32 Size)
     glBindBuffer(GL_UNIFORM_BUFFER, Id);
     glBufferData(GL_UNIFORM_BUFFER, Size, Data, GL_STATIC_DRAW);
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+    SCL_CORE_SUCCES("OpenGL Constant buffer with id {} and size {} created.", Id, Size);
 }
 
 scl::gl_constant_buffer::~gl_constant_buffer()
@@ -50,12 +54,10 @@ void scl::gl_constant_buffer::Update(void *Data, u32 Size)
 {
     if (Id != 0)
     {
+        SCL_CORE_ASSERT(this->Size == Size, "Constant buffer size can't be changed.");
+
         glBindBuffer(GL_UNIFORM_BUFFER, Id);
         glBufferSubData(GL_UNIFORM_BUFFER, 0, Size, Data);
-        GLint size = 0;
-        glGetBufferParameteriv(GL_UNIFORM_BUFFER, GL_BUFFER_SIZE, &size);
-        SCL_CORE_ASSERT(Size == size, "Error in updating buffer. Size of current data is diffrent then while creation.");
-
         glBindBuffer(GL_UNIFORM_BUFFER, 0);
     }
 }
@@ -65,6 +67,8 @@ void scl::gl_constant_buffer::Free()
     if (Id != 0)
     {
         glDeleteBuffers(1, &Id);
+
+        SCL_CORE_INFO("OpenGL Constant buffer with id {} freed.", Id);
         Id = 0, BindingPoint = 0, Size = 0;
     }
 }
@@ -74,9 +78,12 @@ scl::gl_vertex_buffer::gl_vertex_buffer(u32 Count, const vertex_layout &VertexLa
 {
     this->VerticesCount = Count;
 
-    glCreateBuffers(1, &Id);
+    glGenBuffers(1, &Id);
     glBindBuffer(GL_ARRAY_BUFFER, Id);
     glBufferData(GL_ARRAY_BUFFER, Count, nullptr, GL_DYNAMIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    SCL_CORE_SUCCES("OpenGL Vertex buffer with id {} and {} verices created.", Id, Count);
 }
 
 scl::gl_vertex_buffer::gl_vertex_buffer(const void *Vertices, u32 Count, const vertex_layout &VertexLayout) :
@@ -87,6 +94,9 @@ scl::gl_vertex_buffer::gl_vertex_buffer(const void *Vertices, u32 Count, const v
     glCreateBuffers(1, &Id);
     glBindBuffer(GL_ARRAY_BUFFER, Id);
     glBufferData(GL_ARRAY_BUFFER, (u64)Count * VertexLayout.GetSize(), Vertices, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    SCL_CORE_SUCCES("OpenGL Vertex buffer with id {} and {} verices created.", Id, Count);
 }
 
 scl::gl_vertex_buffer::~gl_vertex_buffer()
@@ -108,8 +118,11 @@ void scl::gl_vertex_buffer::Update(const void *Vertices, u32 Count)
 {
     if (Id != 0)
     {
+        SCL_CORE_ASSERT(Count == this->VerticesCount, "Vertices count can't be changed.");
+
         glBindBuffer(GL_ARRAY_BUFFER, Id);
         glBufferSubData(GL_ARRAY_BUFFER, 0, (u64)Count * VertexLayout.GetSize(), Vertices);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 }
 
@@ -118,6 +131,8 @@ void scl::gl_vertex_buffer::Free()
     if (Id != 0)
     {
         glDeleteBuffers(1, &Id);
+
+        SCL_CORE_INFO("OpenGL Vertex buffer with id {} freed.", Id);
         Id = 0, VerticesCount = 0;
     }
 }
@@ -128,7 +143,9 @@ scl::gl_index_buffer::gl_index_buffer(u32 *Indices, u32 Count)
 
     glCreateBuffers(1, &Id);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Id);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, Count * sizeof(uint32_t), Indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, Count * sizeof(u32), Indices, GL_STATIC_DRAW);
+
+    SCL_CORE_SUCCES("OpenGL Index buffer with id {} and {} indices created.", Id, Count);
 }
 
 scl::gl_index_buffer::~gl_index_buffer()
@@ -146,11 +163,25 @@ void scl::gl_index_buffer::Unbind() const
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
+void scl::gl_index_buffer::Update(u32 *Indices, u32 Count)
+{
+    if (Id != 0)
+    {
+        SCL_CORE_ASSERT(this->IndicesCount == Count, "Indices count cant'be changed.");
+
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Id);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, Count * sizeof(u32), Indices, GL_STATIC_DRAW);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    }
+}
+
 void scl::gl_index_buffer::Free()
 {
     if (Id != 0)
     {
         glDeleteBuffers(1, &Id);
+
+        SCL_CORE_INFO("OpenGL Index buffer with id {} freed.", Id);
         Id = 0, IndicesCount = 0;
     }
 }

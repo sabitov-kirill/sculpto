@@ -18,11 +18,11 @@ namespace scl
     class gl_frame_buffer : public frame_buffer
     {
     private:
-        frame_buffer_props Props;
-        GLuint Id;
-        std::vector<shared<texture_2d>> ColorAttachments;
-        shared<texture_2d> DepthAttachment;
-        u32 ClearConfig;
+        frame_buffer_props Props {};
+        GLuint Id {};
+        std::vector<shared<texture_2d>> ColorAttachments {};
+        shared<texture_2d> DepthAttachment {};
+        u32 ClearConfig {};
 
     public: /* Frame buffer getter/setter functions. */
         /* Frame buffer properties setter function. */

@@ -22,6 +22,7 @@ project "sculpto"
     {
         "src",
         "%{IncludeDir.glad}",
+        "%{IncludeDir.glew}",
         "%{IncludeDir.stb_image}",
         "%{IncludeDir.entt}",
         "%{IncludeDir.imgui}",
@@ -31,6 +32,7 @@ project "sculpto"
     links
     {
         "glad",
+        "glew",
         "imgui",
         "assimp",
         "opengl32.lib"

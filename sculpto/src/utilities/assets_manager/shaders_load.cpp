@@ -14,6 +14,8 @@
 
 scl::shared<scl::shader_program> scl::assets_manager::LoadShader(const std::filesystem::path &ShaderProgamFilePath)
 {
+    SCL_CORE_INFO("Shader creation from file \"{}\" started.", ShaderProgamFilePath.string());
+
     std::string shader_text = LoadFile(ShaderProgamFilePath);
     assets_manager::shader_preprocessor::ProcessIncludes(ShaderProgamFilePath.string(), ShaderProgamFilePath.parent_path().string(), shader_text);
 
@@ -31,6 +33,8 @@ scl::shared<scl::shader_program> scl::assets_manager::LoadShader(const std::file
     std::stringstream file_buffer;
     std::string shader_text;
     std::vector<shader_props> shaders;
+
+    SCL_CORE_INFO("Shader creation from files \"{}\", \"{}\" started.", VertexShaderFilePath.string(), PixelShaderFilePath.string());
 
     // Vertex shader
     shader_text = LoadFile(VertexShaderFilePath);
@@ -56,6 +60,8 @@ scl::shared<scl::shader_program> scl::assets_manager::LoadShader(const std::file
     std::string shader_text;
     std::vector<shader_props> shaders;
 
+    SCL_CORE_INFO("Shader creation from files \"{}\", \"{}\", \"{}\" started.", VertexShaderFilePath.string(), GeomShaderFilePath.string(), PixelShaderFilePath.string());
+
     // Vertex shader
     shader_text = LoadFile(VertexShaderFilePath);
     assets_manager::shader_preprocessor::ProcessIncludes(VertexShaderFilePath.string(), VertexShaderFilePath.parent_path().string(), shader_text);
@@ -78,13 +84,14 @@ scl::shared<scl::shader_program> scl::assets_manager::LoadShader(const std::file
     return shader;
 }
 
-void scl::assets_manager::UpdateShader(shared<shader_program> &ShaderProgram)
+void scl::assets_manager::UpdateShader(shared<shader_program> ShaderProgram)
 {
     std::stringstream file_buffer;
     std::string shader_text;
     std::vector<shader_props> shaders;
 
     if (ShaderProgram->SingleSourceFileName != "") {
+        SCL_CORE_INFO("Shader updation from file \"{}\" started.", ShaderProgram->SingleSourceFileName);
         shader_text = LoadFile(ShaderProgram->SingleSourceFileName);
         assets_manager::shader_preprocessor::ProcessIncludes(ShaderProgram->SingleSourceFileName,
                                                              std::filesystem::path(ShaderProgram->SingleSourceFileName).parent_path().string(),
@@ -94,6 +101,7 @@ void scl::assets_manager::UpdateShader(shared<shader_program> &ShaderProgram)
         ShaderProgram->Update(shaders);
     } else if (ShaderProgram->VertexShadersourceFileName != "" && ShaderProgram->PixelShadersourceFileName != "" &&
                ShaderProgram->GeometryShadersourceFileName == "") {
+        SCL_CORE_INFO("Shader updation from files \"{}\", \"{}\" started.", ShaderProgram->VertexShadersourceFileName, ShaderProgram->PixelShadersourceFileName);
 
         // Vertex shader
         shader_text = LoadFile(ShaderProgram->VertexShadersourceFileName);
@@ -111,6 +119,8 @@ void scl::assets_manager::UpdateShader(shared<shader_program> &ShaderProgram)
 
         ShaderProgram->Update(shaders);
     } else {
+        SCL_CORE_INFO("Shader creation from files \"{}\", \"{}\", \"{}\" started.", ShaderProgram->VertexShadersourceFileName, ShaderProgram->GeometryShadersourceFileName, ShaderProgram->PixelShadersourceFileName);
+
         // Vertex shader
         shader_text = LoadFile(ShaderProgram->VertexShadersourceFileName);
         assets_manager::shader_preprocessor::ProcessIncludes(ShaderProgram->VertexShadersourceFileName,

@@ -21,22 +21,6 @@
 #include "core/resources/mesh.h"
 #include "core/resources/materials/material.h"
 #include "core/resources/topology/points.h"
-#include "utilities/event/event_dispatcher.h"
-
-const scl::camera_component &scl::scene::GetMainCamera() const
-{
-    return *MainCamera;
-}
-
-void scl::scene::SetMainCamera(const std::string &Name)
-{
-    for (auto &&[entity, name, camera] : Registry.group<object_name_component>(entt::get<camera_component>).each())
-        if (name.Name == Name)
-        {
-            MainCamera = &camera;
-            return;
-        }
-}
 
 scl::scene_object scl::scene::CreateObject(const std::string &Name)
 {
@@ -56,26 +40,36 @@ void scl::scene::OnUpdate(float DeltaTime)
 
 void scl::scene::Render()
 {
-    if (!MainCamera) return;
+    // Set up scene primary camera
+    camera *primary_camera {};
+    for (auto &&[entity, camera] : Registry.view<camera_component>().each())
+        if (camera.IsPrimary) { primary_camera = &camera.Camera; break; }
+    if (primary_camera == nullptr) return;
+    if (primary_camera->GetViewportWidth() != ViewportWidth || primary_camera->GetViewportHeight() != ViewportHeight)
+        primary_camera->Resize(ViewportWidth, ViewportHeight);
 
-    renderer::StartPipeline(MainCamera->Camera, EnviromentAmbient);
+    renderer::StartPipeline(*primary_camera, EnviromentAmbient);
     {
         for (auto &&[entity, point_light, transform] : Registry.group<point_light_component>(entt::get<transform_component>).each())
-            renderer::SubmitPointLight(transform.Position, point_light.Color, point_light.Constant, point_light.Linear, point_light.Quadratic);
+            renderer::SubmitPointLight(transform.Position, point_light.Color * point_light.Strength, point_light.Constant, point_light.Linear, point_light.Quadratic);
     
-        for (auto &&[entity, directional_light] : Registry.view<directional_light_component>().each())
+        for (auto &&[entity, directional_light, transform] : Registry.group<directional_light_component>(entt::get<transform_component>).each())
         {
-            vec3 pos = -directional_light.Direction * directional_light.Distance / 2, at = pos + directional_light.Direction * 5;
-            renderer::SubmitDirectionalLight(directional_light.Direction, directional_light.Color, directional_light.IsShadows,
-                                             matr4::View(pos, at, { 0, 1, 0 }) * directional_light.Projection, directional_light.ShadowMap);
+            vec3 direction = transform.AnglesMatr.TransformVector(vec3 { 0, -1, 0 });
+            vec3 at = transform.Position + direction;
+            renderer::SubmitDirectionalLight(direction, directional_light.Color * directional_light.Strength, directional_light.GetIsShadow(),
+                                             matr4::View(transform.Position, at, { 0, 1, 0 }) * directional_light.GetProjection(), directional_light.GetShadowMap());
         }
     
         for (auto &&[entity, spot_light, transform] : Registry.group<spot_light_component>(entt::get<transform_component>).each())
-            renderer::SubmitSpotLight(transform.Position, spot_light.Direction, spot_light.Color,
+        {
+            vec3 direction = transform.AnglesMatr.TransformVector(vec3 { 0, -1, 0 });
+            renderer::SubmitSpotLight(transform.Position, direction, spot_light.Color * spot_light.Strength,
                                       spot_light.InnerCutoffCos, spot_light.OuterCutoffCos, spot_light.Epsilon);
+        }
     
         for (auto &&[entity, mesh, transform] : Registry.group<mesh_component>(entt::get<transform_component>).each())
-            renderer::Submit(mesh, transform);
+            if (mesh.Mesh != nullptr) renderer::Submit(mesh, transform);
     }
     renderer::EndPipeline();
 }
@@ -85,6 +79,7 @@ void scl::scene::CallUpdate()
 {
     for (auto &&[entity, native_script] : Registry.view<native_script_component>().each())
     {
+        // Initialize script component if it is not
         if (!native_script.ObjectBehaviour)
         {
             native_script.ObjectBehaviour = native_script.Instanciate();
@@ -92,6 +87,7 @@ void scl::scene::CallUpdate()
             native_script.ObjectBehaviour->OnCreate();
         }
 
+        // Call script update function if script is active
         if (native_script.IsActive)
             native_script.ObjectBehaviour->OnUpdate();
     }
@@ -99,16 +95,15 @@ void scl::scene::CallUpdate()
 
 scl::scene::scene()
 {
-    // Set up scene event listners
     event_dispatcher::AddEventListner<mouse_button_event>([&](mouse_button_event &Event) { CallUpdate(); return false; });
-    event_dispatcher::AddEventListner<mouse_wheel_event>([&](mouse_wheel_event &Event) { CallUpdate(); return false; });
-    event_dispatcher::AddEventListner<mouse_move_event>([&](mouse_move_event &Event) { CallUpdate(); return false; });
-    event_dispatcher::AddEventListner<keyboard_event>([&](keyboard_event &Event) { CallUpdate(); return false; });
-    event_dispatcher::AddEventListner<window_resize_event>([&](window_resize_event &Event)
+    event_dispatcher::AddEventListner<mouse_wheel_event>([&](mouse_wheel_event &Event)   { CallUpdate(); return false; });
+    event_dispatcher::AddEventListner<mouse_move_event>([&](mouse_move_event &Event)     { CallUpdate(); return false; });
+    event_dispatcher::AddEventListner<keyboard_event>([&](keyboard_event &Event)         { CallUpdate(); return false; });
+    event_dispatcher::AddEventListner<viewport_resize_event>([&](viewport_resize_event &Event)
     {
-        ViewportWidth = Event.GetWidth();
-        ViewportHeight = Event.GetHeight();
-        MainCamera->Camera.Resize(ViewportWidth, ViewportHeight);
+        if (Event.GetViewportId() == ViewportId)
+            ViewportWidth = Event.GetWidth(),
+            ViewportHeight = Event.GetHeight();
         return false;
     });
 }

@@ -35,5 +35,12 @@ void scl::scene_hierarchy_window::Draw()
         }
         if (is_open) ImGui::TreePop();
     }
+
+    float window_width = ImGui::GetWindowSize().x;
+    ImGui::SetNextItemWidth(window_width * 0.6f);
+    ImGui::InputText("##adding_object_name", ObjectCreationNameTextBuffer, 128);
+    ImGui::SameLine(window_width * 0.65f);
+    if (ImGui::Button("Add new object", { window_width * 0.35f, 0 }))
+        Scene->CreateObject(std::string(ObjectCreationNameTextBuffer)), memset(ObjectCreationNameTextBuffer, 0, 128);
     ImGui::End();
 }

@@ -27,7 +27,9 @@ void scl::assets_manager::mesh_loader_phong::ProcessNode(aiNode *Node)
     for (u32 i = 0; i < Node->mNumMeshes; i++)
     {
         aiMesh *mesh = Scene->mMeshes[Node->mMeshes[i]];
-        OutSubmeshes.push_back(GenerateSubmesh(mesh));
+        submesh_props<scl::vertex> generating_submesh_props;
+        GenerateSubmesh(mesh, generating_submesh_props);
+        OutSubmeshes.push_back(generating_submesh_props);
     }
 
     // Run processing of all child nodes
@@ -35,29 +37,27 @@ void scl::assets_manager::mesh_loader_phong::ProcessNode(aiNode *Node)
         ProcessNode(Node->mChildren[i]);
 }
 
-scl::submesh_props<scl::vertex> scl::assets_manager::mesh_loader_phong::GenerateSubmesh(aiMesh *Mesh)
+void scl::assets_manager::mesh_loader_phong::GenerateSubmesh(aiMesh *Mesh, scl::submesh_props<scl::vertex> &OutSubmeshProps)
 {
-    submesh_props<vertex> generating_submesh_props;
-    generating_submesh_props.Topology.Vertices.resize(Mesh->mNumVertices);
+    OutSubmeshProps.Topology.Vertices.resize(Mesh->mNumVertices);
     for (u32 i = 0; i < Mesh->mNumVertices; i++)
     {
         vertex v;
         v.Position  = { Mesh->mVertices[i].x,   Mesh->mVertices[i].y,   Mesh->mVertices[i].z };
         v.TexCoords = Mesh->mTextureCoords[0] ? vec2 { Mesh->mTextureCoords[0][i].x, Mesh->mTextureCoords[0][i].y } : vec2 {};
-        generating_submesh_props.Topology.Vertices[i] = v;
+        OutSubmeshProps.Topology.Vertices[i] = v;
     }
-
+    
     for (u32 i = 0; i < Mesh->mNumFaces; i++)
     {
         const aiFace &face = Mesh->mFaces[i];
         for (u32 j = 0; j < face.mNumIndices; j++)
-            generating_submesh_props.Topology.Indices.push_back(face.mIndices[j]);
+            OutSubmeshProps.Topology.Indices.push_back(face.mIndices[j]);
     }
 
-    generating_submesh_props.Topology.EvaluateNormals();
-    generating_submesh_props.Topology.EvaluateTangentSpace();
-    generating_submesh_props.Material = GenerateSubmeshMaterial(Mesh);
-    return generating_submesh_props;
+    OutSubmeshProps.Topology.EvaluateNormals();
+    OutSubmeshProps.Topology.EvaluateTangentSpace();
+    OutSubmeshProps.Material = GenerateSubmeshMaterial(Mesh);
 }
 
 scl::shared<scl::material_phong> scl::assets_manager::mesh_loader_phong::GenerateSubmeshMaterial(aiMesh *Mesh)
@@ -98,6 +98,8 @@ scl::assets_manager::mesh_loader_phong::mesh_loader_phong(const aiScene *Scene,
 
 scl::shared<scl::mesh> scl::assets_manager::LoadMeshes(const std::filesystem::path &ModelFilePath)
 {
+    SCL_CORE_INFO("Mesh creation from file \"{}\" started (this may take time).", ModelFilePath.string());
+
     u32 flags = aiProcess_Triangulate
         | aiProcess_OptimizeMeshes
         | aiProcess_GenNormals

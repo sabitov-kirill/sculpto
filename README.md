@@ -1,7 +1,7 @@
 # About [sculpto]
-Sculpto - full featured render engine with non-programmers friendly API.
+Sculpto - full featured render engine with non-programmer friendly API.
 Distributing with scene editor forms platform for creativity & design & code learning & game engine.
-Allows implement your ideas through computer graphics via scripts or scene editor.
+Allows implement your ideas through computer graphics via native C++ code/scripts/GUI.
 
 ## Features
     TODO
@@ -21,21 +21,21 @@ Allows implement your ideas through computer graphics via scripts or scene edito
     - [x] assets manager                                           |
     - [x] single color material and shader (color/texture)         |
 
-    - [ ] UI panels:                                               | 09.07
+    - [x] UI panels:                                               | 09.07
         - [x] Scene hierarchy                                      |
         - [~] Objects components configuration                     |
             - [x] Name component                                   |
             - [x] Transform component                              |
             - [x] Native script component                          |
-            - [~] Mesh component                                   | 
-            - [ ] Camera controller component                      |
-            - [ ] Point light component                            |
-            - [ ] Directional light component                      |
-            - [ ] Spot light component                             |
-            - [ ] Add/delete components                            |
-            - [ ] Create/delete objects                            |
+            - [x] Mesh component                                   | 
+            - [x] Camera controller component                      |
+            - [x] Point light component                            |
+            - [x] Directional light component                      |
+            - [x] Spot light component                             |
+        - [x] Add/delete components                                |
+        - [x] Create/delete objects                                |
         - [x] Renderer configuration                               |
-        - [~] Profiling (FPS, time per each frame functions calls) |
+        - [x] Profiling (FPS)                                      |
 
     - [x] HDR                                                      | 10.07
     - [x] bloom                                                    |
@@ -44,8 +44,10 @@ Allows implement your ideas through computer graphics via scripts or scene edito
     - [x] memory leaks while window resize                         |
     - [x] deffered rendering                                       |
 
-    - [ ] finish UI components windows                             | 13.07
-    - [ ] embeded C++ scriping                                     |
+    - [x] propeper mesh component configuration                    | final
+          there is problems with meshes in whole application       |
+    - [x] scene cameras system                                     |
+    - [ ] GPU ray tracing (client app example)                     |
+    - [ ] scene serialization (save/load)                          |
+    - [ ] embeded C++/Py scriping                                  |
     - [ ] sceletal animation                                       |
-
-    - [ ] PBR try                                                  | 14.07

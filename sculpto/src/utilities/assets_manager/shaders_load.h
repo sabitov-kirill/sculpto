@@ -51,5 +51,5 @@ namespace scl::assets_manager
      * \param ShaderProgram - shader program to update.
      * \return None.
      */
-    void UpdateShader(shared<shader_program> &ShaderProgram);
+    void UpdateShader(shared<shader_program> ShaderProgram);
 }

@@ -32,7 +32,7 @@ namespace scl::assets_manager
         std::vector<submesh_props<vertex>> &OutSubmeshes;
         std::string DirectoryPath;
 
-        submesh_props<vertex> GenerateSubmesh(aiMesh *Mesh);
+        void GenerateSubmesh(aiMesh *Mesh, submesh_props<vertex> &OutSubmeshProps);
         shared<material_phong> GenerateSubmeshMaterial(aiMesh *Mesh);
 
     public:

@@ -153,7 +153,7 @@
     <ClInclude Include="src\core\components\transform_component.h">
       <Filter>src\core\components</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\events\application_event.h">
+    <ClInclude Include="src\core\events\close_event.h">
       <Filter>src\core\events</Filter>
     </ClInclude>
     <ClInclude Include="src\core\events\events.h">
@@ -165,10 +165,10 @@
     <ClInclude Include="src\core\events\mouse_event.h">
       <Filter>src\core\events</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\events\window_event.h">
+    <ClInclude Include="src\core\events\vieport_resize_event.h">
       <Filter>src\core\events</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\gui\gui_layer.h">
+    <ClInclude Include="src\core\gui\gui.h">
       <Filter>src\core\gui</Filter>
     </ClInclude>
     <ClInclude Include="src\core\gui\windows\application_config_window.h">
@@ -410,7 +410,7 @@
     <ClCompile Include="src\core\application\window.cpp">
       <Filter>src\core\application</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\gui\gui_layer.cpp">
+    <ClCompile Include="src\core\gui\gui.cpp">
       <Filter>src\core\gui</Filter>
     </ClCompile>
     <ClCompile Include="src\core\gui\windows\application_config_window.cpp">

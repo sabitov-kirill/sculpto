@@ -23,7 +23,7 @@ namespace scl
     private: /* Renderer data. */
         static render_pipeline Pipeline;
 
-    private: /* Helper functions. */
+    public: /* Helper functions. */
         /**
          * Draw mesh geometry (for geometry pass) function.
          *
@@ -50,6 +50,7 @@ namespace scl
          */
         static void DrawFullscreenQuad();
 
+    private:
         /**
          * Add texture colors to main color attachment of detination frame buffer function.
          *
@@ -112,6 +113,14 @@ namespace scl
         static void ComputeToneMapping();
 
     public: /* Renderer API functions. */
+        /**
+         * Renderer initialization function.
+         * 
+         * \param None.
+         * \return None.
+         */
+        static void Initialize();
+
         /**
          * Begin render pass function.
          * Updates renderer pipeline data buffer.

@@ -26,8 +26,8 @@ namespace scl
     /* Mesh interface. */
     class vertex_array : public render_primitive
     {
-    private: /* Vertex array data. */
-        mesh_type Type;
+    protected: /* Vertex array data. */
+        mesh_type Type {};
         shared<vertex_buffer> VertexBuffer {};
         shared<index_buffer> IndexBuffer {};
 
@@ -39,15 +39,14 @@ namespace scl
         /* Index buffer, linked to vertex array getter function. */
         const shared<index_buffer> &GetIndexBuffer() const { return IndexBuffer; }
 
+        /* Link vertex buffer to vertex array function. */
+        virtual void SetVertexBuffer(const shared<vertex_buffer> &VertexBuffer) = 0;
+        /* Link index buffer to vertex array function. */
+        virtual void SetIndexBuffer(const shared<index_buffer> &IndexBuffer) = 0;
+
     public:
-        /**
-         * Vertex buffer default constructor.
-         * 
-         * \param Type - creating mesh type.
-         * \param VertexBuffer - vertex buffer to be linked to vertex array.
-         * \param IndexBuffer - index array to be linked to vertex array.
-         */
-        vertex_array(mesh_type Type, shared<vertex_buffer> VertexBuffer, shared<index_buffer> IndexBuffer);
+        /* Vertex array default constructor. */
+        vertex_array(mesh_type MeshType);
 
         /* Vertex array default destructor. */
         virtual ~vertex_array() = default;
@@ -76,6 +75,6 @@ namespace scl
          * \param IndexBuffer - vartex indicies buffer to be linked to vertex array.
          * \return pointer to created vertex array.
          */
-        static shared<vertex_array> Create(mesh_type Type, shared<vertex_buffer> VertexBuffer, shared<index_buffer> IndexBuffer);
+        static shared<vertex_array> Create(mesh_type Mesh_type);
     };
 }

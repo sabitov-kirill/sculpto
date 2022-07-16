@@ -9,6 +9,7 @@
 #pragma once
 
 #include "sclpch.h"
+#include "utilities/string/string_id.h"
 
 #define SCL_MAKE_EVENT(name)                                          \
     public:                                                           \

@@ -11,14 +11,14 @@
 #include "vertex_array.h"
 #include "platform/opengl/gl_vertex_array.h"
 
-scl::vertex_array::vertex_array(mesh_type Type, shared<vertex_buffer> VertexBuffer, shared<index_buffer> IndexBuffer) :
-    Type(Type), VertexBuffer(VertexBuffer), IndexBuffer(IndexBuffer) {}
+scl::vertex_array::vertex_array(mesh_type MeshType) :
+    Type(MeshType) {}
 
-scl::shared<scl::vertex_array> scl::vertex_array::Create(mesh_type Type, shared<vertex_buffer> VertexBuffer, shared<index_buffer> IndexBuffer)
+scl::shared<scl::vertex_array> scl::vertex_array::Create(mesh_type Mesh_type)
 {
     switch (render_context::GetApi())
     {
-    case scl::render_context_api::OpenGL:  return CreateShared<gl_vertex_array>(Type, VertexBuffer, IndexBuffer);
+    case scl::render_context_api::OpenGL:  return CreateShared<gl_vertex_array>(Mesh_type);
     case scl::render_context_api::DirectX: SCL_CORE_ASSERT(0, "This API is currently unsupported."); return nullptr;
     }
 

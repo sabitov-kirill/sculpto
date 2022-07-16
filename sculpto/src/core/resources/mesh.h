@@ -58,17 +58,19 @@ namespace scl
         mesh(const topology::basis<Tvertex> &TopologyObject, shared<material> Material)
         {
             submesh_data new_sub_mesh {};
+            new_sub_mesh.VertexArray = vertex_array::Create(TopologyObject.GetType());
             new_sub_mesh.VertexBuffer = vertex_buffer::Create(TopologyObject.GetVertices().data(),
                                                               (u32)TopologyObject.GetVertices().size(),
-                                                              Tvertex::GetVertexLayout());
+                                                              vertex::GetVertexLayout());
             new_sub_mesh.IndexBuffer = index_buffer::Create((u32 *)TopologyObject.GetIndices().data(),
                                                             (u32)TopologyObject.GetIndices().size());
-            new_sub_mesh.VertexArray = vertex_array::Create(TopologyObject.GetType(),
-                                                            new_sub_mesh.VertexBuffer,
-                                                            new_sub_mesh.IndexBuffer);
-            new_sub_mesh.Material = Material;
+            new_sub_mesh.VertexArray->SetIndexBuffer(new_sub_mesh.IndexBuffer);
+            new_sub_mesh.VertexArray->SetVertexBuffer(new_sub_mesh.VertexBuffer);
 
+            new_sub_mesh.Material = Material;
             SubMeshes.push_back(new_sub_mesh);
+
+            SCL_CORE_INFO("Mesh with 1 sub-mesh created.");
         }
 
         /**
@@ -82,18 +84,26 @@ namespace scl
             for (const auto &submesh_prop : SubmeshesProperties)
             {
                 submesh_data new_sub_mesh {};
+                new_sub_mesh.VertexArray = vertex_array::Create(submesh_prop.Topology.GetType());
                 new_sub_mesh.VertexBuffer = vertex_buffer::Create(submesh_prop.Topology.GetVertices().data(),
                                                                   (u32)submesh_prop.Topology.GetVertices().size(),
                                                                   vertex::GetVertexLayout());
                 new_sub_mesh.IndexBuffer = index_buffer::Create((u32 *)submesh_prop.Topology.GetIndices().data(),
                                                                 (u32)submesh_prop.Topology.GetIndices().size());
-                new_sub_mesh.VertexArray = vertex_array::Create(submesh_prop.Topology.GetType(),
-                                                                new_sub_mesh.VertexBuffer,
-                                                                new_sub_mesh.IndexBuffer);
-                new_sub_mesh.Material = submesh_prop.Material;
+                new_sub_mesh.VertexArray->SetIndexBuffer(new_sub_mesh.IndexBuffer);
+                new_sub_mesh.VertexArray->SetVertexBuffer(new_sub_mesh.VertexBuffer);
 
+                new_sub_mesh.Material = submesh_prop.Material;
                 SubMeshes.push_back(new_sub_mesh);
             }
+
+            SCL_CORE_INFO("Mesh with {} sub-mesh(es) created.", SubmeshesProperties.size());
+        }
+
+        /* Mesh default destructor. */
+        ~mesh()
+        {
+            SCL_CORE_INFO("Mesh with {} sub-mesh(es) freed.", SubMeshes.size());
         }
 
         /**

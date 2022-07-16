@@ -28,18 +28,18 @@ namespace scl
         /* Keys state array getter function.
            Key state could be accessed from array by its VK_*** key code or letter char.
            Example: GetKeys()[keycodes::...] or GetKeys()['A'] */
-        char Keys[256] { 0 };
+        u8 Keys[256] { 0 };
 
         /* Keys previously readed state array getter function.
            Key state could be accessed from array by its VK_*** key code or letter char.
            Example: GetKeys()[keycodes::...] or GetKeys()['A'] */
-        char KeysOld[256] { 0 };
+        u8 KeysOld[256] { 0 };
 
         /* Keys click state array getter function.
            Click state is equal to true only once when user pressed down key.
            Key state could be accessed from array by its VK_*** key code or letter char.
            Example: GetKeys()[keycodes::...] or GetKeys()['A'] */
-        char KeysClick[256] { 0 };
+        u8 KeysClick[256] { 0 };
     };
 
     class input_system
@@ -73,13 +73,13 @@ namespace scl
         /* Keys previously readed state array getter function.
            Key state could be accessed from array by its VK_*** key code or letter char.
            Example: GetKeys()[keycode::SPACE] or GetKeys()['A'] */
-        static bool GetKeysOld(keycode Index) { return Instance->Keyboard.KeysOld[(int)Index]; };
+        static bool GetKeyOld(keycode Index) { return Instance->Keyboard.KeysOld[(int)Index]; };
 
         /* Keys click state array getter function.
            Click state is equal to true only once when user pressed down key.
            Key state could be accessed from array by its VK_*** key code or letter char.
            Example: GetKeys()[keycode::SPACE] or GetKeys()['A'] */
-        static bool GetKeyboardKeysClick(keycode Index) { return Instance->Keyboard.KeysClick[(int)Index]; };
+        static bool GetKeyClick(keycode Index) { return Instance->Keyboard.KeysClick[(int)Index]; };
 
         /**
          * Read all available human devies function.

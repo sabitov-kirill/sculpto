@@ -9,6 +9,9 @@
 
 #pragma once
 
+#include <entt.hpp>
+#include <imgui.h>
+
 /* Core module. */
 #include "core/application/application.h"
 
