@@ -1,3 +1,9 @@
 .vs/
-bin-int/
-bin/
+**/bin-int/
+**/bin/
+
+# Visual studio project files (could be genereate dby premake5)
+**.sln
+**.vcxproj
+**.user
+**.filters
