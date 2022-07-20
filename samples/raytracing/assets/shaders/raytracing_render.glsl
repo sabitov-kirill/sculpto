@@ -18,13 +18,13 @@ void InitializeScene()
     Spheres[2].Radius = 1.0;
     Spheres[0].Surface.Roughness = 1.0;
     Spheres[1].Surface.Roughness = 0.8;
-    Spheres[2].Surface.Roughness = 0.2;
+    Spheres[2].Surface.Roughness = 1.0;
     Spheres[0].Surface.Opacity = 0.0;
     Spheres[1].Surface.Opacity = 0.0;
-    Spheres[2].Surface.Opacity = 0.0;
+    Spheres[2].Surface.Opacity = 1.0;
     Spheres[0].Surface.Reflectance = vec3(1.0, 0.0, 0.0);
     Spheres[1].Surface.Reflectance = vec3(1.0, 0.4, 0.0);
-    Spheres[2].Surface.Reflectance = vec3(1.0);
+    Spheres[2].Surface.Reflectance = vec3(1);
     Spheres[0].Surface.Emmitance = vec3(0.0);
     Spheres[1].Surface.Emmitance = vec3(0.0);
     Spheres[2].Surface.Emmitance = vec3(0.0);
@@ -54,10 +54,10 @@ void InitializeScene()
     );
 
     // right
-    Boxes[2].Surface.Roughness = 1;
+    Boxes[2].Surface.Roughness = 0.01;
     Boxes[2].Surface.Opacity = 0.0;
     Boxes[2].Surface.Emmitance = vec3(0.0);
-    Boxes[2].Surface.Reflectance = vec3(1);
+    Boxes[2].Surface.Reflectance = vec3(0.09, 0.91, 0.09);
     Boxes[2].Size = vec3(5.0, 0.5, 5.0);
     Boxes[2].Position = vec3(5.5, 0.0, 0.0);
     Boxes[2].Rotation = mat3(
@@ -67,10 +67,10 @@ void InitializeScene()
     );
 
     // left
-    Boxes[3].Surface.Roughness = 1;
+    Boxes[3].Surface.Roughness = 0.0;
     Boxes[3].Surface.Opacity = 0.0;
     Boxes[3].Surface.Emmitance = vec3(0.0);
-    Boxes[3].Surface.Reflectance = vec3(1);
+    Boxes[3].Surface.Reflectance = vec3(0.94, 0.05, 0.05);
     Boxes[3].Size = vec3(5.0, 0.5, 5.0);
     Boxes[3].Position = vec3(-5.5, 0.0, 0.0);
     Boxes[3].Rotation = mat3(
@@ -95,10 +95,10 @@ void InitializeScene()
     // light source
     Boxes[5].Surface.Roughness = 0.0;
     Boxes[5].Surface.Opacity = 0.0;
-    Boxes[5].Surface.Emmitance = vec3(6.0);
+    Boxes[5].Surface.Emmitance = vec3(4.0, 4.0, 4.0);
     Boxes[5].Surface.Reflectance = vec3(1.0);
-    Boxes[5].Size = vec3(2.5, 0.2, 2.5);
-    Boxes[5].Position = vec3(0.0, 4.8, 0.0);
+    Boxes[5].Size = vec3(3, 0.1, 3);
+    Boxes[5].Position = vec3(0, 4.9, 0);
     Boxes[5].Rotation = mat3(
         1.0, 0.0, 0.0,
         0.0, 1.0, 0.0,
@@ -106,7 +106,7 @@ void InitializeScene()
     );
 
     // Boxes
-    Boxes[6].Surface.Roughness = 0.0;
+    Boxes[6].Surface.Roughness = 0.7;
     Boxes[6].Surface.Opacity = 0.0;
     Boxes[6].Surface.Emmitance = vec3(0.0);
     Boxes[6].Surface.Reflectance = vec3(1.0);
@@ -134,20 +134,15 @@ void InitializeScene()
 
 bool Intersect(ray Ray, inout intersection Intersection)
 {
-    bool is_intersected;
     intersection current_inter;
     current_inter.Distance = FAR_CLIP;
 
     for (uint i = 0; i < SPHERE_COUNT; ++i) RaySphereIntersect(Ray, Spheres[i], current_inter);
-    // for (uint i = 0; i < PLANES_COUNT; ++i) RayPlaneIntersect(Ray, Planes[i], current_inter);
     for (uint i = 0; i < BOX_COUNT; ++i) RayBoxIntersect(Ray, Boxes[i], current_inter);
+ // for (uint i = 0; i < PLANES_COUNT; ++i) RayPlaneIntersect(Ray, Planes[i], current_inter);
 
-    if (current_inter.Distance != FAR_CLIP)
-    {
-        Intersection = current_inter;
-        return true;
-    }
-    return false;
+    Intersection = current_inter;
+    return current_inter.Distance != FAR_CLIP;
 }
 
 vec3 RandomHemispherePoint(vec2 RandomVector)
@@ -166,18 +161,21 @@ vec3 NormalOrientedHemispherePoint(vec2 RandomVector, vec3 Normal)
 
 float FresnelSchlick(float In, float Out, vec3 Dirction, vec3 Normal)
 {
-    float R0 = ((Out - In) * (Out - In)) / ((Out + In) * (Out + In));
-    float fresnel = R0 + (1.0 - R0) * pow((1.0 - abs(dot(Dirction, Normal))), 5.0);
+    float F0 = ((Out - In) * (Out - In)) / ((Out + In) * (Out + In));
+    float fresnel = F0 + (1.0 - F0) * pow((1.0 - abs(dot(Dirction, Normal))), 5.0);
     return fresnel;
 }
 
 vec3 IdealRefraction(vec3 Direction, vec3 Normal, float In, float Out)
 {
-    bool outside = dot(Normal, Direction) < 0.0;
+    bool outside = dot(Normal, Direction) < -0.0001;
     float nu = outside ? Out / In : In / Out;
-    vec3 refraction = outside ? refract(Direction, Normal, nu) : -refract(-Direction, Normal, nu);
-    vec3 reflection = reflect(Direction, Normal);
-    return refraction == vec3(0.0) ? reflection : refraction;
+    vec3 refraction = vec3(0);
+
+    if (outside) refraction = refract( Direction, Normal, nu);
+    else         refraction = refract(-Direction, Normal, nu);
+    if (refraction == vec3(0.0)) return reflect(Direction, Normal);
+    else                         return refraction;
 }
 
 bool IsRefracted(float Rand, vec3 Direction, vec3 Normal, float Opacity, float In, float Out)
@@ -187,8 +185,8 @@ bool IsRefracted(float Rand, vec3 Direction, vec3 Normal, float Opacity, float I
 }
 
 #define RECURSION_DEPTH 8
-#define N_IN 0.99
-#define N_OUT 1.0
+#define N_IN 1
+#define N_OUT 0.99
 
 vec3 TracePath(ray Ray, float Seed)
 {
@@ -202,30 +200,41 @@ vec3 TracePath(ray Ray, float Seed)
         {
             vec2 rand = vec2(RandomNoise(Seed * TexCoords.xy), Seed * RandomNoise(TexCoords.yx));
             vec3 hemisphere_direction = NormalOrientedHemispherePoint(rand, inter.Normal);
-            vec3 random_vec = vec3(
-                RandomNoise(sin(Seed * TexCoords.xy)),
-                RandomNoise(cos(Seed * TexCoords.xy)),
-                RandomNoise(sin(Seed * TexCoords.yx))
-            );
-            random_vec = normalize(2.0 * random_vec - 1.0);
-            vec3 tangent = cross(random_vec, inter.Normal);
+            vec3 random_vec = normalize(vec3(RandomNoise(sin(Seed * TexCoords.xy)),
+                                             RandomNoise(cos(Seed * TexCoords.xy)),
+                                             RandomNoise(sin(Seed * TexCoords.yx))) * 2.0 - 1.0);
+            vec3 tangent   = cross(random_vec, inter.Normal);
             vec3 bitangent = cross(inter.Normal, tangent);
             mat3 transform = mat3(tangent, bitangent, inter.Normal);
 
             vec3 new_ray_origin = inter.Position;
             vec3 new_ray_direction = transform * hemisphere_direction;
 
-            if (IsRefracted(RandomNoise(cos(Seed * TexCoords.yx)), Ray.Direction, inter.Normal, inter.Surface.Opacity, N_IN, N_OUT))
+            const float n_in  = 1.00;
+            const float n_out = 0.99;
+            float refraction_rand = RandomNoise(cos(Seed * TexCoords.yx));
+            if (IsRefracted(refraction_rand, Ray.Direction, inter.Normal, inter.Surface.Opacity, n_in, n_out))
             {
-                vec3 ideal_refraction = IdealRefraction(Ray.Direction, inter.Normal, N_IN, N_OUT);
-                new_ray_direction = normalize(mix(-new_ray_direction, ideal_refraction, inter.Surface.Roughness));
-                new_ray_origin += inter.Normal * (dot(new_ray_direction, inter.Normal) < 0.0 ? -0.8 : 0.8);
+                bool outside = dot(inter.Normal, Ray.Direction) < -0.0001;
+                float nu = outside ? n_out / n_in : n_in / n_out;
+
+                vec3 reflection = reflect(Ray.Direction, inter.Normal);
+                vec3 ideal_refraction = vec3(0);
+                if (outside) ideal_refraction = refract(Ray.Direction,  inter.Normal, nu);
+                else         ideal_refraction = refract(Ray.Direction, -inter.Normal, nu);
+
+                vec3 refraction = vec3(0);
+                if (ideal_refraction == vec3(0)) ideal_refraction = reflection;
+                else                             ideal_refraction = refraction;
+
+                new_ray_direction = normalize(mix(-new_ray_direction, refraction, inter.Surface.Roughness));
+                new_ray_origin   += refraction * 0.8;
             }
             else
             {
                 vec3 ideal_reflection = reflect(Ray.Direction, inter.Normal);
                 new_ray_direction = normalize(mix(new_ray_direction, ideal_reflection, inter.Surface.Roughness));
-                new_ray_origin += inter.Normal * 0.8;
+                new_ray_origin += inter.Normal * 0.01;
             }
 
             Ray.Origin = new_ray_origin;
@@ -234,10 +243,7 @@ vec3 TracePath(ray Ray, float Seed)
             total_light += light_weight * inter.Surface.Emmitance;
             light_weight *= inter.Surface.Reflectance;
         }
-        else
-        {
-            light_weight = vec3(0);
-        }
+        else break;
     }
     return total_light;
 }

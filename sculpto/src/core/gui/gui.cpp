@@ -153,6 +153,7 @@ void scl::gui::SetUpTheme()
     style.WindowRounding = 4.0f;
     style.PopupBorderSize = 0.0f;
     style.GrabRounding = 4.0f;
+    style.ChildRounding = 4.0f;
 
     ImVec4 *colors = style.Colors;
     colors[ImGuiCol_Text]                   = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);

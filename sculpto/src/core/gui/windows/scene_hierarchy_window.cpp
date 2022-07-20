@@ -9,6 +9,7 @@
 #include "sclpch.h"
 
 #include <imgui.h>
+#include <imgui_internal.h>
 
 #include "scene_hierarchy_window.h"
 #include "core/components/components.h"
@@ -24,23 +25,27 @@ void scl::scene_hierarchy_window::Draw()
     ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow
         | ImGuiTreeNodeFlags_OpenOnDoubleClick
         | ImGuiTreeNodeFlags_SpanAvailWidth;
-    for (auto &&[entity, tag] : Scene->Registry.view<object_name_component>().each())
+    for (auto &&[entity, tag] : Scene->Registry.view<name_component>().each())
     {
-        bool is_open = ImGui::TreeNodeEx((void *)(u64)(u32)entity,
-                                         node_flags | (ImGuiTreeNodeFlags_Selected * (entity == SelectedObject)),
-                                         "%s", tag.Name.c_str());
-        if (ImGui::IsItemClicked()) {
+        if (ImGui::Selectable(tag.Name.c_str(), entity == SelectedObject, ImGuiSelectableFlags_None,
+                              { entity == SelectedObject ? ImGui::GetWindowWidth() * 0.6f - 10 : 0, 20 }))
+        {
             SelectedObject = scene_object { entity, Scene };
             OnObjectSelect(SelectedObject);
         }
-        if (is_open) ImGui::TreePop();
+
+        if (entity == SelectedObject)
+        {
+            ImGui::SameLine(ImGui::GetWindowWidth() * 0.6f + 5);
+            if (ImGui::Button("Delete##delete_object", { ImGui::GetWindowWidth() * 0.4f - 10, 0 }))
+                Scene->RemoveObject(SelectedObject);
+        }
     }
 
-    float window_width = ImGui::GetWindowSize().x;
-    ImGui::SetNextItemWidth(window_width * 0.6f);
+    ImGui::SetNextItemWidth(ImGui::GetWindowWidth() * 0.6f - 5);
     ImGui::InputText("##adding_object_name", ObjectCreationNameTextBuffer, 128);
-    ImGui::SameLine(window_width * 0.65f);
-    if (ImGui::Button("Add new object", { window_width * 0.35f, 0 }))
+    ImGui::SameLine(ImGui::GetWindowWidth() * 0.6f + 5);
+    if (ImGui::Button("Add new object", { ImGui::GetWindowWidth() * 0.4f - 10, 0 }))
         Scene->CreateObject(std::string(ObjectCreationNameTextBuffer)), memset(ObjectCreationNameTextBuffer, 0, 128);
     ImGui::End();
 }

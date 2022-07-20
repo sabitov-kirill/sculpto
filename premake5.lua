@@ -11,15 +11,14 @@ workspace "sculpto"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}-"
 
 IncludeDir = {}
-IncludeDir["glad"]      = "%{wks.location}/sculpto/external/glad/include"
 IncludeDir["glew"]      = "%{wks.location}/sculpto/external/glew/include"
 IncludeDir["stb_image"] = "%{wks.location}/sculpto/external/stb_image"
 IncludeDir["imgui"]     = "%{wks.location}/sculpto/external/imgui"
 IncludeDir["entt"]      = "%{wks.location}/sculpto/external/entt"
+IncludeDir["json"]      = "%{wks.location}/sculpto/external/json"
 IncludeDir["assimp"]    = "%{wks.location}/sculpto/external/assimp/include"
 
 group "Dependencies"
-    include "sculpto/external/glad"
     include "sculpto/external/glew"
     include "sculpto/external/imgui"
     include "sculpto/external/assimp"

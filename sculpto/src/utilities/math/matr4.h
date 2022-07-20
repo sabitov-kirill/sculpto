@@ -48,17 +48,6 @@ namespace scl::math
                 {A30, A31, A32, A33} } {}
 
         /**
-         * Matrix data constructor by 1 value.
-         *
-         * \param A00 - calue to set to all matrix cells.
-         */
-        matr4_data(T A00 ) :
-            A { {A00, A00, A00, A00},
-                {A00, A00, A00, A00},
-                {A00, A00, A00, A00},
-                {A00, A00, A00, A00} } {}
-
-        /**
          * Getting pointer to first component of natrix operator.
          * Need to pass vector to shader.
          *
@@ -222,7 +211,10 @@ namespace scl::math
          * \param A00 - calue to set to all matrix cells.
          */
         matr4(T A00) :
-            matr4_data<T>(A00),
+            matr4_data<T>(A00, A00, A00, A00,
+                          A00, A00, A00, A00,
+                          A00, A00, A00, A00,
+                          A00, A00, A00, A00),
             InvA { {0, 0, 0, 0},
                    {0, 0, 0, 0},
                    {0, 0, 0, 0},
@@ -538,6 +530,28 @@ namespace scl::math
             return vec3<T>((V.X * this->A[0][0] + V.Y * this->A[1][0] + V.Z * this->A[2][0] + this->A[3][0]) / w,
                            (V.X * this->A[0][1] + V.Y * this->A[1][1] + V.Z * this->A[2][1] + this->A[3][1]) / w,
                            (V.X * this->A[0][2] + V.Y * this->A[1][2] + V.Z * this->A[2][2] + this->A[3][2]) / w);
+        }
+
+        /**
+         * Getting matrix cell value operator overloading.
+         *
+         * \param Index - cell index.
+         * \return vector cartesian coordinate.
+         */
+        T &operator [](int Index)
+        {
+            return this->A[math::Clamp(Index, 0, 15)];
+        }
+
+        /**
+         * Getting coordinate operator overloading.
+         *
+         * \param Index - coordinate index.
+         * \return vector cartesian coordinate.
+         */
+        T operator [](int Index) const
+        {
+            return this->A[math::Clamp(Index, 0, 15)];
         }
     };
 }

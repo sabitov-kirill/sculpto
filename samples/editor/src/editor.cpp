@@ -56,14 +56,13 @@ class editor_app: public application
 {
 private:
     shared<scene> EditorScene {};
+
     shared<application_config_window> ConfigWindow {};
     shared<viewport_window> MainViewportWindow {};
     shared<profiller_window> ProfillerWindow {};
     shared<scene_config_window> SceneConfigWindow {};
     shared<scene_hierarchy_window> SceneHierarchyWindow {};
     shared<scene_object_config_window> SceneObjectConfigWindow {};
-
-    camera RendCamera { camera_projection_type::PERSPECTIVE, camera_effects { false, 0.7, false, 8 } };
 
 public:
     editor_app() : application("Editor") {}
@@ -73,6 +72,7 @@ public:
     {
         EditorScene = CreateShared<scene>();
 
+#if 1
         auto wall_material = material_phong::Create(vec3 {}, vec3 {}, 8.0f);
         wall_material->SetDiffuseMapTexture(assets_manager::LoadTexture("assets/images/stone_wall/diff.jpg"));
         wall_material->SetNormalMapTexture(assets_manager::LoadTexture("assets/images/stone_wall/bump.jpg"));
@@ -103,14 +103,14 @@ public:
         vec3 col = vec3 { 1 };
         topology::sphere sphere_topo = topology::sphere(vec3 { 0 }, 1, 20);
         auto light_bulb = EditorScene->CreateObject("Point Light");
-        // light_bulb.AddComponent<mesh_component>(mesh::Create(sphere_topo, material_single_color::Create(col)));
+        light_bulb.AddComponent<mesh_component>(mesh::Create(sphere_topo, material_single_color::Create(col)));
         light_bulb.AddComponent<transform_component>(vec3 { 0.1 }, vec3 { 0 }, vec3 { 2, 4, 2 });
         light_bulb.AddComponent<point_light_component>(col, 1.0f, 0.022f, 0.0019f);
 
         vec3 A = vec3(0, 1, 0), B = vec3(0);
         col = vec3 { 0.55, 1, 0.45 };
         auto cone = EditorScene->CreateObject("Spot Light");
-        // cone.AddComponent<mesh_component>(mesh::Create(topology::cone(A, 0, B, 0.4, 20), material_single_color::Create(col)));
+        cone.AddComponent<mesh_component>(mesh::Create(topology::cone(A, 0, B, 0.4, 20), material_single_color::Create(col)));
         cone.AddComponent<transform_component>(vec3 { 1 }, vec3 {}, vec3 { 5, 5, -5 });
         cone.AddComponent<spot_light_component>(col, 15.0f, 30.0f);
 
@@ -123,8 +123,18 @@ public:
         // model.AddComponent<transform_component>(vec3 { 0.02 }, vec3 { 0, 0, 0 }, vec3 { -2, 4, 4 });
         // // model.AddComponent<native_script_component>().Bind<cube_behaviour>();
 
-        // MainViewportWindow = CreateShared<viewport_window>(EditorScene->GetMainCamera().MainFrameBuffer, true, EditorScene.get());
-        MainViewportWindow = CreateShared<viewport_window>(RendCamera.GetMainFrameBuffer());
+        camera render_camera { camera_projection_type::PERSPECTIVE, camera_effects { true, 0.7, true, 8 } };
+        render_camera.SetPosition({ 4, 5, -5 });
+        auto camera = EditorScene->CreateObject("Main Camera");
+        camera.AddComponent<camera_component>(render_camera, true);
+        camera.AddComponent<native_script_component>().Bind<camera_behaviour>();
+#endif
+
+        //scene_serializer::Deserialize(EditorScene, "assets/scenes/test.scl");
+        // auto camera = EditorScene->CreaetOrGetObject("Main Camera");
+        // camera.AddComponent<native_script_component>().Bind<camera_behaviour>();
+
+        MainViewportWindow = CreateShared<viewport_window>(camera.GetComponent<camera_component>().Camera.GetMainFrameBuffer());
         ConfigWindow = CreateShared<application_config_window>();
         ProfillerWindow = CreateShared<profiller_window>();
         SceneConfigWindow = CreateShared<scene_config_window>(EditorScene.get());
@@ -134,19 +144,12 @@ public:
             SceneObjectConfigWindow->SetConfiguringObject(SelectedObject);
         });
 
-        RendCamera.SetPosition({ 4, 5, -5 });
-        auto camera = EditorScene->CreateObject("Main Camera");
-        camera.AddComponent<camera_component>(RendCamera, true);
-        camera.AddComponent<native_script_component>().Bind<camera_behaviour>();
-
-        // RendCamera.Resize(application::GetWindow().GetWindowData().Width, application::GetWindow().GetWindowData().Height);
-        // EditorScene->SetViewportId(0);
-        // RendCamera.SetRenderToSwapChain(true);
         application::Get().GuiEnabled = true;
     }
 
     void OnClose() override
     {
+        //scene_serializer::Serialize(EditorScene, "assets/scenes/test.scl");
     }
 
     void OnUpdate(float DeltaTime) override
@@ -161,7 +164,8 @@ public:
         delta += timer::GetDeltaTime();
 #endif
 
-        EditorScene->OnUpdate(DeltaTime);
+        EditorScene->Update();
+        EditorScene->Render();
     }
 
     void OnGuiUpdate()

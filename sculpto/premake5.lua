@@ -21,17 +21,16 @@ project "sculpto"
     includedirs
     {
         "src",
-        "%{IncludeDir.glad}",
         "%{IncludeDir.glew}",
         "%{IncludeDir.stb_image}",
         "%{IncludeDir.entt}",
+        "%{IncludeDir.json}",
         "%{IncludeDir.imgui}",
         "%{IncludeDir.assimp}",
     }
 
     links
     {
-        "glad",
         "glew",
         "imgui",
         "assimp",

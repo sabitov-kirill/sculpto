@@ -18,7 +18,9 @@ project "sandbox"
         "%{wks.location}/sculpto/src",
         "%{wks.location}/sculpto/external",
         "%{IncludeDir.entt}",
+        "%{IncludeDir.json}",
         "%{IncludeDir.stb_image}",
+        "%{IncludeDir.imgui}",
     }
 
     links

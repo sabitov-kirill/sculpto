@@ -41,12 +41,13 @@ namespace scl
             matr4 LocalTransform {};
         };
 
-    public:
-        std::vector<submesh_data> SubMeshes {};
+    public: /* Mesh data. */
+        std::string FileName {};                /* File name file, from which model was loaded. */
+        std::vector<submesh_data> SubMeshes {}; /* Mesh submesmeshes (primitives) list. */
 
         /* Mesh rendering flags. */
-        bool IsDrawing       = true;
-        bool IsCastingShadow = true;
+        bool IsDrawing       = true; /* Flag, showing wheather mesh is submited to render, during main geometry render pass. */
+        bool IsCastingShadow = true; /* Flag, showing wheather mesh is submiter to render, during shadow caster shadom map generation (render pass). */
 
         /**
          * Mesh constructor by topology object and material.
@@ -54,8 +55,8 @@ namespace scl
          * \param TopologyObject - topology object to create vertex array from.
          * \param Material - mesh material.
          */
-        template <typename Tvertex>
-        mesh(const topology::basis<Tvertex> &TopologyObject, shared<material> Material)
+        template <typename Ttopology>
+        mesh(const Ttopology &TopologyObject, shared<material> Material)
         {
             submesh_data new_sub_mesh {};
             new_sub_mesh.VertexArray = vertex_array::Create(TopologyObject.GetType());
@@ -69,6 +70,7 @@ namespace scl
 
             new_sub_mesh.Material = Material;
             SubMeshes.push_back(new_sub_mesh);
+            FileName = typeid(Ttopology).name();
 
             SCL_CORE_INFO("Mesh with 1 sub-mesh created.");
         }
@@ -112,8 +114,8 @@ namespace scl
          * \param TopologyObject - topology object to create vertex array from.
          * \return created mesh pointer.
          */
-        template <typename Tvertex>
-        static shared<mesh> Create(const topology::basis<Tvertex> &TopologyObject, shared<material> Material)
+        template <typename Ttopology>
+        static shared<mesh> Create(const Ttopology &TopologyObject, shared<material> Material)
         {
             return CreateShared<mesh>(TopologyObject, Material);
         }

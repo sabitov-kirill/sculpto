@@ -58,7 +58,6 @@ HGLRC glInitialiseContext(HDC hDC)
     // Enable a new OpenGL profile support
     UINT num_formats;
     wglChoosePixelFormatARB(hDC, pixel_format_attribs, nullptr, 1, &pixel_format, &num_formats);
-    SCL_CORE_ASSERT(num_formats, "Failed to set the OpenGL pixel format.");
 
     // Setup rendering context
     int context_attribs[] = {

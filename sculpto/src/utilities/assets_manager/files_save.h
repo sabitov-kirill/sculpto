@@ -1,9 +1,9 @@
 /*****************************************************************//**
  * \file   file.h
  * \brief  Assets manager file processing functions implementation module.
- * 
+ *
  * \author Sabitov Kirill
- * \date   08 July 2022
+ * \date   17 July 2022
  *********************************************************************/
 
 #pragma once
@@ -13,10 +13,11 @@
 namespace scl::assets_manager
 {
     /**
-     * File text load function.
-     * 
-     * \param FilePath - file to path to load.
+     * File text save function.
+     *
+     * \param Data - file text buffer.
+     * \param FilePath - outpus file path.
      * \return file text string.
      */
-    std::string LoadFile(const std::filesystem::path &FilePath);
+    void SaveFile(const std::string &Data, const std::filesystem::path &FilePath);
 }

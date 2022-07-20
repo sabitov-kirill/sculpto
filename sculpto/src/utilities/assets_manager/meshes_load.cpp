@@ -113,5 +113,7 @@ scl::shared<scl::mesh> scl::assets_manager::LoadMeshes(const std::filesystem::pa
     mesh_loader_phong mesh_loader(scene, ModelFilePath.parent_path().string(), out_submeshes);
     mesh_loader.ProcessNode(scene->mRootNode);
 
-    return mesh::Create(out_submeshes);
+    auto loaded_mesh = mesh::Create(out_submeshes);
+    loaded_mesh->FileName = ModelFilePath.string();
+    return loaded_mesh;
 }

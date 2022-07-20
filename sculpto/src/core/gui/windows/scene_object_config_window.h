@@ -37,12 +37,6 @@ namespace scl
         int CameraProjectionTypeIndex {};
 
         char NameTextBuffer[128] {};
-        char LoadModelTextBuffer[128] {};
-        char PhongDiffuseTextureTextBuffer[128] {};
-        char PhongSpecularTextureTextBuffer[128] {};
-        char PhongEmissionTextureTextBuffer[128] {};
-        char NormalMapTextureTextBuffer[128] {};
-        char SingleColorTextureTextBuffer[128] {};
 
         /* Currently configuring scene object. */
         scene_object ConfiguringObject {};
@@ -82,9 +76,9 @@ namespace scl
         void DrawComponentPanel() {}
 
         template <>
-        void DrawComponentPanel<object_name_component>()
+        void DrawComponentPanel<name_component>()
         {
-            auto &name = ConfiguringObject.GetComponent<object_name_component>();
+            auto &name = ConfiguringObject.GetComponent<name_component>();
             if (strcmp(NameTextBuffer, name.Name.c_str()) != 0) strcpy_s(NameTextBuffer, name.Name.c_str());
             if (ImGui::InputText("Name", NameTextBuffer, 128))
                 name.Name = std::string(NameTextBuffer);
@@ -131,8 +125,8 @@ namespace scl
             auto &mesh = ConfiguringObject.GetComponent<mesh_component>().Mesh;
             if (mesh == nullptr) return;
 
-            ImGui::InputText("##loadmoedl", LoadModelTextBuffer, 128); ImGui::SameLine();
-            if (ImGui::Button("Load model")) mesh = assets_manager::LoadMeshes(std::string(LoadModelTextBuffer));
+            ImGui::SetNextItemWidth(PanelWidth * 0.7f - 5);
+            if (ImGui::Button("Load model", { PanelWidth - 10, 0 })); // mesh = assets_manager::LoadMeshes(std::string(LoadModelTextBuffer));
 
             if (ImGui::BeginCombo("Select Submesh", SubmeshSelectComboItems[CurrentSubmeshIndex].c_str()))
             {
@@ -159,58 +153,51 @@ namespace scl
             auto material_ph = std::dynamic_pointer_cast<material_phong>(submesh.Material);
             auto material_single = std::dynamic_pointer_cast<material_single_color>(submesh.Material);
 
-            ImGui::SetNextItemWidth(PanelWidth * 0.8);
-            ImGui::Text("Shader \"%s\"", submesh.Material->Shader->DebugName.c_str()); ImGui::SameLine(PanelWidth * 0.8f);
-            if (ImGui::Button("Reload##shdmtl", { PanelWidth * 0.2f, 0 })) assets_manager::UpdateShader(submesh.Material->Shader);
+            ImGui::SetNextItemWidth(PanelWidth * 0.7f - 5);
+            ImGui::Text("Shader \"%s\"", submesh.Material->Shader->DebugName.c_str()); ImGui::SameLine(PanelWidth * 0.7f + 5);
+            if (ImGui::Button("Reload##shdmtl", { PanelWidth * 0.3f - 10, 0 })) assets_manager::UpdateShader(submesh.Material->Shader);
             ImGui::NewLine();
 
+            ImGui::BeginDisabled();
             if (material_ph) {
                 // Diffuse map
-                ImGui::Text("Diffuse");
                 if (material_ph->GetIsDiffuseMap()) {
+                    ImGui::Text("Diffuse");
                     const shared<texture_2d> &texture = material_ph->GetDiffuseMapTexture();
                     ImGui::Image((ImTextureID)texture->GetHandle(), { PanelWidth, PanelWidth * texture->GetHeight() / texture->GetWidth() }, { 0, 1 }, { 1, 0 });
                 }
-                ImGui::InputText("##newdiffmappath", PhongDiffuseTextureTextBuffer, 128); ImGui::SameLine();
-                if (ImGui::Button("Load new texture")) material_ph->SetDiffuseMapTexture(assets_manager::LoadTexture(std::string(SingleColorTextureTextBuffer)));
                 vec3 color = material_ph->GetDiffuse();
-                if (ImGui::ColorEdit3("Diffuse", color)) material_ph->SetDiffuse(color);
+                ImGui::ColorEdit3("Diffuse", color);
                 ImGui::NewLine();
 
                 // Specular map
-                ImGui::Text("Specular");
                 if (material_ph->GetIsSpecularMap()) {
+                    ImGui::Text("Specular");
                     const shared<texture_2d> &texture = material_ph->GetSpecularMapTexture();
                     ImGui::Image((ImTextureID)texture->GetHandle(), { PanelWidth, PanelWidth * texture->GetHeight() / texture->GetWidth() }, { 0, 1 }, { 1, 0 });
                 }
-                ImGui::InputText("##newspecmappath", PhongSpecularTextureTextBuffer, 128); ImGui::SameLine();
-                if (ImGui::Button("Load new texture")) material_ph->SetSpecularMapTexture(assets_manager::LoadTexture(std::string(SingleColorTextureTextBuffer)));
                 color = material_ph->GetSpecular();
-                if (ImGui::ColorEdit3("Specular", color)) material_ph->SetSpecular(color);
+                ImGui::ColorEdit3("Specular", color);
                 ImGui::NewLine();
 
                 float shininess = material_ph->GetShininess();
-                if (ImGui::DragFloat("Shininess", &shininess, 0.05, 0.001, 512)) material_ph->SetShininess(shininess);
+                ImGui::DragFloat("Shininess", &shininess, 0.05, 0.001, 512);
                 ImGui::NewLine();
 
                 // Emission map
-                ImGui::Text("Emission map");
                 if (material_ph->GetIsEmissionMap()) {
+                    ImGui::Text("Emission map");
                     const shared<texture_2d> &texture = material_ph->GetEmissionMapTexture();
                     ImGui::Image((ImTextureID)texture->GetHandle(), { PanelWidth, PanelWidth * texture->GetHeight() / texture->GetWidth() }, { 0, 1 }, { 1, 0 });
                 }
-                ImGui::InputText("##newemissionpath", PhongEmissionTextureTextBuffer, 128); ImGui::SameLine();
-                if (ImGui::Button("Load new texture")) material_ph->SetEmissionMapTexture(assets_manager::LoadTexture(std::string(SingleColorTextureTextBuffer)));
                 ImGui::NewLine();
 
                 // Normal map
-                ImGui::Text("Normal map");
                 if (material_ph->GetIsNormalMap()) {
+                    ImGui::Text("Normal map");
                     const shared<texture_2d> &texture = material_ph->GetNormalMapTexture();
                     ImGui::Image((ImTextureID)texture->GetHandle(), { PanelWidth, PanelWidth * texture->GetHeight() / texture->GetWidth() }, { 0, 1 }, { 1, 0 });
                 }
-                ImGui::InputText("##newnmappath", NormalMapTextureTextBuffer, 128); ImGui::SameLine();
-                if (ImGui::Button("Load new texture")) material_ph->SetNormalMapTexture(assets_manager::LoadTexture(std::string(SingleColorTextureTextBuffer)));
 
             } else if (material_single) {
                 if (material_single->GetIsTexture()) {
@@ -218,11 +205,10 @@ namespace scl
                     ImGui::Text("Texture");
                     ImGui::Image((ImTextureID)texture->GetHandle(), { PanelWidth, PanelWidth * texture->GetHeight() / texture->GetWidth() }, { 0, 1 }, { 1, 0 });
                 }
-                ImGui::InputText("##newtexturepath", SingleColorTextureTextBuffer, 128); ImGui::SameLine();
-                if (ImGui::Button("Load new texture")) material_single->SetTexture(assets_manager::LoadTexture(std::string(SingleColorTextureTextBuffer)));
                 vec3 color = material_single->GetColor();
-                if (ImGui::ColorEdit3("Color", color, 0.001)) material_single->SetColor(color);
+                ImGui::ColorEdit3("Color", color, 0.001);
             }
+            ImGui::EndDisabled();
             ImGui::Separator();
         }
 
@@ -341,7 +327,6 @@ namespace scl
             float outer_cutoff = light.GetOuterCutoff();
             if (ImGui::DragFloat("Inner cutoff angle", &inner_cutoff)) light.SetInnerCutoff(inner_cutoff);
             if (ImGui::DragFloat("Outer cutoff angle", &outer_cutoff)) light.SetOuterCutoff(outer_cutoff);
-
             ImGui::Separator();
         }
 
@@ -356,32 +341,29 @@ namespace scl
 
         void DrawAddComponentPanel()
         {
-            ImGui::SetNextItemWidth(PanelWidth * 0.8f);
+            ImGui::SetNextItemWidth(PanelWidth * 0.7f - 5);
             if (ImGui::BeginCombo("##adding_component_selection", AddComponentComboItemsCames[CurrentAddingComponentIndex]))
             {
                 if (!IsTransformComponent)        DrawAddComponentComboItem(1);
-                if (!IsMeshComponent)             DrawAddComponentComboItem(2);
-                if (!IsCameraComponent)           DrawAddComponentComboItem(3);
-                if (!IsPointLightComponent)       DrawAddComponentComboItem(4);
-                if (!IsDirectionalLightComponent) DrawAddComponentComboItem(5);
-                if (!IsSpotLightComponent)        DrawAddComponentComboItem(6);
+                if (!IsCameraComponent)           DrawAddComponentComboItem(2);
+                if (!IsPointLightComponent)       DrawAddComponentComboItem(3);
+                if (!IsDirectionalLightComponent) DrawAddComponentComboItem(4);
+                if (!IsSpotLightComponent)        DrawAddComponentComboItem(5);
 
                 ImGui::EndCombo();
             }
 
-            ImGui::SameLine();
-            if (ImGui::Button("Add component", { PanelWidth * 0.2f, 0 }))
+            ImGui::SameLine(PanelWidth * 0.7f + 5);
+            if (ImGui::Button("Add component", { PanelWidth * 0.3f - 10, 0 }))
             {
                 switch (CurrentAddingComponentIndex)
                 {
                 case 1: ConfiguringObject.AddComponent<transform_component>();         break;
-                case 2: ConfiguringObject.AddComponent<mesh_component>(mesh::Create(topology::sphere(vec3 { 0 }, 1, 20),
-                                                                                    material_single_color::Create(vec3 { 1 })));
                                                                                        break;
-                case 3: ConfiguringObject.AddComponent<camera_component>();            break;
-                case 4: ConfiguringObject.AddComponent<point_light_component>();       break;
-                case 5: ConfiguringObject.AddComponent<directional_light_component>(); break;
-                case 6: ConfiguringObject.AddComponent<spot_light_component>();        break;
+                case 2: ConfiguringObject.AddComponent<camera_component>();            break;
+                case 3: ConfiguringObject.AddComponent<point_light_component>();       break;
+                case 4: ConfiguringObject.AddComponent<directional_light_component>(); break;
+                case 5: ConfiguringObject.AddComponent<spot_light_component>();        break;
                 }
                 ResetData();
             }
@@ -392,8 +374,8 @@ namespace scl
         {
             static std::string button_name = std::string("Delete##") + typeid(Tcomponent).name();
 
-            ImGui::SameLine(PanelWidth * 0.8f);
-            if (ImGui::Button(button_name.c_str(), { PanelWidth * 0.2f, 0 }))
+            ImGui::SameLine(PanelWidth * 0.7f + 5);
+            if (ImGui::Button(button_name.c_str(), { PanelWidth * 0.3f - 5, 0}))
             {
                 ConfiguringObject.RemovetComponent<Tcomponent>();
                 ResetData();

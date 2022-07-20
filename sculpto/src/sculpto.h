@@ -9,8 +9,9 @@
 
 #pragma once
 
-#include <entt.hpp>
 #include <imgui.h>
+#include <entt.hpp>
+#include <json.h>
 
 /* Core module. */
 #include "core/application/application.h"
@@ -47,8 +48,9 @@
 #include "core/render/render_bridge.h"
 #include "core/render/renderer.h"
 
-/* Runtime module */
+/* Scene module */
 #include "core/scene/scene.h"
+#include "core/scene/scene_serializer.h"
 #include "core/scene/scene_object.h"
 #include "core/scene/scene_object_behaviour.h"
 #include "core/components/components.h"

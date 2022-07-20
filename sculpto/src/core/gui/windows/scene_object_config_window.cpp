@@ -12,7 +12,6 @@
 const char scl::scene_object_config_window::AddComponentComboItemsCames[7][64] = {
     "Select component",
     "Transform Component",
-    "Mesh Component",
     "Camera Component",
     "Point Light Component",
     "Directional Light Component",
@@ -35,12 +34,6 @@ void scl::scene_object_config_window::ResetData()
     CameraProjectionTypeIndex = 0;
 
     memset(NameTextBuffer, 0, 128);
-    memset(LoadModelTextBuffer, 0, 128);
-    memset(PhongDiffuseTextureTextBuffer, 0, 128);
-    memset(PhongSpecularTextureTextBuffer, 0, 128);
-    memset(PhongEmissionTextureTextBuffer, 0, 128);
-    memset(NormalMapTextureTextBuffer, 0, 128);
-    memset(SingleColorTextureTextBuffer, 0, 128);
 
     SubmeshSelectComboItems.clear();
     if (ConfiguringObject.HasComponent<mesh_component>())
@@ -69,8 +62,8 @@ void scl::scene_object_config_window::Draw()
         auto window_size = ImGui::GetWindowSize();
         PanelWidth = (float)window_size.x - 15;
 
-        if (ConfiguringObject.HasComponent<object_name_component>())
-            DrawComponentPanel<object_name_component>();
+        if (ConfiguringObject.HasComponent<name_component>())
+            DrawComponentPanel<name_component>();
         if ((IsTransformComponent = ConfiguringObject.HasComponent<transform_component>()))
             DrawComponentPanel<transform_component>();
         if (ConfiguringObject.HasComponent<native_script_component>())

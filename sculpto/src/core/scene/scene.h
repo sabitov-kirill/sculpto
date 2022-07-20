@@ -1,6 +1,6 @@
 /*****************************************************************//**
  * \file   scene.h
- * \brief  Application scene sustem class defintion module.
+ * \brief  Scene class defintion module.
  * 
  * \author Sabitov Kirill
  * \date   02 July 2022
@@ -20,15 +20,18 @@ namespace scl
     class shader;
     class mesh;
 
-    /* Application scene class. */
+    using scene_object_handle = entt::entity;
+
+    /* Scene class. */
     class scene
     {
         friend class scene_object;
+        friend class scene_serializer;
         friend class scene_hierarchy_window;
 
-    private: /* Application scene data. */
+    private: /* Scene data. */
         entt::registry Registry {}; /* Container for all components.
-                                     * Contains both enitty datas and Ids.
+                                     * Contains both enitty datas and handles.
                                      */
 
         int     ViewportId { 30 };             /* Scene window viewport id. */
@@ -37,7 +40,7 @@ namespace scl
         vec3    EnviromentAmbient { 0.1f };    /* Scene enviroment ambient color. */
         float   UpdateDelay {};                /* Scene scripts update call timer. */
 
-    public: /* Application scene getter/setter functions. */
+    public: /* Scene getter/setter functions. */
         /* Scene viewport id gette function. */
         int GetViewportId() const { return ViewportId; }
         /* Scene ambient color getter function. */
@@ -48,17 +51,9 @@ namespace scl
         /* Scene enviroment ambient color setter function. */
         void SetEnviromentAmbient(const vec3 &EnviromentAmbient) { this->EnviromentAmbient = EnviromentAmbient; }
 
-    private: /* Application scene methods. */
+    private:  /* Scene methods. */
         /**
-         * Perform scene rendering function.
-         * 
-         * \param None.
-         * \return None.
-         */
-        void Render();
-
-        /**
-         * Perform scene script update function.
+         * Perform scene scripts OnUpdate functions calls function.
          * 
          * \param None.
          * \return None.
@@ -73,12 +68,20 @@ namespace scl
         ~scene();
 
         /**
-         * Scene update callback function.
-         * 
-         * \param DeltaTime
+         * Perform scene rendering function.
+         *
+         * \param None.
          * \return None.
          */
-        void OnUpdate(float DeltaTime);
+        void Render();
+
+        /**
+         * Scene update function.
+         *
+         * \param None.
+         * \return None.
+         */
+        void Update();
 
         /**
          * Create scene object function.
@@ -87,5 +90,23 @@ namespace scl
          * \return created object.
          */
         scene_object CreateObject(const std::string &Name = "");
+
+        /**
+         * Get first scene object with specified name (ordered by creating time) or create new, if nothing found function.
+         * 
+         * \param Name - name of getting/creating object.
+         * \return found/created scene object.
+         */
+        scene_object CreaetOrGetObject(const std::string &Name);
+
+        /**
+         * Get scene object by its handle function.
+         * 
+         * \param SceneObjectEntity - handle of getting scene object.
+         * \return scene object.
+         */
+        scene_object GetSceneObject(scene_object_handle SceneObjectHandle);
+
+        void RemoveObject(scene_object &Object);
     };
 }

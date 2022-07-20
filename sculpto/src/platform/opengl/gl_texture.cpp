@@ -25,7 +25,8 @@ void scl::gl_texture_2d::CreateColor(const image &Image, bool IsFloatingPoint)
     GLenum format = c == 3 ? GL_RGB : c == 4 ? GL_RGBA : GL_RED;
     GLenum type = IsFloatingPoint ? GL_FLOAT : GL_UNSIGNED_BYTE;
     glTexStorage2D(GL_TEXTURE_2D, 1, internal_format, w, h);
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, w, h, format, type, Image.GetRawData());
+    if (Image.GetRawData() != nullptr)
+        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, w, h, format, type, Image.GetRawData());
     glGenerateMipmap(GL_TEXTURE_2D);
     
     // Configure texture sampling.

@@ -15,7 +15,7 @@ namespace scl
     /* Application scene system objects transform component class. */
     struct transform_component
     {
-        vec3 Scale {};
+        vec3 Scale { 1 };
         vec3 Angles {};
         vec3 Position {};
         matr4 ScaleMatr {};
@@ -24,35 +24,29 @@ namespace scl
         matr4 Transform {};
 
         transform_component() = default;
-        transform_component(const transform_component &Other) : Transform(Other.Transform) {}
+        transform_component(const transform_component &Other) = default;
         transform_component(const matr4 &Tranform) : Transform(Transform) {}
         transform_component(const vec3 &Scale, const vec3 &Angles, const vec3 &Position) :
             Scale(Scale), Angles(Angles), Position(Position),
             ScaleMatr(matr4::Scale(Scale)), AnglesMatr(matr4::RotateX(Angles.X) * matr4::RotateY(Angles.Y) * matr4::RotateZ(Angles.Z)),
             PositionMatr(matr4::Translate(Position)),
-            Transform(ScaleMatr * AnglesMatr * PositionMatr)
-        {
-        
-        }
+            Transform(ScaleMatr * AnglesMatr * PositionMatr) {}
         ~transform_component() = default;
 
         void SetScale(const vec3 &Scale)
         {
             this->Scale = Scale;
-            ScaleMatr = matr4::Scale(Scale);
-            Transform = ScaleMatr * AnglesMatr * PositionMatr;
+            InvalidateScale();
         }
         void SetAngles(const vec3 &Angles)
         {
             this->Angles = Angles;
-            AnglesMatr = matr4::RotateX(Angles.X) * matr4::RotateY(Angles.Y) * matr4::RotateZ(Angles.Z);
-            Transform = ScaleMatr * AnglesMatr * PositionMatr;
+            InvalidateRotation();
         }
         void SetPosition(const vec3 &Position)
         {
             this->Position = Position;
-            PositionMatr = matr4::Translate(Position);
-            Transform = ScaleMatr * AnglesMatr * PositionMatr;
+            InvalidatePosition();
         }
 
         void InvalidateScale()

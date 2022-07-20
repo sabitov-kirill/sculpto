@@ -20,11 +20,8 @@ namespace scl
         friend class scene;
         friend class scene_hierarchy_window;
 
-    public:
-        using handle = entt::entity;
-
     private: /* Scne object data. */
-        handle Entity { entt::null };
+        scene_object_handle Entity { entt::null };
         scene *Scene {};
 
     private: /* Scene object methods. */
@@ -34,7 +31,7 @@ namespace scl
          * \param Entity - entity for scene object.
          * \param Scene - scene connected to scene object.
          */
-        scene_object(handle Entity, scene *Scene)
+        scene_object(scene_object_handle Entity, scene *Scene)
             : Entity(Entity), Scene(Scene) {}
 
     public:
@@ -48,12 +45,12 @@ namespace scl
         ~scene_object() = default;
 
         /**
-         * Scene object inner handle getter function.
+         * Scene object inner scene_object_handle getter function.
          * 
          * \param None.
-         * \return object inner handle.
+         * \return object inner scene_object_handle.
          */
-        handle GetHandle() const { return Entity; }
+        scene_object_handle GetHandle() const { return Entity; }
 
         /**
          * Check if scene object is valid function.
@@ -61,7 +58,7 @@ namespace scl
          * \param None.
          * \return wheather object is valid or not.
          */
-        bool IsOk() const { return Scene && Entity != entt::null; }
+        bool IsOk() const { return Scene && Scene->Registry.valid(Entity); }
 
         /**
          * Check if object has specified component function.
@@ -139,20 +136,20 @@ namespace scl
         operator bool() const { return Entity != entt::null; }
 
         /**
-         * Getting scene object inner handle.
+         * Getting scene object inner scene_object_handle.
          * 
          * \param None.
-         * \return inner object handle.
+         * \return inner object scene_object_handle.
          */
         operator u32() const { return (u32)Entity; }
 
         /**
-         * Getting scene object inner handle.
+         * Getting scene object inner scene_object_handle.
          *
          * \param None.
-         * \return inner object handle.
+         * \return inner object scene_object_handle.
          */
-        operator handle() const { return Entity; }
+        operator scene_object_handle() const { return Entity; }
 
         /**
          * Scene objects compare function.

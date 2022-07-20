@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "object_name_component.h"
+#include "name_component.h"
 #include "transform_component.h"
 #include "mesh_component.h"
 #include "camera_component.h"

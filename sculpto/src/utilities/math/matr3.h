@@ -136,5 +136,27 @@ namespace scl::math
             return (A11 * A22 * A33 - A11 * A23 * A32 - A12 * A21 * A33 +
                     A12 * A23 * A31 + A13 * A21 * A32 - A13 * A22 * A31);
         }
+
+        /**
+         * Getting matrix cell value operator overloading.
+         *
+         * \param Index - cell index.
+         * \return vector cartesian coordinate.
+         */
+        T &operator [](int Index)
+        {
+            return this->A[math::Clamp(Index, 0, 8)];
+        }
+
+        /**
+         * Getting coordinate operator overloading.
+         *
+         * \param Index - coordinate index.
+         * \return vector cartesian coordinate.
+         */
+        T operator [](int Index) const
+        {
+            return this->A[math::Clamp(Index, 0, 8)];
+        }
     };
 }

@@ -418,5 +418,37 @@ namespace scl::math
         {
             return &X;
         }
+
+        /**
+         * Getting coordinate operator overloading.
+         * 
+         * \param Index - coordinate index.
+         * \return vector cartesian coordinate.
+         */
+        T &operator [](int Index)
+        {
+            switch (Index)
+            {
+            case 0: return X;
+            default:
+            case 1: return Y;
+            }
+        }
+
+        /**
+         * Getting coordinate operator overloading.
+         *
+         * \param Index - coordinate index.
+         * \return vector cartesian coordinate.
+         */
+        T operator [](int Index) const
+        {
+            switch (Index)
+            {
+            case 0: return X;
+            default:
+            case 1: return Y;
+            }
+        }
     };
 }

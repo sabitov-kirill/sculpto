@@ -1,5 +1,5 @@
 /*****************************************************************//**
- * \file   object_name_component.h
+ * \file   name_component.h
  * \brief  
  * 
  * \author Sabitov Kirill
@@ -14,12 +14,15 @@
 
 namespace scl
 {
-    struct object_name_component
+    struct name_component
     {
         std::string Name;
 
-        object_name_component(const std::string &Name) : Name(Name) {}
-        object_name_component(const object_name_component &Other) = default;
-        ~object_name_component() = default;
+        name_component(const std::string &Name) : Name(Name) {}
+        name_component(const name_component &Other) = default;
+        ~name_component() = default;
+
+        operator const std::string &() { return Name; }
+        operator std::string &() { return Name; }
     };
 }
