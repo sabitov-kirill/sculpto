@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   vieport_events.h
  * \brief  Viewport resize event implementation module.
  * 
@@ -12,17 +12,17 @@
 
 namespace scl
 {
-    /* Application viewports resize event class. */
+    /*! Application viewports resize event class. */
     class viewport_resize_event: public event
     {
         SCL_MAKE_EVENT(ViewportResize);
 
-    private: /* Application viewport resize evet data. */
+    private: /*! Application viewport resize evet data. */
         u32 Width, Height;
         int ViewportId;
 
     public:
-        /**
+        /*!*
          * Window resize vent constructor.
          *
          * \param Width - new width of window.
@@ -32,14 +32,14 @@ namespace scl
         viewport_resize_event(int Width, int Height, int ViewportId) :
             Width(Width), Height(Height), ViewportId(ViewportId) {}
 
-        /* New window width getter function. */
+        /*! New window width getter function. */
         u32 GetWidth() const { return Width; }
-        /* New window height getter function. */
+        /*! New window height getter function. */
         u32 GetHeight() const { return Height; }
-        /* Resizing viewport id getter function. */
+        /*! Resizing viewport id getter function. */
         int GetViewportId() const { return ViewportId; }
 
-        /**
+        /*!*
          * Convert event to string (for debug).
          *
          * \param None.

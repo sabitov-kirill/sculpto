@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   matr4.h
  * \brief  Math 4x4 matrix implementation module.
  * 
@@ -12,28 +12,28 @@
 
 namespace scl::math
 {
-    /* 4x4 matrix data type class. Used to pass onlt neccecery data to shaders. */
+    /*! 4x4 matrix data type class. Used to pass onlt neccecery data to shaders. */
     template<class T>
     class matr4_data
     {
     public:
-        /* Matrix data */
+        /*! Matrix data */
         T A[4][4];
 
-        /* Default matrix data constructor. */
+        /*! Default matrix data constructor. */
         matr4_data() :
             A { {1, 0, 0, 0},
                 {0, 1, 0, 0},
                 {0, 0, 1, 0},
                 {0, 0, 0, 1} } {}
 
-        /* Default matrix data copy constructor. */
+        /*! Default matrix data copy constructor. */
         matr4_data(const matr4_data &Other)
         {
             memcpy(A, Other.A, sizeof(T) * 16);
         }
 
-        /**
+        /*!*
          * Matrix data constructor by 16 values.
          * 
          * \param A00-A33 - matrx valeus.
@@ -47,7 +47,7 @@ namespace scl::math
                 {A20, A21, A22, A23},
                 {A30, A31, A32, A33} } {}
 
-        /**
+        /*!*
          * Getting pointer to first component of natrix operator.
          * Need to pass vector to shader.
          *
@@ -59,15 +59,15 @@ namespace scl::math
         }
     };
 
-    /* 4x4 matrix class. */
+    /*! 4x4 matrix class. */
     template <typename T>
     class matr4: public matr4_data<T>
     {
     private:
-        mutable T InvA[4][4];            /* Inversed matrix */
-        mutable bool IsInverseEvaluated; /* Inverse matrix evaluated flag */
+        mutable T InvA[4][4];            /*! Inversed matrix */
+        mutable bool IsInverseEvaluated; /*! Inverse matrix evaluated flag */
 
-        /**
+        /*!*
          * Evaluate inversed matrix function.
          *
          * \param None.
@@ -78,7 +78,7 @@ namespace scl::math
             if (IsInverseEvaluated) return;
             IsInverseEvaluated = true;
 
-            /* build adjoint matrix */
+            /*! build adjoint matrix */
             InvA[0][0] =
                 matr3<T>::Det(this->A[1][1], this->A[1][2], this->A[1][3],
                               this->A[2][1], this->A[2][2], this->A[2][3],
@@ -147,17 +147,17 @@ namespace scl::math
                               this->A[1][0], this->A[1][1], this->A[1][2],
                               this->A[2][0], this->A[2][1], this->A[2][2]);
 
-            /* divide by determinant */
+            /*! divide by determinant */
             T det = Det();
             det = 1 / det;
             InvA[0][0] *= det; InvA[1][0] *= det; InvA[2][0] *= det; InvA[3][0] *= det;
             InvA[0][1] *= det; InvA[1][1] *= det; InvA[2][1] *= det; InvA[3][1] *= det;
             InvA[0][2] *= det; InvA[1][2] *= det; InvA[2][2] *= det; InvA[3][2] *= det;
             InvA[0][3] *= det; InvA[1][3] *= det; InvA[2][3] *= det; InvA[3][3] *= det;
-        } /* End of 'EvaluateInverseMatrix' function */
+        } /*! End of 'EvaluateInverseMatrix' function */
 
     public:
-        /**
+        /*!*
          * Default matrix constructor.
          * Set identity matrix.
          *
@@ -171,7 +171,7 @@ namespace scl::math
                    {0, 0, 0, 0} },
             IsInverseEvaluated(false) {}
 
-        /**
+        /*!*
          * Matrix constructor bt 16 values.
          *
          * \param A00-A33 - matrx valeus.
@@ -190,7 +190,7 @@ namespace scl::math
                    {0, 0, 0, 0} },
             IsInverseEvaluated(false) {}
 
-        /**
+        /*!*
          * Matrix contructor by array of values.
          *
          * \param A - array of values to set in matrix
@@ -205,7 +205,7 @@ namespace scl::math
             memcpy(this->A, A, 4 * 4 * sizeof(T));
         }
 
-        /**
+        /*!*
          * Matrix data constructor by 1 value.
          *
          * \param A00 - calue to set to all matrix cells.
@@ -221,7 +221,7 @@ namespace scl::math
                    {0, 0, 0, 0} },
             IsInverseEvaluated(false) {}
 
-        /**
+        /*!*
          * Matrix constructor by matrix data.
          * 
          * \param Other - matrix data.
@@ -234,8 +234,8 @@ namespace scl::math
                    {0, 0, 0, 0} },
             IsInverseEvaluated(false) {}
 
-    public: /* Common matrices creation functinos. */
-        /**
+    public: /*! Common matrices creation functinos. */
+        /*!*
          * Identity creation function.
          *
          * \return identity matrix.
@@ -248,7 +248,7 @@ namespace scl::math
                          0, 0, 0, 1);
         }
 
-        /**
+        /*!*
          * Translate matrix creation function.
          *
          * \param Transform - translatino vector.
@@ -263,7 +263,7 @@ namespace scl::math
                          x, y, z, 1);
         }
 
-        /**
+        /*!*
          * Scale matrix creation function.
          *
          * \param S - scale factor.
@@ -278,7 +278,7 @@ namespace scl::math
                          0, 0, 0, 1);
         }
 
-        /**
+        /*!*
          * Rotation matrix creation function.
          *
          * \param Axis - axis to rotate around of.
@@ -297,7 +297,7 @@ namespace scl::math
                          0, 0, 0, 1);
         }
 
-        /**
+        /*!*
          * Rotation around X axis matrix creation function.
          *
          * \param Angle - angle in degrees to roate on.
@@ -314,7 +314,7 @@ namespace scl::math
                          0, 0, 0, 1);
         }
 
-        /**
+        /*!*
          * Rotation around Y axis matrix creation function.
          *
          * \param Angle - angle in degrees to roate on.
@@ -331,7 +331,7 @@ namespace scl::math
                          0, 0, 0, 1);
         }
 
-        /**
+        /*!*
          * Rotation around Z axis matrix creation function.
          *
          * \param Angle - angle in degrees to roate on.
@@ -348,7 +348,7 @@ namespace scl::math
                          0, 0, 0, 1);
         }
 
-        /**
+        /*!*
          * Frusum projection matrix creation function.
          *
          * \param Left, Right - frustrum view cone left and right sides position
@@ -364,7 +364,7 @@ namespace scl::math
                          0, 0, -2 * Near * Far / (Far - Near), 0);
         }
 
-        /**
+        /*!*
          * Ortho projection matrix creation function.
          *
          * \param Left, Right - view cube left and right sides position
@@ -380,7 +380,7 @@ namespace scl::math
                          -(Right + Left) / (Right - Left), -(Top + Bottom) / (Top - Bottom), -(Near + Far) / (Far - Near), 1);
         }
 
-        /**
+        /*!*
          * Viewer coordinate system transformation.
          *
          * \param Location - viewer position in global coordinate system.
@@ -404,8 +404,8 @@ namespace scl::math
                         -Location.Dot(r), -Location.Dot(u), Location.Dot(d), 1);
         }
 
-    public: /* Matrices operations. */
-        /**
+    public: /*! Matrices operations. */
+        /*!*
          * Matrix lerp function.
          *
          * \param Start, End - matrices to interpolate.
@@ -425,7 +425,7 @@ namespace scl::math
             return M;
         }
 
-        /**
+        /*!*
          * Transpose matrix function.
          *
          * \return result matrix.
@@ -438,7 +438,7 @@ namespace scl::math
                          this->A[0][3], this->A[1][3], this->A[2][3], this->A[3][3]);
         }
 
-        /**
+        /*!*
          * Mulpiply matrices function.
          *
          * \param M - matrix to multyply.
@@ -456,7 +456,7 @@ namespace scl::math
             return r;
         }
 
-        /**
+        /*!*
          * Calculate matrix determinant.
          *
          * \param None.
@@ -479,7 +479,7 @@ namespace scl::math
                                               this->A[3][0], this->A[3][1], this->A[3][2]);
         }
 
-        /**
+        /*!*
          * Get inversed matrix.
          *
          * \param None.
@@ -491,7 +491,7 @@ namespace scl::math
             return matr4(InvA);
         }
 
-        /**
+        /*!*
          * Transform point position.
          *
          * \param V - vectors to transform.
@@ -504,7 +504,7 @@ namespace scl::math
                            V.X * this->A[0][2] + V.Y * this->A[1][2] + V.Z * this->A[2][2] + this->A[3][2]);
         }
 
-        /**
+        /*!*
          * Vector linear transformation.
          *
          * \param V - vectors to transform.
@@ -517,7 +517,7 @@ namespace scl::math
                            V.X * this->A[0][2] + V.Y * this->A[1][2] + V.Z * this->A[2][2]);
         }
 
-        /**
+        /*!*
          * Multiply matrix and vector.
          *
          * \param V - vectors to transform.
@@ -532,7 +532,7 @@ namespace scl::math
                            (V.X * this->A[0][2] + V.Y * this->A[1][2] + V.Z * this->A[2][2] + this->A[3][2]) / w);
         }
 
-        /**
+        /*!*
          * Getting matrix cell value operator overloading.
          *
          * \param Index - cell index.
@@ -543,7 +543,7 @@ namespace scl::math
             return this->A[math::Clamp(Index, 0, 15)];
         }
 
-        /**
+        /*!*
          * Getting coordinate operator overloading.
          *
          * \param Index - coordinate index.

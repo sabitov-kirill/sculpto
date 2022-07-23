@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   files_load.cpp
  * \brief  Assets manager file processing functions implementation module.
  * 

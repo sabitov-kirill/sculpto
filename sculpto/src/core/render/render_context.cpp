@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   render_context.h
  * \brief  Base, abstract, backend render api independent render
  *         context class implementation module.

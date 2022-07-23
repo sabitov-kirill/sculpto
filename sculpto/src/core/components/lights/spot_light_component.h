@@ -1,6 +1,6 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   spot_light_component.h
- * \brief  Spot light component class implementation module.
+ * \brief  Scene object spot light component class implementation module.
  * 
  * \author Sabitov Kirill
  * \date   05 July 2022
@@ -12,11 +12,11 @@
 
 namespace scl
 {
-    /* Spot light component class. Transform component sets position of light cone. */
+    /*! Spot light component class. Transform component sets position of light cone. */
     struct spot_light_component
     {
-    private: /* Spot light ccomponent data. */
-        /* Light cutoff angles. */
+    private: /*! Spot light ccomponent data. */
+        /*! Light cutoff angles. */
         float InnerCutoff {};
         float OuterCutoff {};
 
@@ -25,19 +25,19 @@ namespace scl
         float OuterCutoffCos {};
         float Epsilon {};
 
-        /* Light color. */
+        /*! Light color. */
         vec3 Color {};
         float Strength { 1 };
 
-    public: /* Spot light component data getter/setter functions. */
-        /* Light iner cutoff angle getter functions. */
+    public: /*! Spot light component data getter/setter functions. */
+        /*! Light iner cutoff angle getter functions. */
         float GetInnerCutoff() const { return InnerCutoff; }
-        /* Light outer cutoff angle getter functions. */
+        /*! Light outer cutoff angle getter functions. */
         float GetOuterCutoff() const { return OuterCutoff; }
 
-        /* Light inner cutoff angle setter functions. */
+        /*! Light inner cutoff angle setter functions. */
         void SetInnerCutoff(degrees Angle) { InnerCutoff = Angle; InnerCutoffCos = cos((radians)Angle); Epsilon = InnerCutoffCos - OuterCutoffCos; }
-        /* Light outer cutoff angle setter functions. */
+        /*! Light outer cutoff angle setter functions. */
         void SetOuterCutoff(degrees Angle) { OuterCutoff = Angle; OuterCutoffCos = cos((radians)Angle); Epsilon = InnerCutoffCos - OuterCutoffCos; }
 
     public:

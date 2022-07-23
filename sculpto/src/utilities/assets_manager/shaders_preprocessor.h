@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   shaders_preprocessor.h
  * \brief  Assets manager shaders preprocessor class definition module.
  * 
@@ -13,16 +13,16 @@
 
 namespace scl::assets_manager
 {
-    /* Static shader preprocessor class. */
+    /*! Static shader preprocessor class. */
     class shader_preprocessor
     {
     private:
-        /* Shader preprocessor lexems. */
+        /*! Shader preprocessor lexems. */
         static constexpr const char *LexemBlockStart = "#shader-begin";
         static constexpr const char *LexemBlockEnd = "#shader-end";
         static constexpr const char *LexemInclude = "#include";
 
-        /**
+        /*!*
          * Read word from string, starting at Begin iterator function.
          * 
          * \param Begin - start point for reading word.
@@ -32,7 +32,7 @@ namespace scl::assets_manager
          */
         static std::string ReadWord(std::string::const_iterator Begin, std::string::const_iterator End, int *SpacesCount = nullptr);
 
-        /**
+        /*!*
          * Get shader type from string function.
          * 
          * \param ShaderTypeString - string, containing shader type.
@@ -41,7 +41,7 @@ namespace scl::assets_manager
         static shader_type ShaderTypeFromString(const std::string &ShaderTypeString);
 
     public:
-        /**
+        /*!*
          * Separate text to diffrent shader blocks function.
          *
          * \param ShaderDebugName - debug name to show if error occures.
@@ -50,7 +50,7 @@ namespace scl::assets_manager
          */
         static void SeparateShaders(const std::string &ShaderDebugName, const std::string &ShaderText, std::vector<shader_props> &Out);
 
-        /**
+        /*!*
          * Process include directives in shader text.
          * 
          * \param ShaderDebugName - debug name to show if error occures.

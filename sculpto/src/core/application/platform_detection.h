@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   platform.h
  * \brief  Sculpto library platform definition module.
  * 
@@ -16,17 +16,17 @@
     !defined(SCL_PLATFORM_LINUX)
     // Platform detection using predefined macros
 #   ifdef _WIN32
-       /* Windows x64/x86 */
+       /*! Windows x64/x86 */
 #      ifdef _WIN64
-           /* Windows x64  */
+           /*! Windows x64  */
 #          define SCL_PLATFORM_WINDOWS
 #      else
-           /* Windows x86 */
+           /*! Windows x86 */
 #          error "x86 Builds are not supported!"
 #      endif
 #   elif defined(__APPLE__) || defined(__MACH__)
 #      include <TargetConditionals.h>
-       /* TARGET_OS_MAC exists on all the platforms
+       /*! TARGET_OS_MAC exists on all the platforms
         * so check all of them (in this order)
         * to ensure that we're running on MAC
         * and not some other Apple platform */
@@ -41,7 +41,7 @@
 #      else
 #          error "Unknown Apple platform!"
 #      endif
-   /* Check __ANDROID__ before __linux__
+   /*! Check __ANDROID__ before __linux__
     * since android is based on the linux kernel
     * it has __linux__ defined */
 #   elif defined(__ANDROID__)
@@ -51,7 +51,7 @@
 #      define SCL_PLATFORM_LINUX
 #      error "Linux is not supported!"
 #   else
-       /* Unknown compiler/platform */
+       /*! Unknown compiler/platform */
 #      error "Unknown platform!"
 #   endif // End of platform detection
 #endif

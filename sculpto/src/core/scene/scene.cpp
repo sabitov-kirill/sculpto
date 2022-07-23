@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   scene.cpp
  * \brief  Scene class implementation module.
  * 
@@ -97,6 +97,9 @@ void scl::scene::Render()
             renderer::SubmitSpotLight(transform.Position, direction, spot_light.Color * spot_light.Strength,
                                       spot_light.InnerCutoffCos, spot_light.OuterCutoffCos, spot_light.Epsilon);
         }
+
+        for (auto &&[entity, skybox_mesh] : Registry.view<skybox_component>().each())
+            if (skybox_mesh.SkyboxMesh != nullptr) renderer::Submit(skybox_mesh.SkyboxMesh, transform_component());
 
         for (auto &&[entity, mesh, transform] : Registry.group<mesh_component>(entt::get<transform_component>).each())
             if (mesh.Mesh != nullptr) renderer::Submit(mesh, transform);

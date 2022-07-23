@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   shaders_loader.h
  * \brief  Assets manager shader load function defintion modulule.
  * 
@@ -10,12 +10,12 @@
 
 #include "base.h"
 
-/* Shader program class declaration. */
+/*! Shader program class declaration. */
 namespace scl { class shader_program; }
 
 namespace scl::assets_manager
 {
-    /**
+    /*!*
      * Load shader from file function.
      * 
      * \param ShaderProgamFilePath - file containing all shaders to compile in program.
@@ -23,7 +23,7 @@ namespace scl::assets_manager
      */
     shared<shader_program> LoadShader(const std::filesystem::path &ShaderProgamFilePath);
 
-    /**
+    /*!*
      * Load shader from file function.
      * 
      * \param VertexShaderFilePath - file containing vertex shader.
@@ -33,7 +33,7 @@ namespace scl::assets_manager
     shared<shader_program> LoadShader(const std::filesystem::path &VertexShaderFilePath,
                                       const std::filesystem::path &PixelShaderFilePath);
 
-    /**
+    /*!*
      * Load shader from file function.
      *
      * \param VertexShaderFilePath - file containing vertex shader.
@@ -45,7 +45,7 @@ namespace scl::assets_manager
                                       const std::filesystem::path &GeomShaderFilePath,
                                       const std::filesystem::path &PixelShaderFilePath);
 
-    /**
+    /*!*
      * Update existing shader program function.
      * 
      * \param ShaderProgram - shader program to update.

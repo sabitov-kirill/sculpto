@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   fixed_string.h
  * \brief  Fixed ;ength string class implementation module.
  *         Useful for class templates.
@@ -11,17 +11,17 @@
 
 namespace scl
 {
-    /* Fixed length string class. */
+    /*! Fixed length string class. */
     template <size_t N>
     struct fixed_string
     {
-        /* String characters array. */
+        /*! String characters array. */
         char value[N + 1] {};
 
-        /* Fiexed string default constructor. */
+        /*! Fiexed string default constructor. */
         constexpr fixed_string() = default;
 
-        /**
+        /*!*
          * Fixed string constructor bt char array.
          * 
          * \param Str - char array.
@@ -32,7 +32,7 @@ namespace scl
         }
     };
 
-    /* Fixed length string class constructor with deduced template. */
+    /*! Fixed length string class constructor with deduced template. */
     template <size_t Length>
     fixed_string(const char (&str)[Length]) -> fixed_string<Length - 1>;
 

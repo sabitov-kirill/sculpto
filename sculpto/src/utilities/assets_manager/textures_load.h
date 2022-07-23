@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   textures_load.h
  * \brief  Assets manager texture load function defintion modulule.
  * 
@@ -14,7 +14,7 @@ namespace scl { class texture_2d; }
 
 namespace scl::assets_manager
 {
-    /**
+    /*!*
      * Texture load from file function.
      * 
      * \param TextureImageFilePath - texture image file path.

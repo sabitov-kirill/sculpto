@@ -57,7 +57,7 @@ vec3 PointLightShade(point_light _Light, vec3 _Position, vec3 _Normal, vec3 _Dif
     vec3 light_dir = normalize(_Light.Position - _Position);
 
     vec3 diffuse = DiffuseColorCalculate(light_dir, _Light.Color, _Normal, _Diffuse);
-    vec3 specular = SpecularColorCalculate(light_dir, _Light.Color, CameraPosition, _Position, _Normal, _Specular, _Shininess);
+    vec3 specular = SpecularColorCalculate(light_dir, _Light.Color, u_CameraPosition, _Position, _Normal, _Specular, _Shininess);
 
     return _Light.Color * (diffuse + specular) * attenuation;
 }
@@ -67,7 +67,7 @@ vec3 DirectionalLightShade(directional_light _Light, vec4 _LightSpacePos, vec3 _
     vec3 light_dir = normalize(-_Light.Direction);
 
     vec3 diffuse = DiffuseColorCalculate(light_dir, _Light.Color, _Normal, _Diffuse);
-    vec3 specular = SpecularColorCalculate(light_dir, _Light.Color, CameraPosition, _Position, _Normal, _Specular, _Shininess);
+    vec3 specular = SpecularColorCalculate(light_dir, _Light.Color, u_CameraPosition, _Position, _Normal, _Specular, _Shininess);
 
     if (_Light.IsShadows)
     {
@@ -86,7 +86,7 @@ vec3 SpotLightShade(spot_light _Light, vec3 _Position, vec3 _Normal, vec3 _Diffu
     vec3 diffuse = DiffuseColorCalculate(light_dir, _Light.Color, _Normal, _Diffuse);
     if(intensity >= 0)
     {
-        vec3 specular = SpecularColorCalculate(light_dir, _Light.Color, CameraPosition, _Position, _Normal, _Specular, _Shininess);
+        vec3 specular = SpecularColorCalculate(light_dir, _Light.Color, u_CameraPosition, _Position, _Normal, _Specular, _Shininess);
         return _Light.Color * (diffuse + specular) * intensity;
     }
     return vec3(0);

@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   application.h
  * \brief  
  * 
@@ -10,11 +10,10 @@
 
 #include "timer.h"
 #include "window.h"
-#include "layers_stack.h"
 #include "../events/events.h"
 #include "../gui/gui.h"
 
-/**
+/*!*
  * Main programm function.
  *
  * \param argc - application run arguments count.
@@ -29,23 +28,23 @@ namespace scl
     {
         friend int ::main(int argc, char *argv[]);
 
-    private: /* Application data. */
-        static application *Instance;            /* Global application instance. */
+    private: /*! Application data. */
+        static application *Instance;            /*! Global application instance. */
 
-        bool           IsRunning { true };  /* Application main loop running flag. */
-        unique<window> Window {};           /* Main app window. */
+        bool           IsRunning { true };  /*! Application main loop running flag. */
+        unique<window> Window {};           /*! Main app window. */
 
     public:
-        bool GuiEnabled { false };          /* Application graphic user interface enabled flag. If false do not rendering gui. */
+        bool GuiEnabled { false };          /*! Application graphic user interface enabled flag. If false do not rendering gui. */
 
-    public: /* Applicatino getters/setters functions. */
-        /* Get applciation instance function. */
+    public: /*! Applicatino getters/setters functions. */
+        /*! Get applciation instance function. */
         static application &Get() { return *Instance; }
-        /* Window getter function. */
+        /*! Window getter function. */
         const window &GetWindow() const { return *Window; }
 
-    private: /* Private methods. */
-        /**
+    private: /*! Private methods. */
+        /*!*
          * Per main application loop actions function.
          * 
          * \param None.
@@ -53,8 +52,8 @@ namespace scl
          */
         void LoopIterationActions();
 
-    public: /* Client application virtual collbacks. */
-        /**
+    public: /*! Client application virtual collbacks. */
+        /*!*
          * Application initialisation virtual callback function.
          *
          * \param None.
@@ -62,7 +61,7 @@ namespace scl
          */
         virtual void OnInit() {}
 
-        /**
+        /*!*
          * Application deinitialisation virtual callback function.
          *
          * \param None.
@@ -70,7 +69,7 @@ namespace scl
          */
         virtual void OnClose() {}
 
-        /**
+        /*!*
          * Application update virtual callback function.
          * 
          * \param DeltaTime - update inter frame delta time.
@@ -78,7 +77,7 @@ namespace scl
          */
         virtual void OnUpdate(float DeltaTime) {}
 
-        /**
+        /*!*
          * Application GUI update virtual callback function.
          * 
          * \param None.
@@ -86,8 +85,8 @@ namespace scl
          */
         virtual void OnGuiUpdate() {}
 
-    public: /* Application methods. */
-        /**
+    public: /*! Application methods. */
+        /*!*
          * Default applicatino construcotr.
          * Initialises all depended systems.
          *
@@ -95,10 +94,10 @@ namespace scl
          */
         application(const std::string &Name);
 
-        /* Default application destructor. */
+        /*! Default application destructor. */
         virtual ~application();
 
-        /**
+        /*!*
          * Run application loop and show window function.
          * 
          * \param None.
@@ -106,7 +105,7 @@ namespace scl
          */
         void Run();
 
-        /**
+        /*!*
          * Application shut down function.
          * 
          * \param None.

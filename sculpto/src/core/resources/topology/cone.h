@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   cone.h
  * \brief  Topology cone object class definition module.
  * 
@@ -12,11 +12,11 @@
 
 namespace scl::topology
 {
-    /* Topology cone object class. */
+    /*! Topology cone object class. */
     class cone : public grid
     {
     public:
-        /**
+        /*!*
          * Topology cone object class contructor.
          * 
          * \param A - cone bottom base middle point.
@@ -27,7 +27,7 @@ namespace scl::topology
          */
         cone(const vec3 &A, float R1, const vec3 &B, float R2, int Slices);
 
-        /* Cone topology object default destructor. */
+        /*! Cone topology object default destructor. */
         ~cone() override = default;
     };
 }

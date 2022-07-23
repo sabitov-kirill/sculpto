@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   gl_shader.h
  * \brief  OpenGL shader program class definition module.
  * 
@@ -13,17 +13,17 @@
 
 namespace scl
 {
-    /* OpenGL shader_props program class. */
+    /*! OpenGL shader_props program class. */
     class gl_shader_program : public shader_program
     {
-    private: /* Shader program data. */
+    private: /*! Shader program data. */
         GLuint Id {};
         mutable std::unordered_map<std::string, int> VariablesLocations {};
         mutable bool ShaderNotBindedErrorAlreadyShown {};
         static int CurrentlyBoundShaderId;
 
     private:
-        /**
+        /*!*
          * Get OpenGL shader type function.
          *
          * \param Type - shader type.
@@ -31,7 +31,7 @@ namespace scl
          */
         constexpr static GLenum GetGLShaderType(shader_type Type);
 
-        /**
+        /*!*
          * Compile shader_props from source code function.
          * 
          * \param Source - shader_props source
@@ -40,7 +40,7 @@ namespace scl
          */
         bool CompileShader(const shader_props &Shader, GLuint &ShaderId);
 
-        /**
+        /*!*
          * Compile all shaders and create shader_props program function.
          * 
          * \param Shaders - array of shaders id's to attach to shader_props program.
@@ -48,7 +48,7 @@ namespace scl
          */
         bool CompileProgram(const std::vector<GLuint> &Shaders);
 
-        /**
+        /*!*
          * Create shader_props program from shaders data arary, stored in base shader_props class.
          * 
          * \param Shaders - shaders array.
@@ -56,7 +56,7 @@ namespace scl
          */
         bool Create(const std::vector<shader_props> &Shaders);
 
-        /**
+        /*!*
          * Get shader variable location from cache if ys exist or create it ande cache to memory function.
          * 
          * \param Name - name of shader variable.
@@ -64,7 +64,7 @@ namespace scl
          */
         int GetOrCacheLocation(const std::string &Name) const;
 
-        /**
+        /*!*
          * Check if current shader is binded.
          * 
          * \param None.
@@ -73,10 +73,10 @@ namespace scl
         bool CheckIfShaderBinded() const;
 
     public:
-        /* Backend api render primitive hadnle getter function. */
+        /*! Backend api render primitive hadnle getter function. */
         render_primitive::handle GetHandle() const override { return Id; }
 
-        /**
+        /*!*
          * Shader program default constructor.
          *
          * \param Shaders - shaders array.
@@ -84,10 +84,10 @@ namespace scl
          */
         gl_shader_program(const std::vector<shader_props> &Shaders, const std::string &DebugName);
 
-        /* Default destructor. */
+        /*! Default destructor. */
         ~gl_shader_program();
 
-        /**
+        /*!*
          * Set uniform variable to shader_props function.
          *
          * \param Name - unifrom variable name.
@@ -127,7 +127,7 @@ namespace scl
         bool SetMatr3(int Location, const matr3 &Value) const;
         bool SetMatr4(int Location, const matr4 &Value) const;
 
-        /**
+        /*!*
          * Bind buffer to current render stage function.
          *
          * \param None.
@@ -135,7 +135,7 @@ namespace scl
          */
         void Bind() const override;
 
-        /**
+        /*!*
          * Unbind buffer from current render stage function.
          *
          * \param None.
@@ -143,13 +143,13 @@ namespace scl
          */
         void Unbind() const override;
 
-        /**
+        /*!*
          * Update (recompile from dource file).
          *
          */
         void Update(const std::vector<shader_props> &Shaders) override;
 
-        /**
+        /*!*
          * Unload shader_props program from GPU memory function.
          *
          * \param None.

@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   renderer.h
  * \brief  Static hich-level renderer class implementation module.
  *         Implements objects rendering functions via render_pass_submission queue.
@@ -46,11 +46,13 @@ void scl::renderer::DrawGeometry(const shared<mesh> &Mesh, const matr4 &Transfor
     for (auto &submesh : Mesh->SubMeshes)
     {
         // matr4 world = submesh.LocalTransform * Transform;
+
         submesh.Material->Bind();
         submesh.Material->Shader->SetMatr3("u_MatrN", matr3(Transform.Inverse().Transpose()));
         submesh.Material->Shader->SetMatr4("u_MatrW", Transform);
         submesh.Material->Shader->SetMatr4("u_MatrWVP", Transform * Pipeline.ViewProjection);
         render_bridge::DrawIndices(submesh.VertexArray);
+        submesh.Material->Unbind();
     }
 }
 
@@ -178,15 +180,17 @@ void scl::renderer::StartPipeline(const camera &Camera, const vec3 &EnviromentAm
     Pipeline.Data.Time = timer::GetTime();
     Pipeline.Data.EnviromentAmbient = EnviromentAmbient;
 
-    Pipeline.Data.ViewportWidth   = Camera.GetViewportWidth();
-    Pipeline.Data.ViewportHeight  = Camera.GetViewportHeight();
-    Pipeline.Data.CameraPosition  = Camera.GetPosition();
-    Pipeline.Data.CameraDirection = Camera.GetDirection();
-    Pipeline.ViewProjection       = Camera.GetViewProjection();
-    Pipeline.Data.Exposure        = Camera.Effects.Exposure;
-    Pipeline.Data.IsHDR           = Camera.Effects.HDR;
-    Pipeline.Data.IsBloom         = Camera.Effects.Bloom;
-    Pipeline.Data.BloomAmount     = Camera.Effects.BloomAmount;
+    Pipeline.Data.ViewportWidth        = Camera.GetViewportWidth();
+    Pipeline.Data.ViewportHeight       = Camera.GetViewportHeight();
+    Pipeline.Data.CameraPosition       = Camera.GetPosition();
+    Pipeline.Data.CameraDirection      = Camera.GetDirection();
+    Pipeline.Data.CameraUpDirection    = Camera.GetUpDirection();
+    Pipeline.Data.CameraRightDirection = Camera.GetRightDirection();
+    Pipeline.ViewProjection            = Camera.GetViewProjection();
+    Pipeline.Data.Exposure             = Camera.Effects.Exposure;
+    Pipeline.Data.IsHDR                = Camera.Effects.HDR;
+    Pipeline.Data.IsBloom              = Camera.Effects.Bloom;
+    Pipeline.Data.BloomAmount          = Camera.Effects.BloomAmount;
 
     Pipeline.MainFrameBuffer   = Camera.GetMainFrameBuffer();
     Pipeline.GBuffer           = Camera.GetGBuffer();

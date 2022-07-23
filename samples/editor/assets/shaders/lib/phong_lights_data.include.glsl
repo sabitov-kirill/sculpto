@@ -32,12 +32,12 @@ struct spot_light
 /* Current pipieline lights storage. */
 layout(std140, binding = BINDING_POINT_LIGHTS_STORAGE) uniform ubo_LightsStorage
 {
-    point_light PointLights[50];
-    directional_light DirectionalLight;
-    spot_light SpotLights[50];
-    uint PointLightsCount;
-    bool IsDirectionalLight;
-    uint SpotLightsCount;
+    point_light        u_PointLights[50];
+    directional_light  u_DirectionalLight;
+    spot_light         u_SpotLights[50];
+    uint               u_PointLightsCount;
+    bool               u_IsDirectionalLight;
+    uint               u_SpotLightsCount;
 };
 
 layout(binding  = TEXTURE_SLOT_SHADOW_MAP) uniform sampler2D u_ShadowMap;

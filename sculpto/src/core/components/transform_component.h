@@ -1,6 +1,6 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   transform_component.h
- * \brief  Application scene system objects transform component class implementation module.
+ * \brief  Scene object transform component class implementation module.
  * 
  * \author Sabitov Kirill
  * \date   02 July 2022
@@ -12,7 +12,7 @@
 
 namespace scl
 {
-    /* Application scene system objects transform component class. */
+    /*! Application scene system objects transform component class. */
     struct transform_component
     {
         vec3 Scale { 1 };

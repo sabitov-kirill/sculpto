@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   texture.h
  * \brief  Texture interface definition module.
  * 
@@ -13,31 +13,31 @@
 
 namespace scl
 {
-    /* Texture types enum class. */
+    /*! Texture types enum class. */
     enum class texture_type
     {
-        COLOR,                   /* Default color texture type. */
-        COLOR_FLOATING_POINT,    /* High dynamic range color texture type. */
-        DEPTH,                   /* Depth component texture type. */
+        COLOR,                   /*! Default color texture type. */
+        COLOR_FLOATING_POINT,    /*! High dynamic range color texture type. */
+        DEPTH,                   /*! Depth component texture type. */
     };
 
-    /* Texture interface. */
+    /*! Texture interface. */
     class texture_2d : public render_primitive
     {
-    protected: /* Texture data. */
+    protected: /*! Texture data. */
         int Width {}, Height {};
 
-    public: /* Texture data getter/setter function. */
-        /* Texture width (in pixels) getter function. */
+    public: /*! Texture data getter/setter function. */
+        /*! Texture width (in pixels) getter function. */
         int GetWidth() const { return Width; }
-        /* Texture height (in pixels) getter function. */
+        /*! Texture height (in pixels) getter function. */
         int GetHeight() const { return Height; }
 
     public:
-        /* Texture default deatructor. */
+        /*! Texture default deatructor. */
         virtual ~texture_2d() = default;
 
-        /**
+        /*!*
          * Bind texture to current render stage function.
          *
          * \param Slot - texture slot to bind it in.
@@ -45,7 +45,7 @@ namespace scl
          */
         virtual void Bind(u32 Slot) const = 0;
 
-        /**
+        /*!*
          * Unbind texture from current render stage function.
          * 
          * \param Slot - texture slot to unbind it from.
@@ -53,7 +53,7 @@ namespace scl
          */
         virtual void Unbind() const = 0;
 
-        /**
+        /*!*
          * Load texture image from GPU memory function.
          * 
          * \param None.
@@ -61,7 +61,7 @@ namespace scl
          */
         virtual image GetImage() = 0;
 
-        /**
+        /*!*
          * Unload texture from GPU memory function.
          *
          * \param None.
@@ -69,7 +69,7 @@ namespace scl
          */
         virtual void Free() = 0;
 
-        /**
+        /*!*
          * Create texture from image container function.
          *
          * \param Image - image container to get data from.

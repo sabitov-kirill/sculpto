@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   profiller_window.h
  * \brief  Application profiller GUI window class definition module.
  * 
@@ -10,19 +10,19 @@
 
 namespace scl
 {
-    /* Application profiller GUI window class. */
+    /*! Application profiller GUI window class. */
     class profiller_window
     {
-    private: /* Application profiller GUI window data. */
+    private: /*! Application profiller GUI window data. */
         std::vector<float> FPSList {};
         float FPSPlotUpdateDelay {};
         bool CollectProfilingData;
 
     public:
-        /* Application profiller GUI window default constructor. */
+        /*! Application profiller GUI window default constructor. */
         profiller_window() = default;
 
-        /**
+        /*!*
          * Draw profiller GUI window function.
          * 
          * \param None.

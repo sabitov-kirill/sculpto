@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   memory_swap.h
  * \brief  Memory swap function implementation module.
  * 
@@ -12,7 +12,7 @@
 
 namespace scl
 {
-    /**
+    /*!*
      * Swap momory blocks function.
      * 
      * \param BlockA - first memory block.

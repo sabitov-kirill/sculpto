@@ -26,10 +26,10 @@
     {
         vs_out.TexCoords = v_TexCoords;
         vs_out.Pos = vec3(u_MatrW * vec4(v_Pos, 1.0));
-        if (DirectionalLight.IsShadows)
-            vs_out.LightSpacePos = DirectionalLight.ViewProjection * vec4(vs_out.Pos, 1.0);
+        if (u_DirectionalLight.IsShadows)
+            vs_out.LightSpacePos = u_DirectionalLight.ViewProjection * vec4(vs_out.Pos, 1.0);
         vs_out.Normal = normalize(u_MatrN * v_Normal);
-        if (IsNormalMap)
+        if (u_IsNormalMap)
             vs_out.TBN = mat3(normalize(u_MatrN * v_Tangent), normalize(u_MatrN * v_Bitangent), vs_out.Normal);
 
         gl_Position = u_MatrWVP * vec4(v_Pos, 1.0);
@@ -56,26 +56,26 @@
     layout(location = COLOR_ATTACHMENT_GEOM_PASS_OUT_COLOR          ) out vec4 OutColor;
     layout(location = COLOR_ATTACHMENT_GEOM_PASS_OUT_PHONG_DIFFUSE  ) out vec4 OutDiffuse;
     layout(location = COLOR_ATTACHMENT_GEOM_PASS_OUT_PHONG_SPECULAR ) out vec4 OutSpecular;
-    layout(location = COLOR_ATTACHMENT_GEOM_PASS_OUT_PHONG_SHININESS) out vec4 OutShininess;
+    layout(location = COLOR_ATTACHMENT_GEOM_PASS_OUT_PHONG_SHININESS) out vec4 OutShininessIsShadeIsBloomed;
 
     void main()
     {
         OutPosition = vec4(fs_in.Pos, 1);
 
         vec3 norm = vec3(0);
-        if (IsNormalMap) norm = fs_in.TBN * (texture(u_NormalMap, fs_in.TexCoords).rgb * 2 - 1);
-        else             norm = fs_in.Normal;
+        if (u_IsNormalMap) norm = fs_in.TBN * (texture(u_NormalMap, fs_in.TexCoords).rgb * 2 - 1);
+        else               norm = fs_in.Normal;
         OutNormal = vec4(normalize(norm), 1);
 
-        if (IsEmissionMap) OutColor = vec4(texture(u_EmissionMap, fs_in.TexCoords).rgb * 5, 1);
+        if (u_IsEmissionMap) OutColor = vec4(texture(u_EmissionMap, fs_in.TexCoords).rgb * 5, 1);
 
-        if (IsDiffuseMap) OutDiffuse = texture(u_DiffuseMap, fs_in.TexCoords);
-        else              OutDiffuse = vec4(Diffuse, 1);
+        if (u_IsDiffuseMap) OutDiffuse = texture(u_DiffuseMap, fs_in.TexCoords);
+        else                OutDiffuse = vec4(u_Diffuse, 1);
         if (OutDiffuse.w < 0.1) discard;
 
-        if (IsSpecularMap) OutSpecular = vec4(texture(u_SpecularMap, fs_in.TexCoords).rgb, 1);
-        else               OutSpecular = vec4(Specular, 1);
+        if (u_IsSpecularMap) OutSpecular = vec4(texture(u_SpecularMap, fs_in.TexCoords).rgb, 1);
+        else                 OutSpecular = vec4(u_Specular, 1);
 
-        OutShininess = vec4(Shininess, 0, 0, 1);
+        OutShininessIsShadeIsBloomed = vec4(u_Shininess, 1, 1, 1);
     }
 #shader-end

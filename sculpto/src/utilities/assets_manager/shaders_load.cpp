@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   shaders_loader.h
  * \brief  Assets manager shader load function defintion modulule.
  *

@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   shader.h
  * \brief  Shader program interface definition module.
  * 
@@ -12,7 +12,7 @@
 
 namespace scl
 {
-    /* Shader type enum. */
+    /*! Shader type enum. */
     enum class shader_type
     {
         VERTEX,
@@ -21,16 +21,16 @@ namespace scl
         COMPUTE,
     };
 
-    /* Shader creation properties structure. */
+    /*! Shader creation properties structure. */
     struct shader_props
     {
         shader_type Type {};
         std::string Source {};
 
-        /* Shader properties default constructor. */
+        /*! Shader properties default constructor. */
         shader_props() = default;
 
-        /**
+        /*!*
          * Shader constructor by source code.
          * 
          * \param Type - shader_props type.
@@ -39,18 +39,18 @@ namespace scl
         shader_props(shader_type Type, const std::string &Source) : Type(Type), Source(Source) {}
     };
 
-    /* Shader progream interface. */
+    /*! Shader progream interface. */
     class shader_program: public render_primitive
     {
-    public: /* Shader program data. */
+    public: /*! Shader program data. */
         std::string SingleSourceFileName {};
         std::string VertexShadersourceFileName {};
         std::string GeometryShadersourceFileName {};
         std::string PixelShadersourceFileName {};
         std::string DebugName {};
 
-    public: /* Saader program getter/setter functions. */
-        /**
+    public: /*! Saader program getter/setter functions. */
+        /*!*
          * Set uniform variable to shader_props function.
          *
          * \param Name - unifrom variable name.
@@ -74,7 +74,7 @@ namespace scl
         virtual bool SetMatr3(const std::string &Name, const matr3 &Value) const = 0;
         virtual bool SetMatr4(const std::string &Name, const matr4 &Value) const = 0;
 
-        /**
+        /*!*
          * Set uniform variable to shader_props function.
          *
          * \param Location - platform specific shader variable location identifier.
@@ -99,13 +99,13 @@ namespace scl
         virtual bool SetMatr4(int Location, const matr4 &Value) const = 0;
 
     public:
-        /* Shader program default constructor. */
+        /*! Shader program default constructor. */
         shader_program(const std::string &DebugName);
 
-        /* Shader program default deatructor. */
+        /*! Shader program default deatructor. */
         virtual ~shader_program() = default;
 
-        /**
+        /*!*
          * Bind buffer to current render stage function.
          *
          * \param None.
@@ -113,7 +113,7 @@ namespace scl
          */
         virtual void Bind() const = 0;
 
-        /**
+        /*!*
          * Unbind buffer from current render stage function.
          *
          * \param None.
@@ -121,7 +121,7 @@ namespace scl
          */
         virtual void Unbind() const = 0;
 
-        /**
+        /*!*
          * Recompile shader program function.
          * 
          * \param Shaders - shaders array.
@@ -129,7 +129,7 @@ namespace scl
          */
         virtual void Update(const std::vector<shader_props> &Shaders) = 0;
 
-        /**
+        /*!*
          * Unload shader program from GPU memory function.
          * 
          * \param None.
@@ -137,7 +137,7 @@ namespace scl
          */
         virtual void Free() = 0;
 
-        /**
+        /*!*
          * Shader program creation function.
          * 
          * \param Shaders - shaders array.

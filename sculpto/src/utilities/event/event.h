@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   base_event.h
  * \brief  Base event class definiton module.
  * 
@@ -19,17 +19,17 @@
 
 namespace scl
 {
-    /* Base event class. */
+    /*! Base event class. */
     class event
     {
     public:
-        /* Event handled flag. */
+        /*! Event handled flag. */
         bool Handled { false };
 
-        /* Defualt destructor. */
+        /*! Defualt destructor. */
         virtual ~event() = default;
 
-        /**
+        /*!*
          * Get type of specific event function.
          * 
          * \param None.
@@ -37,7 +37,7 @@ namespace scl
          */
         inline virtual u32 GetType() const = 0;
 
-        /**
+        /*!*
          * Get string name of event.
          *
          * \param None.
@@ -45,7 +45,7 @@ namespace scl
          */
         inline virtual const char *GetName() const = 0;
 
-        /**
+        /*!*
          * Convert event to string (for debug).
          *
          * \param None.

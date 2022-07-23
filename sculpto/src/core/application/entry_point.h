@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   entry_point.h
  * \brief  Sculpto library entry point definition module.
  * 
@@ -12,7 +12,7 @@
 #include "application.h"
 extern scl::application *scl::CreateApplication();
 
-/**
+/*!*
  * Main programm function.
  * 
  * \param argc - application run arguments count.
@@ -26,4 +26,4 @@ int main(int argc, char *argv[])
     delete app, app = nullptr;
 }
 
-#endif /* !__ENTRY_POINT_H */
+#endif /*! !__ENTRY_POINT_H */

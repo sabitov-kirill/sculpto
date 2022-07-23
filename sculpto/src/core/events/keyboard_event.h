@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   keyboard_event.h
  * \brief  Keyboard action (key pressed, key hold, key up) event implementation module.
  * 
@@ -13,19 +13,19 @@
 
 namespace scl
 {
-    /* Keyboard action event class. */
+    /*! Keyboard action event class. */
     class keyboard_event : public event
     {
         SCL_MAKE_EVENT(Keyboard);
 
-    private: /* Event data. */
+    private: /*! Event data. */
         bool Pressed;
         bool PrevPressed;
         bool Clicked;
         keycode KeyCode;
 
     public:
-        /**
+        /*!*
          * Keyboard event default constructor.
          * 
          * \param Pressed - is key pressed or released flag.
@@ -36,16 +36,16 @@ namespace scl
             Pressed(Pressed), PrevPressed(PrevPressed), KeyCode(KeyCode),
             Clicked(!PrevPressed && Pressed) {}
 
-        /* Key pressed or released flag getter function. */
+        /*! Key pressed or released flag getter function. */
         bool GetPressed() { return Pressed; }
-        /* Key pressed continiaously flag getter function.*/
+        /*! Key pressed continiaously flag getter function.*/
         int GetPrevPressed() { return PrevPressed; }
-        /* Key clicked once flag getter function.*/
+        /*! Key clicked once flag getter function.*/
         int GetClicked() { return Clicked; }
-        /* Kode of acting key getter function. */
+        /*! Kode of acting key getter function. */
         keycode GetKeyCode() { return KeyCode;  }
 
-        /**
+        /*!*
          * Convert event to string (for debug).
          *
          * \param None.

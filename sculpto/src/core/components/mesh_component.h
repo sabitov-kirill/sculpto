@@ -1,6 +1,6 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   mesh_component.h
- * \brief  Application scene system object mesh component class implementation module.
+ * \brief  Scene object mesh component class implementation module.
  * 
  * \author Sabitov Kirill
  * \date   02 July 2022
@@ -12,7 +12,7 @@
 
 namespace scl
 {
-    /* Application scene system objects mesh component class. */
+    /*! Application scene system objects mesh component class. */
     struct mesh_component
     {
         shared<mesh> Mesh {};

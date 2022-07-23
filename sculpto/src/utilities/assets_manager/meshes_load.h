@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   models_load.h
  * \brief  Assets manager model load functions defintion modulule.
  * 
@@ -10,7 +10,7 @@
 
 #include "base.h"
 
-/* Classes definition. */
+/*! Classes definition. */
 struct aiScene;
 struct aiMesh;
 struct aiNode;
@@ -23,7 +23,7 @@ namespace scl {
 
 namespace scl::assets_manager
 {
-    /* Mesh for phong lighting model loader class. */
+    /*! Mesh for phong lighting model loader class. */
     class mesh_loader_phong
     {
     private:
@@ -41,7 +41,7 @@ namespace scl::assets_manager
 
     };
 
-    /**
+    /*!*
      * Load model (all meshes with materials) from file function.
      * 
      * \param ModelFilePath - model file path.

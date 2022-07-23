@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   window.cpp
  * \brief  Abstract, platform independent class implementation module.
  * 
@@ -21,7 +21,7 @@ scl::unique<scl::window> scl::window::Create(int Width, int Height, const std::s
 {
 #ifdef SCL_PLATFORM_WINDOWS
     return CreateUnique<windows_window>(Width, Height, Title);
-#else /* !SCL_PLATFORM_WINDOWS */
+#else /*! !SCL_PLATFORM_WINDOWS */
     SCL_CORE_ASSERT(false, "Unknown platform!");
     return nullptr;
 #endif

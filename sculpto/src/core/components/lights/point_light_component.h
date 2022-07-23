@@ -1,6 +1,6 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   point_light_component.h
- * \brief  Point light component class implementation module.
+ * \brief  Scene object point light component class implementation module.
  * 
  * \author Sabitov Kirill
  * \date   05 July 2022
@@ -10,7 +10,7 @@
 
 #include <base.h>
 
-/*********** Point Light Contants *************
+/*!********** Point Light Contants *************
  * Distance     Constant   Linear   Quadratic
  *    0007,       1.0,      0.7   ,   1.8
  *    0013,       1.0,      0.35  ,   0.44
@@ -28,14 +28,14 @@
 
 namespace scl
 {
-    /* Point light component class. Transform component sets position. */
+    /*! Point light component class. Transform component sets position. */
     struct point_light_component
     {
-        /* Light color. */
+        /*! Light color. */
         vec3 Color { 0.7f };
         float Strength { 1 };
 
-        /* Point light attenuation coefficients. */
+        /*! Point light attenuation coefficients. */
         float Constant { 1.0f };
         float Linear { 0.22f };
         float Quadratic { 0.20f };

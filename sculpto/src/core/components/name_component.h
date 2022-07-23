@@ -1,6 +1,6 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   name_component.h
- * \brief  
+ * \brief  Scene object name component class implementation module.
  * 
  * \author Sabitov Kirill
  * \date   02 July 2022

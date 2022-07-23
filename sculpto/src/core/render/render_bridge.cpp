@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   render_bridge.h
  * \brief  Render bridge class implementation module.
  *         Static class for making calls to low-level render api,

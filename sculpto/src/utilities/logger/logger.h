@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   logger.h
  * \brief  Sculpto library logger implementation module.
  * 
@@ -15,25 +15,25 @@
 
 namespace scl
 {
-    /* Logger class. */
+    /*! Logger class. */
     class logger
     {
-    private: /* Logger data. */
-        /* Name to be displayed in each log record. */
+    private: /*! Logger data. */
+        /*! Name to be displayed in each log record. */
         std::string Name = "";
-        /* Currently using stream. */
+        /*! Currently using stream. */
         std::ostream &Out = std::cout;
 
     public:
-        /**
+        /*!*
          * Logger default constructor.
          * 
          * \param Name - name of logger to be displayed at records.
          */
         logger(const std::string &Name = "");
 
-    public: /* Events logging methods. */
-        /**
+    public: /*! Events logging methods. */
+        /*!*
          * Log info message to current out stream.
          * 
          * \param Message - message to log.
@@ -48,7 +48,7 @@ namespace scl
                 '\n';
         }
 
-        /**
+        /*!*
          * Log success message to current out stream.
          *
          * \param Message - message to log.
@@ -64,7 +64,7 @@ namespace scl
                 console::color_literal_reset() << '\n';
         }
 
-        /**
+        /*!*
          * Log warn message to current out stream.
          *
          * \param Message - message to log.
@@ -80,7 +80,7 @@ namespace scl
                 console::color_literal_reset() << '\n';
         }
 
-        /**
+        /*!*
          * Log error message to current out stream.
          *
          * \param Message - message to log.
@@ -96,7 +96,7 @@ namespace scl
                 console::color_literal_reset() << '\n';
         }
 
-        /**
+        /*!*
          * Set currently using out stream.
          * 
          * \param OutStream - new stream to log in.

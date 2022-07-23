@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   points.h
  * \brief  Topology objects points array (useful for creation dummy rendering object) class declaration module.
  * 
@@ -13,18 +13,18 @@
 
 namespace scl::topology
 {
-    /* Topology objects points array class. */
+    /*! Topology objects points array class. */
     class points : public basis<vertex_point>
     {
     public:
-        /**
+        /*!*
          * Topology point array object default contructor (creates one point).
          * 
          * \param None.
          */
         points();
 
-        /**
+        /*!*
          * Topology point array object contructor by array of points.
          * 
          * \param Points - array of points.

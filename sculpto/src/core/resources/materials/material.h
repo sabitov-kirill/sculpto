@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   material.h
  * \brief  Mesh material class deinition module.
  * 
@@ -13,13 +13,13 @@
 
 namespace scl
 {
-    /* Mesh material class. */
+    /*! Mesh material class. */
     class material
     {
-    public: /* Material data. */
+    public: /*! Material data. */
         shared<shader_program> Shader {};
 
-        /**
+        /*!*
          * Material constructor by shader only.
          *
          * \param Shader - material shader to use while mesh with this material rendering.
@@ -27,7 +27,7 @@ namespace scl
         material(shared<shader_program> Shader) :
             Shader(Shader) {}
 
-        /**
+        /*!*
          * Bind material to current render stage function.
          *
          * \param None.
@@ -38,7 +38,7 @@ namespace scl
             if (Shader != nullptr) Shader->Bind();
         }
 
-        /**
+        /*!*
          * Unbind material from current render stage function.
          *
          * \param Slot - texture slot to unbind it from.
@@ -49,7 +49,7 @@ namespace scl
             if (Shader != nullptr) Shader->Unbind();
         }
 
-        /**
+        /*!*
          * Material creation function by shader only.
          *
          * \param Shader - material shader to use while mesh with this material rendering.

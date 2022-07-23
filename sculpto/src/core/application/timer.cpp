@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   timer.h
  * \brief  Timer, calculating interframe deltatime and fps
  *         class implementation module.

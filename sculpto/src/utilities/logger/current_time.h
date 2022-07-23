@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   time_stamp.h
  * \brief  Current time string creation function implementation.
  * 
@@ -10,7 +10,7 @@
 
 namespace scl
 {
-    /**
+    /*!*
      * Getting curent time string function.
      * 
      * \param None.

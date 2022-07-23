@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   gl.cpp
  * \brief  OpenGL context implementation module.
  * 
@@ -77,7 +77,7 @@ HGLRC glInitialiseContext(HDC hDC)
     return hGLRC;
 }
 
-#endif /* !SCL_PLATFORM_WINDOWS */
+#endif /*! !SCL_PLATFORM_WINDOWS */
 
 const scl::vec4 &scl::gl::GetClearColor() const
 {
@@ -92,6 +92,11 @@ bool scl::gl::GetWireframeMode() const
 scl::render_cull_face_mode scl::gl::GetCullingMode() const
 {
     return CullingMode;
+}
+
+bool scl::gl::GetDepthTestMode() const
+{
+    return IsDepthTest;
 }
 
 bool scl::gl::GetVSync() const
@@ -124,12 +129,27 @@ void scl::gl::SetCullingMode(render_cull_face_mode CullingMode)
     SCL_CORE_ASSERT(0, "Unknown culling mode!");
 }
 
+void scl::gl::SetDepthTestMode(bool IsDepthTest)
+{
+    this->IsDepthTest = IsDepthTest;
+    if (IsDepthTest)
+    {
+        glDepthMask(TRUE);
+        glEnable(GL_DEPTH_TEST);
+    }
+    else
+    {
+        glDisable(GL_DEPTH_TEST);
+        glDepthMask(FALSE);
+    }
+}
+
 void scl::gl::SetVSync(bool IsVSync)
 {
     this->IsVSync = IsVSync;
 #ifdef SCL_PLATFORM_WINDOWS
     wglSwapIntervalEXT(IsVSync);
-#endif /* SCL_PLATFORM_WINDOWS */
+#endif /*! SCL_PLATFORM_WINDOWS */
 }
 
 GLenum scl::gl::GetGLPrimitiveType(mesh_type MeshType)
@@ -181,7 +201,7 @@ void scl::gl::CreateContext(const HWND &hAppWnd, int W, int H, bool VSync)
     hWnd = &hAppWnd;
     hDC = GetDC(hAppWnd);
     hGLRC = glInitialiseContext(hDC);
-#endif /* !SCL_PLATFORM_WINDOWS */
+#endif /*! !SCL_PLATFORM_WINDOWS */
 
     SetVSync(VSync);
 
@@ -213,7 +233,7 @@ void scl::gl::Init()
 
     this->CreateContext(win.GetHandle(), win_data.Width, win_data.Height, true);
     SCL_CORE_SUCCES("Windows OpenGL render context initialised successfully.");
-#endif /* !SCL_PLATFORM_WINDOWS */
+#endif /*! !SCL_PLATFORM_WINDOWS */
 }
 
 void scl::gl::Close()
@@ -225,7 +245,7 @@ void scl::gl::Close()
 
 void scl::gl::SwapBuffers()
 {
-    /* Another way (not sure):
+    /*! Another way (not sure):
      * wglSwapLayerBuffers(hDC, WGL_SWAP_MAIN_PLANE);
      */
     ::SwapBuffers(hDC);
@@ -256,7 +276,7 @@ void scl::gl::DrawIndicesInstanced(const shared<vertex_array> &VertexArray, int 
     VertexArray->Unbind();
 }
 
-/**
+/*!*
  * OpenGl Debug output function.
  *
  * \param Source - source APi or device.
@@ -274,7 +294,7 @@ static void APIENTRY glDebugOutput(UINT Source, UINT Type, UINT Id, UINT Severit
     INT len = 0;
     static CHAR Buf[10000] {};
 
-    /* Ignore non-significant error/warning codes */
+    /*! Ignore non-significant error/warning codes */
     if (Id == 131169 || Id == 131185 || Id == 131218 || Id == 131204)
         return;
 
@@ -316,4 +336,4 @@ static void APIENTRY glDebugOutput(UINT Source, UINT Type, UINT Id, UINT Severit
         SCL_CORE_INFO(Buf);
         break;
     }
-} /* End of 'glDebugOutput' function */
+} /*! End of 'glDebugOutput' function */

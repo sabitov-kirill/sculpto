@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   full_screen_quad.h
  * \brief  Topology full screen quad object class implementation module.
  *

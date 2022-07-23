@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   gui_layer.h
  * \brief  Application graphics user interface layer class implementation module.
  *         Handles user GUI events and widgets render.
@@ -9,24 +9,22 @@
 
 #pragma once
 
-#include "../application/layer.h"
-
 namespace scl
 {
-    /* Application graphics user interface layer class. */
+    /*! Application graphics user interface layer class. */
     class gui
     {
-    public: /* Application graphics user interface layer data. */
+    public: /*! Application graphics user interface layer data. */
         static bool IsDockspace;
 
     public:
-        /* Default layer constructor. */
+        /*! Default layer constructor. */
         gui() = default;
 
-        /* Default layer destcuctor. */
+        /*! Default layer destcuctor. */
         ~gui() = default;
 
-        /**
+        /*!*
          * Layer initialisation virtual callback function.
          *
          * \param None.
@@ -34,7 +32,7 @@ namespace scl
          */
         static void Init();
 
-        /**
+        /*!*
          * Layer deinitialisation virtual callback function.
          *
          * \param None.
@@ -42,7 +40,7 @@ namespace scl
          */
         static void Close();
 
-        /**
+        /*!*
          * Begining GUI rendering pipeline function.
          * 
          * \param None.
@@ -50,7 +48,7 @@ namespace scl
          */
         static void BeginUpdate();
 
-        /**
+        /*!*
          * Submit rendered GUI function.
          * 
          * \param None.
@@ -59,7 +57,7 @@ namespace scl
         static void SubmitUpdate();
 
     private:
-        /**
+        /*!*
          * Draw docking space to window function.
          *
          * \param None.
@@ -67,7 +65,7 @@ namespace scl
          */
         static void DrawDockspace();
 
-        /**
+        /*!*
          * Setup Dear ImGui color scheme function.
          *
          * \param None.

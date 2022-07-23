@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   material_phong.h
  * \brief  Mesh material for bling-phone lighting model class deinition module.
  * 
@@ -15,58 +15,58 @@
 
 namespace scl
 {
-    /* Material for blin-phong lighting model class. */
+    /*! Material for blin-phong lighting model class. */
     class material_phong : public material
     {
-    private: /* Material for blin-phong lighing model data. */
-        /* Structure to use ass shader buffer data. */
+    private: /*! Material for blin-phong lighing model data. */
+        /*! Structure to use ass shader buffer data. */
         struct buffer_data
         {
-            vec3   Specular {};       /* Material specular lighting coefficient. */
-            float  Shininess {};      /* Material shiness exponent lighting coefficient. */
-            vec3   Diffuse {};        /* Material diffuse lighting coefficient. */
-            u32    IsSpecularMap {};  /* Flag, showing whether specular map passing to shader. */
-            u32    IsDiffuseMap {};   /* Flag, showing whether diffuse map passing to shader. */
-            u32    IsEmissionMap {};  /* Flag, showing whether normal map passing to shader. */
-            u32    IsNormalMap {};    /* Flag, showing whether normal map passing to shader. */
+            vec3   Specular {};       /*! Material specular lighting coefficient. */
+            float  Shininess {};      /*! Material shiness exponent lighting coefficient. */
+            vec3   Diffuse {};        /*! Material diffuse lighting coefficient. */
+            u32    IsSpecularMap {};  /*! Flag, showing whether specular map passing to shader. */
+            u32    IsDiffuseMap {};   /*! Flag, showing whether diffuse map passing to shader. */
+            u32    IsEmissionMap {};  /*! Flag, showing whether normal map passing to shader. */
+            u32    IsNormalMap {};    /*! Flag, showing whether normal map passing to shader. */
         } Data {};
 
-        /* Constant shader buffer for passing material data to shader. */
+        /*! Constant shader buffer for passing material data to shader. */
         shared<constant_buffer> DataBuffer {};
 
-        /* Material textures cpefficients maps. */
+        /*! Material textures cpefficients maps. */
         shared<texture_2d> SpecularMapTexture {};
         shared<texture_2d> DiffuseMapTexture {};
         shared<texture_2d> EmissionMapTexture {};
         shared<texture_2d> NormalMapTexture {};
 
-    public: /* Material for blin-phong lighing model data getter setter functions. */
-        /* Material specular lighting coefficient getter function. */
+    public: /*! Material for blin-phong lighing model data getter setter functions. */
+        /*! Material specular lighting coefficient getter function. */
         const vec3 &GetSpecular() const { return Data.Specular; }
-        /* Material shiness exponent lighting coefficient getter function. */
+        /*! Material shiness exponent lighting coefficient getter function. */
         const vec3 &GetDiffuse() const { return Data.Diffuse; }
-        /* Material diffuse lighting coefficient getter function. */
+        /*! Material diffuse lighting coefficient getter function. */
         float GetShininess() const { return Data.Shininess; }
 
-        /* Flag, showing whether specular map passing to shader getter function. */
+        /*! Flag, showing whether specular map passing to shader getter function. */
         bool GetIsSpecularMap() const { return Data.IsSpecularMap; }
-        /* Flag, showing whether diffuse map passing to shader getter function. */
+        /*! Flag, showing whether diffuse map passing to shader getter function. */
         bool GetIsDiffuseMap() const { return Data.IsDiffuseMap; }
-        /* Flag, showing whether normal map passing to shader getter function. */
+        /*! Flag, showing whether normal map passing to shader getter function. */
         bool GetIsEmissionMap() const { return Data.IsEmissionMap; }
-        /* Flag, showing whether normal map passing to shader getter function. */
+        /*! Flag, showing whether normal map passing to shader getter function. */
         bool GetIsNormalMap() const { return Data.IsNormalMap; }
 
-        /* Diffuse map getter function. */
+        /*! Diffuse map getter function. */
         const shared<texture_2d> &GetDiffuseMapTexture() const { return DiffuseMapTexture; }
-        /* Specular map getter function. */
+        /*! Specular map getter function. */
         const shared<texture_2d> &GetSpecularMapTexture() const { return SpecularMapTexture; }
-        /* Emission map getter function. */
+        /*! Emission map getter function. */
         const shared<texture_2d> &GetEmissionMapTexture() const { return EmissionMapTexture; }
-        /* Normal map getter function. */
+        /*! Normal map getter function. */
         const shared<texture_2d> &GetNormalMapTexture() const { return NormalMapTexture; }
 
-        /* Diffuse coeffisient setter function.*/
+        /*! Diffuse coeffisient setter function.*/
         void SetDiffuse(const vec3 &Diffuse) {
             if (DiffuseMapTexture)
             {
@@ -77,7 +77,7 @@ namespace scl
             Data.IsDiffuseMap = false;
             DataBuffer->Update(&Data, sizeof(Data));
         }
-        /* Specular coefficient setter function. */
+        /*! Specular coefficient setter function. */
         void SetSpecular(const vec3 &Specular) {
             if (SpecularMapTexture)
             {
@@ -88,13 +88,13 @@ namespace scl
             Data.IsSpecularMap = false;
             DataBuffer->Update(&Data, sizeof(Data));
         }
-        /* Shiness exponent setter function. */
+        /*! Shiness exponent setter function. */
         void SetShininess(float Shininess) {
             Data.Shininess = Shininess;
             DataBuffer->Update(&Data, sizeof(Data));
         }
 
-        /* Diffuse map setter function. */
+        /*! Diffuse map setter function. */
         void SetDiffuseMapTexture(shared<texture_2d> DiffuseMapTexture) {
             if (!DiffuseMapTexture) return;
 
@@ -106,7 +106,7 @@ namespace scl
                 DataBuffer->Update(&Data, sizeof(Data));
             }
         }
-        /* Specular map setter function. */
+        /*! Specular map setter function. */
         void SetSpecularMapTexture(shared<texture_2d> SpecularMapTexture) {
             if (!SpecularMapTexture) return;
 
@@ -118,7 +118,7 @@ namespace scl
                 DataBuffer->Update(&Data, sizeof(Data));
             }
         }
-        /* Emission map setter function. */
+        /*! Emission map setter function. */
         void SetEmissionMapTexture(shared<texture_2d> EmissionMapTexture) {
             if (!EmissionMapTexture) return;
 
@@ -130,7 +130,7 @@ namespace scl
                 DataBuffer->Update(&Data, sizeof(Data));
             }
         }
-        /* Normal map setter function. */
+        /*! Normal map setter function. */
         void SetNormalMapTexture(shared<texture_2d> NormalMapTexture) {
             if (!NormalMapTexture) return;
 
@@ -143,13 +143,13 @@ namespace scl
             }
         }
 
-        /* Default material for blin-phong lighting model constructor. */
+        /*! Default material for blin-phong lighting model constructor. */
         material_phong() = default;
 
-        /* Default material data defautl copy constructor. */
+        /*! Default material data defautl copy constructor. */
         material_phong(const material_phong &Other) = default;
 
-        /**
+        /*!*
          * Material for blin-phong lighting model class contructor.
          *
          * \param Diffuse  - Material diffuse lighting coefficient.
@@ -166,7 +166,7 @@ namespace scl
             DataBuffer = constant_buffer::Create(&Data, sizeof(buffer_data));
         }
 
-        /**
+        /*!*
          * Bind material to current render stage function.
          *
          * \param None.
@@ -183,7 +183,7 @@ namespace scl
             if (NormalMapTexture && Data.IsNormalMap) NormalMapTexture->Bind(render_context::TEXTURE_SLOT_MATERIAL_NORMAL_MAP);
         }
 
-        /**
+        /*!*
          * Unbind material from current render stage function.
          *
          * \param None.
@@ -198,7 +198,7 @@ namespace scl
             if (NormalMapTexture && Data.IsNormalMap) NormalMapTexture->Unbind();
         }
 
-       /**
+       /*!*
         * Material for blin-phong lighting model class contructor.
         *
         * \param Specular - Material specular lighting coefficient.

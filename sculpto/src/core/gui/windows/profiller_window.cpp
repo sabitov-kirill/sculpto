@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   profiller_window.cpp
  * \brief  Application profiller GUI window class implementation module.
  * 

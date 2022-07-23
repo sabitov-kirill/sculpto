@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   trimesh.cpp
  * \brief  Topology object triangles mesh class declaration module.
  * 
@@ -59,10 +59,10 @@ void scl::topology::trimesh::EvaluateTangentSpace()
             vec3 N = V.Normal;
 
             if (N.Z > N.X && N.Z > N.Y || N.Y > N.X && N.Y > N.Z)
-                /* Z or Y dominant axes */
+                /*! Z or Y dominant axes */
                 V.Tangent = vec3(1, 0, 0);
             else
-                /* X dominant axis */
+                /*! X dominant axis */
                 V.Tangent = vec3(0, 1, 0);
             V.Bitangent = N.Cross(V.Tangent).Normalized();
             V.Tangent = V.Bitangent.Cross(N).Normalized();

@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   scene_serializer.h
  * \brief  Scene serializer (also could perform deserialization) class definition module.
  * 
@@ -17,7 +17,7 @@ namespace scl { using json = nlohmann::json; };
 
 namespace scl
 {
-    /**********************************************************************
+    /*!*********************************************************************
      * Common types serialization/deserialization to json format functions.
      **********************************************************************/
 
@@ -56,7 +56,7 @@ namespace scl
         }
     }
 
-    /********************************************************************
+    /*!*******************************************************************
      * Components serialization/deserialization to json format functions.
      ********************************************************************/
 
@@ -74,14 +74,14 @@ namespace scl
     bool from_json(const json &Json, directional_light_component &DirectionalLightComponent);
     bool from_json(const json &Json, spot_light_component &SpotLightComponent);
 
-    /* Scene serializer class. */
+    /*! Scene serializer class. */
     class scene_serializer
     {
-    private: /* Scene serializer data. */
+    private: /*! Scene serializer data. */
         weak<scene> Scene;
 
-    private: /* Scene serializer methods. */
-        /**
+    private: /*! Scene serializer methods. */
+        /*!*
          * Serialize specific component of scene object function.
          * 
          * \tparam Tcomponent - type of serializeing scene object component.
@@ -107,7 +107,7 @@ namespace scl
                 SceneObject.AddComponent<Tcomponent>(component);
         }
 
-        /**
+        /*!*
          * Serialize scene object function.
          * 
          * \param SceneObject - scene object to serialize.
@@ -115,7 +115,7 @@ namespace scl
          */
         static void SerializeObject(json &Json, const scene_object &SceneObject);
 
-        /**
+        /*!*
          * Deserialize object data from json and put in object function.
          * 
          * \param Json
@@ -124,7 +124,7 @@ namespace scl
         static void DeserializeObject(const json &Json, scene_object &SceneObject);
 
     public:
-        /**
+        /*!*
          * Serialize scene data to file function.
          * 
          * \param OutFileName - output file name.
@@ -132,7 +132,7 @@ namespace scl
          */
         static void Serialize(const shared<scene> &Scene, const std::filesystem::path &OutFileName);
 
-        /**
+        /*!*
          * Deserialize scene data from specified file function.
          * 
          * \param Scene - scene to put deserialized date in.

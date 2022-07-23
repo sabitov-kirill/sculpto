@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   event_dispatcher.h
  * \brief  Event dispatcher class implementation module.
  * 
@@ -13,7 +13,7 @@
 
 namespace scl
 {
-    /* Static event dispatcher class.
+    /*! Static event dispatcher class.
        Should be created once, then event listners added
        to it and dispatched on event invoke. */
     class event_dispatcher
@@ -23,11 +23,11 @@ namespace scl
         using base_event_callback = std::function<bool(event &)>;
         using callback_list = std::vector<base_event_callback>;
 
-    private: /* Static event dispatcher data. */
+    private: /*! Static event dispatcher data. */
         static std::map<string_id, callback_list> EventHandlers;
 
-    public: /* Static event dispatcher methods. */
-        /**
+    public: /*! Static event dispatcher methods. */
+        /*!*
          * Add event listner to specific event function.
          *
          * \tparam Tevent - event to set listner to.
@@ -44,7 +44,7 @@ namespace scl
                 event_handlers->second.push_back(std::move(EventCallback));
         }
 
-        /**
+        /*!*
          * Add event listner to specific event function.
          *
          * \tparam Tevent - event to set listner to.
@@ -61,7 +61,7 @@ namespace scl
             });
         }
 
-        /**
+        /*!*
          * Dispatch specific event function.
          * Calls all callbacks, listing to that event.
          * 

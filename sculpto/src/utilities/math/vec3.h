@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   vec3.h
  * \brief  Euclidean 3D vector implementation module.
  *
@@ -10,7 +10,7 @@
 
 #include "math_common.h"
 
-/**
+/*!*
  * 3D vector to 3 numbers convertion function.
  *
  * \param v - vector to convert.
@@ -24,33 +24,33 @@ namespace scl::math
     template <typename T>
     class vec3
     {
-        /* 4x4 Matrix friend class forward declaration. */
+        /*! 4x4 Matrix friend class forward declaration. */
         template<typename T> friend class matr4;
 
-    public: /* Vector data. */
-        /* Cartesian coordinates. */
+    public: /*! Vector data. */
+        /*! Cartesian coordinates. */
         T X { 0 }, Y { 0 }, Z { 0 };
 
-    public: /* Public coordinates setters and getters.
+    public: /*! Public coordinates setters and getters.
                On coordinate change vector's length calculation state set to false. */
-        /* X vector component setter function. */
+        /*! X vector component setter function. */
         T SetX(T X) { this->X = X; }
-        /* Y vector component setter function. */
+        /*! Y vector component setter function. */
         T SetY(T Y) { this->Y = Y; }
-        /* Z vector component setter function. */
+        /*! Z vector component setter function. */
         T SetZ(T Z) { this->Z = Z; }
-        /* X vector component getter function. */
+        /*! X vector component getter function. */
         T GetX() const { return X; }
-        /* Y vector component getter function. */
+        /*! Y vector component getter function. */
         T GetY() const { return Y; }
-        /* Z vector component getter function. */
+        /*! Z vector component getter function. */
         T GetZ() const { return Z; }
 
-    public: /* Vector construcotrs. */
-        /* Default construcotr. All coodinates would ve set to zero. */
+    public: /*! Vector construcotrs. */
+        /*! Default construcotr. All coodinates would ve set to zero. */
         vec3() = default;
 
-        /**
+        /*!*
          * Vector constructor by one scalar.
          * All corinates would be set to its value.
          *
@@ -58,14 +58,14 @@ namespace scl::math
          */
         explicit vec3(T A) : X(A), Y(A), Z(A) {}
 
-        /**
+        /*!*
          * Vector constructor by three coordinates.
          *
          * \param X, Y - coordiantes of creating vector.
          */
         vec3(T X, T Y, T Z) : X(X), Y(Y), Z(Z) {}
 
-        /**
+        /*!*
          * Vector constructor by 2D vector and additional component.
          * 
          * \param V - vector to get X and Y coordinates
@@ -73,7 +73,7 @@ namespace scl::math
          */
         explicit vec3(vec2<T> V, T Z) : X(V.X), Y(V.Y), Z(Z) {}
 
-        /**
+        /*!*
          * Vector constructor by 2D vector and additional component.
          *
          * \param X - addition vector component
@@ -81,7 +81,7 @@ namespace scl::math
          */
         explicit vec3(T X, vec2<T> V) : X(X), Y(V.X), Z(V.Z) {}
 
-        /**
+        /*!*
          * Vector copy constructor.
          *
          * \param Other - vector to copy from.
@@ -96,7 +96,7 @@ namespace scl::math
             }
         }
 
-        /**
+        /*!*
          * Vector assigments operator overloading.
          *
          * \param Other - vector to copy from.
@@ -113,8 +113,8 @@ namespace scl::math
             return *this;
         }
 
-    public: /* Common vectors creation functinos. */
-        /**
+    public: /*! Common vectors creation functinos. */
+        /*!*
          * Vector with all components set to 0 creation function.
          *
          * \param None.
@@ -122,7 +122,7 @@ namespace scl::math
          */
         static vec3 Zero() { return vec3(0); }
 
-        /**
+        /*!*
          * Vector with all components set to random value in range [Min;Max] creation function.
          *
          * \param min - lower bound of random number.
@@ -131,7 +131,7 @@ namespace scl::math
          */
         static vec3 Rnd(T Min = 0, T Max = 1) { return vec3(Rnd(Min, Max)); }
 
-        /**
+        /*!*
          * Vector with compund of minimums of specified vectors components.
          *
          * \param A, B - vectors to take minimums of components.
@@ -139,7 +139,7 @@ namespace scl::math
          */
         static vec3 Min(const vec3 &A, const vec3 &B) { return vec3(math::Min(A.X, B.X), math::Min(A.Y, B.Y), math::Min(A.Z, B.Z)); }
 
-        /**
+        /*!*
          * Vector with compund of maximums of specified vectors components.
          *
          * \param A, B - vectors to take maximums of components.
@@ -147,8 +147,8 @@ namespace scl::math
          */
         static vec3 Max(const vec3 &A, const vec3 &B) { return vec3(math::Max(A.X, B.X), math::Max(A.Y, B.Y), math::Max(A.Z, B.Z)); }
 
-    public: /* Vector methods. */
-        /**
+    public: /*! Vector methods. */
+        /*!*
          * Vector squared length getting function.
          *
          * \param None.
@@ -159,7 +159,7 @@ namespace scl::math
             return X * X + Y * Y + Z * Z;
         }
 
-        /**
+        /*!*
          * Vector length getting function.
          *
          * \param None.
@@ -170,7 +170,7 @@ namespace scl::math
             return sqrt(Length2());
         }
 
-        /**
+        /*!*
          * Distance between two vectors getting function.
          *
          * \param Other - vector to get distance to.
@@ -181,7 +181,7 @@ namespace scl::math
             return (*this - Other).Length();
         }
 
-        /**
+        /*!*
          * Normalized vector getting function.
          *
          * \param None.
@@ -192,7 +192,7 @@ namespace scl::math
             return *this / Length();
         }
 
-        /**
+        /*!*
          * Normalize vector function.
          *
          * \param None.
@@ -204,7 +204,7 @@ namespace scl::math
             return *this;
         }
 
-        /**
+        /*!*
          * Vectors dot product function.
          *
          * \param Other - vector to multiply
@@ -215,7 +215,7 @@ namespace scl::math
             return X * Other.X + Y * Other.Y + Z * Other.Z;
         }
 
-        /**
+        /*!*
          * Vectors cross product function.
          *
          * \param Other - vector to multiply
@@ -228,8 +228,8 @@ namespace scl::math
                         X * Other.Y - Other.X * Y);
         }
 
-    public: /* Operators overloading. */
-        /**
+    public: /*! Operators overloading. */
+        /*!*
          * Vector compare function.
          * 
          * \param Other - vector to compare with.
@@ -240,7 +240,7 @@ namespace scl::math
             return X == Other.X && Y == Other.Y && Z == Other.Z;
         }
 
-        /**
+        /*!*
          * Getting negative vector operation.
          *
          * \param None.
@@ -251,7 +251,7 @@ namespace scl::math
             return vec3(-X, -Y, -Z);
         }
 
-        /**
+        /*!*
          * Vectors addition operator overloading.
          *
          * \param Other - vector to add.
@@ -262,7 +262,7 @@ namespace scl::math
             return vec3(X + Other.X, Y + Other.Y, Z + Other.Z);
         }
 
-        /**
+        /*!*
          * Vectors addition with assigments operator overlaoding.
          *
          * \param Other - vector to add.
@@ -276,7 +276,7 @@ namespace scl::math
             return *this;
         }
 
-        /**
+        /*!*
          * Vectors addition operator overloading.
          *
          * \param Scalar - scalar value to add to all vetcors components
@@ -289,7 +289,7 @@ namespace scl::math
                         Z + Scalar);
         }
 
-        /**
+        /*!*
          * Vectors addition with assigments operator overlaoding.
          *
          * \param Other - vector to add.
@@ -303,7 +303,7 @@ namespace scl::math
             return *this;
         }
 
-        /**
+        /*!*
          * Vectors subtraction operator overloading.
          *
          * \param Other - vector to subtract.
@@ -314,7 +314,7 @@ namespace scl::math
             return vec3(X - Other.X, Y - Other.Y, Z - Other.Z);
         }
 
-        /**
+        /*!*
          * Vectors subtraction with assigments operator overlaoding.
          *
          * \param Other - vector to subtract.
@@ -328,7 +328,7 @@ namespace scl::math
             return *this;
         }
 
-        /**
+        /*!*
          * Vectors subtraction operator overloading.
          *
          * \param Scalar - scalar value to add to all vetcors components
@@ -341,7 +341,7 @@ namespace scl::math
                         Z - Scalar);
         }
 
-        /**
+        /*!*
          * Vectors subtraction with assigments operator overlaoding.
          *
          * \param Other - vector to add.
@@ -355,7 +355,7 @@ namespace scl::math
             return *this;
         }
 
-        /**
+        /*!*
          * Vectors multiplying operator overloading.
          *
          * \param Other - vector to multiply.
@@ -366,7 +366,7 @@ namespace scl::math
             return vec3(X * Other.X, Y * Other.Y, Z * Other.Z);
         }
 
-        /**
+        /*!*
          * Vectors multiplying with assigments operator overlaoding.
          *
          * \param Other - vector to multiply.
@@ -380,7 +380,7 @@ namespace scl::math
             return *this;
         }
 
-        /**
+        /*!*
          * Vectors multiplying operator overloading.
          *
          * \param Scalar - scalar value to add to all vetcors components
@@ -393,7 +393,7 @@ namespace scl::math
                         Z * Scalar);
         }
 
-        /**
+        /*!*
          * Vectors multiplying with assigments operator overlaoding.
          *
          * \param Other - vector to add.
@@ -407,7 +407,7 @@ namespace scl::math
             return *this;
         }
 
-        /**
+        /*!*
          * Vectors dividing operator overloading.
          *
          * \param Other - vector to devide.
@@ -418,7 +418,7 @@ namespace scl::math
             return vec3(X / Other.X, Y / Other.Y, Z / Other.Z);
         }
 
-        /**
+        /*!*
          * Vectors dividing with assigments operator overlaoding.
          *
          * \param Other - vector to devide.
@@ -432,7 +432,7 @@ namespace scl::math
             return *this;
         }
 
-        /**
+        /*!*
          * Vectors dividing operator overloading.
          *
          * \param Scalar - scalar value to add to all vetcors components
@@ -445,7 +445,7 @@ namespace scl::math
                         Z / Scalar);
         }
 
-        /**
+        /*!*
          * Vectors dividing with assigments operator overlaoding.
          *
          * \param Other - vector to add.
@@ -459,7 +459,7 @@ namespace scl::math
             return *this;
         }
 
-        /**
+        /*!*
          * Getting pointer to first component of vector operator.
          * Need to pass vector to shader.
          *
@@ -470,7 +470,7 @@ namespace scl::math
             return &X;
         }
 
-        /**
+        /*!*
          * Getting coordinate operator overloading.
          *
          * \param Index - coordinate index.
@@ -487,7 +487,7 @@ namespace scl::math
             }
         }
 
-        /**
+        /*!*
          * Getting coordinate operator overloading.
          *
          * \param Index - coordinate index.

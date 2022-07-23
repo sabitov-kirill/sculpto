@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   input_system_key_codes.h
  * \brief  INput system key codes enum class definition module.
  * 
@@ -10,7 +10,7 @@
 
 namespace scl
 {
-    /* Input system platform independent key codes enum class. */
+    /*! Input system platform independent key codes enum class. */
     enum class keycode : int
     {
         UNKNOWN = -1,

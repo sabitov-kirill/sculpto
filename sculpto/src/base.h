@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   sclpch.h
  * \brief  Sculpto library prehompiled header.
  *         Defines common definitions, includes commonly used modules.
@@ -9,13 +9,13 @@
 
 #pragma once
 
-/* Disable C4151 due to the fact that it is supposed
+/*! Disable C4151 due to the fact that it is supposed
  * to compile all projects with one compiler,
  * and becaouse of that, side effects will be absent.
  */
 #pragma warning(disable : 4251)
 
-/* Common Utilities. */
+/*! Common Utilities. */
 #include "utilities/macros/debug_memory_hook.h"
 #include "utilities/macros/assert.h"
 #include "utilities/macros/throw_if_failed.h"
@@ -28,10 +28,10 @@
 
 #define SCL_BIND_EVENT_FN(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
 
-/* Standart types definition. */
+/*! Standart types definition. */
 namespace scl
 {
-    /* Math module generic types. */
+    /*! Math module generic types. */
     using degrees    = math::degrees<float>;
     using radians    = math::radians<float>;
     using vec2       = math::vec2<float>;
@@ -48,10 +48,10 @@ namespace scl
     using matr4      = math::matr4<float>;
     using matr4_data = math::matr4_data<float>;
 
-    /* Windows platform specific types */
+    /*! Windows platform specific types */
 #ifdef SCL_PLATFORM_WINDOWS
     using window_handle = HWND;
 #else
     using window_handle = int;
-#endif /* !SCL_PLATFORM_WINDOWS */
+#endif /*! !SCL_PLATFORM_WINDOWS */
 }

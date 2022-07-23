@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   mesh.h
  * \brief  Mesh class defintion module.
  *         Mesh composes vertex array (vertex and index buffer),
@@ -18,20 +18,20 @@
 
 namespace scl
 {
-    /* Submesh creation properties type. */
+    /*! Submesh creation properties type. */
     template <typename Tvertex>
     struct submesh_props
     {
-        topology::trimesh Topology {}; /* Submesh topology, containing its vertices and indices. */
-        shared<material> Material {};  /* Submesh material. */
+        topology::trimesh Topology {}; /*! Submesh topology, containing its vertices and indices. */
+        shared<material> Material {};  /*! Submesh material. */
     };
 
-    /* Mesh class. */
+    /*! Mesh class. */
     class mesh
     {
         friend class renderer;
 
-        /* Single mesh data structure. */
+        /*! Single mesh data structure. */
         struct submesh_data
         {
             shared<vertex_array> VertexArray {};
@@ -41,15 +41,15 @@ namespace scl
             matr4 LocalTransform {};
         };
 
-    public: /* Mesh data. */
-        std::string FileName {};                /* File name file, from which model was loaded. */
-        std::vector<submesh_data> SubMeshes {}; /* Mesh submesmeshes (primitives) list. */
+    public: /*! Mesh data. */
+        std::string FileName {};                /*! File name file, from which model was loaded. */
+        std::vector<submesh_data> SubMeshes {}; /*! Mesh submesmeshes (primitives) list. */
 
-        /* Mesh rendering flags. */
-        bool IsDrawing       = true; /* Flag, showing wheather mesh is submited to render, during main geometry render pass. */
-        bool IsCastingShadow = true; /* Flag, showing wheather mesh is submiter to render, during shadow caster shadom map generation (render pass). */
+        /*! Mesh rendering flags. */
+        bool IsDrawing       = true; /*! Flag, showing wheather mesh is submited to render, during main geometry render pass. */
+        bool IsCastingShadow = true; /*! Flag, showing wheather mesh is submiter to render, during shadow caster shadom map generation (render pass). */
 
-        /**
+        /*!*
          * Mesh constructor by topology object and material.
          *
          * \param TopologyObject - topology object to create vertex array from.
@@ -75,7 +75,7 @@ namespace scl
             SCL_CORE_INFO("Mesh with 1 sub-mesh created.");
         }
 
-        /**
+        /*!*
          * Mesh constructor by submeshes properties array.
          *
          * \param SubmeshesProperties - array of sub meshes data (topology object + material).
@@ -102,13 +102,13 @@ namespace scl
             SCL_CORE_INFO("Mesh with {} sub-mesh(es) created.", SubmeshesProperties.size());
         }
 
-        /* Mesh default destructor. */
+        /*! Mesh default destructor. */
         ~mesh()
         {
             SCL_CORE_INFO("Mesh with {} sub-mesh(es) freed.", SubMeshes.size());
         }
 
-        /**
+        /*!*
          * Mesh constructor by topology object and material.
          *
          * \param TopologyObject - topology object to create vertex array from.
@@ -120,7 +120,7 @@ namespace scl
             return CreateShared<mesh>(TopologyObject, Material);
         }
 
-        /**
+        /*!*
          * Mesh constructor by submeshes properties array.
          *
          * \param SubmeshesProperties - array of sub meshes data (topology object + material).

@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   buffer.h
  * \brief  Buffer interfaces definition module.
  * 
@@ -14,7 +14,7 @@
 
 namespace scl
 {
-    /* Buffer usage enum. */
+    /*! Buffer usage enum. */
     enum class usage_type: u8
     {
         STREAM_DRAW,
@@ -28,7 +28,7 @@ namespace scl
         DYNAMIC_COPY,
     };
 
-    /* Buffer type enum. */
+    /*! Buffer type enum. */
     enum class buffer_type: u8
     {
         ARRAY,
@@ -36,14 +36,14 @@ namespace scl
         SHADER_STORAGE,
     };
 
-    /* Constant buffer (uniform buffer) interface. */
+    /*! Constant buffer (uniform buffer) interface. */
     class constant_buffer : public render_primitive
     {
     public:
-        /* Constant buffer default destructor. */
+        /*! Constant buffer default destructor. */
         virtual ~constant_buffer() = default;
 
-        /**
+        /*!*
          * Bind buffer to current render stage function.
          *
          * \param None.
@@ -51,7 +51,7 @@ namespace scl
          */
         virtual void Bind(u32 BindingPoint) const = 0;
 
-        /**
+        /*!*
          * Unbind buffer from current render stage function.
          *
          * \param None.
@@ -59,7 +59,7 @@ namespace scl
          */
         virtual void Unbind() const = 0;
 
-        /**
+        /*!*
          * Update buffer data function.
          *
          * \param Data - buffer data pointer.
@@ -68,7 +68,7 @@ namespace scl
          */
         virtual void Update(void *Data, u32 Size) = 0;
 
-        /**
+        /*!*
          * Clear buffer from GPU memory function.
          *
          * \param None.
@@ -76,7 +76,7 @@ namespace scl
          */
         virtual void Free() = 0;
 
-        /**
+        /*!*
          * Create API specific empty constant buffer.
          *
          * \param BindingPoint - shader_props binding point of buffer.
@@ -85,7 +85,7 @@ namespace scl
          */
         static shared<constant_buffer> Create(u32 Size);
 
-        /**
+        /*!*
          * Create API specific constant buffer filled with data.
          *
          * \param BindingPoint - shader_props binding point of buffer.
@@ -96,28 +96,28 @@ namespace scl
         static shared<constant_buffer> Create(const void *Data, u32 Size);
     };
 
-    /* Vertex bufer interface. */
+    /*! Vertex bufer interface. */
     class vertex_buffer : public render_primitive
     {
-    protected: /* Vertex buffer data. */
+    protected: /*! Vertex buffer data. */
         vertex_layout VertexLayout {};
 
-    public: /* Vertex buffer getter/setter functions. */
-        /* Vertex layout data getter function. */
+    public: /*! Vertex buffer getter/setter functions. */
+        /*! Vertex layout data getter function. */
         vertex_layout GetVertexLayout() const { return VertexLayout; }
 
     public:
-        /**
+        /*!*
          * Vertex buffer default constructor.
          * 
          * \param VertexLayout - layout of vertices in buffer.
          */
         vertex_buffer(const vertex_layout &VertexLayout);
 
-        /* Vertex buffer default destructor. */
+        /*! Vertex buffer default destructor. */
         virtual ~vertex_buffer() = default;
 
-        /**
+        /*!*
          * Bind buffer to current render stage function.
          *
          * \param None.
@@ -125,7 +125,7 @@ namespace scl
          */
         virtual void Bind() const = 0;
 
-        /**
+        /*!*
          * Unbind buffer from current render stage function.
          *
          * \param None.
@@ -133,7 +133,7 @@ namespace scl
          */
         virtual void Unbind() const = 0;
 
-        /**
+        /*!*
          * Update buffer data function.
          * 
          * \param Vertices - verices array.
@@ -142,7 +142,7 @@ namespace scl
          */
         virtual void Update(const void *Vertices, u32 Count) = 0;
 
-        /**
+        /*!*
          * Clear buffer from GPU memory function.
          *
          * \param None.
@@ -150,7 +150,7 @@ namespace scl
          */
         virtual void Free() = 0;
 
-        /**
+        /*!*
          * Vertex biffer vertices count getter function.
          *
          * \param None.
@@ -158,7 +158,7 @@ namespace scl
          */
         virtual u32 GetCount() const = 0;
 
-        /**
+        /*!*
          * Create API specific vertex buffer by vertices count.
          * 
          * \param Count - vertices in buffer count.
@@ -167,7 +167,7 @@ namespace scl
          */
         static shared<vertex_buffer> Create(u32 Count, const vertex_layout &VertexLayout);
 
-        /**
+        /*!*
          * Create API specific vertex buffer by vertices count and data.
          * 
          * \param Vertices - vertices array.
@@ -178,14 +178,14 @@ namespace scl
         static shared<vertex_buffer> Create(const void *Vertices, u32 Count, const vertex_layout &VertexLayout);
     };
 
-    /* Vertices indices buffer interface. */
+    /*! Vertices indices buffer interface. */
     class index_buffer : public render_primitive
     {
     public:
-        /* Index buffer default destructor. */
+        /*! Index buffer default destructor. */
         virtual ~index_buffer() = default;
 
-        /**
+        /*!*
          * Bind buffer to current render stage function.
          *
          * \param None.
@@ -193,7 +193,7 @@ namespace scl
          */
         virtual void Bind() const = 0;
 
-        /**
+        /*!*
          * Unbind buffer from current render stage function.
          *
          * \param None.
@@ -201,7 +201,7 @@ namespace scl
          */
         virtual void Unbind() const = 0;
 
-        /**
+        /*!*
          * Clear buffer from GPU memory function.
          *
          * \param None.
@@ -209,7 +209,7 @@ namespace scl
          */
         virtual void Free() = 0;
 
-        /**
+        /*!*
          * Update buffer function function.
          *
          * \param Indices - array of indices.
@@ -217,7 +217,7 @@ namespace scl
          */
         virtual void Update(u32 *Indices, u32 Count) = 0;
 
-        /**
+        /*!*
          * Index biffer indices count getter function.
          * 
          * \param None.
@@ -225,7 +225,7 @@ namespace scl
          */
         virtual u32 GetCount() const = 0;
 
-        /**
+        /*!*
          * Create API specific index buffer by indices count and data.
          *
          * \param Indices - indices array.

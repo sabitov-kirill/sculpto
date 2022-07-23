@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   shared.h
  * \brief  Smart pointers implementatino module.
  * 
@@ -10,7 +10,7 @@
 
 namespace scl
 {
-    /* Shared smart pointer. */
+    /*! Shared smart pointer. */
     template<typename T>
     using shared = std::shared_ptr<T>;
 
@@ -20,7 +20,7 @@ namespace scl
         return std::make_shared<T>(std::forward<Args>(args)...);
     }
 
-    /* Unique smart pointer. */
+    /*! Unique smart pointer. */
     template<typename T>
     using unique = std::unique_ptr<T>;
 
@@ -30,7 +30,7 @@ namespace scl
         return std::make_unique<T>(std::forward<Args>(args)...);
     }
 
-    /* Weak smart pointer (do not increases counter). */
+    /*! Weak smart pointer (do not increases counter). */
     template<typename T>
     using weak = std::weak_ptr<T>;
 }

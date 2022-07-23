@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   editor_scene_hierarchy_window.h
  * \brief  Scene hierarchy GUI window class definition module.
  *
@@ -13,10 +13,10 @@
 
 namespace scl
 {
-    /* Scene hierarchy GUI window class. */
+    /*! Scene hierarchy GUI window class. */
     class scene_hierarchy_window
     {
-    private: /* Scene hierarchy window data. */
+    private: /*! Scene hierarchy window data. */
         scene *Scene {};
         std::function<void(scene_object)> OnObjectSelect {};
         scene_object SelectedObject {};
@@ -24,7 +24,7 @@ namespace scl
         char ObjectCreationNameTextBuffer[128] {};
 
     public:
-        /**
+        /*!*
          * Scene hierarchy window default constructor.
          * 
          * \param Scene - scene to display hierarchy tree of.
@@ -32,7 +32,7 @@ namespace scl
          */
         scene_hierarchy_window(scene *Scene, const std::function<void(scene_object)> &OnObjectSelect);
 
-        /**
+        /*!*
          * Draw scene hierarchy window function.
          * 
          * \param None.

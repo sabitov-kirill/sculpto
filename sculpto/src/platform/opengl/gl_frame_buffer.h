@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   gl_frame_buffer.h
  * \brief  OpenGL frame buffer class definition class.
  * 
@@ -14,7 +14,7 @@
 
 namespace scl
 {
-    /* OpenGL frame buffer class. */
+    /*! OpenGL frame buffer class. */
     class gl_frame_buffer : public frame_buffer
     {
     private:
@@ -24,18 +24,18 @@ namespace scl
         shared<texture_2d> DepthAttachment {};
         u32 ClearConfig {};
 
-    public: /* Frame buffer getter/setter functions. */
-        /* Frame buffer properties setter function. */
+    public: /*! Frame buffer getter/setter functions. */
+        /*! Frame buffer properties setter function. */
         void SetFrameBufferProps(const frame_buffer_props &Props);
-        /* Frame buffer properties getter function. */
+        /*! Frame buffer properties getter function. */
         const frame_buffer_props &GetFrameBufferProps() const;
-        /* Frame buffer color attachment getter function. */
+        /*! Frame buffer color attachment getter function. */
         const shared<texture_2d> &GetColorAttachment(int Index) const override;
-        /* Frame buffer depth attachment getter function. */
+        /*! Frame buffer depth attachment getter function. */
         const shared<texture_2d> &GetDepthAttachment(int Index) const override;
 
     private:
-        /**
+        /*!*
          * Recreate frame buffer according to new frame buffer properties function.
          *
          * \param None.
@@ -44,20 +44,20 @@ namespace scl
         void Invalidate();
 
     public:
-        /* Backend api render primitive hadnle getter function. */
+        /*! Backend api render primitive hadnle getter function. */
         render_primitive::handle GetHandle() const override { return Id; }
 
-        /**
+        /*!*
          * OpenGL frame buffer constructor.
          * 
          * \param Props - frame buffer properties.
          */
         gl_frame_buffer(const frame_buffer_props &Props);
 
-        /* OpenGL frame buffer default destructor. */
+        /*! OpenGL frame buffer default destructor. */
         ~gl_frame_buffer() override;
 
-        /**
+        /*!*
          * Bind frame buffer to current render stage function.
          *
          * \param None.
@@ -65,7 +65,7 @@ namespace scl
          */
         void Bind() const override;
 
-        /**
+        /*!*
          * Unbind frame buffer from current render stage function.
          *
          * \param None.
@@ -73,7 +73,7 @@ namespace scl
          */
         void Unbind() const override;
 
-        /**
+        /*!*
          * Resize frame buffer (resize also could be called by setting frame buffer props).
          *
          * \param Width - new frame buffer width.
@@ -82,7 +82,7 @@ namespace scl
          */
         void Resize(int Width, int Height) override;
 
-        /**
+        /*!*
          * Unload frame buffer render target texture from GPU memory function.
          *
          * \param None.
@@ -90,7 +90,7 @@ namespace scl
          */
         void Free() override;
 
-        /**
+        /*!*
          * Clear frame buffer funcrion.
          *
          * \param None.

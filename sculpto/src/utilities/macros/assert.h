@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   assert.h
  * \brief  Assertion macros definition module.
  *
@@ -8,10 +8,10 @@
 
 #pragma once
 
-/* Detect SCL platform. */
+/*! Detect SCL platform. */
 #include "core/application/platform_detection.h"
 
-/* Debug break macro. */
+/*! Debug break macro. */
 #ifdef _DEBUG
 #   if defined(SCL_PLATFORM_WINDOWS)
 #       define SCL_DEBUGBREAK() __debugbreak()
@@ -29,8 +29,8 @@
 #ifdef SCL_ASSERTION_ENABLED
 #   ifdef SCL_PLATFORM_WINDOWS
 #       include <intrin.h>
-#   endif /* !SCL_PLATFORM_WINDOWS */
-    /**
+#   endif /*! !SCL_PLATFORM_WINDOWS */
+    /*!*
      * Core module assertion function.
      *
      * \param Expr - expression to be calculated.
@@ -48,7 +48,7 @@
     }
 
 
-    /**
+    /*!*
      * Assertion function.
      * 
      * \param Expr - expression to be calculated.
@@ -65,7 +65,7 @@
         }                                                                 \
     }
 
-#else /* !SCL_ASSERTION_ENABLED */
+#else /*! !SCL_ASSERTION_ENABLED */
 #   define SCL_CORE_ASSERT(expr, ...) (expr)
 #   define SCL_ASSERT(expr, ...) (expr)
 #endif

@@ -4,7 +4,11 @@ Distributing with scene editor forms platform for creativity & design & code lea
 Allows implement your ideas through computer graphics via native C++ code/scripts/GUI.
 
 ## Features
-    TODO
+- [x] possibility to create cross-platform applications
+- [x] high-level render engine abstracted from specific render APIs
+- [x] render pipeline that allows you to create photorealistic images (Blin-Phong shading, shadows, bloom, HDR, exposure tone mapping), it is also possible to create your own pipelines
+- [x] scene system, using ECS pattern (9 diffrent components)
+- [x] ability to create windows with custom GUI Widgets
 
 ## Roadmap
     - [x] so much things                                           | 18.06 - 06.07
@@ -23,11 +27,11 @@ Allows implement your ideas through computer graphics via native C++ code/script
 
     - [x] UI panels:                                               | 09.07
         - [x] Scene hierarchy                                      |
-        - [~] Objects components configuration                     |
+        - [x] Objects components configuration                     |
             - [x] Name component                                   |
             - [x] Transform component                              |
             - [x] Native script component                          |
-            - [x] Mesh component                                   | 
+            - [x] Mesh component                                   |
             - [x] Camera controller component                      |
             - [x] Point light component                            |
             - [x] Directional light component                      |
@@ -41,13 +45,32 @@ Allows implement your ideas through computer graphics via native C++ code/script
     - [x] bloom                                                    |
 
     - [x] render architecture redisgn                              | 12.07
-    - [x] memory leaks while window resize                         |
+    - [x] fix memory leaks while window resize                     |
     - [x] deffered rendering                                       |
 
-    - [x] propeper mesh component configuration                    | final
-          there is problems with meshes in whole application       |
+    - [x] propeper mesh component configuration                    | till 25.07
+          (problems with meshes in whole application)
     - [x] scene cameras system                                     |
     - [x] GPU ray tracing (client app example)                     |
-    - [ ] scene serialization (save/load)                          |
-    - [ ] embeded C++/Py scriping                                  |
+    - [x] scene serialization (save/load)                          |
+    - [x] embeded C++/Py scriping                                  |
+
+    - [ ] enter KT ITMO                                            | 01.08
+
+    - [ ] create guide for learning code, using sculpto            | future steps
+    - [ ] intrinsic functions based optimized math module          |
+    - [ ] mesh saving                                              |
+    - [ ] mesh editor using marching cubes                         |
+    - [ ] optimized models render in Path Tracer using voxel tree  |
     - [ ] sceletal animation                                       |
+    - [ ] PBR render pipeline                                      |
+    - [ ] sound module                                             |
+    - [ ] 3D collision system                                      |
+    - [ ] physics module                                           |
+    - [ ] screen space SSAO                                        |
+    - [ ] global illumination based on surfels                     |
+    - [ ] render context implementation for DirectX, Vulkan, Metal |
+    - [ ] order independent transparensy                           |
+    - [ ] full featured 2D renderer                                |
+    - [ ] android/ios support                                      |
+    - [ ] USE SCULPTO!!!                                           |

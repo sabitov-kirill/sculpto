@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   scene_object_behaviour.h
  * \brief  Application scene object behaviour class defintion module.
  * 
@@ -12,16 +12,16 @@
 
 namespace scl
 {
-    /* Appliaction scene scriptable object class. */
+    /*! Appliaction scene scriptable object class. */
     class scene_object_behaviour
     {
         friend class scene;
 
-    private: /* Application scene scriptable object data. */
+    private: /*! Application scene scriptable object data. */
         scene_object Object;
 
     protected:
-        /**
+        /*!*
          * Application scene scriptable object creation virtual callback function.
          * Called when object added to scene.
          * 
@@ -30,7 +30,7 @@ namespace scl
          */
         virtual void OnCreate() {}
 
-        /**
+        /*!*
          * Application scene scriptable object destroy virtual callback fucntion.
          * 
          * \param None.
@@ -38,7 +38,7 @@ namespace scl
          */
         virtual void OnDestroy() {}
 
-        /**
+        /*!*
          * Application scene scriptable object update virtual callback function.
          * 
          * \param None.
@@ -46,7 +46,7 @@ namespace scl
          */
         virtual void OnUpdate() {}
 
-        /**
+        /*!*
          * Check if object has specified component function.
          *
          * \tparam component to check.
@@ -56,7 +56,7 @@ namespace scl
         template <typename T>
         const bool HasComponent() const { return Object.HasComponent<T>(); }
 
-        /**
+        /*!*
          * Add component to object function.
          *
          * \tparam component to add to object.
@@ -66,7 +66,7 @@ namespace scl
         template <typename T, typename... Targs>
         void AddComponent(Targs&&... Args) { Object.AddComponent(std::forward<Targs>(Args)...); }
 
-        /**
+        /*!*
          * Get object component function.
          *
          * \tparam component to get from object.
@@ -76,7 +76,7 @@ namespace scl
         template <typename T>
         T &GetComponent() { return Object.GetComponent<T>(); }
 
-        /**
+        /*!*
          * Get object component function.
          *
          * \tparam component to get from object.
@@ -86,7 +86,7 @@ namespace scl
         template <typename T>
         const T &GetComponent() const { return Object.GetComponent<T>(); }
 
-        /**
+        /*!*
          * Remove component from scene object function.
          *
          * \tparam component to remove from object.

@@ -1,4 +1,4 @@
-﻿/*****************************************************************//**
+﻿/*!****************************************************************//*!*
  * \file   image.h
  * \brief  Image container class implementation module.
  * 
@@ -14,25 +14,25 @@
 
 namespace scl
 {
-    /* Image container class. */
+    /*! Image container class. */
     class image
     {
-    private: /* Image data. */
+    private: /*! Image data. */
         int Width {}, Height {};
         int ComponentsCount {};
         u8 *Data { nullptr };
 
-    public: /* Image getter/setter functions. */
-        /* Image width getter function. */
+    public: /*! Image getter/setter functions. */
+        /*! Image width getter function. */
         int GetWidth() const { return Width; }
-        /* Image height getter function. */
+        /*! Image height getter function. */
         int GetHeight() const { return Height; }
-        /* Image dimentions (components per pixel) count getter function. */
+        /*! Image dimentions (components per pixel) count getter function. */
         int GetComponentsCount() const { return ComponentsCount; }
-        /* Image raw data pointer getter function. */
+        /*! Image raw data pointer getter function. */
         const u8 *GetRawData() const { return Data; }
 
-        /**
+        /*!*
          * Check if image container filled with pixels function.
          * 
          * \param None.
@@ -41,10 +41,10 @@ namespace scl
         bool IsEmpty() const { return Data == nullptr; }
 
     public:
-        /* Imaeg default constructor. */
+        /*! Imaeg default constructor. */
         image() = default;
 
-        /* Image copy constructor. */
+        /*! Image copy constructor. */
         image(const image &Other)
         {
             if (Other.Data == nullptr) return;
@@ -58,7 +58,7 @@ namespace scl
             memcpy(Data, Other.Data, size);
         }
 
-        /* Image copy assigment operator. */
+        /*! Image copy assigment operator. */
         image &operator= (const image &Other)
         {
             if (this == &Other || Other.Data == nullptr) return *this;
@@ -74,7 +74,7 @@ namespace scl
             return *this;
         }
 
-        /**
+        /*!*
          * Empty image specified size constructor.
          * 
          * \param Width - width of creating image.
@@ -88,7 +88,7 @@ namespace scl
             if (AllocateMemory) Allocate();
         }
 
-        /**
+        /*!*
          * Image by pixels array constructor.
          * 
          * \param Width - width of creating image.
@@ -104,7 +104,7 @@ namespace scl
             memcpy(this->Data, Data, size);
         }
 
-        /**
+        /*!*
          * Image constructor loading data from file.
          * 
          * \param FileName - image file name.
@@ -114,13 +114,13 @@ namespace scl
             this->Load(FileName);
         }
 
-        /* Image default destructor. */
+        /*! Image default destructor. */
         ~image()
         {
             Free();
         }
 
-        /**
+        /*!*
          * Allocate memory for image data buffer (of current image size).
          *
          * \param None.
@@ -131,7 +131,7 @@ namespace scl
             Data = new u8[(u64)Width * Height * ComponentsCount];
         }
 
-        /**
+        /*!*
          * Free memory of image data buffer.
          * 
          * \param None.
@@ -144,7 +144,7 @@ namespace scl
             Data = nullptr;
         }
 
-        /**
+        /*!*
          * Image load from file function.
          * 
          * \param FileName - file name to load image from.
@@ -171,7 +171,7 @@ namespace scl
             return true;
         }
 
-        /**
+        /*!*
          * Flip image along X axis function.
          * 
          * \param None.

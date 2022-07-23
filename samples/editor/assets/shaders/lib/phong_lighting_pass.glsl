@@ -24,7 +24,7 @@
     layout(binding = TEXTURE_SLOT_GEOM_PASS_OUT_COLOR          ) uniform sampler2D InColor;
     layout(binding = TEXTURE_SLOT_GEOM_PASS_OUT_PHONG_DIFFUSE  ) uniform sampler2D InDiffuse;
     layout(binding = TEXTURE_SLOT_GEOM_PASS_OUT_PHONG_SPECULAR ) uniform sampler2D InSpecular;
-    layout(binding = TEXTURE_SLOT_GEOM_PASS_OUT_PHONG_SHININESS) uniform sampler2D InShininess;
+    layout(binding = TEXTURE_SLOT_GEOM_PASS_OUT_PHONG_SHININESS) uniform sampler2D InShininessIsShadeIsBloomed;
 
     in vec2 TexCoords;
 
@@ -42,23 +42,29 @@
         vec4 color      = texture(InColor,     TexCoords);
         vec4 diffuse    = texture(InDiffuse,   TexCoords);
         vec4 specular   = texture(InSpecular,  TexCoords);
-        float shininess = texture(InShininess, TexCoords).r;
+        vec3 shininess_is_shade_is_bloomed = texture(InShininessIsShadeIsBloomed, TexCoords).rgb;
+        float shininess = shininess_is_shade_is_bloomed.r;
+        bool is_shade = bool(shininess_is_shade_is_bloomed.g);
+        bool is_bloomed = bool(shininess_is_shade_is_bloomed.b);
 
         if (diffuse.w < 0.01) discard;
 
         vec3 result = vec3(0, 0, 0);
-        for (uint i = 0; i < PointLightsCount; ++i) result += PointLightShade(PointLights[i], position.rgb, normal.rgb, diffuse.rgb, specular.rgb, shininess);
-        for (uint i = 0; i < SpotLightsCount; ++i)  result += SpotLightShade(SpotLights[i], position.rgb, normal.rgb, diffuse.rgb, specular.rgb, shininess);
-        if (IsDirectionalLight) {
-            vec4 light_space_pos = vec4(0);
-            if (DirectionalLight.IsShadows) light_space_pos = DirectionalLight.ViewProjection * vec4(position.rgb, 1.0);
-            result += DirectionalLightShade(DirectionalLight, light_space_pos, position.rgb, normal.rgb, diffuse.rgb, specular.rgb, shininess);
+        if (is_shade)
+        {
+            for (uint i = 0; i < u_PointLightsCount; ++i) result += PointLightShade(u_PointLights[i], position.rgb, normal.rgb, diffuse.rgb, specular.rgb, shininess);
+            for (uint i = 0; i < u_SpotLightsCount; ++i)  result += SpotLightShade(u_SpotLights[i], position.rgb, normal.rgb, diffuse.rgb, specular.rgb, shininess);
+            if (u_IsDirectionalLight) {
+                vec4 light_space_pos = vec4(0);
+                if (u_DirectionalLight.IsShadows) light_space_pos = u_DirectionalLight.ViewProjection * vec4(position.rgb, 1.0);
+                result += DirectionalLightShade(u_DirectionalLight, light_space_pos, position.rgb, normal.rgb, diffuse.rgb, specular.rgb, shininess);
+            }
+            result += diffuse.rgb * u_EnviromentAmbient;
         }
-        result += diffuse.rgb * EnviromentAmbient;
         result += color.rgb * 5;
 
         OutColor = vec4(result, 1);
-        if (IsBloom && IsColorBright(result))
+        if (u_IsBloom && is_bloomed && IsColorBright(result))
             BrightColor = vec4(result, 1.0);
     }
 #shader-end

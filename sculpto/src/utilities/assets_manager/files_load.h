@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   file.h
  * \brief  Assets manager file processing functions implementation module.
  * 
@@ -12,7 +12,7 @@
 
 namespace scl::assets_manager
 {
-    /**
+    /*!*
      * File text load function.
      * 
      * \param FilePath - file to path to load.

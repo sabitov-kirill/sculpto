@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   windows_input.h
  * \brief  Input window_handle definition module.
  * 
@@ -12,7 +12,7 @@
 
 namespace scl
 {
-    /* Windows specific input system class. */
+    /*! Windows specific input system class. */
     class windows_input_system: public input_system
     {
     private:
@@ -26,7 +26,7 @@ namespace scl
         void KeyboardRead();
 
     public:
-        /**
+        /*!*
          * Windows specific input system initialisation function.
          * 
          * \param WindowHandle - handle of window using interacting with.
@@ -36,7 +36,7 @@ namespace scl
         void Init(window_handle *WindowHandle, int *MouseWheel);
 
     protected:
-        /**
+        /*!*
          * Read all available human devies function.
          *
          * \param None.

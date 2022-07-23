@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   mouse_event.h
  * \brief  Mouse actions events (buttons click, move, wheel) events implementation module.
  * 
@@ -26,18 +26,18 @@ namespace scl
 #endif
     };
 
-    /* Mouse buttons click events class. */
+    /*! Mouse buttons click events class. */
     class mouse_button_event: public event
     {
         SCL_MAKE_EVENT(MouseButton);
 
-    private: /* Mouse button click data. */
+    private: /*! Mouse button click data. */
         bool Pressed;
         int X, Y;
         mouse_button KeyCode;
 
     public:
-        /**
+        /*!*
          * Mouse button click default constructor..
          * 
          * \param Pressed - is mouse key pressed or released flag.
@@ -49,16 +49,16 @@ namespace scl
         mouse_button_event(bool Pressed, int X, int Y, mouse_button KeyCode) :
             Pressed(Pressed), X(X), Y(Y), KeyCode(KeyCode) {}
 
-        /* Mouse key pressed or released flag getter function. */
+        /*! Mouse key pressed or released flag getter function. */
         bool GetPressed() { return Pressed; }
-        /* Mouse x position getter function. */
+        /*! Mouse x position getter function. */
         int GetX() { return X; }
-        /* Mouse y position getter function. */
+        /*! Mouse y position getter function. */
         int GetY() { return Y; }
-        /* Mouse button code getter function. */
+        /*! Mouse button code getter function. */
         mouse_button GetKeyCode() { return KeyCode; }
 
-        /**
+        /*!*
          * Convert event to string (for debug).
          *
          * \param None.
@@ -73,16 +73,16 @@ namespace scl
         }
     };
 
-    /* Mouse wheel scroll event class. */
+    /*! Mouse wheel scroll event class. */
     class mouse_wheel_event: public event
     {
         SCL_MAKE_EVENT(MouseWheel);
 
-    private :/* Mouse wheel data. */
+    private :/*! Mouse wheel data. */
         int WheelPosDelta;
 
     public:
-        /**
+        /*!*
          * Mouse wheel scroll event default constructor.
          * 
          * \param WheelPos - mouse wheel position delta.
@@ -90,10 +90,10 @@ namespace scl
         mouse_wheel_event(int WheelPosDelta) :
             WheelPosDelta(WheelPosDelta) {}
 
-        /* Mouse wheel position delta getter function. */
+        /*! Mouse wheel position delta getter function. */
         int GetWheelPos() { return WheelPosDelta; }
 
-        /**
+        /*!*
          * Convert event to string (for debug).
          *
          * \param None.
@@ -107,18 +107,18 @@ namespace scl
         }
     };
 
-    /* Mouse move event class. */
+    /*! Mouse move event class. */
     class mouse_move_event: public event
     {
         SCL_MAKE_EVENT(MouseMove);
 
-    private: /* Mouse move data. */
+    private: /*! Mouse move data. */
         int X, Y;
         bool RButton, LButton, MButton;
         bool Shift, Control;
 
     public:
-        /**
+        /*!*
          * Mouse move event deault constructor..
          * 
          * \param X - mouse x possition.
@@ -134,22 +134,22 @@ namespace scl
             X(X), Y(Y), RButton(RButton), LButton(LButton), MButton(MButton),
             Shift(Shift), Control(Control) {}
 
-        /* Mouse x position getter function. */
+        /*! Mouse x position getter function. */
         int GetX() { return X; }
-        /* Mouse y position getter function. */
+        /*! Mouse y position getter function. */
         int GetY() { return Y; }
-        /* Mouse right button state getter function. */
+        /*! Mouse right button state getter function. */
         bool GetRButton() { return RButton; }
-        /* Mouse left button state getter function. */
+        /*! Mouse left button state getter function. */
         bool GetLButton() { return LButton; }
-        /* Mouse middle button state getter function. */
+        /*! Mouse middle button state getter function. */
         bool GetMButton() { return MButton; }
-        /* Shift key state getter function. */
+        /*! Shift key state getter function. */
         bool GetShift() { return Shift; }
-        /* Constrol state getter function. */
+        /*! Constrol state getter function. */
         bool GetControl() { return Control; }
 
-        /**
+        /*!*
          * Convert event to string (for debug).
          *
          * \param None.

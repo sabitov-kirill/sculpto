@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   windows_msg_crackers.cpp
  * \brief  Window class message crackers realisation module.
  *

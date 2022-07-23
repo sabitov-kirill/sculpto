@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   models_load.h
  * \brief  Assets manager model load functions implementation modulule.
  *

@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   console_colors.h
  * \brief  Helper to setting color of text in console implementation module.
  * 
@@ -10,7 +10,7 @@
 
 namespace scl::console
 {
-    /* Enum type represending console color code. */
+    /*! Enum type represending console color code. */
     enum class color
     {
         BLACK,
@@ -23,7 +23,7 @@ namespace scl::console
         WHITE,
     };
 
-    /**
+    /*!*
      * Creating string literal for changing both foreground console colors.
      *
      * \param ForegroundColor - new console foreground color.
@@ -36,7 +36,7 @@ namespace scl::console
         return std::string("\x1b[") + std::to_string(foreground) + "m";
     }
 
-    /**
+    /*!*
      * Creating string literal for changing both background and foreground console colors.
      *
      * \param ForegroundColor - new console foreground color.
@@ -54,7 +54,7 @@ namespace scl::console
             std::to_string(backgound) + "m";
     }
 
-    /**
+    /*!*
      * Creating string literal for reset console colors.
      *
      * \return String literal reseting console color.

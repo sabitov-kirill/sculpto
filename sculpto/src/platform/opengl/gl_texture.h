@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   gl_texture.h
  * \brief  OpenGL texture class definition module.
  * 
@@ -13,19 +13,19 @@
 
 namespace scl
 {
-    /* Texture interface. */
+    /*! Texture interface. */
     class gl_texture_2d : public texture_2d
     {
-    private: /* OpenGL texture data. */
+    private: /*! OpenGL texture data. */
         mutable u32 Slot {};
         GLuint Id {};
 
-    public: /* OpenGL texture getter/setter functions. */
-        /* Backend api render primitive hadnle getter function. */
+    public: /*! OpenGL texture getter/setter functions. */
+        /*! Backend api render primitive hadnle getter function. */
         render_primitive::handle GetHandle() const override { return Id; }
 
     private:
-        /**
+        /*!*
          * Create OpenGL color texture from image container function.
          * 
          * \param Image - image container to create texture from.
@@ -34,7 +34,7 @@ namespace scl
          */
         void CreateColor(const image &Image, bool IsFloatingPoint);
 
-        /**
+        /*!*
          * Create OpenGL depth texture function.
          * 
          * \param None.
@@ -43,7 +43,7 @@ namespace scl
         void CreateDepth(const image &Image);
 
     public:
-        /**
+        /*!*
          * OpenGL texture constructor by image container.
          *
          * \param Image - image container to get data from (pixels data can be null).
@@ -52,10 +52,10 @@ namespace scl
          */
         gl_texture_2d(const image &Image, texture_type Type);
 
-        /* Texture default destructor. */
+        /*! Texture default destructor. */
         ~gl_texture_2d() override;
 
-        /**
+        /*!*
          * Bind texture to current render stage function.
          *
          * \param None.
@@ -63,7 +63,7 @@ namespace scl
          */
         void Bind(u32 Slot) const override;
 
-        /**
+        /*!*
          * Unbind texture from current render stage function.
          *
          * \param None.
@@ -71,7 +71,7 @@ namespace scl
          */
         void Unbind() const override;
 
-        /**
+        /*!*
          * Unload texture from GPU memory function.
          *
          * \param None.
@@ -79,7 +79,7 @@ namespace scl
          */
         void Free() override;
 
-        /**
+        /*!*
          * Load texture image from GPU memory function.
          *
          * \param None.

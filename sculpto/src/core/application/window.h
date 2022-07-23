@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   window.h
  * \brief  Abstract, platform independent class definition module.
  * 
@@ -14,27 +14,27 @@
 
 namespace scl
 {
-    /* Abstarct, platfomr independent window class. */
+    /*! Abstarct, platfomr independent window class. */
     class window
     {
-    public: /* Abstract, platform independent window data. */
-        /* Window consfig data structure. */
+    public: /*! Abstract, platform independent window data. */
+        /*! Window consfig data structure. */
         struct data
         {
         public:
-            /* Window size properties */
+            /*! Window size properties */
             int  Width, Height;
-            /* Window title. */
+            /*! Window title. */
             std::string Title;
 
-            /* Constructors */
+            /*! Constructors */
             data() = default;
             data(const data &Other) = default;
             data(int Width, int Height, const std::string &Title) :
                 Width(Width), Height(Height), Title(Title) {}
         };
 
-        /* Application main window viewport id. */
+        /*! Application main window viewport id. */
         static const int ViewportId = 0;
 
     protected:
@@ -43,16 +43,16 @@ namespace scl
         bool          IsFullscreen { false };
         data          Data {};
 
-    public: /* Abstract, platform independent window data getters/setters. */
-        /* Window data getting function. */
+    public: /*! Abstract, platform independent window data getters/setters. */
+        /*! Window data getting function. */
         const data &GetWindowData() const { return Data; }
-        /* Window handle getter function. */
+        /*! Window handle getter function. */
         const window_handle &GetHandle() const { return Handle; }
-        /* Window initilised flag getter function. */
+        /*! Window initilised flag getter function. */
         bool GetIsInitialised() const { return IsInitialised; }
 
-    public: /* Abstratc, platform independent window methods. */
-        /***
+    public: /*! Abstratc, platform independent window methods. */
+        /*!**
          * Copying and moving constructors,
          * lvalue and rvalue copy assigment and move assigment operators
          * removal due to window concept (window loop execution at runtime).
@@ -64,7 +64,7 @@ namespace scl
         window operator=(const window &) const = delete;
         window operator=(const window &&) const = delete;
 
-        /**
+        /*!*
          * Windows OS specific window construcotor.
          * Initialise window, but don't shows it and don't start message loop.
          * If initialisation successful 'IsStartupSuccess' would be set to true
@@ -77,7 +77,7 @@ namespace scl
          */
         window(int Width, int Height, const std::string &Title);
 
-        /**
+        /*!*
          * Create window depends on platform function.
          *
          * \param Width - Width of the creating window in pixels.
@@ -88,7 +88,7 @@ namespace scl
          */
         static unique<window> Create(int Width, int Height, const std::string &Title);
 
-        /**
+        /*!*
          * Window update function.
          * 
          * \param None.
@@ -96,7 +96,7 @@ namespace scl
          */
         virtual void Update() {}
 
-        /**
+        /*!*
          * Woggle window display mode (fullscreen/windowed) function.
          *
          * \param None.
@@ -104,7 +104,7 @@ namespace scl
          */
         virtual void FlipFullscreen() {}
 
-        /**
+        /*!*
          * Change window title to specified.
          *
          * \param NewTitle - new window title.
@@ -112,7 +112,7 @@ namespace scl
          */
         virtual void ChangeTitle(const std::string &NewTitle) {}
 
-        /**
+        /*!*
          * Window shut down function. Closes window and create window close event.
          * 
          * \param None.

@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   points.cpp
  * \brief  Topology objects points array (useful for creation dummy rendering object) class declaration module.
  * 

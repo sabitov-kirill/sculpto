@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   full_screen_quad.h
  * \brief  TOpology full screen quad object class declaration module.
  *
@@ -12,18 +12,18 @@
 
 namespace scl::topology
 {
-    /* Topology full screen quad object class. */
+    /*! Topology full screen quad object class. */
     class full_screen_quad: public grid
     {
     public:
-        /**
+        /*!*
          * Topology full screen quad object default constructor.
          *
          * \param Width, Height - full_screen_quad size.
          */
         full_screen_quad();
 
-        /* Topology full_screen_quad object default destructor. */
+        /*! Topology full_screen_quad object default destructor. */
         ~full_screen_quad() override = default;
     };
 }

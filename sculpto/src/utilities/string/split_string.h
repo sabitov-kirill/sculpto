@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   split_string.h
  * \brief  Split string function implementation module.
  * 
@@ -12,7 +12,7 @@
 
 namespace scl
 {
-    /**
+    /*!*
      * Split strign function.
      * 
      * \param String - string to split.

@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   scene_object_config_window.cpp
  * \brief  Scene object components configuration GUI window class implementation module.
  * 

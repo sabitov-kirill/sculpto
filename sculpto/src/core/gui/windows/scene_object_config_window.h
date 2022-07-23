@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   scene_object_config_window.h
  * \brief  Scene object components configuration GUI window class declaration module.
  * 
@@ -23,10 +23,10 @@
 
 namespace scl
 {
-    /* Scene object components configuration GUI window class. */
+    /*! Scene object components configuration GUI window class. */
     class scene_object_config_window
     {
-    private: /* Scene object configuration window data. */
+    private: /*! Scene object configuration window data. */
         float PanelWidth {};
 
         static const char AddComponentComboItemsCames[7][64];
@@ -38,10 +38,10 @@ namespace scl
 
         char NameTextBuffer[128] {};
 
-        /* Currently configuring scene object. */
+        /*! Currently configuring scene object. */
         scene_object ConfiguringObject {};
 
-        /* Surrently confiduring scene object components flags, showing presence of specific components.
+        /*! Surrently confiduring scene object components flags, showing presence of specific components.
          * Updated each frame, because component can be changed outside of these window.
          */
         bool IsTransformComponent {};
@@ -51,14 +51,14 @@ namespace scl
         bool IsDirectionalLightComponent {};
         bool IsSpotLightComponent {};
 
-    public: /* Scene object configuration window data getter/setter functions. */
-        /* Currently configuring object getter function. */
+    public: /*! Scene object configuration window data getter/setter functions. */
+        /*! Currently configuring object getter function. */
         scene_object GetConfiguringObject() const;
-        /* Currently configuring object setter function. */
+        /*! Currently configuring object setter function. */
         void SetConfiguringObject(scene_object ConfiguringObject);
 
-    private: /* Scene object configuration window methods. */
-        /**
+    private: /*! Scene object configuration window methods. */
+        /*!*
          * Reset stored data about configuring object function.
          * 
          * \param None.
@@ -66,7 +66,7 @@ namespace scl
          */
         void ResetData();
 
-        /**
+        /*!*
          * Draw GUI panel for specific component of currently editing object function.
          * 
          * \param None.
@@ -386,10 +386,10 @@ namespace scl
 
     public:
 
-        /* Scene object components configuration GUI window default constructor. */
+        /*! Scene object components configuration GUI window default constructor. */
         scene_object_config_window() = default;
 
-        /**
+        /*!*
          * Draw scene object configuration window function.
          * 
          * \param None.

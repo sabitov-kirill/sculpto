@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   sphere.h
  * \brief  Topology sphere object class implementation module.
  * 
@@ -12,11 +12,11 @@
 
 namespace scl::topology
 {
-    /* Topology sphere object class. */
+    /*! Topology sphere object class. */
     class sphere : public grid
     {
     public:
-        /**
+        /*!*
          * Sphere topolgy obejct constructor by center point and radius.
          * 
          * \param Center - sphere center point.
@@ -25,7 +25,7 @@ namespace scl::topology
          */
         sphere(const vec3 &Center, float Radius, int Slices);
 
-        /* Sphere topology object default destructor. */
+        /*! Sphere topology object default destructor. */
         ~sphere() override = default;
     };
 }

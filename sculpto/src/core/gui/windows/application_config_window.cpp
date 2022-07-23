@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   application_config_window.cpp
  * \brief  Application configuration GUI window class implementation module.
  * 

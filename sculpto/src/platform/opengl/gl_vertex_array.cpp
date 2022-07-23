@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   mesh.h
  * \brief  OpenGL mesh (vertex_array) class definition module.
  *         Mesh stores vertex and index buffer and implement their binding during render.

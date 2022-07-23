@@ -13,32 +13,28 @@ struct sphere
 
 bool RaySphereIntersect(ray Ray, sphere Sphere, inout intersection BestIntersection)
 {
-    vec3 a = Sphere.Center - Ray.Origin;
-    float OC2 = dot(a, a);
-    float OK = dot(a, Ray.Direction);
-    float OK2 = OK * OK;
+    vec3 L = Ray.Origin - Sphere.Center;
+    float a = dot(Ray.Direction, Ray.Direction);
+    float b = 2.0 * dot(L, Ray.Direction);
+    float c = dot(L, L) - Sphere.Radius * Sphere.Radius;
+    float D = b * b - 4 * a * c;
 
-    float R2 = Sphere.Radius * Sphere.Radius;
-    float H2 = R2 - (OC2 - OK2);
-    if (H2 < 0) return false;
+    if (D < 0.0) return false;
 
-    float dist = OK - sqrt(H2);
-    if (dist >= BestIntersection.Distance) return false;
+    float r1 = (-b - sqrt(D)) / (2.0 * a);
+    float r2 = (-b + sqrt(D)) / (2.0 * a);
 
-    if (OC2 < R2)
-    {
-        BestIntersection.Distance = dist;
-        BestIntersection.Position = RayGetPoint(Ray, dist);
-        BestIntersection.Normal = normalize(BestIntersection.Position - Sphere.Center);
-        BestIntersection.Surface = Sphere.Surface;
-        return true;
-    }
+    float dist;
+    if (r1 > 0.0)      dist = r1;
+    else if (r2 > 0.0) dist = r2;
+    else               return false;
 
-    if (OK < 0) return false;
+    if (dist > BestIntersection.Distance)
+        return false;
 
-    BestIntersection.Distance = dist;
     BestIntersection.Position = RayGetPoint(Ray, dist);
-    BestIntersection.Normal = normalize(BestIntersection.Position - Sphere.Center);
+    BestIntersection.Normal = normalize(Ray.Direction * dist + L);
+    BestIntersection.Distance = dist;
     BestIntersection.Surface = Sphere.Surface;
     return true;
 }

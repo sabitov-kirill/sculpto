@@ -21,6 +21,7 @@ project "raytracing"
         "%{IncludeDir.json}",
         "%{IncludeDir.stb_image}",
         "%{IncludeDir.imgui}",
+        "%{IncludeDir.rccpp}",
     }
 
     links

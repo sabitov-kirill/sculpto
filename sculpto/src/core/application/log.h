@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   log.h
  * \brief  Logging system definition module.
  * 
@@ -13,17 +13,17 @@
 
 namespace scl
 {
-    /* Logging system class. */
+    /*! Logging system class. */
     class log
     {
     private:
-        /* Sculpto library core logger. */
+        /*! Sculpto library core logger. */
         static shared<scl::logger> CoreLogger;
-        /* Sculpto library client application logger. */
+        /*! Sculpto library client application logger. */
         static shared<scl::logger> ClientLogger;
 
     public:
-        /**
+        /*!*
          * Logger initialisation function.
          * 
          * \param None.
@@ -31,9 +31,9 @@ namespace scl
          */
         static void Init();
 
-        /* Sculpto library core logger getter function. */
+        /*! Sculpto library core logger getter function. */
         static shared<::scl::logger> &GetCoreLogger() { return CoreLogger; }
-        /* Sculpto library client application logger getter function. */
+        /*! Sculpto library client application logger getter function. */
         static shared<::scl::logger> &GetClientLogger() { return ClientLogger; }
     };
 }

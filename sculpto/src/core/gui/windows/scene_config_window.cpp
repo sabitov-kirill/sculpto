@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   scene_config_window.cpp
  * \brief  Scene configuration GUI window class definition module.
  * 

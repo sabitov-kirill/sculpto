@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   renderer.h
  * \brief  Static hich-level renderer class definition module.
  *         Implements objects rendering functions via render_pass_submission queue.
@@ -14,17 +14,17 @@
 
 namespace scl
 {
-    /* Classes declaration. */
+    /*! Classes declaration. */
     class texture_2d;
 
-    /* Renderer class. */
+    /*! Renderer class. */
     class renderer
     {
-    private: /* Renderer data. */
+    private: /*! Renderer data. */
         static render_pipeline Pipeline;
 
-    public: /* Helper functions. */
-        /**
+    public: /*! Helper functions. */
+        /*!*
          * Draw mesh geometry (for geometry pass) function.
          *
          * \param Mesh - mesh to draw.
@@ -33,7 +33,7 @@ namespace scl
          */
         static void DrawGeometry(const shared<mesh> &Mesh, const matr4 &Transform);
 
-        /**
+        /*!*
          * Draw mesh depth only (for shadow pass, creating shadow mpa of shadow caster) function.
          *
          * \param Mesh - mesh to draw.
@@ -42,7 +42,7 @@ namespace scl
          */
         static void DrawDepth(const shared<mesh> &Mesh, const matr4 &Transform);
 
-        /**
+        /*!*
          * Draw fullscreen quad to call binded shader for each pixel of frame buffer.
          *
          * \param None.
@@ -51,7 +51,7 @@ namespace scl
         static void DrawFullscreenQuad();
 
     private:
-        /**
+        /*!*
          * Add texture colors to main color attachment of detination frame buffer function.
          *
          * \param Destination - destination frame buffer to add texture color in.
@@ -60,7 +60,7 @@ namespace scl
          */
         static void ApplyTexture(const shared<frame_buffer> &Destination, const shared<texture_2d> &SourceTexture);
 
-        /**
+        /*!*
          * Add texture colors, blurred with two-pass gaussian blur, to main color attachment of destination frame buffer function.
          *
          * \param Destination - destination frame buffer.
@@ -70,8 +70,8 @@ namespace scl
          */
         static void ApplyBluredTexture(const shared<frame_buffer> &Destination, const shared<texture_2d> &Source, int Iterations);
 
-    private: /* Render passes computation functions. */
-        /**
+    private: /*! Render passes computation functions. */
+        /*!*
          * Apply depth computation of current scene (from pipeline submissions list) to destination buffer.
          * 
          * \param None.
@@ -79,7 +79,7 @@ namespace scl
          */
         static void ComputeDepth();
 
-        /**
+        /*!*
          * Apply geometry computation of current scene (from pipeline submissions list) to pipeline geometry buffer (concrete buffer depends on current lighting model).
          *
          * \param None.
@@ -87,7 +87,7 @@ namespace scl
          */
         static void ComputeGeometry();
 
-        /**
+        /*!*
          * Apply default lighting pass (of selected lighting model) to frame buffer (concrete buffer depends on pipeline settings - HDR on/off).
          * 
          * \param None.
@@ -95,7 +95,7 @@ namespace scl
          */
         static void ComputateLighting();
 
-        /**
+        /*!*
          * Apply bloom effect to main color attachment of detination frame buffer function.
          *
          * \param Destination - destination frame buffer.
@@ -104,7 +104,7 @@ namespace scl
          */
         static void ComputeBloom();
 
-        /**
+        /*!*
          * Apply tone mapping algorithm, translating HDR to main frame buffer.
          *
          * \param None.
@@ -112,8 +112,8 @@ namespace scl
          */
         static void ComputeToneMapping();
 
-    public: /* Renderer API functions. */
-        /**
+    public: /*! Renderer API functions. */
+        /*!*
          * Renderer initialization function.
          * 
          * \param None.
@@ -121,7 +121,7 @@ namespace scl
          */
         static void Initialize();
 
-        /**
+        /*!*
          * Begin render pass function.
          * Updates renderer pipeline data buffer.
          *
@@ -131,7 +131,7 @@ namespace scl
          */
         static void StartPipeline(const camera &Camera, const vec3 &EnviromentAmbiente);
 
-        /**
+        /*!*
          * End render pass function.
          * Flush render_pass_submission quque and draw all meshes to specified frame buffer function.
          *
@@ -140,7 +140,7 @@ namespace scl
          */
         static void EndPipeline();
 
-        /**
+        /*!*
          * Submit point light function.
          *
          * \param Position - light possition.
@@ -152,7 +152,7 @@ namespace scl
          */
         static void SubmitPointLight(const vec3 &Position, const vec3 &Color, float Constant, float Linear, float Quadratic);
 
-        /**
+        /*!*
          * Submit point light function.
          *
          * \param Direction - light direction.
@@ -165,7 +165,7 @@ namespace scl
         static void SubmitDirectionalLight(const vec3 &Direction, const vec3 &Color, bool IsShadows = false,
                                            const matr4 &ViewProjection = {}, const shared<frame_buffer> &ShadowMap = nullptr);
 
-        /**
+        /*!*
          * Submit point light function.
          *
          * \param Position - light possition.
@@ -177,7 +177,7 @@ namespace scl
          */
         static void SubmitSpotLight(const vec3 &Position, const vec3 &Direction, const vec3 &Color, float InnerCutoffCos, float OuterCutoffCos, float Epsilon);
 
-        /**
+        /*!*
          * Calculate mesh transorm matrix and submit to queue (rendered while flush call) function.
          *
          * \param Mesh - mesh to submit to queue.
@@ -188,7 +188,7 @@ namespace scl
          */
         static void Submit(const shared<mesh> &Mesh, const vec3 &Scale, const vec3 &Angles, const vec3 &Position);
 
-        /**
+        /*!*
          * Submit mesh to render_pass_submission queue (rendered while flush call) function.
          *
          * \param Mesh - mesh to submit to queue.

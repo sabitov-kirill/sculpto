@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   scene_hierarchy_window.cpp
  * \brief  Scene hierarchy GUI window class implementation module.
  * 

@@ -59,7 +59,7 @@ private:
     }
 
 public:
-    raytracing_app() : application("Editor") {}
+    raytracing_app() : application("PathTracer") {}
     ~raytracing_app() override {}
 
     void OnInit() override
@@ -72,7 +72,7 @@ public:
         MainViewportWindow = CreateShared<viewport_window>(Camera.GetMainFrameBuffer());
 
         Camera.SetRenderToSwapChain(false);
-        Camera.SetView(vec3 { -2, 2, 5 }, vec3 { 0, 0, 0 }, vec3 { 0, 1, 0 });
+        Camera.SetView(vec3 { 0, 0.001, 17 }, vec3 { 0, 0, 0 }, vec3 { 0, 1, 0 });
         Camera.Resize(application::GetWindow().GetWindowData().Width, application::GetWindow().GetWindowData().Height);
         event_dispatcher::AddEventListner<viewport_resize_event>([&](viewport_resize_event &Event)
         {
@@ -117,7 +117,7 @@ public:
             {
                 Camera.Move(Camera.GetDirection() *
                             scl::input_system::GetMousePosDeltaZ() *
-                            scl::timer::GetDeltaTime() / 2);
+                            scl::timer::GetDeltaTime() / 5);
             }
             return true;
         });

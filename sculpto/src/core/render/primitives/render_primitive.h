@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   render_primitive.h
  * \brief  Render primitive abstract class definition module.
  * 
@@ -12,13 +12,13 @@
 
 namespace scl
 {
-    /* Render primitive abstract class */
+    /*! Render primitive abstract class */
     class render_primitive abstract
     {
     public:
         using handle = u32;
 
-        /* Backend api render primitive hadnle getter function. */
+        /*! Backend api render primitive hadnle getter function. */
         virtual handle GetHandle() const = 0;
     };
 }

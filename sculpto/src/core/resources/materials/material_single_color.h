@@ -1,6 +1,6 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   material_phong.h
- * \brief  Mesh material for bling-phone lighting model class deinition module.
+ * \brief  Mesh material for single color without shading lighting model class deinition module.
  *
  * \author Sabitov Kirill
  * \date   05 July 2022
@@ -15,29 +15,29 @@
 
 namespace scl
 {
-    /* Material for blin-phong lighting model class. */
+    /*! Material for blin-phong lighting model class. */
     class material_single_color: public material
     {
-    private: /* Material for blin-phong lighing model data. */
-        /* Structure to use ass shader buffer data. */
+    private: /*! Material for blin-phong lighing model data. */
+        /*! Structure to use ass shader buffer data. */
         struct buffer_data
         {
-            vec3   Color {};       /* Material color. */
-            u32    IsTexture {};   /* Material texture existance flag. */
+            vec3   Color {};       /*! Material color. */
+            u32    IsTexture {};   /*! Material texture existance flag. */
         } Data {};
 
         shared<constant_buffer> DataBuffer {};
         shared<texture_2d> Texture {};
 
-    public: /* Material for blin-phong lighing model data getter setter functions. */
-        /* Material color getter function. */
+    public: /*! Material for blin-phong lighing model data getter setter functions. */
+        /*! Material color getter function. */
         const vec3 &GetColor() const { return Data.Color; }
-        /* Material texture existance flag getter function. */
+        /*! Material texture existance flag getter function. */
         u32 GetIsTexture() const { return Data.IsTexture; }
 
         const shared<texture_2d> &GetTexture() const { return Texture; }
 
-        /* Color setter function. */
+        /*! Color setter function. */
         void SetColor(const vec3 &Color) {
             if (Texture)
             {
@@ -48,7 +48,7 @@ namespace scl
             Data.Color = Color;
             DataBuffer->Update(&Data, sizeof(Data));
         }
-        /* Texture setter function.*/
+        /*! Texture setter function.*/
         void SetTexture(shared<texture_2d> Texture) {
             if (!Texture) return;
 
@@ -61,13 +61,13 @@ namespace scl
             }
         }
 
-        /* Default material for blin-phong lighting model constructor. */
+        /*! Default material for blin-phong lighting model constructor. */
         material_single_color() = default;
 
-        /* Default material data defautl copy constructor. */
+        /*! Default material data defautl copy constructor. */
         material_single_color(const material_single_color &MaterialData) = default;
 
-        /**
+        /*!*
          * Material for blin-phong lighting model class contructor.
          *
          * \param Color - material color.
@@ -79,7 +79,7 @@ namespace scl
             DataBuffer = constant_buffer::Create(&Data, sizeof(buffer_data));
         }
 
-        /**
+        /*!*
          * Material for blin-phong lighting model class contructor.
          *
          * \param Texture - material texture.
@@ -92,7 +92,7 @@ namespace scl
             DataBuffer = constant_buffer::Create(&Data, sizeof(buffer_data));
         }
 
-        /**
+        /*!*
          * Bind material to current render stage function.
          *
          * \param None.
@@ -105,7 +105,7 @@ namespace scl
             if (Texture && Data.IsTexture) Texture->Bind(render_context::TEXTURE_SLOT_MATERIAL_DIFFUSE);
         }
 
-        /**
+        /*!*
          * Unbind material from current render stage function.
          *
          * \param None.
@@ -118,7 +118,7 @@ namespace scl
             if (Texture && Data.IsTexture) Texture->Unbind();
         }
 
-        /**
+        /*!*
          * Material for blin-phong lighting model class contructor.
          *
          * \param Color - material color.
@@ -128,7 +128,7 @@ namespace scl
             return CreateShared<material_single_color>(Color);
         }
 
-        /**
+        /*!*
          * Material for blin-phong lighting model class contructor.
          *
          * \param Texture - material texture.

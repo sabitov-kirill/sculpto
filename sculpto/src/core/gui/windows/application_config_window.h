@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   application_config_window.h
  * \brief  Application configuration GUI window class definition module.
  * 
@@ -12,14 +12,14 @@
 
 namespace scl
 {
-    /* Application configuration GUI window class. */
+    /*! Application configuration GUI window class. */
     class application_config_window
     {
     public:
-        /* Application configuration GUI window default constructor. */
+        /*! Application configuration GUI window default constructor. */
         application_config_window() = default;
 
-        /**
+        /*!*
          * Application configuration GUI window draw function.
          * 
          * \param None.

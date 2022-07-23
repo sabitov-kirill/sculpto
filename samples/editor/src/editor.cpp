@@ -73,6 +73,9 @@ public:
         EditorScene = CreateShared<scene>();
 
 #if 1
+        auto skybox = EditorScene->CreateObject("Skybox");
+        skybox.AddComponent<skybox_component>(skybox::Create(assets_manager::LoadTexture("assets/images/skybox_clouds_2.jpg")));
+
         auto wall_material = material_phong::Create(vec3 {}, vec3 {}, 8.0f);
         wall_material->SetDiffuseMapTexture(assets_manager::LoadTexture("assets/images/stone_wall/diff.jpg"));
         wall_material->SetNormalMapTexture(assets_manager::LoadTexture("assets/images/stone_wall/bump.jpg"));
@@ -118,10 +121,10 @@ public:
         projector.AddComponent<transform_component>(vec3 { 1 }, vec3 { 5, 0, 30 }, vec3 { 5, 50, -5 });
         projector.AddComponent<directional_light_component>(vec3 { 1 }, true, 40.0f, 100.0f, 4096, 4096);
 
-        // auto model = EditorScene->CreateObject("Model, loaded from file");
-        // model.AddComponent<mesh_component>(assets_manager::LoadMeshes("assets/models/sponza/sponza.gltf"));
-        // model.AddComponent<transform_component>(vec3 { 0.02 }, vec3 { 0, 0, 0 }, vec3 { -2, 4, 4 });
-        // // model.AddComponent<native_script_component>().Bind<cube_behaviour>();
+        auto model = EditorScene->CreateObject("Model, loaded from file");
+        model.AddComponent<mesh_component>(assets_manager::LoadMeshes("assets\\models\\hrusov_castle\\scene.gltf"));
+        model.AddComponent<transform_component>(vec3 { 0.02 }, vec3 { 0, 0, 0 }, vec3 { -2, 4, 4 });
+        // model.AddComponent<native_script_component>().Bind<cube_behaviour>();
 
         camera render_camera { camera_projection_type::PERSPECTIVE, camera_effects { true, 0.7, true, 8 } };
         render_camera.SetPosition({ 4, 5, -5 });
@@ -130,7 +133,7 @@ public:
         camera.AddComponent<native_script_component>().Bind<camera_behaviour>();
 #endif
 
-        //scene_serializer::Deserialize(EditorScene, "assets/scenes/test.scl");
+        // scene_serializer::Deserialize(EditorScene, "assets/scenes/test.scl");
         // auto camera = EditorScene->CreaetOrGetObject("Main Camera");
         // camera.AddComponent<native_script_component>().Bind<camera_behaviour>();
 

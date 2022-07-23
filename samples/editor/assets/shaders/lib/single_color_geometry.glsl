@@ -21,8 +21,8 @@
 
     /* Currently rendering mesh material data. */
     layout(std140, binding = BINDING_POINT_MATERIAL_DATA) uniform ubo_Material {
-        vec3 Color;
-        bool IsTexture;
+        vec3 u_Color;
+        bool u_IsTexture;
     };
     layout(binding = TEXTURE_SLOT_MATERIAL_DIFFUSE) uniform sampler2D u_Texture;
     in vec2 vert_out_TexCoords;
@@ -33,12 +33,13 @@
     layout(location = COLOR_ATTACHMENT_GEOM_PASS_OUT_COLOR          ) out vec4 OutColor;
     layout(location = COLOR_ATTACHMENT_GEOM_PASS_OUT_PHONG_DIFFUSE  ) out vec4 OutDiffuse;
     layout(location = COLOR_ATTACHMENT_GEOM_PASS_OUT_PHONG_SPECULAR ) out vec4 OutSpecular;
-    layout(location = COLOR_ATTACHMENT_GEOM_PASS_OUT_PHONG_SHININESS) out vec4 OutShininess;
+    layout(location = COLOR_ATTACHMENT_GEOM_PASS_OUT_PHONG_SHININESS) out vec4 OutShininessIsShadeIsBloomed;
 
     void main()
     {
-        if (IsTexture) OutColor = texture(u_Texture, vert_out_TexCoords);
-        else           OutColor = vec4(Color, 1);
+        if (u_IsTexture) OutColor = texture(u_Texture, vert_out_TexCoords);
+        else             OutColor = vec4(u_Color, 1);
         OutDiffuse = vec4(0, 0, 0, 1);
+        OutShininessIsShadeIsBloomed = vec4(0, 1, 1, 1);
     }
 #shader-end

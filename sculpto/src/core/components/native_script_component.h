@@ -1,6 +1,6 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   native_script_component.h
- * \brief  Application scene system object native script component class implementation module.
+ * \brief  Native script component (for scene objects behaviour) class implementation module.
  * 
  * \author Sabitov Kirill
  * \date   03 July 2022
@@ -10,23 +10,20 @@
 
 namespace scl
 {
-    /* Scene object behaviour class declaration. */
+    /*! Scene object behaviour class declaration. */
     class scene_object_behaviour;
 
-    /* Native script */
+    /*! Native script component (for scene objects behaviour) class. */
     struct native_script_component
     {
-        /* Native script object behaviour instance. */
-        scene_object_behaviour *ObjectBehaviour {};
-        /* Native script active status. If false script update calbbacks dont called. */
-        bool IsActive { true };
-        /* Native script object name. */
-        std::string Name {};
+        scene_object_behaviour *ObjectBehaviour {}; /*! Native script object behaviour instance. */
+        bool IsActive { true };                     /*! Native script active status. If false script update calbbacks dont called. */
+        std::string Name {};                        /*! Native script object name. */
 
         scene_object_behaviour *(*Instanciate)();
         void (*Delete)(native_script_component *NativeScript);
 
-        /**
+        /*!*
          * Bind native script component (instanciate object behaviour).
          * 
          * \param None.

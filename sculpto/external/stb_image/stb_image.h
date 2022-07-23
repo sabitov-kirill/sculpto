@@ -1,4 +1,4 @@
-/* stb_image - v2.27 - public domain image loader - http://nothings.org/stb
+/*! stb_image - v2.27 - public domain image loader - http://nothings.org/stb
                                   no warranty implied; use at your own risk
 
    Do this:
@@ -854,10 +854,10 @@ static void stbi__stdio_skip(void *user, int n)
 {
     int ch;
     fseek((FILE *)user, n, SEEK_CUR);
-    ch = fgetc((FILE *)user);  /* have to read a byte to reset feof()'s flag */
+    ch = fgetc((FILE *)user);  /*! have to read a byte to reset feof()'s flag */
     if (ch != EOF)
     {
-        ungetc(ch, (FILE *)user);  /* push byte back onto stream if valid. */
+        ungetc(ch, (FILE *)user);  /*! push byte back onto stream if valid. */
     }
 }
 
@@ -1321,7 +1321,7 @@ STBI_EXTERN __declspec(dllimport) int __stdcall WideCharToMultiByte(unsigned int
 #if defined(_WIN32) && defined(STBI_WINDOWS_UTF8)
 STBIDEF int stbi_convert_wchar_to_utf8(char *buffer, size_t bufferlen, const wchar_t *input)
 {
-    return WideCharToMultiByte(65001 /* UTF8 */, 0, input, -1, buffer, (int)bufferlen, NULL, NULL);
+    return WideCharToMultiByte(65001 /*! UTF8 */, 0, input, -1, buffer, (int)bufferlen, NULL, NULL);
 }
 #endif
 
@@ -1331,10 +1331,10 @@ static FILE *stbi__fopen(char const *filename, char const *mode)
 #if defined(_WIN32) && defined(STBI_WINDOWS_UTF8)
     wchar_t wMode[64];
     wchar_t wFilename[1024];
-    if (0 == MultiByteToWideChar(65001 /* UTF8 */, 0, filename, -1, wFilename, sizeof(wFilename) / sizeof(*wFilename)))
+    if (0 == MultiByteToWideChar(65001 /*! UTF8 */, 0, filename, -1, wFilename, sizeof(wFilename) / sizeof(*wFilename)))
         return 0;
 
-    if (0 == MultiByteToWideChar(65001 /* UTF8 */, 0, mode, -1, wMode, sizeof(wMode) / sizeof(*wMode)))
+    if (0 == MultiByteToWideChar(65001 /*! UTF8 */, 0, mode, -1, wMode, sizeof(wMode) / sizeof(*wMode)))
         return 0;
 
 #if defined(_MSC_VER) && _MSC_VER >= 1400
@@ -2652,7 +2652,7 @@ static void stbi__idct_simd(stbi_uc *out, int out_stride, short data[64])
 
 #define dct_pass(bias,shift) \
       { \
-         /* even part */ \
+         /*! even part */ \
          dct_rot(t2e,t3e, row2,row6, rot0_0,rot0_1); \
          __m128i sum04 = _mm_add_epi16(row0, row4); \
          __m128i dif04 = _mm_sub_epi16(row0, row4); \
@@ -2662,7 +2662,7 @@ static void stbi__idct_simd(stbi_uc *out, int out_stride, short data[64])
          dct_wsub(x3, t0e, t3e); \
          dct_wadd(x1, t1e, t2e); \
          dct_wsub(x2, t1e, t2e); \
-         /* odd part */ \
+         /*! odd part */ \
          dct_rot(y0o,y2o, row7,row3, rot2_0,rot2_1); \
          dct_rot(y1o,y3o, row5,row1, rot3_0,rot3_1); \
          __m128i sum17 = _mm_add_epi16(row1, row7); \
@@ -2824,7 +2824,7 @@ static void stbi__idct_simd(stbi_uc *out, int out_stride, short data[64])
 
 #define dct_pass(shiftop, shift) \
    { \
-      /* even part */ \
+      /*! even part */ \
       int16x8_t sum26 = vaddq_s16(row2, row6); \
       dct_long_mul(p1e, sum26, rot0_0); \
       dct_long_mac(t2e, p1e, row6, rot0_1); \
@@ -2837,7 +2837,7 @@ static void stbi__idct_simd(stbi_uc *out, int out_stride, short data[64])
       dct_wsub(x3, t0e, t3e); \
       dct_wadd(x1, t1e, t2e); \
       dct_wsub(x2, t1e, t2e); \
-      /* odd part */ \
+      /*! odd part */ \
       int16x8_t sum15 = vaddq_s16(row1, row5); \
       int16x8_t sum17 = vaddq_s16(row1, row7); \
       int16x8_t sum35 = vaddq_s16(row3, row5); \
@@ -4374,7 +4374,7 @@ static void stbi__fill_bits(stbi__zbuf *z)
     {
         if (z->code_buffer >= (1U << z->num_bits))
         {
-            z->zbuffer = z->zbuffer_end;  /* treat this as EOF so we fail. */
+            z->zbuffer = z->zbuffer_end;  /*! treat this as EOF so we fail. */
             return;
         }
         z->code_buffer |= (unsigned int)stbi__zget8(z) << z->num_bits;
@@ -4418,7 +4418,7 @@ stbi_inline static int stbi__zhuffman_decode(stbi__zbuf *a, stbi__zhuffman *z)
     {
         if (stbi__zeof(a))
         {
-            return -1;   /* report error for unexpected end of data. */
+            return -1;   /*! report error for unexpected end of data. */
         }
         stbi__fill_bits(a);
     }
@@ -4616,7 +4616,7 @@ static int stbi__parse_zlib_header(stbi__zbuf *a)
 {
     int cmf = stbi__zget8(a);
     int cm = cmf & 15;
-    /* int cinfo = cmf >> 4; */
+    /*! int cinfo = cmf >> 4; */
     int flg = stbi__zget8(a);
     if (stbi__zeof(a)) return stbi__err("bad zlib header", "Corrupt PNG"); // zlib spec
     if ((cmf * 256 + flg) % 31 != 0) return stbi__err("bad zlib header", "Corrupt PNG"); // zlib spec
@@ -4642,7 +4642,7 @@ static const stbi_uc stbi__zdefault_distance[32] =
 {
    5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5
 };
-/*
+/*!
 Init algorithm:
 {
    int i;   // use <= to match clearly with spec
@@ -5497,7 +5497,7 @@ static int stbi__parse_png_file(stbi__png *z, int scan, int req_comp)
             if (z->idata == NULL) return stbi__err("no IDAT", "Corrupt PNG");
             // initial guess for decoded data size to avoid unnecessary reallocs
             bpl = (s->img_x * z->depth + 7) / 8; // bytes per line, per component
-            raw_len = bpl * s->img_y * s->img_n /* pixels */ + s->img_y /* filter mode per row */;
+            raw_len = bpl * s->img_y * s->img_n /*! pixels */ + s->img_y /*! filter mode per row */;
             z->expanded = (stbi_uc *)stbi_zlib_decode_malloc_guesssize_headerflag((char *)z->idata, ioff, raw_len, (int *)&raw_len, !is_iphone);
             if (z->expanded == NULL) return 0; // zlib should set error
             STBI_FREE(z->idata); z->idata = NULL;
@@ -5681,7 +5681,7 @@ static int stbi__high_bit(unsigned int z)
     if (z >= 0x00100) { n += 8; z >>= 8; }
     if (z >= 0x00010) { n += 4; z >>= 4; }
     if (z >= 0x00004) { n += 2; z >>= 2; }
-    if (z >= 0x00002) { n += 1;/* >>=  1;*/ }
+    if (z >= 0x00002) { n += 1;/*! >>=  1;*/ }
     return n;
 }
 
@@ -5702,8 +5702,8 @@ static int stbi__shiftsigned(unsigned int v, int shift, int bits)
 {
     static unsigned int mul_table[9] = {
        0,
-       0xff/*0b11111111*/, 0x55/*0b01010101*/, 0x49/*0b01001001*/, 0x11/*0b00010001*/,
-       0x21/*0b00100001*/, 0x41/*0b01000001*/, 0x81/*0b10000001*/, 0x01/*0b00000001*/,
+       0xff/*!0b11111111*/, 0x55/*!0b01010101*/, 0x49/*!0b01001001*/, 0x11/*!0b00010001*/,
+       0x21/*!0b00100001*/, 0x41/*!0b01000001*/, 0x81/*!0b10000001*/, 0x01/*!0b00000001*/,
     };
     static unsigned int shift_table[9] = {
        0, 0,0,1,0,2,4,6,0,
@@ -5989,7 +5989,7 @@ static void *stbi__bmp_load(stbi__context *s, int *x, int *y, int *comp, int req
         stbi__skip(s, info.offset - info.extra_read - info.hsz);
         if (info.bpp == 24) width = 3 * s->img_x;
         else if (info.bpp == 16) width = 2 * s->img_x;
-        else /* bpp = 32 and pad = 0 */ width = 0;
+        else /*! bpp = 32 and pad = 0 */ width = 0;
         pad = (-width) & 3;
         if (info.bpp == 24)
         {
@@ -6308,7 +6308,7 @@ static void *stbi__tga_load(stbi__context *s, int *x, int *y, int *comp, int req
         if (tga_indexed)
         {
             if (tga_palette_len == 0)
-            {  /* you have to have at least one entry! */
+            {  /*! you have to have at least one entry! */
                 STBI_FREE(tga_data);
                 return stbi__errpuc("bad palette", "Corrupt TGA");
             }
@@ -7316,7 +7316,7 @@ static stbi_uc *stbi__gif_load_next(stbi__context *s, stbi__gif *g, int *comp, i
         int tag = stbi__get8(s);
         switch (tag)
         {
-        case 0x2C: /* Image Descriptor */
+        case 0x2C: /*! Image Descriptor */
         {
             stbi__int32 x, y, w, h;
             stbi_uc *o;
@@ -7664,10 +7664,10 @@ static void stbi__hdr_convert(float *output, stbi_uc *input, int req_comp)
     {
         switch (req_comp)
         {
-        case 4: output[3] = 1; /* fallthrough */
+        case 4: output[3] = 1; /*! fallthrough */
         case 3: output[0] = output[1] = output[2] = 0;
             break;
-        case 2: output[1] = 1; /* fallthrough */
+        case 2: output[1] = 1; /*! fallthrough */
         case 1: output[0] = 0;
             break;
         }
@@ -8310,7 +8310,7 @@ STBIDEF int stbi_is_16_bit_from_callbacks(stbi_io_callbacks const *c, void *user
 #pragma warning(pop)
 #endif // STB_IMAGE_IMPLEMENTATION
 
-/*
+/*!
    revision history:
       2.20  (2019-02-07) support utf8 filenames in Windows; fix warnings and platform ifdefs
       2.19  (2018-02-11) fix warning
@@ -8494,7 +8494,7 @@ STBIDEF int stbi_is_16_bit_from_callbacks(stbi_io_callbacks const *c, void *user
 */
 
 
-/*
+/*!
 ------------------------------------------------------------------------------
 This software is available under 2 licenses -- choose whichever you prefer.
 ------------------------------------------------------------------------------

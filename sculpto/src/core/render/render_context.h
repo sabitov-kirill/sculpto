@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   render_context.h
  * \brief  Base, abstract, backend render api independent render
  *         context class definition module.
@@ -13,13 +13,13 @@
 
 namespace scl
 {
-    /* Vertex array class declaration. */
+    /*! Vertex array class declaration. */
     class vertex_array;
     class shader_program;
     class mesh;
     enum class mesh_type;
 
-    /* Shader variable type enum. */
+    /*! Shader variable type enum. */
     enum class shader_variable_type: u8
     {
         BOOL,
@@ -35,7 +35,7 @@ namespace scl
         MATR4,
     };
 
-    /* Render contextu culling mode. */
+    /*! Render contextu culling mode. */
     enum class render_cull_face_mode
     {
         OFF,
@@ -43,43 +43,47 @@ namespace scl
         FRONT
     };
 
-    /* Render context backend api enum. */
+    /*! Render context backend api enum. */
     enum class render_context_api
     {
         OpenGL,
         DirectX
     };
 
-    /* Base abstract render context class. */
+    /*! Base abstract render context class. */
     class render_context
     {
-    private: /* Render context data. */
-        static render_context_api Api; /* Render system backend api. */
+    private: /*! Render context data. */
+        static render_context_api Api; /*! Render system backend api. */
 
-    public: /* Render context data getter/setter functions. */
-        /* Rendering context backend API getter function. */
+    public: /*! Render context data getter/setter functions. */
+        /*! Rendering context backend API getter function. */
         static render_context_api GetApi() { return Api; }
 
-        /* Frame clear color setter function. */
+        /*! Frame clear color getter function. */
         virtual const vec4 &GetClearColor() const = 0;
-        /* Render wire frame mode setter function. */
+        /*! Render wire frame mode getter function. */
         virtual bool GetWireframeMode() const = 0;
-        /* Render culling mode setter function. */
+        /*! Render culling mode getter function. */
         virtual render_cull_face_mode GetCullingMode() const = 0;
-        /* Render virtual syncronisation flag getter function. */
+        /*! Render depth test mode getter function. */
+        virtual bool GetDepthTestMode() const = 0;
+        /*! Render virtual syncronisation flag getter function. */
         virtual bool GetVSync() const = 0;
 
-        /* Frame clear color setter function. */
+        /*! Frame clear color setter function. */
         virtual void SetClearColor(const vec4 &ClearColor) = 0;
-        /* Render wire frame mode setter function. */
+        /*! Render wire frame mode setter function. */
         virtual void SetWireframeMode(bool IsWireframe) = 0;
-        /* Render culling mode setter function. */
+        /*! Render culling mode setter function. */
         virtual void SetCullingMode(render_cull_face_mode CullingMode) = 0;
-        /* Render virtual syncronisation flag setter function. */
+        /*! Render depth test mode setter function. */
+        virtual void SetDepthTestMode(bool IsDepthTest) = 0;
+        /*! Render virtual syncronisation flag setter function. */
         virtual void SetVSync(bool VSync) = 0;
 
     public:
-        /**
+        /*!*
          * Get size of specified shader variable type fucntion.
          *
          * \param Type - shader variable type to get size of.
@@ -87,7 +91,7 @@ namespace scl
          */
         static u32 GetShaderVariableTypeSize(shader_variable_type Type);
 
-        /**
+        /*!*
          * Get components count of specified shader variable type fucntion.
          *
          * \param Type - shader variable type to get components count of.
@@ -95,14 +99,14 @@ namespace scl
          */
         static u32 GetShaderVariableComponentsCount(shader_variable_type Type);
 
-    public: /* Render context methods. */
-        /* Default render context constructor. */
+    public: /*! Render context methods. */
+        /*! Default render context constructor. */
         render_context() {};
 
-        /* Default render context destructor. */
+        /*! Default render context destructor. */
         virtual ~render_context() {};
 
-        /**
+        /*!*
          * Render context initialisation function.
          * 
          * \param None.
@@ -110,7 +114,7 @@ namespace scl
          */
         virtual void Init() = 0;
 
-        /**
+        /*!*
          * Render context deinitialisation function.
          * 
          * \param None.
@@ -118,7 +122,7 @@ namespace scl
          */
         virtual void Close() = 0;
 
-        /**
+        /*!*
          * Swap frame buffers function.
          *
          * \param None.
@@ -126,7 +130,7 @@ namespace scl
          */
         virtual void SwapBuffers() = 0;
 
-        /**
+        /*!*
          * Draw vertices function.
          * 
          * \param Mesh - mesh, containing vertices and vertex indices to draw.
@@ -134,7 +138,7 @@ namespace scl
          */
         virtual void DrawIndices(const shared<vertex_array> &Mesh) = 0;
 
-        /**
+        /*!*
          * Draw vertices instanced function.
          *
          * \param Mesh - mesh, containing vertices and vertex indices to draw.
@@ -142,7 +146,7 @@ namespace scl
          */
         virtual void DrawIndicesInstanced(const shared<vertex_array> &Mesh, int InstanceCount) = 0;
 
-        /**
+        /*!*
          * Rendering context creation function.
          *
          * \param None.
@@ -150,23 +154,25 @@ namespace scl
          */
         static unique<render_context> Create();
 
-    public: /* Sculpto library built-in backend API specific rendering objects getter function. */
-        /* Backend API specific single color material shader getter function. */
+    public: /*! Sculpto library built-in backend API specific rendering objects getter function. */
+        /*! Backend API specific single color material shader getter function. */
         virtual shared<shader_program> GetSingleColorMaterialShader() const = 0;
-        /* Backend API specific phong lighint model shader for geometry pass getter function. */
+        /*! Backend API specific skybox material shader getter function. */
+        virtual shared<shader_program> GetSkyboxMaterialShader() const = 0;
+        /*! Backend API specific phong lighint model shader for geometry pass getter function. */
         virtual shared<shader_program> GetPhongGeometryShader() const = 0;
-        /* Backend API specific phong lighint model shader for lighting pass getter function. */
+        /*! Backend API specific phong lighint model shader for lighting pass getter function. */
         virtual shared<shader_program> GetPhongLightingShader() const = 0;
-        /* Backend API specific shadow pass shader getter function. */
+        /*! Backend API specific shadow pass shader getter function. */
         virtual shared<shader_program> GetShadowPassShader() const = 0;
-        /* Backend API specific tone mapping pass shader getter function. */
+        /*! Backend API specific tone mapping pass shader getter function. */
         virtual shared<shader_program> GetToneMappingPassShader() const = 0;
-        /* Backend API specific gaussian blur pass shader getter function. */
+        /*! Backend API specific gaussian blur pass shader getter function. */
         virtual shared<shader_program> GetGaussianBlurPassShader() const = 0;
-        /* Backend API specific gaussian blur pass shader getter function. */
+        /*! Backend API specific gaussian blur pass shader getter function. */
         virtual shared<shader_program> GetTextureAddPassShader() const = 0;
 
-    public: /* Rendering context shader constants. */
+    public: /*! Rendering context shader constants. */
         static const int BINDING_POINT_SCENE_DATA              = 0;
         static const int BINDING_POINT_MATERIAL_DATA           = 5;
         static const int BINDING_POINT_LIGHTS_STORAGE          = 10;

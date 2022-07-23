@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   window_event.h
  * \brief  Window update specific events implementation module.
  * 
@@ -12,7 +12,7 @@
 
 namespace scl
 {
-    /* Window close event class. */
+    /*! Window close event class. */
     class close_event: public event
     {
         SCL_MAKE_EVENT(WindowClose);

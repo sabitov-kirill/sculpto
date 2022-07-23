@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   window.h
  * \brief  Window window_handle definition module.
  *
@@ -15,7 +15,7 @@ namespace scl
 {
     class windows_window: public window
     {
-    private: /* Windows window data. */
+    private: /*! Windows window data. */
         HINSTANCE InstanceHandle {};
         int       MouseWheel {};
         RECT      FullscreenRect {};
@@ -25,11 +25,11 @@ namespace scl
         // Timer callback called only when application run function is called.
         UINT      InitialisationTimer {};
 
-    private: /* Main window procedure. */
+    private: /*! Main window procedure. */
         static LRESULT WIN32 WinProc(window_handle hWnd, u32 Msg,
                                      WPARAM wParam, LPARAM lParam);
 
-    private: /* Low level window message crackers.
+    private: /*! Low level window message crackers.
               * Executed from main window main procedure if corresponding message dispatched.
               */
         // Window messages
@@ -53,7 +53,7 @@ namespace scl
         // Keyboard messages
         void OnKey(HWND hwnd, u32 vk, bool fDown, int cRepeat, u32 flags);
 
-        /**
+        /*!*
          * Window creation function.
          * 
          * \param None.
@@ -61,8 +61,8 @@ namespace scl
          */
         void Create();
 
-    public: /* Windows window class methods. */
-        /**
+    public: /*! Windows window class methods. */
+        /*!*
          * Windows OS specific window construcotor.
          * Initialise window, but don't shows it and don't start message loop.
          * If initialisation successful 'IsStartupSuccess' would be set to true
@@ -75,7 +75,7 @@ namespace scl
          */
         windows_window(int Width, int Height, const std::string &Title);
 
-        /**
+        /*!*
          * Window update function.
          *
          * \param None.
@@ -83,7 +83,7 @@ namespace scl
          */
         void Update() override;
 
-        /**
+        /*!*
          * Woggle window display mode (fullscreen/windowed) function.
          *
          * \param None.
@@ -91,7 +91,7 @@ namespace scl
          */
         void FlipFullscreen() override;
 
-        /**
+        /*!*
          * Change window title to specified.
          * 
          * \param NewTitle - new window title.
@@ -99,7 +99,7 @@ namespace scl
          */
         void ChangeTitle(const std::string &NewTitle) override;
 
-        /**
+        /*!*
          * Window shut down function. Closes window and create window close event.
          *
          * \param None.

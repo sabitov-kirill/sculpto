@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   editor_viewport_window.h
  * \brief  Sculpto editor viewport window class implementation module.
  *

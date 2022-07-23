@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   throw_if_failed.h
  * \brief  Helper throw if failed inline function implementation function.
  *         Commonly used in DirectX module.
@@ -13,15 +13,15 @@
 
 namespace scl::dx
 {
-    /* Helprer class for COM exeptions. */
+    /*! Helprer class for COM exeptions. */
     class com_exeption: public std::exception
     {
     private:
-        /* COM resuslt handle. */
+        /*! COM resuslt handle. */
         HRESULT Result;
 
     public:
-        /* Default constructor by COM HRESULT. */
+        /*! Default constructor by COM HRESULT. */
         com_exeption(HRESULT hr) :Result(hr) {}
 
         const char *what() const override
@@ -33,7 +33,7 @@ namespace scl::dx
         }
     };
 
-    /**
+    /*!*
      * Helper utility converts D3D API failures into exceptions.
      *
      * \param hr COM result handle.

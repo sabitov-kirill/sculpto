@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   string_id.h
  * \brief  String id generating by CRC32 algoritm implemetation module.
  *         Can be used both in compiletime anr runtime.
@@ -78,7 +78,7 @@ namespace scl
         return *str ? 1 + strlen_c(str + 1) : 0;
     }
 
-    /**
+    /*!*
      * Generate string id using crc32 algorithm function.
      *
      * \param Str - srting to genrerate id of.
@@ -88,7 +88,7 @@ namespace scl
         return crc32((char *)Str, strlen_c(Str));
     }
 
-    /**
+    /*!*
      * Generate string id using crc32 algorithm function.
      *
      * \param Str - srting to genrerate id of.
@@ -99,7 +99,7 @@ namespace scl
         return crc32(&Str[0], Str.size());
     }
 
-    /**
+    /*!*
      * Generate string id using crc32 algorithm function.
      *
      * \param Str - srting to genrerate id of.
@@ -111,7 +111,7 @@ namespace scl
     }
 }
 
-/**
+/*!*
  * Generate string id using crc32 algorithm function at compiletime.
  *
  * \param Str - srting to genrerate id of.

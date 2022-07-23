@@ -27,6 +27,7 @@ project "sculpto"
         "%{IncludeDir.json}",
         "%{IncludeDir.imgui}",
         "%{IncludeDir.assimp}",
+        "%{IncludeDir.rccpp}",
     }
 
     links
@@ -34,6 +35,8 @@ project "sculpto"
         "glew",
         "imgui",
         "assimp",
+        "rccpp_runtime_compiler",
+        "rccpp_runtime_object_system",
         "opengl32.lib"
     }
 

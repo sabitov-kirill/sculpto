@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   cube.h
  * \brief  Topology cube object class declaration function.
  * 
@@ -13,11 +13,11 @@
 
 namespace scl::topology
 {
-    /* Topology cube object class. */
+    /*! Topology cube object class. */
     class cube : public trimesh
     {
     public:
-        /**
+        /*!*
          * Cube topology object constructor by two points.
          * 
          * \param A
@@ -25,7 +25,7 @@ namespace scl::topology
          */
         cube(const vec3 &A, const vec3 &B);
 
-        /* Cube topology object default destructor. */
+        /*! Cube topology object default destructor. */
         ~cube() override = default;
     };
 }

@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   common.h
  * \brief  Math common functions, types implementation module.
  * 
@@ -12,7 +12,7 @@
 
 namespace scl
 {
-    /* Atomic types. */
+    /*! Atomic types. */
     using i8 = int8_t;
     using u8 = uint8_t;
     using i16 = int16_t;
@@ -24,7 +24,7 @@ namespace scl
 
     namespace math
     {
-        /* Math common constants. */
+        /*! Math common constants. */
         const float E = 2.7182818284590f;  // e
         const float LOG2E = 1.4426950408889f;  // log2(e)
         const float LOG10E = 0.4342944819032f;  // log10(e)
@@ -39,7 +39,7 @@ namespace scl
         const float SQRT2 = 1.4142135623730f;  // sqrt(2)
         const float SQRT1_2 = 0.7071067811865f;  // 1/sqrt(2)
 
-        /**
+        /*!*
          * Getting smallest number function.
          *
          * \param Num1, Num2 - numbers to smallest one be chosen from.
@@ -51,7 +51,7 @@ namespace scl
             return Num1 < Num2 ? Num1 : Num2;
         }
 
-        /**
+        /*!*
          * Getting biggest number function.
          *
          * \param Num1, Num2 - numbers to biggest one be chosen from.
@@ -63,7 +63,7 @@ namespace scl
             return Num1 > Num2 ? Num1 : Num2;
         }
 
-        /**
+        /*!*
          * Number clamping function.
          * If number is higher then upper bound value returned.
          * If number is lower then lower bound value returned.
@@ -79,7 +79,7 @@ namespace scl
             return Num < Min ? Min : Num > Max ? Max : Num;
         }
 
-        /**
+        /*!*
          * Linear interpolation between two points function.
          *
          * \param Start - first point value.
@@ -93,7 +93,7 @@ namespace scl
             return Start + (End - Start) * Current;
         }
 
-        /**
+        /*!*
          * Getting random number function.
          *
          * \param None.
@@ -105,7 +105,7 @@ namespace scl
             return static_cast<T>(rand()) / RAND_MAX;
         }
 
-        /**
+        /*!*
          * Getting randow number function.
          *
          * \param min - lower bound of random number.

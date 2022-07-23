@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   gui.cpp
  * \brief  Application graphics user interface layer class implementation module.
  *         Handles user GUI events and widgets render.

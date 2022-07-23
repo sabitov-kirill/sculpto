@@ -1,0 +1,11 @@
+Model Information:
+* title:	Hrusov Castle
+* source:	https://sketchfab.com/3d-models/hrusov-castle-993f6d456a434490b7ad3b9456b97a19
+* author:	R0m1R (https://sketchfab.com/R0m1R)
+
+Model License:
+* license type:	CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)
+* requirements:	Author must be credited. No commercial use.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Hrusov Castle" (https://sketchfab.com/3d-models/hrusov-castle-993f6d456a434490b7ad3b9456b97a19) by R0m1R (https://sketchfab.com/R0m1R) licensed under CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)

@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   sculpto.h
  * \brief  Sculpto based client applications aimed include module.
  *         Includes all library content.
@@ -12,11 +12,12 @@
 #include <imgui.h>
 #include <entt.hpp>
 #include <json.h>
+#include <RuntimeObjectSystem/RuntimeObjectSystem.h>
 
-/* Core module. */
+/*! Core module. */
 #include "core/application/application.h"
 
-/* GUI windows. */
+/*! GUI windows. */
 #include "core/gui/windows/application_config_window.h"
 #include "core/gui/windows/viewport_window.h"
 #include "core/gui/windows/profiller_window.h"
@@ -24,7 +25,7 @@
 #include "core/gui/windows/scene_hierarchy_window.h"
 #include "core/gui/windows/scene_object_config_window.h"
 
-/* Render primitives, objects, context. */
+/*! Render primitives, objects, context. */
 #include "core/render/primitives/vertex_array.h"
 #include "core/render/primitives/buffer.h"
 #include "core/render/primitives/shader.h"
@@ -43,19 +44,21 @@
 #include "core/resources/materials/material.h"
 #include "core/resources/materials/material_phong.h"
 #include "core/resources/materials/material_single_color.h"
+#include "core/resources/materials/material_skybox.h"
 #include "core/resources/mesh.h"
+#include "core/resources/skybox.h"
 
 #include "core/render/render_bridge.h"
 #include "core/render/renderer.h"
 
-/* Scene module */
+/*! Scene module */
 #include "core/scene/scene.h"
 #include "core/scene/scene_serializer.h"
 #include "core/scene/scene_object.h"
 #include "core/scene/scene_object_behaviour.h"
 #include "core/components/components.h"
 
-/* Assets manager module. */
+/*! Assets manager module. */
 #include "utilities/assets_manager/shaders_preprocessor.h"
 #include "utilities/assets_manager/shaders_load.h"
 #include "utilities/assets_manager/textures_load.h"

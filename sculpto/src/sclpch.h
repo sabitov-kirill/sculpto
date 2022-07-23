@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*!****************************************************************//*!*
  * \file   sclpch.h
  * \brief  Sculpto library prehompiled header.
  *         Defines common definitions, includes commonly used modules.
@@ -37,7 +37,7 @@
 #include <set>
 #include <queue>
 
-/* Detect SCL platform. */
+/*! Detect SCL platform. */
 #include "core/application/platform_detection.h"
 
 #ifdef SCL_PLATFORM_WINDOWS
@@ -45,10 +45,10 @@
 #   include <windows.h>
 #   include <windowsx.h>
 #   include <wrl/client.h>
-#endif /* !SCL_PLATFORM_WINDOWS */
+#endif /*! !SCL_PLATFORM_WINDOWS */
 
-/* Logging system. */
+/*! Logging system. */
 #include "core/application/log.h"
 
-/* Math module. */
+/*! Math module. */
 #include "utilities/math/math.h"

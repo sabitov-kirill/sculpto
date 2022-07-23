@@ -1,4 +1,4 @@
-﻿/*****************************************************************//**
+﻿/*!****************************************************************//*!*
  * \file   angle_measure.h
  * \brief  Angle measures types implementatino module.
  * 
@@ -12,28 +12,28 @@
 
 namespace scl::math
 {
-    /* Angle measure types forward declaration. */
+    /*! Angle measure types forward declaration. */
     template <typename T> struct radians;
     template <typename T> struct degrees;
 
-    /* Radians angle type class. */
+    /*! Radians angle type class. */
     template <typename T>
     struct radians
     {
     public:
-        T Value { 0 }; /* Angle value in radians. */
+        T Value { 0 }; /*! Angle value in radians. */
 
-        /* Radians angle default constructor. */
+        /*! Radians angle default constructor. */
         radians() = default;
 
-        /**
+        /*!*
          * Radians angle constructor by value.
          * 
          * \param Value - angle value.
          */
         radians(T Value) : Value(Value) {}
 
-        /**
+        /*!*
          * Radians copy constructor.
          * 
          * \param Other
@@ -44,7 +44,7 @@ namespace scl::math
             return *this;
         }
 
-        /**
+        /*!*
          * Radians angle compare function.
          *
          * \param Other - radians angle to compare with.
@@ -55,7 +55,7 @@ namespace scl::math
             return Value == Other.Value;
         }
 
-        /**
+        /*!*
          * Getting negative radians angle operation.
          *
          * \param None.
@@ -66,7 +66,7 @@ namespace scl::math
             return radians(-Value);
         }
 
-        /**
+        /*!*
          * Radians degrees addition operator overloading.
          *
          * \param Other - radians angle to add.
@@ -77,7 +77,7 @@ namespace scl::math
             return radians(Value + Other.Value);
         }
 
-        /**
+        /*!*
          * Radians degrees addition with assigments operator overlaoding.
          *
          * \param Other - radians angle to add.
@@ -89,7 +89,7 @@ namespace scl::math
             return *this;
         }
 
-        /**
+        /*!*
          * Radians degrees subtraction operator overloading.
          *
          * \param Other - radians angle to subtract.
@@ -100,7 +100,7 @@ namespace scl::math
             return radians(Value - Other.Value);
         }
 
-        /**
+        /*!*
          * Radians degrees subtraction with assigments operator overlaoding.
          *
          * \param Other - radians angle to subtract.
@@ -112,7 +112,7 @@ namespace scl::math
             return *this;
         }
 
-        /**
+        /*!*
          * Radians degrees multiplying operator overloading.
          *
          * \param Other - radians angle to multiply.
@@ -123,7 +123,7 @@ namespace scl::math
             return radians(Value * Other.Value);
         }
 
-        /**
+        /*!*
          * Radians degrees multiplying with assigments operator overlaoding.
          *
          * \param Other - radians angle to multiply.
@@ -135,7 +135,7 @@ namespace scl::math
             return *this;
         }
 
-        /**
+        /*!*
          * Radians degrees dividing operator overloading.
          *
          * \param Other - radians angle to devide.
@@ -146,7 +146,7 @@ namespace scl::math
             return radians(Value / Other.Value);
         }
 
-        /**
+        /*!*
          * Radians degrees dividing with assigments operator overlaoding.
          *
          * \param Other - radians angle to devide.
@@ -158,14 +158,14 @@ namespace scl::math
             return *this;
         }
 
-        /**
+        /*!*
          * СCast to degree measure from radians to degrees.
          * 
          * \return angle in degrees.
          */
         operator degrees<T>() { return degrees<T>(Value * 180.0 / PI); }
 
-        /**
+        /*!*
          * Cast to scalar type.
          *
          * \return angle value.
@@ -173,24 +173,24 @@ namespace scl::math
         operator T() { return Value; }
     };
 
-    /* Radians angle type class. */
+    /*! Radians angle type class. */
     template <typename T>
     struct degrees
     {
     public:
-        T Value { 0 }; /* Angle value in degrees. */
+        T Value { 0 }; /*! Angle value in degrees. */
 
-        /* Degrees angle default constructor. */
+        /*! Degrees angle default constructor. */
         degrees() = default;
 
-        /**
+        /*!*
          * Degrees angle constructor by value.
          *
          * \param Value - angle value.
          */
         degrees(T Value) : Value(Value) {}
 
-        /**
+        /*!*
          * Degrees copy constructor.
          *
          * \param Other
@@ -201,7 +201,7 @@ namespace scl::math
             return *this;
         }
 
-        /**
+        /*!*
          * Degrees angle compare function.
          *
          * \param Other - degrees angle to compare with.
@@ -212,7 +212,7 @@ namespace scl::math
             return Value == Other.Value;
         }
 
-        /**
+        /*!*
          * Getting negative degrees angle operation.
          *
          * \param None.
@@ -223,7 +223,7 @@ namespace scl::math
             return degrees(-Value);
         }
 
-        /**
+        /*!*
          * Degrees degrees addition operator overloading.
          *
          * \param Other - degrees angle to add.
@@ -234,7 +234,7 @@ namespace scl::math
             return degrees(Value + Other.Value);
         }
 
-        /**
+        /*!*
          * Degrees degrees addition with assigments operator overlaoding.
          *
          * \param Other - degrees angle to add.
@@ -246,7 +246,7 @@ namespace scl::math
             return *this;
         }
 
-        /**
+        /*!*
          * Degrees degrees subtraction operator overloading.
          *
          * \param Other - degrees angle to subtract.
@@ -257,7 +257,7 @@ namespace scl::math
             return degrees(Value - Other.Value);
         }
 
-        /**
+        /*!*
          * Degrees degrees subtraction with assigments operator overlaoding.
          *
          * \param Other - degrees angle to subtract.
@@ -269,7 +269,7 @@ namespace scl::math
             return *this;
         }
 
-        /**
+        /*!*
          * Degrees degrees multiplying operator overloading.
          *
          * \param Other - degrees angle to multiply.
@@ -280,7 +280,7 @@ namespace scl::math
             return degrees(Value * Other.Value);
         }
 
-        /**
+        /*!*
          * Degrees degrees multiplying with assigments operator overlaoding.
          *
          * \param Other - degrees angle to multiply.
@@ -292,7 +292,7 @@ namespace scl::math
             return *this;
         }
 
-        /**
+        /*!*
          * Degrees degrees dividing operator overloading.
          *
          * \param Other - degrees angle to devide.
@@ -303,7 +303,7 @@ namespace scl::math
             return degrees(Value / Other.Value);
         }
 
-        /**
+        /*!*
          * Degrees degrees dividing with assigments operator overlaoding.
          *
          * \param Other - degrees angle to devide.
@@ -315,14 +315,14 @@ namespace scl::math
             return *this;
         }
 
-        /**
+        /*!*
          * Cast to degree measure from degrees to degrees.
          *
          * \return angle in degrees.
          */
         operator radians<T>() { return radians<T>(Value * PI / 180); }
 
-        /**
+        /*!*
          * Cast to scalar type.
          *
          * \return angle value.
