@@ -29,10 +29,10 @@ float FloatConstruct(uint m) {
 }
 
 // Pseudo-random value in half-open range [0:1].
-// float RandomNoise(float x) { return FloatConstruct(Hash(floatBitsToUint(x))); }
-// float RandomNoise(vec2  v) { return FloatConstruct(Hash(floatBitsToUint(v))); }
-// float RandomNoise(vec3  v) { return FloatConstruct(Hash(floatBitsToUint(v))); }
-// float RandomNoise(vec4  v) { return FloatConstruct(Hash(floatBitsToUint(v))); }
+float Random(float x) { return FloatConstruct(Hash(floatBitsToUint(x))); }
+float Random(vec2  v) { return FloatConstruct(Hash(floatBitsToUint(v))); }
+float Random(vec3  v) { return FloatConstruct(Hash(floatBitsToUint(v))); }
+float Random(vec4  v) { return FloatConstruct(Hash(floatBitsToUint(v))); }
 
 // Fraction noise generation
 float RandomNoise(vec2 co)

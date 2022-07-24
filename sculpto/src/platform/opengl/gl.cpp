@@ -53,7 +53,7 @@ HGLRC glInitialiseContext(HDC hDC)
     glewExperimental = true;
     GLenum glew_init_status = glewInit();
     SCL_CORE_ASSERT(glew_init_status == GLEW_OK, "Failed to initialize OpenGL glew.\nError log:\n{}", (const char *)glewGetErrorString(glew_init_status));
-    SCL_CORE_ASSERT(GLEW_ARB_vertex_shader && GLEW_ARB_fragment_shader, "Your hardware not supported. No shaders support.");
+    // SCL_CORE_ASSERT(GLEW_ARB_vertex_shader && GLEW_ARB_fragment_shader, "Your hardware not supported. No shaders support.");
 
     // Enable a new OpenGL profile support
     UINT num_formats;

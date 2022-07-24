@@ -1,159 +1,13 @@
 #define FAR_CLIP 100000000
 
-#define SPHERE_COUNT 3
-// #define PLANES_COUNT 1
-#define BOX_COUNT    9
-
-sphere  Spheres[SPHERE_COUNT];
-box     Boxes[BOX_COUNT];
-// plane   Planes[PLANES_COUNT];
-
-void InitializeScene()
-{
-    Spheres[0].Center = vec3(2.5, -1.0, -1.0);
-    Spheres[1].Center = vec3(-3.5, -4.25, 2.25);
-    Spheres[2].Center = vec3(2.75, -2, 1.25);
-    Spheres[0].Radius = 1.0;
-    Spheres[1].Radius = 0.75;
-    Spheres[2].Radius = 1.5;
-    Spheres[0].Surface.Roughness = 1.0;
-    Spheres[1].Surface.Roughness = 0.7;
-    Spheres[2].Surface.Roughness = 1.0;
-    Spheres[0].Surface.Opacity = 0.0;
-    Spheres[1].Surface.Opacity = 0.0;
-    Spheres[2].Surface.Opacity = 0.75;
-    Spheres[0].Surface.Reflectance = vec3(0.95, 0.012, 0.032);
-    Spheres[1].Surface.Reflectance = vec3(0.97, 0.43, 0.012);
-    Spheres[2].Surface.Reflectance = vec3(1);
-    Spheres[0].Surface.Emmitance = vec3(0.0);
-    Spheres[1].Surface.Emmitance = vec3(0.0);
-    Spheres[2].Surface.Emmitance = vec3(0.0);
-
-    // up
-    Boxes[1].Surface.Roughness = 0.0;
-    Boxes[0].Surface.Emmitance = vec3(0.0);
-    Boxes[0].Surface.Reflectance = vec3(1.0, 1.0, 1.0);
-    Boxes[0].Size = vec3(5.0, 0.5, 5.0);
-    Boxes[0].Position = vec3(0.0, 5.5, 0.0);
-    Boxes[0].Rotation = mat3(
-        1.0, 0.0, 0.0,
-        0.0, 1.0, 0.0,
-        0.0, 0.0, 1.0
-    );
-
-    // down
-    Boxes[1].Surface.Roughness = 0.0;
-    Boxes[1].Surface.Opacity = 0.0;
-    Boxes[1].Surface.Emmitance = vec3(0.0);
-    Boxes[1].Surface.Reflectance = vec3(1.0, 1.0, 1.0);
-    Boxes[1].Size = vec3(5.0, 0.5, 5.0);
-    Boxes[1].Position = vec3(0.0, -5.5, 0.0);
-    Boxes[1].Rotation = mat3(
-        1.0, 0.0, 0.0,
-        0.0, 1.0, 0.0,
-        0.0, 0.0, 1.0
-    );
-
-    // right
-    Boxes[2].Surface.Roughness = 0.0;
-    Boxes[2].Surface.Opacity = 0.0;
-    Boxes[2].Surface.Emmitance = vec3(0.0);
-    Boxes[2].Surface.Reflectance = vec3(0.09, 0.09, 0.91);
-    Boxes[2].Size = vec3(5.0, 0.5, 5.0);
-    Boxes[2].Position = vec3(5.5, 0.0, 0.0);
-    Boxes[2].Rotation = mat3(
-        0.0, 1.0, 0.0,
-       -1.0, 0.0, 0.0,
-        0.0, 0.0, 1.0
-    );
-
-    // left
-    Boxes[3].Surface.Roughness = 0.0;
-    Boxes[3].Surface.Opacity = 0.0;
-    Boxes[3].Surface.Emmitance = vec3(0.0);
-    Boxes[3].Surface.Reflectance = vec3(0.94, 0.05, 0.05);
-    Boxes[3].Size = vec3(5.0, 0.5, 5.0);
-    Boxes[3].Position = vec3(-5.5, 0.0, 0.0);
-    Boxes[3].Rotation = mat3(
-        0.0, 1.0, 0.0,
-       -1.0, 0.0, 0.0,
-        0.0, 0.0, 1.0
-    );
-
-    // back
-    Boxes[4].Surface.Roughness = 0.0;
-    Boxes[4].Surface.Opacity = 0.0;
-    Boxes[4].Surface.Emmitance = vec3(0.0);
-    Boxes[4].Surface.Reflectance = vec3(1.0, 1.0, 1.0);
-    Boxes[4].Size = vec3(5.0, 0.5, 5.0);
-    Boxes[4].Position = vec3(0.0, 0.0, -5.5);
-    Boxes[4].Rotation = mat3(
-        1.0, 0.0, 0.0,
-        0.0, 0.0, 1.0,
-        0.0, 1.0, 0.0
-    );
-
-    // light source
-    Boxes[5].Surface.Roughness = 0.0;
-    Boxes[5].Surface.Opacity = 0.0;
-    Boxes[5].Surface.Emmitance = vec3(16);
-    Boxes[5].Surface.Reflectance = vec3(0.0);
-    Boxes[5].Size = vec3(2.5, 0.025, 2.5);
-    Boxes[5].Position = vec3(0, 4.9, 0);
-    Boxes[5].Rotation = mat3(
-        1.0, 0.0, 0.0,
-        0.0, 1.0, 0.0,
-        0.0, 0.0, 1.0
-    );
-
-    // Boxes
-    Boxes[6].Surface.Roughness = 0;
-    Boxes[6].Surface.Opacity = 0.0;
-    Boxes[6].Surface.Emmitance = vec3(0.0);
-    Boxes[6].Surface.Reflectance = vec3(0.3);
-    Boxes[6].Size = vec3(1.5, 3.0, 1.5);
-    Boxes[6].Position = vec3(-2.0, -2.0, -2.0);
-    Boxes[6].Rotation = mat3(
-        0.7, 0.0, 0.7,
-        0.0, 1.0, 0.0,
-        -0.7, 0.0, 0.7
-    );
-
-    // Boxes
-    Boxes[7].Surface.Roughness = 0.0;
-    Boxes[7].Surface.Opacity = 0.0;
-    Boxes[7].Surface.Emmitance = vec3(0.0);
-    Boxes[7].Surface.Reflectance = vec3(1.0);
-    Boxes[7].Size = vec3(1.0, 1.5, 1.0);
-    Boxes[7].Position = vec3(2.5, -3.5, -0.0);
-    Boxes[7].Rotation = mat3(
-        0.7, 0.0, 0.7,
-        0.0, 1.0, 0.0,
-        -0.7, 0.0, 0.7
-    );
-
-    // Mirror
-    Boxes[8].Surface.Roughness = 1;
-    Boxes[8].Surface.Opacity = 0.0;
-    Boxes[8].Surface.Emmitance = vec3(0.0);
-    Boxes[8].Surface.Reflectance = vec3(0.85);
-    Boxes[8].Size = vec3(1.75, 4.75, 0.25);
-    Boxes[8].Position = vec3(1.5, 0, -5.2);
-    Boxes[8].Rotation = mat3(
-        1.0, 0.0, 0.0,
-        0.0, 1.0, 0.0,
-        0.0, 0.0, 1.0
-    );
-}
-
 bool Intersect(ray Ray, inout intersection Intersection)
 {
     intersection current_inter;
     current_inter.Distance = FAR_CLIP;
 
-    for (uint i = 0; i < SPHERE_COUNT; ++i) RaySphereIntersect(Ray, Spheres[i], current_inter);
-    for (uint i = 0; i < BOX_COUNT; ++i) RayBoxIntersect(Ray, Boxes[i], current_inter);
- // for (uint i = 0; i < PLANES_COUNT; ++i) RayPlaneIntersect(Ray, Planes[i], current_inter);
+    for (uint i = 0; i < u_SpheresCount; ++i) RaySphereIntersect(Ray, u_Spheres[i], current_inter);
+    for (uint i = 0; i < u_BoxesCount;   ++i) RayBoxIntersect(Ray,    u_Boxes[i], current_inter);
+    for (uint i = 0; i < u_PlanesCount;  ++i) RayPlaneIntersect(Ray,  u_Planes[i], current_inter);
 
     if (current_inter.Distance != FAR_CLIP)
     {
@@ -214,8 +68,8 @@ vec3 TracePath(ray Ray, float Seed)
             vec3 new_ray_direction = transform * hemisphere_direction;
             vec3 new_ray_origin = inter.Position;
 
-            const float n_in  = 0.96;
-            const float n_out = 1.00;
+            const float n_in  = 1.00;
+            const float n_out = 0.9;
             float refraction_rand = RandomNoise(cos(Seed * TexCoords.yx));
             if (IsRefracted(refraction_rand, Ray.Direction, inter.Normal, inter.Surface.Opacity, n_in, n_out))
             {

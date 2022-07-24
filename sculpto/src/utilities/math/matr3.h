@@ -74,7 +74,7 @@ namespace scl::math
          *
          * \param None.
          */
-        matr3() : matr4_data<T>() {}
+        matr3() : matr3_data<T>() {}
 
         /*!*
          * Matrix constructor bt 16 values.

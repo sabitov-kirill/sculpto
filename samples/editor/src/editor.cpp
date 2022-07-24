@@ -76,54 +76,64 @@ public:
         auto skybox = EditorScene->CreateObject("Skybox");
         skybox.AddComponent<skybox_component>(skybox::Create(assets_manager::LoadTexture("assets/images/skybox_clouds_2.jpg")));
 
-        auto wall_material = material_phong::Create(vec3 {}, vec3 {}, 8.0f);
-        wall_material->SetDiffuseMapTexture(assets_manager::LoadTexture("assets/images/stone_wall/diff.jpg"));
-        wall_material->SetNormalMapTexture(assets_manager::LoadTexture("assets/images/stone_wall/bump.jpg"));
-        auto wall = EditorScene->CreateObject("Wall");
-        wall.AddComponent<mesh_component>(mesh::Create(topology::plane(10, 10), wall_material));
-        wall.AddComponent<transform_component>(vec3 { 5 }, vec3 { 0 }, vec3 { -25, 0, -25 });
-
-        auto crate_material = material_phong::Create(vec3 {}, vec3 { 0 }, 8.0f);
-        // crate_material->SetDiffuseMapTexture(assets_manager::LoadTexture("assets/images/crate.png"));
-        // crate_material->SetSpecularMapTexture(assets_manager::LoadTexture("assets/images/crate_specular.png"));
-        crate_material->SetDiffuseMapTexture(assets_manager::LoadTexture("assets/images/crate/diff.png"));
-        crate_material->SetNormalMapTexture(assets_manager::LoadTexture("assets/images/crate/bump.jpg"));
-        auto cube = EditorScene->CreateObject("Cube");
-        cube.AddComponent<mesh_component>(mesh::Create(topology::cube(vec3(0), vec3(1)), crate_material));
-        cube.AddComponent<transform_component>(vec3 { 1 }, vec3 { 0 }, vec3 { 1 });
-        cube.AddComponent<native_script_component>().Bind<cube_behaviour>();
-
-        auto floor_matrerial = material_phong::Create(vec3 { 1, 0.5, 0.3 }, vec3 { 0.6, 0.5, 0.55 }, 128.0f);
-        floor_matrerial->SetDiffuseMapTexture(assets_manager::LoadTexture("assets/images/wood.png"));
-        auto plane = EditorScene->CreateObject("Floor");
-        plane.AddComponent<mesh_component>(mesh::Create(topology::plane(10, 10), floor_matrerial));
-        plane.AddComponent<transform_component>(vec3 { 5 }, vec3 { 0 }, vec3 { -25, 0, -25 });
-        
-        auto sphere = EditorScene->CreateObject("Sphere");
-        sphere.AddComponent<mesh_component>(mesh::Create(topology::sphere(vec3 { 0 }, 1, 20), material_phong::Create(vec3 { 1, 0.5, 0.3 }, vec3 { 0.7, 0.9, 0.9 }, 128.0f)));
-        sphere.AddComponent<transform_component>(vec3 { 0.5 }, vec3 { 0 }, vec3 { -2, 2, -2 });
-
-        vec3 col = vec3 { 1 };
-        topology::sphere sphere_topo = topology::sphere(vec3 { 0 }, 1, 20);
-        auto light_bulb = EditorScene->CreateObject("Point Light");
-        light_bulb.AddComponent<mesh_component>(mesh::Create(sphere_topo, material_single_color::Create(col)));
-        light_bulb.AddComponent<transform_component>(vec3 { 0.1 }, vec3 { 0 }, vec3 { 2, 4, 2 });
-        light_bulb.AddComponent<point_light_component>(col, 1.0f, 0.022f, 0.0019f);
-
-        vec3 A = vec3(0, 1, 0), B = vec3(0);
-        col = vec3 { 0.55, 1, 0.45 };
-        auto cone = EditorScene->CreateObject("Spot Light");
-        cone.AddComponent<mesh_component>(mesh::Create(topology::cone(A, 0, B, 0.4, 20), material_single_color::Create(col)));
-        cone.AddComponent<transform_component>(vec3 { 1 }, vec3 {}, vec3 { 5, 5, -5 });
-        cone.AddComponent<spot_light_component>(col, 15.0f, 30.0f);
+        // auto wall_material = material_phong::Create(vec3 {}, vec3 {}, 8.0f);
+        // wall_material->SetDiffuseMapTexture(assets_manager::LoadTexture("assets/images/stone_wall/diff.jpg"));
+        // wall_material->SetNormalMapTexture(assets_manager::LoadTexture("assets/images/stone_wall/bump.jpg"));
+        // auto wall = EditorScene->CreateObject("Wall");
+        // wall.AddComponent<mesh_component>(mesh::Create(topology::plane(10, 10), wall_material));
+        // wall.AddComponent<transform_component>(vec3 { 5 }, vec3 { 0 }, vec3 { -25, 0, -25 });
+        // 
+        // auto crate_material = material_phong::Create(vec3 {}, vec3 { 0 }, 8.0f);
+        // // crate_material->SetDiffuseMapTexture(assets_manager::LoadTexture("assets/images/crate.png"));
+        // // crate_material->SetSpecularMapTexture(assets_manager::LoadTexture("assets/images/crate_specular.png"));
+        // crate_material->SetDiffuseMapTexture(assets_manager::LoadTexture("assets/images/crate/diff.png"));
+        // crate_material->SetNormalMapTexture(assets_manager::LoadTexture("assets/images/crate/bump.jpg"));
+        // auto cube = EditorScene->CreateObject("Cube");
+        // cube.AddComponent<mesh_component>(mesh::Create(topology::cube(vec3(0), vec3(1)), crate_material));
+        // cube.AddComponent<transform_component>(vec3 { 1 }, vec3 { 0 }, vec3 { 1 });
+        // cube.AddComponent<native_script_component>().Bind<cube_behaviour>();
+        // 
+        // auto floor_matrerial = material_phong::Create(vec3 { 1, 0.5, 0.3 }, vec3 { 0.6, 0.5, 0.55 }, 128.0f);
+        // floor_matrerial->SetDiffuseMapTexture(assets_manager::LoadTexture("assets/images/wood.png"));
+        // auto plane = EditorScene->CreateObject("Floor");
+        // plane.AddComponent<mesh_component>(mesh::Create(topology::plane(10, 10), floor_matrerial));
+        // plane.AddComponent<transform_component>(vec3 { 5 }, vec3 { 0 }, vec3 { -25, 0, -25 });
+        // 
+        // auto sphere = EditorScene->CreateObject("Sphere");
+        // sphere.AddComponent<mesh_component>(mesh::Create(topology::sphere(vec3 { 0 }, 1, 20), material_phong::Create(vec3 { 1, 0.5, 0.3 }, vec3 { 0.7, 0.9, 0.9 }, 128.0f)));
+        // sphere.AddComponent<transform_component>(vec3 { 0.5 }, vec3 { 0 }, vec3 { -2, 2, -2 });
+        // 
+        // vec3 col = vec3 { 1 };
+        // topology::sphere sphere_topo = topology::sphere(vec3 { 0 }, 1, 20);
+        // auto light_bulb = EditorScene->CreateObject("Point Light");
+        // light_bulb.AddComponent<mesh_component>(mesh::Create(sphere_topo, material_single_color::Create(col)));
+        // light_bulb.AddComponent<transform_component>(vec3 { 0.1 }, vec3 { 0 }, vec3 { 2, 4, 2 });
+        // light_bulb.AddComponent<point_light_component>(col, 1.0f, 0.022f, 0.0019f);
+        // 
+        // vec3 A = vec3(0, 1, 0), B = vec3(0);
+        // col = vec3 { 0.55, 1, 0.45 };
+        // auto cone = EditorScene->CreateObject("Spot Light");
+        // cone.AddComponent<mesh_component>(mesh::Create(topology::cone(A, 0, B, 0.4, 20), material_single_color::Create(col)));
+        // cone.AddComponent<transform_component>(vec3 { 1 }, vec3 {}, vec3 { 5, 5, -5 });
+        // cone.AddComponent<spot_light_component>(col, 15.0f, 30.0f);
 
         auto projector = EditorScene->CreateObject("Directional Light");
         projector.AddComponent<transform_component>(vec3 { 1 }, vec3 { 5, 0, 30 }, vec3 { 5, 50, -5 });
         projector.AddComponent<directional_light_component>(vec3 { 1 }, true, 40.0f, 100.0f, 4096, 4096);
 
+        vec3 col;
+        topology::sphere sphere_topo = topology::sphere(vec3 { 0 }, 1, 20);
+
+        col = vec3 { 1 };
+        auto light_bulb_1 = EditorScene->CreateObject("Point Light 1");
+        light_bulb_1.AddComponent<mesh_component>(mesh::Create(sphere_topo, material_single_color::Create(col)));
+        light_bulb_1.AddComponent<transform_component>(vec3 { 0.1 }, vec3 { 0 }, vec3 { 2, 4, 2 });
+        light_bulb_1.AddComponent<point_light_component>(col, 1.0f, 0.022f, 0.0019f);
+
+
         auto model = EditorScene->CreateObject("Model, loaded from file");
-        model.AddComponent<mesh_component>(assets_manager::LoadMeshes("assets\\models\\hrusov_castle\\scene.gltf"));
-        model.AddComponent<transform_component>(vec3 { 0.02 }, vec3 { 0, 0, 0 }, vec3 { -2, 4, 4 });
+        model.AddComponent<mesh_component>(assets_manager::LoadMeshes("assets\\models\\sponza\\sponza.gltf"));
+        model.AddComponent<transform_component>(vec3 { 0.02 }, vec3 { 0, 0, 0 }, vec3 {});
         // model.AddComponent<native_script_component>().Bind<cube_behaviour>();
 
         camera render_camera { camera_projection_type::PERSPECTIVE, camera_effects { true, 0.7, true, 8 } };

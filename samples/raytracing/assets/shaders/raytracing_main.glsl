@@ -16,22 +16,37 @@
 
 #shader-begin frag
     #define PI 3.1415926535
+    #define MAX_SPHERE_COUNT 100
+    #define MAX_BOX_COUNT    100
+    #define MAX_PLANES_COUNT 100
+
+    #include "raytracing_ray.glsl"
+    #include "raytracing_objects.glsl"
 
     /* Shader input data. */
     layout(binding = 0) uniform sampler2D u_AccumulatedFrames;
     layout(std140, binding = 0) uniform ubo_SceneData
     {
-        vec3 u_CameraPosition;
-        float u_CameraProjectionDistance;
-        vec3 u_CameraDirection;
-        float u_ViewportWidth;
-        vec3 u_CameraRightDirection;
-        float u_ViewportHeight;
-        vec3 u_CameraUpDirection;
-        float u_ViewportProjectionWidth;
-        float u_ViewportProjectionHeight;
-        float u_Time;
-        uint u_Samples;
+        vec3    u_CameraPosition;
+        float   u_CameraProjectionDistance;
+        vec3    u_CameraDirection;
+        float   u_ViewportWidth;
+        vec3    u_CameraRightDirection;
+        float   u_ViewportHeight;
+        vec3    u_CameraUpDirection;
+        float   u_ViewportProjectionWidth;
+        float   u_ViewportProjectionHeight;
+        float   u_Time;
+        uint    u_Samples;
+    };
+    layout(std140, binding = 1) uniform ubo_SceneObjects
+    {
+        sphere  u_Spheres[MAX_SPHERE_COUNT];
+        box     u_Boxes  [MAX_BOX_COUNT];
+        plane   u_Planes [MAX_PLANES_COUNT];
+        uint    u_SpheresCount;
+        uint    u_BoxesCount;
+        uint    u_PlanesCount;
     };
     in vec2 TexCoords;
 
@@ -39,8 +54,6 @@
     layout(location = 0) out vec4 OutColor;
 
     #include "raytracing_random.glsl"
-    #include "raytracing_ray.glsl"
-    #include "raytracing_objects.glsl"
     #include "raytracing_render.glsl"
 
     void main()
@@ -48,8 +61,6 @@
         ray current_ray = RayFromCamera(gl_FragCoord.x, u_ViewportHeight - gl_FragCoord.y,
                                         u_CameraPosition, u_CameraDirection, u_CameraRightDirection, u_CameraUpDirection, u_CameraProjectionDistance,
                                         u_ViewportWidth, u_ViewportHeight, u_ViewportProjectionWidth, u_ViewportProjectionHeight);
-
-        InitializeScene();
 
         vec3 color = vec3(0);
         for (uint i = 0; i < u_Samples; ++i)

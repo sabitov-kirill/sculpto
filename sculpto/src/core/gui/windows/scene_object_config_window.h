@@ -37,6 +37,7 @@ namespace scl
         int CameraProjectionTypeIndex {};
 
         char NameTextBuffer[128] {};
+        char LoadModelTextBuffer[128] {};
 
         /*! Currently configuring scene object. */
         scene_object ConfiguringObject {};
@@ -126,7 +127,9 @@ namespace scl
             if (mesh == nullptr) return;
 
             ImGui::SetNextItemWidth(PanelWidth * 0.7f - 5);
-            if (ImGui::Button("Load model", { PanelWidth - 10, 0 })); // mesh = assets_manager::LoadMeshes(std::string(LoadModelTextBuffer));
+            ImGui::InputText("##load_model_path", LoadModelTextBuffer, 128);
+            ImGui::SameLine(PanelWidth * 0.7f + 5);
+            if (ImGui::Button("Load model", { PanelWidth * 0.3f - 10, 0 })) mesh = assets_manager::LoadMeshes(std::string(LoadModelTextBuffer));
 
             if (ImGui::BeginCombo("Select Submesh", SubmeshSelectComboItems[CurrentSubmeshIndex].c_str()))
             {

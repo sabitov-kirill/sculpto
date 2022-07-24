@@ -34,6 +34,7 @@ void scl::scene_object_config_window::ResetData()
     CameraProjectionTypeIndex = 0;
 
     memset(NameTextBuffer, 0, 128);
+    memset(LoadModelTextBuffer, 0, 128);
 
     SubmeshSelectComboItems.clear();
     if (ConfiguringObject.HasComponent<mesh_component>())

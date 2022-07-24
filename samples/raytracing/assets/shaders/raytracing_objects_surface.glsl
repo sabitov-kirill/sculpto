@@ -1,8 +1,8 @@
 struct surface
 {
     vec3  Emmitance;
-    vec3  Reflectance;
     float Roughness;
+    vec3  Reflectance;
     float Opacity;
 };
 

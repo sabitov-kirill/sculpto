@@ -45,8 +45,8 @@ bool RaySphereIntersect(ray Ray, sphere Sphere, inout intersection BestIntersect
 
 struct plane
 {
-    float Dist;
     vec3 Normal;
+    float Dist;
     surface Surface;
 };
 
@@ -75,8 +75,11 @@ bool RayPlaneIntersect(ray Ray, plane Plane, inout intersection BestIntersection
 struct box
 {
     vec3 Size;
-    vec3 Position;
+    float dummy1;
     mat3 Rotation;
+    vec4 dummy2;
+    vec3 Position;
+    float dummy3;
     surface Surface;
 };
 

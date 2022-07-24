@@ -129,7 +129,7 @@ namespace scl::math
          * \param Max - upper bound of random number.
          * \return random number in range [Min; Max].
          */
-        static vec3 Rnd(T Min = 0, T Max = 1) { return vec3(Rnd(Min, Max)); }
+        static vec3 Rnd(T Min = 0, T Max = 1) { return vec3(::math::Rnd(Min, Max), ::math::Rnd(Min, Max), ::math::Rnd(Min, Max)); }
 
         /*!*
          * Vector with compund of minimums of specified vectors components.

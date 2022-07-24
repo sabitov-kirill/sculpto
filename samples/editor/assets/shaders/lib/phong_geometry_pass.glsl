@@ -66,6 +66,7 @@
         if (u_IsNormalMap) norm = fs_in.TBN * (texture(u_NormalMap, fs_in.TexCoords).rgb * 2 - 1);
         else               norm = fs_in.Normal;
         OutNormal = vec4(normalize(norm), 1);
+        // OutNormal = vec4(normalize(fs_in.Normal), 1);
 
         if (u_IsEmissionMap) OutColor = vec4(texture(u_EmissionMap, fs_in.TexCoords).rgb * 5, 1);
 
