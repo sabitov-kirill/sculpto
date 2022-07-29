@@ -55,7 +55,7 @@ Allows implement your ideas through computer graphics via native C++ code/script
     - [x] scene serialization (save/load)                          |
     - [x] embeded C++/Py scriping                                  |
 
-    - [ ] enter KT ITMO                                            | 01.08
+    - [ ] enter ITMO                                            | 01.08
 
     - [ ] create guide for learning code, using sculpto            | future steps
     - [ ] intrinsic functions based optimized math module          |
