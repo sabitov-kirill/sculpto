@@ -53,9 +53,7 @@ Allows implement your ideas through computer graphics via native C++ code/script
     - [x] scene cameras system                                     |
     - [x] GPU ray tracing (client app example)                     |
     - [x] scene serialization (save/load)                          |
-    - [x] embeded C++/Py scriping                                  |
-
-    - [ ] enter ITMO                                            | 01.08
+    - [x] embeded C++/Py scriping                                  |                                          
 
     - [ ] create guide for learning code, using sculpto            | future steps
     - [ ] intrinsic functions based optimized math module          |
@@ -72,5 +70,4 @@ Allows implement your ideas through computer graphics via native C++ code/script
     - [ ] render context implementation for DirectX, Vulkan, Metal |
     - [ ] order independent transparensy                           |
     - [ ] full featured 2D renderer                                |
-    - [ ] android/ios support                                      |
-    - [ ] USE SCULPTO!!!                                           |
+    - [ ] android/ios support                                      |                      
