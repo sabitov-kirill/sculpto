@@ -71,3 +71,18 @@ Allows implement your ideas through computer graphics via native C++ code/script
     - [ ] order independent transparensy                           |
     - [ ] full featured 2D renderer                                |
     - [ ] android/ios support                                      |                      
+    
+## Rendered Images
+Knight model with normal mapping and bloom technices on in Editor.
+![Model with normal maps](https://github.com/sabitov-kirill/sculpto/blob/main/docs/images/normal_mapping_and_bloom_on.png)
+
+Sponza scene with multiple lights
+![Sponza](https://github.com/sabitov-kirill/sculpto/blob/main/docs/images/render_pass_funal.png)
+
+Cornell Box (using GPU path tracer)
+![Cornell Box](https://github.com/sabitov-kirill/sculpto/blob/main/docs/images/pathtracer_cornell_box.png)
+
+Multiples spheres with diffrent materials (using GPU path tracer)
+![Spheres](https://github.com/sabitov-kirill/sculpto/blob/main/docs/images/pathtracer_spheres.png)
+
+
