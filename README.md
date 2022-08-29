@@ -11,23 +11,19 @@ Allows implement your ideas through computer graphics via native C++ code/script
 - [x] ability to create windows with custom GUI Widgets
 
 ## Roadmap
-    - [x] so much things                                           | 18.06 - 06.07
-
-    - [x] blin-phong                                               | 06.07
+    - [x] so much things                                           |
+    - [x] blin-phong                                               |
     - [x] transfer frame buffers to store textures instead ids     |
     - [x] add get id funtion to all render primitives classes      |
-
-    - [x] shadow caster component                                  | 07.06
+    - [x] shadow caster component                                  |
     - [x] GLSL shaders preprocessor                                |
-
-    - [x] normal mapping                                           | 08.07
+    - [x] normal mapping                                           |
     - [x] models loading                                           |
     - [x] assets manager                                           |
     - [x] single color material and shader (color/texture)         |
-
-    - [x] UI panels:                                               | 09.07
+    - [x] UI panels:                                               |
         - [x] Scene hierarchy                                      |
-        - [x] Objects components configuration                     |
+        - [x] Objects components configuration:                    | 
             - [x] Name component                                   |
             - [x] Transform component                              |
             - [x] Native script component                          |
@@ -36,26 +32,23 @@ Allows implement your ideas through computer graphics via native C++ code/script
             - [x] Point light component                            |
             - [x] Directional light component                      |
             - [x] Spot light component                             |
-        - [x] Add/delete components                                |
-        - [x] Create/delete objects                                |
-        - [x] Renderer configuration                               |
-        - [x] Profiling (FPS)                                      |
-
-    - [x] HDR                                                      | 10.07
+    - [x] Add/delete components                                    |
+    - [x] Create/delete objects                                    |
+    - [x] Renderer configuration                                   |
+    - [x] Profiling (FPS)                                          |
+    - [x] HDR                                                      |
     - [x] bloom                                                    |
-
-    - [x] render architecture redisgn                              | 12.07
+    - [x] render architecture redisgn                              |
     - [x] fix memory leaks while window resize                     |
     - [x] deffered rendering                                       |
-
-    - [x] propeper mesh component configuration                    | till 25.07
-          (problems with meshes in whole application)
+    - [x] propeper mesh component configuration                    |
+            (problems with meshes in whole application)            |
     - [x] scene cameras system                                     |
     - [x] GPU ray tracing (client app example)                     |
     - [x] scene serialization (save/load)                          |
-    - [x] embeded C++/Py scriping                                  |                                          
-
-    - [ ] create guide for learning code, using sculpto            | future steps
+    
+    - [ ] embeded C++/Py scriping                                  |                                          
+    - [ ] create guide for learning code, using sculpto            |
     - [ ] intrinsic functions based optimized math module          |
     - [ ] mesh saving                                              |
     - [ ] mesh editor using marching cubes                         |
@@ -70,8 +63,8 @@ Allows implement your ideas through computer graphics via native C++ code/script
     - [ ] render context implementation for DirectX, Vulkan, Metal |
     - [ ] order independent transparensy                           |
     - [ ] full featured 2D renderer                                |
-    - [ ] android/ios support                                      |                      
-    
+    - [ ] android/ios support                                      |                                                         
+
 ## Rendered Images
 Knight model with normal mapping and bloom technices on in Editor.
 ![Model with normal maps](https://github.com/sabitov-kirill/sculpto/blob/main/docs/images/normal_mapping_and_bloom_on.png)
