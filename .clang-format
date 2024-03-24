@@ -1,0 +1,6 @@
+---
+BasedOnStyle: Google
+ColumnLimit: 120
+SeparateDefinitionBlocks: Always
+EmptyLineBeforeAccessModifier: LogicalBlock
+SortIncludes: Never
